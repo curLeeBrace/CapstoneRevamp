@@ -5,10 +5,8 @@ import {
   } from "@material-tailwind/react";
 import useFilterAddress from "../custom-hooks/useFilterAddrress";
 
-export interface Address {
-    province_code : string; 
+export interface Address { 
     municipality_name : string;
-    municipality_code : string;
     brgy_name : string;
 }
 
@@ -45,13 +43,12 @@ function InputAddrress({setState} : InputAddrressProps) {
                 parent_code = data.address_code;
                 const brgy_data = filter_address({address_type : "brgy", parent_code})
                 setBrgyList(brgy_data.map(data => data.address_name))
+
                 setState((prev : any) => {
                     return {
                         ...prev, ["address"]:{
                             brgy_name : brgy as string,
                             municipality_name : municipality,
-                            municipality_code : data.address_code,
-                            province_code : data.parent_code
                         } as Address
                       }
                 
