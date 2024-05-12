@@ -1,0 +1,48 @@
+import express from 'express';
+import connectDB from './db_connection';
+import cors from 'cors';
+
+import accountRoute from './route/acc_route'
+import tokenRoute from "./route/token_route"
+
+
+const app = express();
+app.use(express.urlencoded({extended:false}))
+app.use(express.json());
+app.use(cors());
+
+
+
+
+
+
+//routes
+app.use('/api/account', accountRoute);
+app.use('/api/token', tokenRoute);
+
+
+
+
+
+app.get('/', (req : express.Request, res:express.Response)=>{
+    return res.send("Hello Erika!");
+})
+
+const start = async () =>{ 
+    try {
+        const PORT = process.env.PORT || 3001;
+        // const online_db_url = process.env.MONGO_URI as string
+        const local_db_url = 'mongodb://localhost:27017/ghgV2_db'
+        await connectDB(local_db_url);
+        app.listen(PORT, () => console.log(`server is listening in port ${PORT}`))
+
+    } catch (error) {
+        // console.error(error);
+        console.log(error);
+    }
+}
+
+start(); // start server
+
+
+export default app;
