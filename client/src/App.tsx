@@ -9,6 +9,7 @@ import LogIn from "./Components/LoginForms/LogIn";
 import ForgotPass from "./Components/LoginForms/ForgotPass";
 import SignUp from "./Components/LoginForms/SignUp";
 import ChangePass from "./Components/LoginForms/ChangePass";
+import AuditLogs from "./routes/AuditLogs";
 
 
 function App() {
@@ -24,19 +25,17 @@ function App() {
             <Route path="login" element = {<LogIn/>}></Route>
             <Route path = 'forgot-pass' element = {<ForgotPass/>}/>
             <Route path="/" element = {<LogIn/>}/>
-
             <Route path = 'dashboard' element = {<DashBoard/>}/>
             <Route path = 'account' element = {<Account/>}/>
+            <Route path = 'audit-logs' element = {<AuditLogs/>}/>
+            
 
 
               {/* <Route path = 'home' element = {<HomePage/>}/>
               <Route path = 'form' element = {<StationaryForm/>}/>
               <Route path = 'home' element = {<HomePage/>}/>
-              <Route path = 'sign-up' element = {<SignUp/>}/>
               <Route path = 'change-pass' element = {<ChangePass/>}/> */}
-             
-          
-
+            
             
         </Routes>
     </AuthProvider>

@@ -64,7 +64,7 @@ console.log(details)
 
 
   return (
-    <div className="flex justify-center m-3">
+    <div className="flex justify-center py-4 min-h-screen bg-gradient-to-t from-green-400 via-green-200 to-slate-50">
       <Card className="md:w-3/5 w-5/6 flex items-center border border-gray-400">
         <CardHeader 
           floated={false}
