@@ -1,0 +1,244 @@
+{
+  "e_stationary_use": [
+    {
+      "id": 1,
+      "fuel_type": "Biodiesels (International)",
+      "fuel_type_units": "kg",
+      "application": "Stationary combustion. All applications - residential, commercial, industrial (e.g. generators, boilers, HVAC, cooking etc...)",
+      "emission_factors": {
+        "CO2": 1.91,
+        "CH4": 2.7e-4,
+        "N2O": 1.62e-5
+      },
+      "units": [
+        "kg"
+      ],
+      "uncertainty_of_emission_factor": {
+        "CO2": "1%",
+        "CH4": "5%",
+        "N2O": "5%"
+      },
+      
+      "combined_uncertainty": "7%"
+    },
+    {
+      "id": 2,
+      "fuel_type": "Blended Diesel Industrial (Philippines)",
+      "fuel_type_units": "litres",
+      "application": "Stationary combustion. Blend is 2% CME/98% diesel for industrial applications only.",
+      "emission_factors": {
+        "CO2": 2.66,
+        "CH4": 1.09e-4,
+        "N2O": 2.18e-5
+      },
+      "units": [
+        "kg",
+        "L"
+      ],
+      "uncertainty_of_emission_factor": {
+        "CO2": "1%",
+        "CH4": "5%",
+        "N2O": "5%"
+      },
+   
+      "combined_uncertainty": "7%"
+    },
+    {
+      "id": 3,
+      "fuel_type": "Blended Diesel Residential/Commercial (Philippines)",
+      "fuel_type_units": "litres",
+      "application": "Stationary combustion. Blend is 2% CME/98% diesel for residential/commercial applications only.",
+      "emission_factors": {
+        "CO2": 2.66,
+        "CH4": 4.0e-4,
+        "N2O": 2.18e-5
+      },
+      "units": [
+        "kg",
+        "L"
+      ],
+      "uncertainty_of_emission_factor": {
+        "CO2": "1%",
+        "CH4": "5%",
+        "N2O": "5%"
+      },
+      
+      "combined_uncertainty": "7%"
+    },
+    {
+      "id": 4,
+      "fuel_type": "Blended Gasoline Residential/Commercial (Philippines)",
+      "fuel_type_units": "litres",
+      "application": "Stationary combustion. Blend is 10% ethanol/90% gasoline for residential/commercial applications only.",
+      "emission_factors": {
+        "CO2": 2.07,
+        "CH4": 3.2e-4,
+        "N2O": 1.9e-4
+      },
+      "units": [
+        "kg",
+        "L"
+      ],
+      "uncertainty_of_emission_factor": {
+        "CO2": "1%",
+        "CH4": "5%",
+        "N2O": "5%"
+      },
+ 
+      "combined_uncertainty": "7%"
+    },
+    {
+      "id": 5,
+      "fuel_type": "Charcoal (Biomass, International)",
+      "fuel_type_units": "kg",
+      "application": "Stationary combustion. All applications - residential, commercial, industrial (e.g. generators, boilers, HVAC, cooking etc...)",
+      "emission_factors": {
+        "CO2": 3.3,
+        "CH4": 5.9e-3,
+        "N2O": 2.95e-5
+      },
+      "units": [
+        "kg"
+      ],
+      "uncertainty_of_emission_factor": {
+        "CO2": "1%",
+        "CH4": "5%",
+        "N2O": "5%"
+      },
+      
+      "combined_uncertainty": "7%"
+    },
+    {
+      "id": 6,
+      "fuel_type": "Diesel (International)",
+      "fuel_type_units": "litres",
+      "application": "Stationary combustion. All applications - residential, commercial, industrial (e.g. generators, boilers, HVAC, cooking etc...)",
+      "emission_factors": {
+        "CO2": 2.68,
+        "CH4": 3.61e-4,
+        "N2O": 2.17e-5
+      },
+      "units": [
+        "kg",
+        "L"
+      ],
+      "uncertainty_of_emission_factor": {
+        "CO2": "1%",
+        "CH4": "5%",
+        "N2O": "5%"
+      },
+  
+      "combined_uncertainty": "7%"
+    },
+    {
+      "id": 7,
+      "fuel_type": "Kerosene (International)",
+      "fuel_type_units": "litres",
+      "application": "Stationary combustion. All applications - residential, commercial, industrial (e.g. generators, boilers, HVAC, cooking etc...)",
+      "emission_factors": {
+        "CO2": 2.52,
+        "CH4": 3.5e-4,
+        "N2O": 2.1e-5
+      },
+      "units": [
+        "kg",
+        "L"
+      ],
+      "uncertainty_of_emission_factor": {
+        "CO2": "1%",
+        "CH4": "5%",
+        "N2O": "5%"
+      },
+     
+      "combined_uncertainty": "7%"
+    },
+    {
+      "id": 8,
+      "fuel_type": "Motor Gasoline (International)",
+      "fuel_type_units": "litres",
+      "application": "Stationary combustion. All applications - residential, commercial, industrial (e.g. generators, boilers, HVAC, cooking etc...)",
+      "emission_factors": {
+        "CO2": 2.27,
+        "CH4": 3.28e-4,
+        "N2O": 1.97e-5
+      },
+      "units": [
+        "kg",
+        "L"
+      ],
+      "uncertainty_of_emission_factor": {
+        "CO2": "1%",
+        "CH4": "5%",
+        "N2O": "5%"
+      },
+
+      "combined_uncertainty": "7%"
+    },
+    {
+      "id": 9,
+      "fuel_type": "Natural Gas (International)",
+      "fuel_type_units": "m3",
+      "application": "Stationary combustion. All applications - residential, commercial, industrial (e.g. generators, boilers, HVAC, cooking etc...)",
+      "emission_factors": {
+        "CO2": 1.88,
+        "CH4": 1.68e-4,
+        "N2O": 3.36e-6
+      },
+      "units": [
+        "kg",
+        "m3"
+      ],
+      "uncertainty_of_emission_factor": {
+        "CO2": "1%",
+        "CH4": "5%",
+        "N2O": "5%"
+      },
+   
+      "combined_uncertainty": "7%"
+    },
+    {
+      "id": 10,
+      "fuel_type": "Propane or Liquified Petroleum Gases (International)",
+      "fuel_type_units": "kg",
+      "application": "Stationary combustion. All applications - residential, commercial, industrial (e.g. generators, boilers, HVAC, cooking etc...)",
+      "emission_factors": {
+        "CO2": 2.98E-03,
+        "CH4": 2.37E-07,
+        "N2O": 4.73E-09
+      },
+      "units": [
+        "kg",
+        "kg"
+      ],
+      "uncertainty_of_emission_factor": {
+        "CO2": "1%",
+        "CH4": "5%",
+        "N2O": "5%"
+      },
+   
+      "combined_uncertainty": "7%"
+    },
+    {
+      "id": 11,
+      "fuel_type": "Wood or Wood Waste (Biomass, International)",
+      "fuel_type_units": "kg",
+      "application": "Stationary combustion. All applications - residential, commercial, industrial (e.g. generators, boilers, HVAC, cooking etc...)",
+      "emission_factors": {
+        "CO2": 1.75E+00,
+        "CH4": 4.68E-03,
+        "N2O": 6.24E-05
+      },
+      "units": [
+        "kg",
+        "kg"
+      ],
+      "uncertainty_of_emission_factor": {
+        "CO2": "1%",
+        "CH4": "5%",
+        "N2O": "5%"
+      },
+    
+      "combined_uncertainty": "7%"
+    }
+  ]
+}
