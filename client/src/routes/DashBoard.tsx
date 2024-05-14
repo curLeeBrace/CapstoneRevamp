@@ -21,7 +21,7 @@ function DashBoard() {
             <LineChart chart_icon ={<Square3Stack3DIcon className="h-6 w-6"/>} chart_label='insert label' chart_meaning='insert meaning'/>
 
         </div>
-        <div className='col-span-2 bg-blue-gray-400 flex justify-center items-center'>
+        <div className='col-span-2 bg-blue-gray-400 flex justify-center items-center rounded-lg'>
             insert heatmap
         </div>
         

@@ -89,6 +89,21 @@ export function StickyNavbar() {
           Register
         </NavLink>
       </Typography>
+
+      <Typography
+        as="li"
+        variant="small"
+        color="blue-gray"
+        className="p-1 font-normal lg:hover:scale-110 ease-in-out duration-100"
+      >
+          <NavLink className={
+          ({ isActive, isPending }) =>
+            isPending ? "" : isActive ? "font-extrabold" : ""
+          } to={'/audit-logs'}>
+          Audit Logs
+        </NavLink>
+      </Typography>
+
       <Typography
         as="li"
         variant="small"
