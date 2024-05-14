@@ -3,21 +3,22 @@ import multer from 'multer';
 
 
 const storage = multer.diskStorage({
+    
   
     destination: function (req, file, cb) {
         
-        
-        return cb(null, './public');
+        // console.log("Req : ", req.body)
+        return cb(null, `../client/public/img/user_img/${req.body.user_type}`);
       
     },
     filename: function (req, file, cb) {
-
-        return cb(null, `${Date.now()}_${file.originalname}`)
+        const originalName = Buffer.from(file.originalname, 'latin1').toString('utf8');
+        return cb(null, originalName)
      
     },
   
   })
-  
+
   const upload = multer({ storage: storage })
 
   export default upload

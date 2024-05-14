@@ -2,7 +2,7 @@ import { useState } from "react";
 
 import { Typography, Input, Button } from "@material-tailwind/react";
 import { EyeSlashIcon, EyeIcon } from "@heroicons/react/24/solid";
-import { NavLink } from "react-router-dom";
+import { NavLink, Outlet } from "react-router-dom";
 
 export function LogIn() {
   const [passwordShown, setPasswordShown] = useState(false);
