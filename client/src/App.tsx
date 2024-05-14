@@ -1,13 +1,16 @@
 import { Routes, Route} from "react-router-dom";
 import { AuthProvider, useAuth} from "./custom-hooks/auth_hooks/useAuth";
 import {StickyNavbar} from "./Components/StickyNavBar";
-import DashBoard from "./routes/DashBoard"
+
 import Registration from "./routes/Registration";
 import RegistrationCompleted from "./routes/RegistrationCompleted";
+import AccountVerification from "./routes/AccountVerification";
 
 
 
 
+
+import DashBoard from "./routes/DashBoard"
 import { StationaryForm } from "./Components/Forms/StationaryForm";
 import HomePage from "./routes/HomePage";
 import LogIn from "./Components/LoginForms/LogIn";
@@ -31,13 +34,15 @@ function App() {
         <Routes>
           {/* ayusin mo na lang pag may user na */}
             <Route path="/"/>
-            
-              <Route path = "audit-logs" element = {<AuditLogs/>}/>
+
+            <Route path = "audit-logs" element = {<AuditLogs/>}/>
 
             <Route path = '/register'>
                 <Route index element = {<Registration/>}/>
                 <Route path = 'sucsess' element = {<RegistrationCompleted/>}/>
             </Route>
+
+            <Route path="/verify/account/:acc_id/:token" element = {<AccountVerification/>} />
 
 
 {/*             
