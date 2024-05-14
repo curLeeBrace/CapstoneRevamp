@@ -1,0 +1,25 @@
+import express from "express";
+import {register_acc} from "../controller/Account/create_acc";
+import { verify_acc } from "../controller/Account/verify_acc";
+import {recoverAccount} from "../controller/Account/recover_acc"
+import {authenticate_account} from "../controller/Account/authenticate_acc";
+import { changePass } from "../controller/Account/change_pass";
+import { authenticate_token } from "../controller/Token/auth_token";
+import {resendToken} from '../controller/Account/resend_verification_token';
+import {get_allAcc} from '../controller/Account/get_allAcc';
+
+import upload_img from '../middleware/handle_upload';
+const router = express.Router();
+
+router.post('/register', upload_img.single("img") , register_acc)
+
+
+// router.post('/verify', verify_acc)
+// router.post('/recover', recoverAccount);
+// router.post('/login', authenticate_account);
+// router.post('/change-pass',authenticate_token, changePass);
+// router.post('/resend-token', resendToken);
+// router.get('/get-all',get_allAcc);
+
+
+export default router
