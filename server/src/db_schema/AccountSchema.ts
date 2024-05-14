@@ -1,24 +1,4 @@
 import mongoose from "mongoose";
-/*
-    email : "",
-    f_name : "",
-    m_name : "",
-    l_name : "",
-    date : "",
-
-    address : {
-      brgy_name : "",
-      municipality_code : "",
-      municipality_name : "",
-      province_code : "",
-    } as Address,
-
-    img_name :"",
-    lgu_municipality :"",
-    user_type :"",
-
-
-*/
 
 
 const AccountSchema = new mongoose.Schema({
