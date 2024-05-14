@@ -26,12 +26,12 @@ export function AuthProvider ({children} : AuthProps) {
 
     useEffect(()=>{
 
-        if(!recoverRoute && !testRoute && !verfiyAcc){
+        // if(!recoverRoute && !testRoute && !verfiyAcc){
 
-            if(token === "" || token === undefined ){
-                navigate('/', {replace : true})
-            }
-        }
+        //     if(token === "" || token === undefined ){
+        //         navigate('/', {replace : true})
+        //     }
+        // }
 
     // console.log(token   )
 

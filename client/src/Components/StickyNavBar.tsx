@@ -85,8 +85,8 @@ export function StickyNavbar() {
         <NavLink className={
           ({ isActive, isPending }) =>
             isPending ? "" : isActive ? "font-extrabold" : ""
-          } to={'/account'}>
-          Account
+          } to={'/register'}>
+          Register
         </NavLink>
       </Typography>
       <Typography
@@ -229,6 +229,8 @@ export function StickyNavbar() {
         </MobileNav>
         
       </Navbar>
+
+    
     </div>
   );
 }

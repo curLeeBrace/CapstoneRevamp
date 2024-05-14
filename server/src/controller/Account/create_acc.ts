@@ -7,6 +7,7 @@ import TokenSchema from '../../db_schema/TokenSchema';
 import CryptoJS from 'crypto-js';
 import { send_email} from '../../nodemailer';
 import crypto from "crypto";
+import fs from 'fs';
 
 
 
@@ -39,9 +40,6 @@ export const register_acc = async (req:Request, res:Response) => {
         lgu_municipality,
     } = req.body as Acc_Data
 
-    console.log(req.body)
-  
-  
 
     //Generate DefaultPassword
     const default_pass = crypto.randomBytes(3).toString('hex');
@@ -102,7 +100,7 @@ export const register_acc = async (req:Request, res:Response) => {
         .then(data => {
             if(data.succsess) {
 
-                return res.status(201).send("Sucessfully register!");
+                return res.status(201).send("New Account Registered!");
 
             }
             console.log("message after execution of trying sending an email : ", data)
@@ -137,54 +135,36 @@ export const register_acc = async (req:Request, res:Response) => {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 //==Middleware==//
-
-// //check email if exisiting // validation when crreating an account
-// export const createAcc_Validation = async (req:Request, res:Response, next:NextFunction) => {
+//check email if exisiting // validation when crreating an account
+export const createAcc_Validation = async (req:Request, res:Response, next:NextFunction) => {
  
-//     const {email, acc_scope, admin_type, new_email} = req.body as Acc_Data
-//     const {registration_type} = req.params;
-//     const {location_scope_code} = acc_scope;
- 
-   
-//         const acc_info = await AccountSchema.findOne({
-//             $and : [
-//                 {email : registration_type === "create"? email : new_email},
-//                 {$and : [{admin_type}, {"acc_scope.location_scope_code" : location_scope_code}]},
-//             ]
-//         }).exec();
+    const {email, img_name} = req.body as Acc_Data
+    console.log("Email", email)
+    try {
+        const acc_info = await AccountSchema.findOne({email : email}).exec();
 
+        if(acc_info){
+            if(acc_info.email === email){
 
+                if(acc_info.img_name !== img_name){
+                    fs.unlink(`../client/public/img/user_img/${req.body.user_type}/${req.body.img_name}`, (err)=>{
+                        if(err) throw err;
+                        console.log('File Deleted!');
+                        
+                    })
+                }
+                
 
+                return res.status(400).send("Email already in used!");
+            } 
+        }
     
-//         console.log("Acc Info : ", acc_info)
-//         if(acc_info){
-//             if(acc_info.email === email){
-//                 return res.status(200).send("Email already in used!");
-//             } else {
-//                 return res.status(200).send("Only 2 accounts are valid per municipality!  1 for 'inputter' and 1 for 'checker'");
-//             }
-//         }
-    
-//     next();
+     next();
+        
+    } catch (error) {
+        return res.sendStatus(500);
+    }
+     
 
-// }
+}

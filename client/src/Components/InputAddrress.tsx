@@ -12,6 +12,7 @@ export interface Address {
 
 interface InputAddrressProps {
     setState : React.SetStateAction<any>;
+
 }
 
 function InputAddrress({setState} : InputAddrressProps) {
