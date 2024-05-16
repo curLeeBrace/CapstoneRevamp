@@ -10,6 +10,8 @@ import ForgotPass from "./Components/LoginForms/ForgotPass";
 import SignUp from "./Components/LoginForms/SignUp";
 import ChangePass from "./Components/LoginForms/ChangePass";
 import AuditLogs from "./routes/AuditLogs";
+import AdminPage from "./routes/AccountsTable";
+import AccountsTable from "./routes/AccountsTable";
 
 
 function App() {
@@ -25,6 +27,7 @@ function App() {
             <Route path="login" element = {<LogIn/>}></Route>
             <Route path = 'forgot-pass' element = {<ForgotPass/>}/>
             <Route path="/" element = {<LogIn/>}/>
+            <Route path = 'home' element = {<AccountsTable/>}/>
             <Route path = 'dashboard' element = {<DashBoard/>}/>
             <Route path = 'account' element = {<Account/>}/>
             <Route path = 'audit-logs' element = {<AuditLogs/>}/>
@@ -34,7 +37,8 @@ function App() {
               {/* <Route path = 'home' element = {<HomePage/>}/>
               <Route path = 'form' element = {<StationaryForm/>}/>
               <Route path = 'home' element = {<HomePage/>}/>
-              <Route path = 'change-pass' element = {<ChangePass/>}/> */}
+              <Route path = 'change-pass' element = {<ChangePass/>}/>
+              <Route path = 'accounts' element = {<AccountsTable/>}/> */}
             
             
         </Routes>
