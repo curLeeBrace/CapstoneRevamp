@@ -27,7 +27,7 @@ function App() {
             <Route path="login" element = {<LogIn/>}></Route>
             <Route path = 'forgot-pass' element = {<ForgotPass/>}/>
             <Route path="/" element = {<LogIn/>}/>
-            <Route path = 'home' element = {<AccountsTable/>}/>
+            <Route path = 'registered-accounts' element = {<AccountsTable/>}/>
             <Route path = 'dashboard' element = {<DashBoard/>}/>
             <Route path = 'account' element = {<Account/>}/>
             <Route path = 'audit-logs' element = {<AuditLogs/>}/>
