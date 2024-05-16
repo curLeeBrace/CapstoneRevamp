@@ -90,7 +90,7 @@ const TABLE_ROWS = [
         title="Filter Account"
       >
         {/* Child component ng modal*/}
-        <div className="lg:flex lg:flex-row gap-6 ">
+        <div className="">
         <InputAddrress setState={setDetails}/>
         </div>
       </Modal>

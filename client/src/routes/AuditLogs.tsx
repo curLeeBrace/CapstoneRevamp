@@ -49,7 +49,7 @@ const TABLE_ROWS = [
         title="Filter Date Audit Logs"
       >
         {/* Child component ng modal*/}
-        <div className="lg:flex lg:flex-row gap-6 ">
+        <div className="lg:flex lg:flex-row gap-2 ">
           <Input type="date" label="Select Date" />
           <Typography className="font-bold text-center">to</Typography>
           <Input type="date" label="Select Date" />
