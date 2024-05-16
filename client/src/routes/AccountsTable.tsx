@@ -90,9 +90,12 @@ const TABLE_ROWS = [
         title="Filter Account"
       >
         {/* Child component ng modal*/}
-        <div className="">
-        <InputAddrress setState={setDetails}/>
-        </div>
+       <div className='mb-1'>
+       <InputAddrress setState={setDetails}/> 
+       </div>
+       
+        
+        
       </Modal>
     </div>
       <TableWithStripedRows headers={TABLE_HEAD} rows={TABLE_ROWS} />
