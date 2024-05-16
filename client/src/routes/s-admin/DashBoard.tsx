@@ -1,6 +1,6 @@
 import React from 'react'
-import { SimpleCard } from '../Components/Dashboard/SimpleCard'
-import LineChart from '../Components/Dashboard/LineChart'
+import { SimpleCard } from '../../Components/Dashboard/SimpleCard'
+import LineChart from '../../Components/Dashboard/LineChart'
 import { Square3Stack3DIcon, ArrowTrendingUpIcon, ArrowTrendingDownIcon} from "@heroicons/react/24/outline";
 
 

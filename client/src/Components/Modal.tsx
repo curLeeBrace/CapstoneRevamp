@@ -25,10 +25,11 @@ export function Modal({
  
   return (
     <>
-      <Button onClick={handleOpen} variant="gradient">
+      <Button size="sm" onClick={handleOpen} variant="gradient">
         {buttonText}
       </Button>
-      <Dialog open={open} handler={handleOpen}>
+
+      <Dialog size="sm" open={open} handler={handleOpen}>
         <DialogHeader>{title}</DialogHeader>
         <DialogBody>
         {children}
@@ -48,5 +49,6 @@ export function Modal({
         </DialogFooter>
       </Dialog>
     </>
+    
   );
 }

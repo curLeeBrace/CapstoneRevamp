@@ -17,24 +17,24 @@ const TABLE_ROWS = [
   {
     Name: "John Michael",
     UserIdentifier: "Admin",
+    Date: "23/04/2024",
+    TimeStamp: "1:40:41 P.M.",
+    Action: "Input Data to Residential"
+  },
+  {
+    Name: "John Michael",
+    UserIdentifier: "User",
     Date: "23/04/18",
     TimeStamp: "1:40:41 P.M.",
     Action: "Input Data to Residential"
   },
-  // {
-  //   Name: "John Michael",
-  //   UserIdentifier: "User",
-  //   Date: "23/04/18",
-  //   TimeStamp: "1:40:41 P.M.",
-  //   Action: "Input Data to Residential"
-  // },
-  // {
-  //   Name: "John Michael",
-  //   UserIdentifier: "Suoer Admin",
-  //   Date: "23/04/18",
-  //   TimeStamp: "1:40:41 P.M.",
-  //   Action: "Input Data to Residential"
-  // },
+  {
+    Name: "John Michael",
+    UserIdentifier: "Super Admin",
+    Date: "23/04/18",
+    TimeStamp: "1:40:41 P.M.",
+    Action: "Input Data to Residential"
+  },
 ];
     
   return (
@@ -49,7 +49,7 @@ const TABLE_ROWS = [
         title="Filter Date Audit Logs"
       >
         {/* Child component ng modal*/}
-        <div className="lg:flex lg:flex-row gap-6">
+        <div className="lg:flex lg:flex-row gap-2 ">
           <Input type="date" label="Select Date" />
           <Typography className="font-bold text-center">to</Typography>
           <Input type="date" label="Select Date" />
@@ -58,6 +58,7 @@ const TABLE_ROWS = [
     </div>
 
       <TableWithStripedRows headers={TABLE_HEAD} rows={TABLE_ROWS} />;
+      
     </div>
   )
 }

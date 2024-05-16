@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom"
 
-import axios from "../api/axios";
-import InfoBox from "../Components/InfoBox";
+import axios from "../../api/axios";
+import InfoBox from "../../Components/InfoBox";
 
 function AccountVerification() {
   const {acc_id, token} = useParams()
