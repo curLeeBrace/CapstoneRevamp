@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Typography,
   Button,
@@ -9,21 +9,59 @@ import {
 } from "@material-tailwind/react";
 import { ChevronDownIcon } from "@heroicons/react/24/solid";
 import { NavLink } from "react-router-dom";
+import {Cog6ToothIcon, PowerIcon, FaceSmileIcon} from "@heroicons/react/24/solid";
+import Cookies from "js-cookie";
+import { useNavigate } from "react-router-dom";
+
+
 
 interface ProfileMenuItem {
   label: string;
   icon: React.ComponentType<any>;
-  to: string;
+  onClick? : ()=>any;
 }
 
-interface ProfileMenuProps {
-  menuItems: ProfileMenuItem[];
-}
 
-const ProfileMenu: React.FC<ProfileMenuProps> = ({ menuItems }) => {
+
+const ProfileMenu = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-
   const closeMenu = () => setIsMenuOpen(false);
+  const [menuItems, setMenuItems] = useState<ProfileMenuItem[]>();
+  const navigate = useNavigate();
+  const {username,user_type,img_name} = JSON.parse(Cookies.get('user_info') as string);
+
+
+  useEffect(()=>{
+
+    setMenuItems([
+      {
+        label: username,
+        icon: FaceSmileIcon,
+        onClick: ()=> navigate(`/${user_type}/dashboard`),
+      },
+      {
+        label: "Change Password",
+        icon: Cog6ToothIcon,
+        onClick: ()=> navigate(`/${user_type}/change-pass`),
+      },
+      {
+        label: "Sign Out",
+        icon: PowerIcon,
+        onClick: ()=>{
+          Cookies.remove('user_info');
+          window.location.reload();
+
+        }
+      },
+     
+    ])
+  },[])
+
+
+console.log(JSON.parse(Cookies.get('user_info') as string));
+
+
+
 
   return (
     <Menu open={isMenuOpen} handler={setIsMenuOpen} placement="bottom-end">
@@ -37,7 +75,7 @@ const ProfileMenu: React.FC<ProfileMenuProps> = ({ menuItems }) => {
             variant="circular"
             size="sm"
             className="border border-gray-900 p-0.5"
-            src="http://www.gravatar.com/avatar/?d=mp"
+            src={`/img/user_img/${user_type}/${img_name}`}
           />
           <ChevronDownIcon
             strokeWidth={2.5}
@@ -48,34 +86,38 @@ const ProfileMenu: React.FC<ProfileMenuProps> = ({ menuItems }) => {
         </Button>
       </MenuHandler>
       <MenuList className="p-1">
-        {menuItems.map(({ label, icon, to }, key) => {
+        {menuItems  &&  menuItems.map(({ label, icon, onClick}, key) => {
           const isLastItem = key === menuItems.length - 1;
           const Icon = icon; // Capitalize component name
 
           return (
-            <NavLink
-              to={to}
+            <Button
+              variant="text"
+              size="sm"
               key={label}
-              onClick={closeMenu}
-              className={`flex items-center gap-2 rounded ${
+              onClick={()=>{
+                closeMenu();
+                onClick && onClick()
+              }}
+              className={`flex items-center gap-2 rounded w-full ${
                 isLastItem
                   ? "hover:bg-red-500/10 focus:bg-red-500/10 active:bg-red-500/10"
                   : ""
               }`}
             >
               <Icon
-                className={`h-4 w-4 ml-4 mb-2 ${isLastItem ? "text-red-500" : ""}`}
+                className={`h-4 w-4 ${isLastItem ? "text-red-500" : ""}`}
                 strokeWidth={2}
               />
-              <Typography
-                as="span"
-                variant="small"
-                className="font-normal mb-2"
-                color={isLastItem ? "red" : "inherit"}
-              >
-                {label}
-              </Typography>
-              </NavLink>
+                <Typography
+                  as="span"
+                  variant="small"
+                  className="font-normal"
+                  color={isLastItem ? "red" : "inherit"}
+                >
+                  {label}
+                </Typography>
+              </Button>
            
           );
         })}

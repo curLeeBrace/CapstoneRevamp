@@ -16,22 +16,23 @@ const AuthContext = createContext({} as AuthProv);
 
 
 export function AuthProvider ({children} : AuthProps) {
-    const [token, setToken] = useState<string>("");
+    const [token, setToken] = useState<string|undefined>("");
     const navigate = useNavigate()
     const recoverRoute = useMatch("/recover");
     
-    const testRoute = useMatch('/testArea/:children');
+    // const testRoute = useMatch('/testArea/:children');
     const verfiyAcc = useMatch('/verify/account/:acc_id/:token')
    
 
     useEffect(()=>{
+        console.log("token : ", token)
 
-        // if(!recoverRoute && !testRoute && !verfiyAcc){
+        if(!recoverRoute && !verfiyAcc){
 
-        //     if(token === "" || token === undefined ){
-        //         navigate('/', {replace : true})
-        //     }
-        // }
+            if(token == "" || token == undefined ){
+                navigate('/', {replace : true})
+            }
+        }
 
     // console.log(token   )
 

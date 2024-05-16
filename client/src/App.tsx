@@ -22,15 +22,11 @@ import AdminPage from "./routes/AccountsTable";
 import AccountsTable from "./routes/AccountsTable";
 
 
+
 function App() {
-  
-  const auth = useAuth();
 
   return (
     <AuthProvider>
-      {/* {
-        auth.token && <StickyNavbar/>
-      } */}
         <StickyNavbar/>
 
         <Routes>
@@ -44,6 +40,7 @@ function App() {
             {/*Route for Super Admin*/}
             <Route path = "/s-admin">
               <Route index element = {<DashBoard/>}/>
+              <Route path = "dashboard" element = {<DashBoard/>}/>
               <Route path = 'change-pass' element = {<ChangePass/>}/>
 
 
@@ -63,14 +60,13 @@ function App() {
 
             </Route>
 
+            <Route path="*" element = {<>Nothing here</>}/>
+
 
 {/* 
             <Route path = "audit-logs" element = {<AuditLogs/>}/>
 
-            <Route path = '/register'>
-                <Route index element = {<Registration/>}/>
-                <Route path = 'sucsess' element = {<RegistrationCompleted/>}/>
-            </Route> 
+      
 */}
 
 
@@ -82,8 +78,6 @@ function App() {
             <Route path="/" element = {<LogIn/>}/>
 
             <Route path = 'dashboard' element = {<DashBoard/>}/>
-            <Route path = 'account' element = {<Account/>}/>
-
 
               {/* <Route path = 'home' element = {<HomePage/>}/>
               <Route path = 'form' element = {<StationaryForm/>}/>
