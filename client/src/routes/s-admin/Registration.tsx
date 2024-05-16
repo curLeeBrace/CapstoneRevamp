@@ -128,7 +128,7 @@ function Registration() {
           
         } else {
 
-          const img_fileName = lgu_municipality.municipality_name + " : " + f_name.toUpperCase() + "_" + email.split('@')[0] + "." + img?.name.split('.')[1];
+          const img_fileName = lgu_municipality.municipality_name + "_" + f_name.toUpperCase() + "_" + email.split('@')[0] + "." + img?.name.split('.')[1];
           alert(img_fileName)
           const formData = new FormData();
           formData.append('address', JSON.stringify(address));
