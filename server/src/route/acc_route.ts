@@ -17,7 +17,7 @@ router.post('/verify', verify_acc)
 
 
 // router.post('/recover', recoverAccount);
-// router.post('/login', authenticate_account);
+router.post('/login', authenticate_account);
 // router.post('/change-pass',authenticate_token, changePass);
 // router.post('/resend-token', resendToken);
 // router.get('/get-all',get_allAcc);

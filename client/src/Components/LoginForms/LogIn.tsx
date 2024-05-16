@@ -1,12 +1,117 @@
-import { useState } from "react";
 
+import { useEffect, useState } from "react";
 import { Typography, Input, Button } from "@material-tailwind/react";
 import { EyeSlashIcon, EyeIcon } from "@heroicons/react/24/solid";
-import { NavLink, Outlet } from "react-router-dom";
+import { NavLink } from "react-router-dom";
+import useHandleChange from "../../custom-hooks/useHandleChange";
+import axios from "../../api/axios";
+import cookie from 'js-cookie'
+import { useAuth } from "../../custom-hooks/auth_hooks/useAuth";
+import CryptoJS from "crypto-js";
 
 export function LogIn() {
   const [passwordShown, setPasswordShown] = useState(false);
-  const togglePasswordVisiblity = () => setPasswordShown((cur) => !cur);
+  const [isLoading, set_isLoading] = useState(false);
+  const [formData, setFormData] = useState({
+    email : "",
+    password : ""
+  });
+  const handleChange = useHandleChange; // handle input field when chaning value
+  const auth = useAuth();
+
+
+
+  const login = (encrypt_pass : string, email : string) => {
+    set_isLoading(true);
+
+
+    axios.post(`/account/login`, {email, encrypt_pass})
+    .then(res => {
+      set_isLoading(false);
+      const {
+        access_token,
+        verified,
+        user_type
+    
+      } = res.data
+    
+      if(res.status === 200){
+        if(verified){
+
+            auth.setToken(access_token); // store acces_token in a glbal variable
+            cookie.set('user_info', JSON.stringify(res.data))
+
+            // cookie.set('email', email, {sameSite : "strict"});
+            // cookie.set('hash_pass', hash_pass, {sameSite: "strict"})
+            // cookie.set('refresh_token', refresh_token, {sameSite : "strict"}); // store refresh_token in cookie
+            // cookie.set('municipality_code', municipality_code, {sameSite : "strict"});
+            // cookie.set('municipality_name', municipality_name);
+            // cookie.set('user_type', user_type, {sameSite : "strict"});
+            // cookie.set('username', username);
+            // admin_type && cookie.set('admin_type', admin_type);
+
+
+
+            if(user_type === "surveyor"){
+              //userPage
+              alert("surveyor")
+            } else if(user_type == "lgu_admin") {
+              //AdminPage..
+              alert("lgu_admin")
+         
+            } else {
+              //SuperAdmin Page
+              alert("super_admin")
+             
+            }
+            
+        } 
+        
+       
+      }
+
+    })
+    .catch((err) => {
+
+      if(err.response.status === 500){
+        alert("Server Error!")
+      } else {
+        alert("Invalid Credential!")
+
+      }
+      set_isLoading(false);
+     
+    });
+    
+
+  }
+
+
+  const onClickhandler = () =>{
+    // alert("ASD")
+    const secret_key : string = process.env.SECRET_KEY as string;
+    const encrypt_pass = CryptoJS.AES.encrypt(formData.password, secret_key);
+    console.log("encrypt", encrypt_pass.toString());
+    login(encrypt_pass.toString(), formData.email);
+
+
+  }
+
+
+  // useEffect(()=>{
+  //   const coockieEmail = cookie.get('email');
+
+  //   if(coockieEmail !== undefined){
+
+  //       let encrypt_pass:string = cookie.get("hash_pass") as string;
+  //       login(encrypt_pass, coockieEmail);
+  //       // console.log(pass);
+  //   }
+  // },[])
+
+
+
+  
 
   return (
     <div className="flex justify-center items-center min-h-screen px-4 py-10 overflow-x-hidden bg-gradient-to-t from-green-400 via-green-200 to-slate-50">
@@ -39,8 +144,10 @@ export function LogIn() {
               labelProps={{
                 className: "hidden",
               }}
+              onChange={(event)=>handleChange({event : event, setFormStateData : setFormData})}
             />
           </div>
+
           <div className="mb-6">
             <label htmlFor="password">
               <Typography
@@ -51,6 +158,7 @@ export function LogIn() {
               </Typography>
             </label>
             <Input
+              name="password"
               size="lg"
               placeholder="********"
               labelProps={{
@@ -59,7 +167,7 @@ export function LogIn() {
               className="w-full placeholder:opacity-100 focus:!border-t-gray-900 border-t-blue-gray-200"
               type={passwordShown ? "text" : "password"}
               icon={
-                <i onClick={togglePasswordVisiblity}>
+                <i onClick={()=>setPasswordShown(!passwordShown)}>
                   {passwordShown ? (
                     <EyeIcon className="h-5 w-5" />
                   ) : (
@@ -67,11 +175,13 @@ export function LogIn() {
                   )}
                 </i>
               }
+
+              onChange={(event)=>handleChange({event : event, setFormStateData : setFormData})}
             />
           </div>
-          <Button color="gray" size="lg" className="mt-6" fullWidth>
-            sign in
-          </Button>
+          <Button color="gray" size="lg" className="mt-6 flex justify-center" fullWidth onClick={onClickhandler} loading = {isLoading}>
+            Login
+          </Button> 
           <div className="!mt-4 flex justify-end">
           <NavLink className={
           ({ isActive, isPending }) =>
