@@ -17,7 +17,7 @@ import useFilterAddress from "../custom-hooks/useFilterAddrress";
 import axios from "../api/axios";
 import { Outlet } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-
+import useHandleChange from "../custom-hooks/useHandleChange";
 
 
 
@@ -52,6 +52,7 @@ function Registration() {
   const [mucipality_list, setMunicipaltyList] = useState<string[]>();
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
+  const handleChange = useHandleChange;
   const [details, setDetails] = useState<DetailsTypes>({
                 f_name : "",
                 m_name : "",
@@ -75,17 +76,17 @@ function Registration() {
 
 
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>) => {
-    const name = e.target.name;
-    const value = e.target.value;
+  // const handleChange = (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>) => {
+  //   const name = e.target.name;
+  //   const value = e.target.value;
 
-    console.log(name , " ", value);
-    setDetails(prev => {
-      return {
-        ...prev, [name]:value
-      }
-    })
-  }
+  //   console.log(name , " ", value);
+  //   setDetails(prev => {
+  //     return {
+  //       ...prev, [name]:value
+  //     }
+  //   })
+  // }
 
   const upload_imgHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
 
@@ -200,10 +201,10 @@ console.log(details)
 
         <CardBody className="w-3/4 flex flex-col gap-4">
           <Typography variant="h5" color="gray">Personal Information</Typography>
-          <Input label="Email" name = "email" type="email"  onChange={(value)=>handleChange(value)}  required />  
-          <Input label="First Name" name = "f_name"  onChange={(value)=>handleChange(value)}  required/>
-          <Input label="Middle Name" name = "m_name" onChange={(value)=>handleChange(value)} />
-          <Input label="Last Name" name = "l_name"  onChange={(value)=>handleChange(value)}  required/>
+          <Input label="Email" name = "email" type="email"  onChange={(value)=>handleChange({event : value, setFormStateData : setDetails})}  required />  
+          <Input label="First Name" name = "f_name"  onChange={(value)=>handleChange({event : value, setFormStateData : setDetails})}  required/>
+          <Input label="Middle Name" name = "m_name" onChange={(value)=>handleChange({event : value, setFormStateData : setDetails})} />
+          <Input label="Last Name" name = "l_name"  onChange={(value)=>handleChange({event : value, setFormStateData : setDetails})}  required/>
 
           <InputAddrress setState={setDetails}/>
           <DatePicker setState={setDetails}/>

@@ -32,8 +32,14 @@ function App() {
         <StickyNavbar/>
 
         <Routes>
+          
           {/* ayusin mo na lang pag may user na */}
-            <Route path="/"/>
+            <Route path="/">
+              <Route index  element = {<LogIn/>}/>
+              <Route path = "login"  element = {<LogIn/>}/>
+              <Route path="/verify/account/:acc_id/:token" element = {<AccountVerification/>} />
+            </Route>
+
 
             <Route path = "audit-logs" element = {<AuditLogs/>}/>
 
@@ -42,7 +48,7 @@ function App() {
                 <Route path = 'sucsess' element = {<RegistrationCompleted/>}/>
             </Route>
 
-            <Route path="/verify/account/:acc_id/:token" element = {<AccountVerification/>} />
+            
 
 
 {/*             

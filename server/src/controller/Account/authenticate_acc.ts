@@ -36,7 +36,7 @@ export const authenticate_account = async (req : Request, res : Response) => {
 
         //First Find Email if request email is existing in database
         if(auth_acc){
-            const {email, user_type, verified, } = auth_acc;
+            const {email, user_type, verified, lgu_municipality, f_name} = auth_acc;
             // const {location_scope_code, location_scope_name} = acc_scope;
       
             const encrypted_db_pass = auth_acc.pass;
@@ -56,11 +56,18 @@ export const authenticate_account = async (req : Request, res : Response) => {
                 const refresh_token = jwt.sign({email}, process.env.REFRESH_TOKEN_SECRET as Secret);
                        
                         const respo = {
+                            email,
+                            hash_pass: encrypted_db_pass,
+                            municipality_code : lgu_municipality.municipality_code,
+                            municipality_name : lgu_municipality.municipality_name,
+                            province_code : lgu_municipality.province_code,
                             access_token,
                             refresh_token,
                             verified,
-                            email,
-                            hash_pass: encrypted_db_pass,
+                            user_type,
+                            username : f_name
+
+
                         } 
             
             
