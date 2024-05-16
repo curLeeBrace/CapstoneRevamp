@@ -29,7 +29,7 @@ export function Modal({
         {buttonText}
       </Button>
 
-      <Dialog size="sm" open={open} handler={handleOpen} className="mb-40">
+      <Dialog size="sm" open={open} handler={handleOpen} className=" mb-48">
         <DialogHeader>{title}</DialogHeader>
         <DialogBody >
         {children}
