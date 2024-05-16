@@ -1,4 +1,4 @@
-import InfoBox from "../Components/InfoBox";
+import InfoBox from "../../Components/InfoBox";
 
    
   export function RegistrationCompleted() {
