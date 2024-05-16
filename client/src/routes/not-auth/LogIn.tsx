@@ -2,12 +2,29 @@
 import { useEffect, useState } from "react";
 import { Typography, Input, Button } from "@material-tailwind/react";
 import { EyeSlashIcon, EyeIcon } from "@heroicons/react/24/solid";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate} from "react-router-dom";
 import useHandleChange from "../../custom-hooks/useHandleChange";
 import axios from "../../api/axios";
 import cookie from 'js-cookie'
 import { useAuth } from "../../custom-hooks/auth_hooks/useAuth";
 import CryptoJS from "crypto-js";
+
+
+export type user_info  = {
+
+  email : string;
+  hash_pass : string;
+  municipality_code : string;
+  municipality_name : string;
+  province_code : string;
+  access_token : string;
+  refresh_token : string;
+  verified : boolean;
+  user_type : string;
+  username : string;
+
+}
+
 
 export function LogIn() {
   const [passwordShown, setPasswordShown] = useState(false);
@@ -18,6 +35,7 @@ export function LogIn() {
   });
   const handleChange = useHandleChange; // handle input field when chaning value
   const auth = useAuth();
+  const navigate = useNavigate();
 
 
 
@@ -39,18 +57,7 @@ export function LogIn() {
         if(verified){
 
             auth.setToken(access_token); // store acces_token in a glbal variable
-            cookie.set('user_info', JSON.stringify(res.data))
-
-            // cookie.set('email', email, {sameSite : "strict"});
-            // cookie.set('hash_pass', hash_pass, {sameSite: "strict"})
-            // cookie.set('refresh_token', refresh_token, {sameSite : "strict"}); // store refresh_token in cookie
-            // cookie.set('municipality_code', municipality_code, {sameSite : "strict"});
-            // cookie.set('municipality_name', municipality_name);
-            // cookie.set('user_type', user_type, {sameSite : "strict"});
-            // cookie.set('username', username);
-            // admin_type && cookie.set('admin_type', admin_type);
-
-
+            cookie.set('user_info', JSON.stringify(res.data as user_info))
 
             if(user_type === "surveyor"){
               //userPage
@@ -62,6 +69,10 @@ export function LogIn() {
             } else {
               //SuperAdmin Page
               alert("super_admin")
+              const base_url = "/s-admin"
+    
+              navigate(base_url)
+
              
             }
             
@@ -97,17 +108,15 @@ export function LogIn() {
 
   }
 
+  //for auto login when page refreshed
+  useEffect(()=>{
+    let user_info:string = cookie.get("user_info") as string;
 
-  // useEffect(()=>{
-  //   const coockieEmail = cookie.get('email');
-
-  //   if(coockieEmail !== undefined){
-
-  //       let encrypt_pass:string = cookie.get("hash_pass") as string;
-  //       login(encrypt_pass, coockieEmail);
-  //       // console.log(pass);
-  //   }
-  // },[])
+    if(user_info !== undefined){
+      const {hash_pass, email} = JSON.parse(user_info);
+      login(hash_pass, email);
+    }
+  },[])
 
 
 

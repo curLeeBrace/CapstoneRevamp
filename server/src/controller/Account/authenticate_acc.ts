@@ -36,7 +36,7 @@ export const authenticate_account = async (req : Request, res : Response) => {
 
         //First Find Email if request email is existing in database
         if(auth_acc){
-            const {email, user_type, verified, lgu_municipality, f_name} = auth_acc;
+            const {email, user_type, verified, lgu_municipality, f_name, img_name} = auth_acc;
             // const {location_scope_code, location_scope_name} = acc_scope;
       
             const encrypted_db_pass = auth_acc.pass;
@@ -65,7 +65,9 @@ export const authenticate_account = async (req : Request, res : Response) => {
                             refresh_token,
                             verified,
                             user_type,
-                            username : f_name
+                            username : f_name,
+                            img_name
+
 
 
                         } 
