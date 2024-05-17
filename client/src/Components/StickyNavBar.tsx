@@ -18,13 +18,13 @@ import { useAuth } from "../custom-hooks/auth_hooks/useAuth";
 //==========================FOR OUTER COMPONENTS======================================
 
 
-const navListMenuItems = [
-  {
-    title: "Stationary Fuel Combustion",
-    description: "Fill up form for Fuel Combustion Inventory",
-    href: "/stationary-fuel",
-  },
-];
+// const navListMenuItems = [
+//   {
+//     title: "Stationary Fuel Combustion",
+//     description: "Fill up form for Fuel Combustion Inventory",
+//     href: "/stationary-fuel",
+//   },
+// ];
 
 //========================================================================
 
@@ -33,12 +33,22 @@ const navListMenuItems = [
 export function StickyNavbar() {
   const userInfo = Cookies.get("user_info");
   const [openNav, setOpenNav] = useState(false);
+
   const [nav, setNav] = useState([
     {
       name: "",
       url: "",
     },
   ]);
+
+  const [navForms, setNavForms] = useState([
+    {
+    title: "",
+    description: "",
+    url: "",
+    },
+  ]);
+
   const [u_type, set_uType] = useState('');
   const auth = useAuth();
   useEffect(() => {
@@ -65,6 +75,14 @@ export function StickyNavbar() {
             name: "Register",
             url: `/${user_type}/register`,
           },
+          {
+            name: "Audit Log",
+            url: `/${user_type}/audit-log`,
+          },
+          {
+            name: "Accounts",
+            url: `/${user_type}/accounts`,
+          },
         ]);
 
       } else if (user_type === "admin") {
@@ -76,35 +94,52 @@ export function StickyNavbar() {
             name: "Home",
             url: `/${user_type}/home`,
           },
+          // {
+          //   name: "Forms",
+          //   url: `/${user_type}/Form`,
+          // },
         ]);
-        
+        setNavForms([
+          {
+            title: "Stationary Fuel Combustion",
+            description: "Fill up form for Fuel Combustion Inventory",
+            url: `/${user_type}/fuel`,
+          },
+         
+        ]);
       }
     }
-  }, [auth.token]);
+  }, [auth.token, userInfo]);
+
 
 
   const navList = (
     <ul className="mt-2 mb-4 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6">
-      {nav.map((nav, index) => (
-        <Fragment key={index}>
-          <Typography
-            as="li"
-            variant="small"
-            color="blue-gray"
-            className="p-1 font-normal lg:hover:scale-110 ease-in-out duration-100"
+    {nav.map((navItem, index) => (
+      <Fragment key={index}>
+        <Typography
+          as="li"
+          variant="small"
+          color="blue-gray"
+          className="p-1 font-normal lg:hover:scale-110 ease-in-out duration-100"
+        >
+          <NavLink
+            className={({ isActive, isPending }) =>
+              isPending ? "" : isActive ? "font-extrabold" : ""
+            }
+            to={navItem.url}
           >
-            <NavLink
-              className={({ isActive, isPending }) =>
-                isPending ? "" : isActive ? "font-extrabold" : ""
-              }
-              to={nav.url}
-            >
-              {nav.name}
-            </NavLink>
-          </Typography>
-        </Fragment>
-      ))}
-    </ul>
+            {navItem.name}
+          </NavLink>
+        </Typography>
+      </Fragment>
+    ))}
+    {u_type === "Surveyor" && navForms.length > 0 && (
+      <Fragment>
+        <NavListMenu navListMenuItems={navForms} />
+      </Fragment>
+    )}
+  </ul>
   );
 
   return (
@@ -117,17 +152,14 @@ export function StickyNavbar() {
             <Typography
               as="a"
               href="#"
-              className="mr-4 cursor-pointer py-1.5 font-medium"
+              className="mr-4 cursor-pointer py-1.5 font-bold"
             >
-              {`LCCAO__${u_type}`}
+              {`Welcome, ${u_type}`}
             </Typography>
             <div className="flex items-center gap-4">
-            {
-              u_type === "Surveyor" && <NavListMenu navListMenuItems={navListMenuItems}/>
-            }
-            
-            <div className="mr-4 hidden lg:block">{navList}</div>
-            <ProfileMenu/>
+              <div className="mr-4 hidden lg:block">{navList}</div>
+              
+              <ProfileMenu/>
 
               <IconButton
                 variant="text"

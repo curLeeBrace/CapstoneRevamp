@@ -42,6 +42,8 @@ function App() {
               <Route index element = {<DashBoard/>}/>
               <Route path = "dashboard" element = {<DashBoard/>}/>
               <Route path = 'change-pass' element = {<ChangePass/>}/>
+              <Route path = "audit-log" element = {<AuditLogs/>}/>
+              <Route path = "accounts" element = {<AccountsTable/>}/>
 
 
               <Route path = 'register'>
@@ -59,9 +61,8 @@ function App() {
             <Route path = "/surveyor">
               <Route index element = {<HomePage/>}/>
               <Route path = 'home' element = {<HomePage/>}/>
-              <Route path = 'form'>
-                <Route path = 'fuel' element = {<StationaryForm/>}/>
-              </Route>
+              <Route path = 'fuel' element = {<StationaryForm/>}/>
+              <Route path = 'change-pass' element = {<ChangePass/>}/>
             </Route>
 
             <Route path="*" element = {<>Nothing here</>}/>
