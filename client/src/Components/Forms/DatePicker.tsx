@@ -36,19 +36,23 @@ export default function DatePicker({setState} : DatePickerProps) {
         </PopoverHandler>
         <PopoverContent>
           <DayPicker
+            captionLayout="dropdown"
+            fromYear={1900} 
+            toYear={2024}
+          
             mode="single"
             selected={date}
             onSelect={setDate}
-            showOutsideDays
             className="border-0"
             classNames={{
-              caption: "flex justify-center py-2 mb-4 relative items-center",
-              caption_label: "text-sm font-medium text-gray-900",
-              nav: "flex items-center",
-              nav_button:
-                "h-6 w-6 bg-transparent hover:bg-blue-gray-50 p-1 rounded-md transition-colors duration-300",
-              nav_button_previous: "absolute left-1.5",
-              nav_button_next: "absolute right-1.5",
+              caption_dropdowns : "flex h-8 gap-2 text-lg mb-6",
+              dropdown : "h-full text-black",
+              // caption: "flex justify-center py-2 mb-4 relative",
+              caption_label: "hidden",
+
+              // nav: "flex items-center",
+              // nav_button:"h-6 w-6 bg-transparent hover:bg-blue-gray-50 p-1 rounded-md transition-colors duration-300",
+
               table: "w-full border-collapse",
               head_row: "flex font-medium text-gray-900",
               head_cell: "m-0.5 w-9 font-normal text-sm",
@@ -59,8 +63,7 @@ export default function DatePicker({setState} : DatePickerProps) {
               day_selected:
                 "rounded-md bg-gray-900 text-white hover:bg-gray-900 hover:text-white focus:bg-gray-900 focus:text-white",
               day_today: "rounded-md bg-gray-200 text-gray-900",
-              day_outside:
-                "day-outside text-gray-500 opacity-50 aria-selected:bg-gray-500 aria-selected:text-gray-900 aria-selected:bg-opacity-10",
+              day_outside:"day-outside text-gray-500 opacity-50 aria-selected:bg-gray-500 aria-selected:text-gray-900 aria-selected:bg-opacity-10",
               day_disabled: "text-gray-500 opacity-50",
               day_hidden: "invisible",
             }}
