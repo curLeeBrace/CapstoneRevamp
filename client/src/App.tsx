@@ -57,7 +57,11 @@ function App() {
             </Route>
               {/*Route for Surveyor*/}
             <Route path = "/surveyor">
-
+              <Route index element = {<HomePage/>}/>
+              <Route path = 'home' element = {<HomePage/>}/>
+              <Route path = 'form'>
+                <Route path = 'fuel' element = {<StationaryForm/>}/>
+              </Route>
             </Route>
 
             <Route path="*" element = {<>Nothing here</>}/>
@@ -79,8 +83,8 @@ function App() {
 
             <Route path = 'dashboard' element = {<DashBoard/>}/>
 
-              {/* <Route path = 'home' element = {<HomePage/>}/>
-              <Route path = 'form' element = {<StationaryForm/>}/>
+             
+              
               <Route path = 'home' element = {<HomePage/>}/>
               <Route path = 'sign-up' element = {<SignUp/>}/>
               <Route path = 'change-pass' element = {<ChangePass/>}/> 

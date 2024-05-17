@@ -15,7 +15,7 @@ function HomePage() {
 
         {/* Subtitle */}
         <p className="mt-10 lg:text-2xl md:text-2xl font-serif mb-2 text-l font-normal text-black-500">
-          Welcome, SuperAdmin!
+          Welcome!
         </p>
 
 
