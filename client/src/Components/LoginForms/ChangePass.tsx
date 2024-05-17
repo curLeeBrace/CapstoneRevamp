@@ -7,6 +7,9 @@ import { NavLink } from "react-router-dom";
 export function ChangePass() {
   const [passwordShown, setPasswordShown] = useState(false);
   const togglePasswordVisiblity = () => setPasswordShown((cur) => !cur);
+  const [passwordShown2, setPasswordShown2] = useState(false);
+  const togglePasswordVisiblity2 = () => setPasswordShown2((cur) => !cur);
+
 
   return (
     <div className="flex justify-center min-h-screen px-4 py-10 overflow-x-hidden bg-gradient-to-t from-green-400 via-green-200 to-slate-50">
@@ -14,8 +17,9 @@ export function ChangePass() {
         <Typography variant="h3" color="blue-gray" className="mb-2 text-center">
           Change your Password
         </Typography>
-        <Typography className="mb-16 text-gray-600 font-normal text-[18px] text-center">
-          Enter your password
+        <Typography className="mb-16 text-gray-600 font-normal text-[18px] text-sm text-center">
+        Password must be at least 8 characters long and contains
+          atleast One (1) <br/> Upper and Lower Case, Digit and Special characters.
         </Typography>
         <form action="#" className="mx-auto max-w-[24rem] text-left">
         <div className="mb-6">
@@ -62,9 +66,9 @@ export function ChangePass() {
                 className: "hidden",
               }}
               className="w-full placeholder:opacity-100 focus:!border-t-gray-900 border-t-blue-gray-200"
-              type={passwordShown ? "text" : "password"}
+              type={passwordShown2 ? "text" : "password"}
               icon={
-                <i onClick={togglePasswordVisiblity}>
+                <i onClick={togglePasswordVisiblity2}>
                   {passwordShown ? (
                     <EyeIcon className="h-5 w-5" />
                   ) : (
