@@ -42,6 +42,8 @@ function App() {
               <Route index element = {<DashBoard/>}/>
               <Route path = "dashboard" element = {<DashBoard/>}/>
               <Route path = 'change-pass' element = {<ChangePass/>}/>
+              <Route path = "audit-log" element = {<AuditLogs/>}/>
+              <Route path = "accounts" element = {<AccountsTable/>}/>
 
 
               <Route path = 'register'>

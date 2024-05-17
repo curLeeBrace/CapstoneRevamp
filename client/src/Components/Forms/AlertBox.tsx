@@ -31,18 +31,24 @@ function IconOutlined() {
 function AlertBox({openAlert, message, setOpenAlert}: AlertBoxProps) {
   
 
-      setTimeout(()=>{
+     useEffect(()=>{
+      let setTimeOut = setTimeout(()=>{
         setOpenAlert(false)
         console.log("Sheesh")
       }, 2 * 1000)
+      
+      return () => {
+        clearTimeout(setTimeOut);
+      }
+
+     },[openAlert])
 
 
   console.log("alert : ", openAlert)
   return (
     <>
           <Alert
-            className="max-w-screen-md absolute"
-            
+            className="absolute w-11/12 self-center"
             icon = {<IconOutlined/>}
             onClose={()=>setOpenAlert(false)}
             open={openAlert}

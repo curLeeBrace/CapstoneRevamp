@@ -22,6 +22,7 @@ export type user_info  = {
   verified : boolean;
   user_type : string;
   username : string;
+  full_name : string;
 
 }
 
