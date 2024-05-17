@@ -9,7 +9,6 @@ import { useAuth } from "./useAuth";
 function useAxiosPrivate() {
     const refresh = useRefreshToken();
     const {token} = useAuth(); // get the token in useAuth custtom hooks
-
     useEffect(()=>{
       //set Auth Header if the client was firs time requesting to the server
       const requestInterceptor = axiosPivate.interceptors.request.use(
