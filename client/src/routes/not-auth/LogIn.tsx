@@ -61,17 +61,16 @@ export function LogIn() {
 
             if(user_type === "surveyor"){
               //userPage
-              alert("surveyor")
+              // alert("surveyor")
+              navigate("/surveyor", {replace : true})
+
             } else if(user_type == "lgu_admin") {
               //AdminPage..
               alert("lgu_admin")
          
             } else {
               //SuperAdmin Page
-              alert("super_admin")
-              const base_url = "/s-admin"
-    
-              navigate(base_url)
+              navigate("/s-admin", {replace : true})
 
              
             }

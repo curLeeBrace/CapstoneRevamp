@@ -71,6 +71,13 @@ export function StickyNavbar() {
         set_uType("Admin");
       } else {
         set_uType("Surveyor");
+        setNav([
+          {
+            name: "Home",
+            url: `/${user_type}/home`,
+          },
+        ]);
+        
       }
     }
   }, [auth.token]);
@@ -115,9 +122,12 @@ export function StickyNavbar() {
               {`LCCAO__${u_type}`}
             </Typography>
             <div className="flex items-center gap-4">
-              <div className="mr-4 hidden lg:block">{navList}</div>
-
-              <ProfileMenu/>
+            {
+              u_type === "Surveyor" && <NavListMenu navListMenuItems={navListMenuItems}/>
+            }
+            
+            <div className="mr-4 hidden lg:block">{navList}</div>
+            <ProfileMenu/>
 
               <IconButton
                 variant="text"
