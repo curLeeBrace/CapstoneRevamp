@@ -11,6 +11,7 @@ import {
     
   } from "@heroicons/react/24/solid";
 import React from "react";
+import { NavLink } from "react-router-dom";
 interface NavListItem {
     title: string;
     description: string;
@@ -27,7 +28,7 @@ interface NavListItem {
     const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   
     const renderItems = navListMenuItems.map(({ title, description, href }) => (
-      <a href={href} key={title}>
+      <NavLink to={href} key={title}>
         <MenuItem>
           <Typography variant="h6" color="blue-gray" className="mb-1">
             {title}
@@ -36,7 +37,7 @@ interface NavListItem {
             {description}
           </Typography>
         </MenuItem>
-      </a>
+      </NavLink>
     ));
   
     return (
