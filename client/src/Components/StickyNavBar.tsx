@@ -22,7 +22,7 @@ const navListMenuItems = [
   {
     title: "Stationary Fuel Combustion",
     description: "Fill up form for Fuel Combustion Inventory",
-    href: "/stationary-fuel",
+    href: "/surveyor/forms/fuel",
   },
 ];
 

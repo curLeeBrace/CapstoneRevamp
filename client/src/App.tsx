@@ -59,8 +59,8 @@ function App() {
             <Route path = "/surveyor">
               <Route index element = {<HomePage/>}/>
               <Route path = 'home' element = {<HomePage/>}/>
-              <Route path = 'form'>
-                <Route path = 'fuel' element = {<StationaryForm/>}/>
+              <Route path = 'forms'>
+                <Route path = ':fuel' element = {<StationaryForm/>}/>
               </Route>
             </Route>
 
