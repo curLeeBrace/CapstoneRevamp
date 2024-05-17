@@ -63,6 +63,7 @@ function App() {
               <Route path = 'home' element = {<HomePage/>}/>
               <Route path = 'fuel' element = {<StationaryForm/>}/>
               <Route path = 'change-pass' element = {<ChangePass/>}/>
+              
             </Route>
 
             <Route path="*" element = {<>Nothing here</>}/>
