@@ -33,7 +33,7 @@ const start = async () =>{
     try {
         const PORT = process.env.PORT || 3001;
         // const online_db_url = process.env.MONGO_URI as string
-        const local_db_url = 'mongodb://localhost:27017/ghgV2_db'
+        const local_db_url = 'mongodb://127.0.0.1/ghgV2_db'
         await connectDB(local_db_url);
         app.listen(PORT, () => console.log(`server is listening in port ${PORT}`))
 
