@@ -2,46 +2,86 @@ import { useEffect, useState } from 'react';
 import { Card, Input, Checkbox, Button, Typography } from "@material-tailwind/react";
 import useHandleChange from '../../custom-hooks/useHandleChange';
 import AlertBox from './AlertBox';
+import Cookies from 'js-cookie';
+import {user_info} from '../../routes/not-auth/LogIn';
+import useAxiosPrivate from '../../custom-hooks/auth_hooks/useAxiosPrivate';
+
+
 export function StationaryForm() {
-//  // State for "Form Scope" checkboxes
-//  const [selectedScope, setSelectedScope] = useState<number | null>(null);
-
-//  // State for "Fuel Type" checkboxes
-//  const [selectedFuelType, setSelectedFuelType] = useState<number | null>(null);
-
-//   // Function to handle selection in "Form Scope" checkboxes
-//   const handleScopeChange = (scopeId: number) => {
-//     setSelectedScope(scopeId);
-//   };
-
-//   // Function to handle selection in "Fuel Type" checkboxes
-//   const handleFuelTypeChange = (fuelTypeId: number) => {
-//     setSelectedFuelType(fuelTypeId);
-//   };
 
 const handleChange = useHandleChange; 
 const [formData, setFormData] = useState({
   form_type : "",
   vehicle_type : "",
-  vehicle_age : "",
+  vehicle_age : undefined,
   fuel_type : "",
-  liters_consumption :"",
-  date : "",
+  liters_consumption : 0,
 });
 const [isLoading, set_isLoading] = useState<boolean>(false);
 const [openAlert, setOpenAlert] = useState<boolean>(false);
+const [aler_msg, setAlertMsg] = useState<string>("");
+const axiosPivate = useAxiosPrivate();
+
+const submitHandler = () => {
+
+  set_isLoading(true);
+  const user_info = JSON.parse(Cookies.get('user_info') as string) as user_info;
+  const {email, full_name, municipality_name, municipality_code, province_code} = user_info;
+  const {form_type, fuel_type, liters_consumption, vehicle_age, vehicle_type} = formData
+  if(form_type && fuel_type &&  liters_consumption && vehicle_age && vehicle_type){
+    const payload = {
+      surver_data : formData,
+      surveyor_info : {
+        email,
+        full_name,
+        municipality_name,
+        municipality_code,
+        province_code
+      },
+      dateTime_created : new Date(),
+      dateTime_edited : null,
+    }
 
 
+    axiosPivate.post('/forms/fuel/insert', payload)
+    .then(res => {
+        if(res.status === 201){
+          setOpenAlert(true);
+          setAlertMsg("Sucsessfully Submitted!");
+          setFormData({
+            form_type : "",
+            vehicle_type : "",
+            vehicle_age : undefined,
+            fuel_type : "",
+            liters_consumption : 0,
+          })
+        }
 
-console.log(formData);
+      set_isLoading(false);
+    })
+    .catch(err => {
+      console.log(err)
+      set_isLoading(false);
+      setOpenAlert(true);
+      setAlertMsg("Server Error!");
+    })
 
+  
+  } else {
+    set_isLoading(false);
+    setOpenAlert(true);
+    setAlertMsg("Some field are empty!");
+  }
+
+
+}
 
   return (
     <div className="flex justify-center min-h-screen px-4 py-10 overflow-x-hidden bg-gradient-to-t from-green-400 via-green-200 to-slate-50">
 
-      <Card className="w-full h-full sm:w-96 md:w-3/4 lg:w-2/3 xl:w-1/2 px-6 py-6 shadow-2xl rounded-xl">
+      <Card className="w-full h-full sm:w-96 md:w-3/4 lg:w-2/3 xl:w-1/2 px-6 py-6 shadow-2xl rounded-xl relative">
             
-             <AlertBox openAlert = {openAlert}  setOpenAlert={setOpenAlert}  message='eyy'/>
+             <AlertBox openAlert = {openAlert}  setOpenAlert={setOpenAlert}  message={aler_msg}/>
         
         <Typography variant="h4" color="blue-gray" className="text-center">
           Stationary Fuel Combustion Form
@@ -186,7 +226,7 @@ console.log(formData);
             <Button 
               fullWidth className="mt-6"
               loading = {isLoading}
-              onClick={()=>setOpenAlert(true)}
+              onClick={submitHandler}
             >
               Submit
             </Button>
