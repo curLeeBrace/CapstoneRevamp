@@ -18,13 +18,14 @@ import { useAuth } from "../custom-hooks/auth_hooks/useAuth";
 //==========================FOR OUTER COMPONENTS======================================
 
 
-// const navListMenuItems = [
-//   {
-//     title: "Stationary Fuel Combustion",
-//     description: "Fill up form for Fuel Combustion Inventory",
-//     href: "/stationary-fuel",
-//   },
-// ];
+const navListMenuItems = [
+  {
+    title: "Stationary Fuel Combustion",
+    description: "Fill up form for Fuel Combustion Inventory",
+    href: "/surveyor/forms/fuel",
+  },
+];
+
 //========================================================================
 
 
@@ -40,13 +41,6 @@ export function StickyNavbar() {
     },
   ]);
 
-  const [navForms, setNavForms] = useState([
-    {
-    title: "",
-    description: "",
-    url: "",
-    },
-  ]);
 
   const [u_type, set_uType] = useState('');
   const auth = useAuth();
@@ -93,18 +87,6 @@ export function StickyNavbar() {
             name: "Home",
             url: `/${user_type}/home`,
           },
-          // {
-          //   name: "Forms",
-          //   url: `/${user_type}/Form`,
-          // },
-        ]);
-        setNavForms([
-          {
-            title: "Stationary Fuel Combustion",
-            description: "Fill up form for Fuel Combustion Inventory",
-            url: `/${user_type}/fuel`,
-          },
-         
         ]);
       }
     }
@@ -133,11 +115,11 @@ export function StickyNavbar() {
         </Typography>
       </Fragment>
     ))}
-    {u_type === "Surveyor" && navForms.length > 0 && (
+    {u_type === "Surveyor" &&
       <Fragment>
-        <NavListMenu navListMenuItems={navForms} />
+        <NavListMenu navListMenuItems={navListMenuItems} />
       </Fragment>
-    )}
+    }
   </ul>
   );
 

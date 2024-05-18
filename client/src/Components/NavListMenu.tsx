@@ -15,7 +15,7 @@ import { Link } from "react-router-dom";
 interface NavListItem {
   title: string;
   description: string;
-  url: string;
+  href: string;
 }
 
 interface NavListMenuProps {
@@ -27,8 +27,8 @@ function NavListMenu(props: NavListMenuProps) {
 
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 
-  const renderItems = navListMenuItems.map(({ title, description, url }) => (
-    <Link to={url} key={title}>
+  const renderItems = navListMenuItems.map(({ title, description, href }) => (
+    <Link to={href} key={title}>
       <MenuItem>
         <Typography variant="h6" color="blue-gray" className="mb-1">
           {title}
