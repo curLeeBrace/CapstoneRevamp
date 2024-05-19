@@ -46,8 +46,8 @@ export const authenticate_account = async (req : Request, res : Response) => {
             const decrypt_db_pass = CryptoJS.AES.decrypt(encrypted_db_pass.toString(), secret_key)
             
             //==Password_Log===
-            // console.log("decrypt_pass : ", decrypt_pass.toString(CryptoJS.enc.Utf8));
-            // console.log("decrypt_db_pass : ", decrypt_db_pass.toString(CryptoJS.enc.Utf8));
+            console.log("decrypt_pass : ", decrypt_pass.toString(CryptoJS.enc.Utf8));
+            console.log("decrypt_db_pass : ", decrypt_db_pass.toString(CryptoJS.enc.Utf8));
 
 
             if(decrypt_pass.toString(CryptoJS.enc.Utf8) === decrypt_db_pass.toString(CryptoJS.enc.Utf8)) {

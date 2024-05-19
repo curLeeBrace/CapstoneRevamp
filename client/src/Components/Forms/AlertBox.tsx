@@ -34,7 +34,6 @@ function AlertBox({openAlert, message, setOpenAlert}: AlertBoxProps) {
      useEffect(()=>{
       let setTimeOut = setTimeout(()=>{
         setOpenAlert(false)
-        console.log("Sheesh")
       }, 2 * 1000)
       
       return () => {
@@ -44,7 +43,6 @@ function AlertBox({openAlert, message, setOpenAlert}: AlertBoxProps) {
      },[openAlert])
 
 
-  console.log("alert : ", openAlert)
   return (
     <>
           <Alert

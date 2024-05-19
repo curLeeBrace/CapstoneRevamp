@@ -34,6 +34,7 @@ function App() {
             <Route path="/">
               <Route index  element = {<LogIn/>}/>
               <Route path = "login"  element = {<LogIn/>}/>
+              <Route path = 'forgot-pass' element = {<ForgotPass/>}/>
               <Route path="/verify/account/:acc_id/:token" element = {<AccountVerification/>} />
             </Route>
             
@@ -64,6 +65,7 @@ function App() {
               <Route path = 'forms'>
                 <Route path = ':fuel' element = {<StationaryForm/>}/>
               </Route>
+              <Route path = 'change-pass' element = {<ChangePass/>}/>
             </Route>
 
             <Route path="*" element = {<>Nothing here</>}/>
@@ -80,7 +82,7 @@ function App() {
 
 {/*             
             <Route path="login" element = {<LogIn/>}></Route>
-            <Route path = 'forgot-pass' element = {<ForgotPass/>}/>
+            
             <Route path="/" element = {<LogIn/>}/>
 
             <Route path = 'dashboard' element = {<DashBoard/>}/>
