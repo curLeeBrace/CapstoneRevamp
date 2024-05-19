@@ -14,9 +14,9 @@ import DashBoard from "./routes/s-admin/DashBoard"
 import { StationaryForm } from "./Components/Forms/StationaryForm";
 import HomePage from "./routes/HomePage";
 import LogIn from "./routes/not-auth/LogIn";
-import ForgotPass from "./Components/LoginForms/ForgotPass";
+import ForgotPass from "./routes/not-auth/ForgotPass";
 import SignUp from "./Components/LoginForms/SignUp";
-import ChangePass from "./Components/LoginForms/ChangePass";
+import ChangePass from "./routes/not-auth/ChangePass";
 import AuditLogs from "./routes/AuditLogs";
 import AdminPage from "./routes/AccountsTable";
 import AccountsTable from "./routes/AccountsTable";

@@ -16,9 +16,9 @@ router.post('/register', authenticate_token ,upload_img.single("img"), createAcc
 router.post('/verify', verify_acc)
 router.post('/change-pass',authenticate_token, changePass);
 router.post('/login', authenticate_account);
+router.post('/recover', recoverAccount);
 
 
-// router.post('/recover', recoverAccount);
 // router.post('/resend-token', resendToken);
 // router.get('/get-all',get_allAcc);
 

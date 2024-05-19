@@ -2,9 +2,9 @@ import { useState } from "react";
 import { Typography, Input, Button } from "@material-tailwind/react";
 import { EyeSlashIcon, EyeIcon } from "@heroicons/react/24/solid";
 import useHandleChange from "../../custom-hooks/useHandleChange";
-import AlertBox from "../Forms/AlertBox";
+import AlertBox from "../../Components/Forms/AlertBox";
 import Cookies from "js-cookie";
-import { user_info } from "../../routes/not-auth/LogIn";
+import { user_info } from "./LogIn";
 import useAxiosPrivate from "../../custom-hooks/auth_hooks/useAxiosPrivate";
 import CryptoJS from "crypto-js";
 
