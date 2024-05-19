@@ -1,197 +1,103 @@
-import React, { Fragment, useEffect, useState } from "react";
-import {
-  Navbar,
-  MobileNav,
-  Typography,
-  Button,
-  IconButton,
-  Collapse,
-} from "@material-tailwind/react";
+import { Routes, Route} from "react-router-dom";
+import { AuthProvider, useAuth} from "./custom-hooks/auth_hooks/useAuth";
+import {StickyNavbar} from "./Components/StickyNavBar";
 
-
-import { NavLink } from "react-router-dom";
-// import ProfileMenu from "./ProfileMenu";
-
-import Cookies from "js-cookie";
-import { useAuth } from "./custom-hooks/auth_hooks/useAuth";
-import NavListMenu from "./Components/NavListMenu";
-import ProfileMenu from "./Components/ProfileMenu";
-
-//==========================FOR OUTER COMPONENTS======================================
-
-
-const navListMenuItems = [
-  {
-    title: "Stationary Fuel Combustion",
-    description: "Fill up form for Fuel Combustion Inventory",
-    href: "/surveyor/forms/fuel",
-  },
-];
-
-//========================================================================
+import Registration from "./routes/s-admin/Registration";
+import RegistrationCompleted from "./routes/s-admin/RegistrationCompleted";
+import AccountVerification from "./routes/not-auth/AccountVerification";
 
 
 
-export function StickyNavbar() {
-  const userInfo = Cookies.get("user_info");
-  const [openNav, setOpenNav] = useState(false);
-
-  const [nav, setNav] = useState([
-    {
-      name: "",
-      url: "",
-    },
-  ]);
 
 
-  const [u_type, set_uType] = useState('');
-  const auth = useAuth();
-  useEffect(() => {
-    window.addEventListener(
-      "resize",
-      () => window.innerWidth >= 960 && setOpenNav(false)
-    );
-  }, []);
-
-  useEffect(() => {
-    
-    if (userInfo) {
-      const { user_type } = JSON.parse(userInfo);
-      console.log("user_type : ", user_type)
-
-      if (user_type === "s-admin") {
-        set_uType("S-Admin");
-        setNav([
-          {
-            name: "Dashboard",
-            url: `/${user_type}/dashboard`,
-          },
-          {
-            name: "Register",
-            url: `/${user_type}/register`,
-          },
-          {
-            name: "Audit Log",
-            url: `/${user_type}/audit-log`,
-          },
-          {
-            name: "Accounts",
-            url: `/${user_type}/accounts`,
-          },
-        ]);
-
-      } else if (user_type === "admin") {
-        set_uType("Admin");
-      } else {
-        set_uType("Surveyor");
-        setNav([
-          {
-            name: "Home",
-            url: `/${user_type}/home`,
-          },
-        ]);
-      }
-    }
-  }, [auth.token, userInfo]);
+import DashBoard from "./routes/s-admin/DashBoard"
+import { StationaryForm } from "./Components/Forms/StationaryForm";
+import HomePage from "./routes/HomePage";
+import LogIn from "./routes/not-auth/LogIn";
+import ForgotPass from "./Components/LoginForms/ForgotPass";
+import SignUp from "./Components/LoginForms/SignUp";
+import ChangePass from "./Components/LoginForms/ChangePass";
+import AuditLogs from "./routes/AuditLogs";
+import AdminPage from "./routes/AccountsTable";
+import AccountsTable from "./routes/AccountsTable";
 
 
 
-  const navList = (
-    <ul className="mt-2 mb-4 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6">
-    {nav.map((navItem, index) => (
-      <Fragment key={index}>
-        <Typography
-          as="li"
-          variant="small"
-          color="blue-gray"
-          className="p-1 font-normal lg:hover:scale-110 ease-in-out duration-100"
-        >
-          <NavLink
-            className={({ isActive, isPending }) =>
-              isPending ? "" : isActive ? "font-extrabold" : ""
-            }
-            to={navItem.url}
-          >
-            {navItem.name}
-          </NavLink>
-        </Typography>
-      </Fragment>
-    ))}
-    {u_type === "Surveyor" &&
-      <Fragment>
-        <NavListMenu navListMenuItems={navListMenuItems} />
-      </Fragment>
-    }
-  </ul>
-  );
+function App() {
 
   return (
-    <>
-    {
-      auth.token ?
-        <div className="max-h-[768px] w-full sticky top-0 z-20">
-        <Navbar className="h-max max-w-full rounded-none px-4 py-2 lg:px-8 lg:py-4">
-          <div className="flex items-center justify-between text-blue-gray-900">
-            <Typography
-              as="a"
-              href="#"
-              className="mr-4 cursor-pointer py-1.5 font-bold"
-            >
-              {`Welcome, ${u_type}`}
-            </Typography>
-            <div className="flex items-center gap-4">
-              <div className="mr-4 hidden lg:block">{navList}</div>
+    <AuthProvider>
+        <StickyNavbar/>
+
+        <Routes>
+            {/*Route for Not Authorized User*/}
+            <Route path="/">
+              <Route index  element = {<LogIn/>}/>
+              <Route path = "login"  element = {<LogIn/>}/>
+              <Route path="/verify/account/:acc_id/:token" element = {<AccountVerification/>} />
+            </Route>
+            
+            {/*Route for Super Admin*/}
+            <Route path = "/s-admin">
+              <Route index element = {<DashBoard/>}/>
+              <Route path = "dashboard" element = {<DashBoard/>}/>
+              <Route path = 'change-pass' element = {<ChangePass/>}/>
+              <Route path = "audit-log" element = {<AuditLogs/>}/>
+              <Route path = "accounts" element = {<AccountsTable/>}/>
+
+
+              <Route path = 'register'>
+                  <Route index element = {<Registration/>}/>
+                  <Route path = 'sucsess' element = {<RegistrationCompleted/>}/>
+              </Route> 
+
+            </Route>
+
+            {/*Route for Admin*/}
+            <Route path = "/admin">
+
+            </Route>
+              {/*Route for Surveyor*/}
+            <Route path = "/surveyor">
+              <Route index element = {<HomePage/>}/>
+              <Route path = 'home' element = {<HomePage/>}/>
+              <Route path = 'forms'>
+                <Route path = ':fuel' element = {<StationaryForm/>}/>
+              </Route>
+            </Route>
+
+            <Route path="*" element = {<>Nothing here</>}/>
+
+
+{/* 
+            <Route path = "audit-logs" element = {<AuditLogs/>}/>
+
+      
+*/}
+
+
+
+
+{/*             
+            <Route path="login" element = {<LogIn/>}></Route>
+            <Route path = 'forgot-pass' element = {<ForgotPass/>}/>
+            <Route path="/" element = {<LogIn/>}/>
+
+            <Route path = 'dashboard' element = {<DashBoard/>}/>
+
+             
               
-              <ProfileMenu/>
+              <Route path = 'home' element = {<HomePage/>}/>
+              <Route path = 'sign-up' element = {<SignUp/>}/>
+              <Route path = 'change-pass' element = {<ChangePass/>}/> 
+  */}
+             
+          
 
-              <IconButton
-                variant="text"
-                className="ml-auto h-6 w-6 text-inherit hover:bg-transparent focus:bg-transparent active:bg-transparent lg:hidden"
-                ripple={false}
-                onClick={() => setOpenNav(!openNav)}
-              >
-                {openNav ? (
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    className="h-6 w-6"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    strokeWidth={2}
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M6 18L18 6M6 6l12 12"
-                    />
-                  </svg>
-                ) : (
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-6 w-6"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth={2}
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M4 6h16M4 12h16M4 18h16"
-                    />
-                  </svg>
-                )}
-              </IconButton>
-            </div>
-          </div>
-
-          <Collapse open={openNav}>
-            {navList}
-          </Collapse>
-        </Navbar>
-      </div> : null
-    }
-   
-    </>
-
-  );
+            
+        </Routes>
+    </AuthProvider>
+  )
 }
+
+export default App
