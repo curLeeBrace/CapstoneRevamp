@@ -14,10 +14,11 @@ import DatePicker from "../../Components/Forms/DatePicker";
 import InputAddrress, {Address} from "../../Components/InputAddrress";
 import {useEffect, useState } from "react";
 import useFilterAddress from "../../custom-hooks/useFilterAddrress";
-import axios from "../../api/axios";
+
 import { Outlet } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import useHandleChange from "../../custom-hooks/useHandleChange";
+import useAxiosPrivate from "../../custom-hooks/auth_hooks/useAxiosPrivate";
 
 
 
@@ -48,6 +49,7 @@ interface DetailsTypes{
 
 
 function Registration() {
+  const axiosPrivate= useAxiosPrivate();
   const filter_address = useFilterAddress;
   const [mucipality_list, setMunicipaltyList] = useState<string[]>();
   const navigate = useNavigate();
@@ -142,7 +144,7 @@ function Registration() {
           formData.append('user_type', user_type);
           formData.append('img', img as any, img_fileName);
 
-          axios.post('/account/register', formData)
+          axiosPrivate.post('/account/register', formData)
           .then(res => {
             if(res.status === 201){
               // alert(res.data)

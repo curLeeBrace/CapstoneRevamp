@@ -4,6 +4,7 @@ import AccountSchema from "../../db_schema/AccountSchema"
 
 const changePass = async(req : Request, res : Response)=>{
     const {newPass, email} = req.body;
+    console.log(req.body)
     try {
         const acc_info = await AccountSchema.findOneAndUpdate({email}, {pass : newPass}).exec()
         console.log("acc_info", acc_info)
