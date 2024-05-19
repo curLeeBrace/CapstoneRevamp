@@ -13,7 +13,6 @@ export const recoverAccount = async(req : Request, res : Response) => {
 
         const {email} = req.body 
         const db_email = await AccountSchema.findOne({email : email}).exec(); // check if email will find
-        const secret_key : string = process.env.SECRET_KEY as string;
         if(db_email){
             //Generate DefaultPassword
             const default_pass = crypto.randomBytes(3).toString('hex');
