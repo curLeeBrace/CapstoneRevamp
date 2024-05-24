@@ -67,7 +67,9 @@ export function LogIn() {
 
             } else if(user_type == "lgu_admin") {
               //AdminPage..
-              alert("lgu_admin")
+              navigate("/lgu_admin", {replace : true})
+
+
          
             } else {
               //SuperAdmin Page

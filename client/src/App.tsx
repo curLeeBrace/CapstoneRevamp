@@ -36,6 +36,7 @@ function App() {
               <Route path = "login"  element = {<LogIn/>}/>
               <Route path = 'forgot-pass' element = {<ForgotPass/>}/>
               <Route path="/verify/account/:acc_id/:token" element = {<AccountVerification/>} />
+
             </Route>
             
             {/*Route for Super Admin*/}
@@ -55,7 +56,13 @@ function App() {
             </Route>
 
             {/*Route for Admin*/}
-            <Route path = "/admin">
+            <Route path = "/lgu_admin">
+
+              <Route path = 'register'>
+                    <Route index element = {<Registration/>}/>
+                    <Route path = 'sucsess' element = {<RegistrationCompleted/>}/>
+              </Route> 
+              <Route path = 'change-pass' element = {<ChangePass/>}/> 
 
             </Route>
               {/*Route for Surveyor*/}
