@@ -25,4 +25,4 @@ const FuelForm = new mongoose.Schema({
 
 })
 
-export default mongoose.model('FuelForm_collection', FuelForm);
+export = mongoose.model('FuelForm_collection', FuelForm);

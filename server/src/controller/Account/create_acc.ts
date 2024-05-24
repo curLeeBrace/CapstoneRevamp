@@ -8,6 +8,8 @@ import CryptoJS from "crypto-js";
 import { send_email } from "../../nodemailer";
 import crypto from "crypto";
 import fs from "fs";
+import {auditLogType, saveAuditLog} from "../AuditLog/audit_log";
+
 
 interface Acc_Data {
   email: string;
@@ -88,9 +90,24 @@ export const register_acc = async (req: Request, res: Response) => {
         to verify your account</div>`;
 
     send_email({ email, html })
-      .then((data) => {
+      .then(async (data) => {
         if (data.succsess) {
-          return res.status(201).send("New Account Registered!");
+          //save auditLog after creating an account
+          const municipality = JSON.parse(lgu_municipality);
+          const log:auditLogType = {
+            lgu_municipality: municipality,
+            action : `created an ${user_type} account in ${municipality.municipality_name}`,
+            dateTime : date,
+            user_type : user_type,
+            name : f_name + " " + l_name,
+          }
+
+          const isSaved = await saveAuditLog(log);
+
+          if(isSaved)  return res.status(201).send("New Account Registered!");
+
+          return res.status(400).send("Bad Request!");
+         
         }
         console.log(
           "message after execution of trying sending an email : ",
@@ -111,6 +128,7 @@ export const register_acc = async (req: Request, res: Response) => {
     // console.log(token.split('.')[1])
   } catch (error) {
     console.log(error);
+    return res.status(500).send("Server Error!");
   }
 };
 
