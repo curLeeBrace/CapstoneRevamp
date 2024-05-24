@@ -34,7 +34,7 @@ interface DetailsTypes{
   f_name : string;
   m_name : string;
   l_name : string;
-  date : string;
+
   address : Address;
   lgu_municipality : {
     municipality_name:string;
@@ -67,7 +67,6 @@ function Registration() {
                   municipality_name : "",
                 },
                 email : "",
-                date : "",
                 img_name : "",
                 lgu_municipality : {
                   municipality_code : "",
@@ -103,7 +102,6 @@ function Registration() {
         
         const {
           address,
-          date,
           email,
           f_name,
           l_name,
@@ -117,7 +115,7 @@ function Registration() {
 
         setIsLoading(true);
 
-        if(!address || !date || !email || !f_name || !l_name || !lgu_municipality || !user_type || !img){
+        if(!address || !email || !f_name || !l_name || !lgu_municipality || !user_type || !img){
           alert("Some field are empty");
           setIsLoading(false);
           
@@ -125,7 +123,7 @@ function Registration() {
           const img_fileName = lgu_municipality.municipality_name + "_" + f_name.toUpperCase() + "_" + email.split('@')[0] + "." + img?.name.split('.')[1];
           const formData = new FormData();
           formData.append('address', JSON.stringify(address));
-          formData.append('date', date);
+          formData.append('date', new Date().toString());
           formData.append('email', email);
           formData.append('f_name', f_name);
           formData.append('img_name', img_fileName);
