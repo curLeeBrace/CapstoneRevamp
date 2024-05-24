@@ -19,7 +19,7 @@ import { Outlet } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import useHandleChange from "../../custom-hooks/useHandleChange";
 import useAxiosPrivate from "../../custom-hooks/auth_hooks/useAxiosPrivate";
-
+import Cookies from "js-cookie";
 
 
 
@@ -42,7 +42,7 @@ interface DetailsTypes{
   };
   
   img_name : string
-  img? : File ;
+  img : File ;
   user_type : string
 
 }
@@ -55,6 +55,8 @@ function Registration() {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const handleChange = useHandleChange;
+ const [user_type, setUserType] = useState<"s-admin"|"lgu_admin">();
+
   const [details, setDetails] = useState<DetailsTypes>({
                 f_name : "",
                 m_name : "",
@@ -65,7 +67,6 @@ function Registration() {
                 },
                 email : "",
                 date : "",
-                img : undefined,
                 img_name : "",
                 lgu_municipality : {
                   municipality_code : "",
@@ -78,22 +79,13 @@ function Registration() {
 
 
 
-  // const handleChange = (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>) => {
-  //   const name = e.target.name;
-  //   const value = e.target.value;
 
-  //   console.log(name , " ", value);
-  //   setDetails(prev => {
-  //     return {
-  //       ...prev, [name]:value
-  //     }
-  //   })
-  // }
 
   const upload_imgHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
 
     setDetails((prev : any ) => {
       const img = e.target.files && e.target.files[0];
+      // console.log(img);
       return {
         ...prev, 
         img : img
@@ -124,14 +116,12 @@ function Registration() {
 
         setIsLoading(true);
 
-        if(!address || !date || !email || !f_name || !l_name || !lgu_municipality || !m_name || !user_type || !img){
+        if(!address || !date || !email || !f_name || !l_name || !lgu_municipality || !user_type || !img){
           alert("Some field are empty");
           setIsLoading(false);
           
         } else {
-
           const img_fileName = lgu_municipality.municipality_name + "_" + f_name.toUpperCase() + "_" + email.split('@')[0] + "." + img?.name.split('.')[1];
-          alert(img_fileName)
           const formData = new FormData();
           formData.append('address', JSON.stringify(address));
           formData.append('date', date);
@@ -142,7 +132,7 @@ function Registration() {
           formData.append('lgu_municipality', JSON.stringify(lgu_municipality));
           formData.append('m_name', m_name);
           formData.append('user_type', user_type);
-          formData.append('img', img as any, img_fileName);
+          formData.append('img', img as File, img_fileName);
 
           axiosPrivate.post('/account/register', formData)
           .then(res => {
@@ -163,10 +153,7 @@ function Registration() {
     
 
         }
-
-
-
-        
+ 
 
     } catch (error) {
       console.log(error)
@@ -179,14 +166,31 @@ function Registration() {
 
 
   useEffect(()=>{
-
+    //set Municipalities
     const mucipality_data= filter_address({address_type : "mucipality"});
     setMunicipaltyList(mucipality_data.map(data => data.address_name));
 
+    //set userType
+    const user_info = JSON.parse(Cookies.get('user_info') as string)
+    setUserType(user_info.user_type)
+
+    if(user_info.user_type === "lgu_admin"){
+      setDetails(prev => {
+        let lgu_municipality:any;
+        lgu_municipality = {
+          municipality_name : user_info.municipality_name,
+          municipality_code : user_info.municipality_code,
+          province_code : user_info.province_code,
+        }
+
+      return {
+        ...prev, ["lgu_municipality"]:lgu_municipality
+      }
+      })
+    }
+
 },[])
 
-
-console.log(details)
 
 
   return (
@@ -212,43 +216,47 @@ console.log(details)
           <DatePicker setState={setDetails}/>
           <Input label="Choose Photo" type="file" accept="image/*" name="img_name" onChange={(value)=> upload_imgHandler(value)} required disabled = {!details.f_name || !details.l_name}/>
           <Typography variant="h5" color="gray">Account Information</Typography>
-
-          <Select label="LGU Municipality" onChange={(value) => {
-            setDetails((prev : any) => {
-
-              const mucipality_data= filter_address({address_type : "mucipality"});
-              let lgu_municipality:any;
-
-              mucipality_data.forEach(data =>{
-                if(data.address_name === value){
-
-                  lgu_municipality = {
-                    municipality_name : data.address_name,
-                    municipality_code : data.address_code,
-                    province_code : data.parent_code,
-                  }
+          
+          {
+            user_type === "s-admin" ?
+            <Select label="LGU Municipality" onChange={(value) => {
+              setDetails((prev : any) => {
+                let lgu_municipality:any;
+                
+  
+                  const mucipality_data= filter_address({address_type : "mucipality"});
+                  mucipality_data.forEach(data =>{
+                    if(data.address_name === value){
+    
+                      lgu_municipality = {
+                        municipality_name : data.address_name,
+                        municipality_code : data.address_code,
+                        province_code : data.parent_code,
+                      }
+                    }
+                  })
+  
+                return {
+                  ...prev, ["lgu_municipality"]:lgu_municipality
                 }
               })
+            }
+          }
+            >
+                {
+                  mucipality_list ? mucipality_list.map((municipality, index)=>(
+                            
+                    <Option key={index} value={municipality}>{municipality}</Option>
+                            
+                  )) : <></>
+                }
+               
+            </Select> 
+            :<Typography>
+                LGU Municipality : {details.lgu_municipality.municipality_name}
+            </Typography>
+          } 
 
-
-              return {
-                ...prev, ["lgu_municipality"]:lgu_municipality
-              }
-            })
-          }}
-
-      
-          >
-                 
-              {
-                mucipality_list ? mucipality_list.map((municipality, index)=>(
-                          
-                  <Option key={index} value={municipality}>{municipality}</Option>
-                          
-                )) : <></>
-              }
-             
-          </Select>  
           <Select label="User Type" name="user_type" onChange={(value) => 
              setDetails((prev : any) => {
               return {

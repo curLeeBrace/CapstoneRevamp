@@ -40,7 +40,7 @@ export function ChangePass() {
     }else if(new_pass.length < 8){
       setAlertMsg("Password must atleast greater than 8 characters");
       setOpenAlert(true);
-    } else if (!validatePass(new_pass, re_newPass)) {
+    } else if (validatePass(new_pass, re_newPass)) {
       setAlertMsg("Password must contains at least one lowercase letter, one uppercase letter, one digit, and one special character.");
       setOpenAlert(true);
     } else {

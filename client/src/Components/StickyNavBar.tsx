@@ -78,8 +78,15 @@ export function StickyNavbar() {
           },
         ]);
 
-      } else if (user_type === "admin") {
+      } else if (user_type === "lgu_admin") {
         set_uType("Admin");
+        setNav([
+          {
+            name: "Register",
+            url: `/${user_type}/register`,
+          },
+        ])
+
       } else {
         set_uType("Surveyor");
         setNav([
