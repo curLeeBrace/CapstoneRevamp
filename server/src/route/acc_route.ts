@@ -12,7 +12,7 @@ import {get_allAcc} from '../controller/Account/get_allAcc';
 import upload from '../middleware/handle_upload';
 const router = express.Router();
 
-router.post('/register', authenticate_token ,upload.single('img'), createAcc_Validation, register_acc)
+router.post('/register', upload.single("img"), createAcc_Validation, register_acc)
 router.post('/verify', verify_acc)
 router.post('/change-pass',authenticate_token, changePass);
 router.post('/login', authenticate_account);

@@ -18,8 +18,9 @@ import useFilterAddress from "../../custom-hooks/useFilterAddrress";
 import { Outlet } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import useHandleChange from "../../custom-hooks/useHandleChange";
-import useAxiosPrivate from "../../custom-hooks/auth_hooks/useAxiosPrivate";
+import axios from "../../api/axios";
 import Cookies from "js-cookie";
+
 
 
 
@@ -49,7 +50,7 @@ interface DetailsTypes{
 
 
 function Registration() {
-  const axiosPrivate= useAxiosPrivate();
+
   const filter_address = useFilterAddress;
   const [mucipality_list, setMunicipaltyList] = useState<string[]>();
   const navigate = useNavigate();
@@ -134,7 +135,7 @@ function Registration() {
           formData.append('user_type', user_type);
           formData.append('img', img as File, img_fileName);
 
-          axiosPrivate.post('/account/register', formData)
+          axios.post('/account/register', formData)
           .then(res => {
             if(res.status === 201){
               // alert(res.data)
@@ -143,11 +144,8 @@ function Registration() {
             }
           })
           .catch(err => {
-
-            if(err.response.status === 400){
-              alert(err.response.data)
-              setIsLoading(false);
-            }
+            alert(err.response.data)
+            setIsLoading(false);
           })
       
     
