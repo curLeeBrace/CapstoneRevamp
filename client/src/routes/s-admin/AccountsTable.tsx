@@ -1,12 +1,11 @@
 import { useEffect, useState } from 'react';
-import { TableWithStripedRows } from '../Components/Auditlog/TableWithStripedRows';
-import { Modal } from '../Components/Modal';
+import { TableWithStripedRows } from '../../Components/Auditlog/TableWithStripedRows';
+import { Modal } from '../../Components/Modal';
 import { FunnelIcon, PencilIcon, TrashIcon } from '@heroicons/react/24/solid';
 import { Avatar, Typography } from '@material-tailwind/react';
-import InputAddrress, {  } from '../Components/InputAddrress';
-import axios from '../api/axios'; // Import the correct axios instance
-
-
+import axios from '../../api/axios';
+import FilterMunicipality from './FilterMunicipality';
+import Loader from '../../Components/Loader';
 
 interface AccInfo {
   brgy_name: string;
@@ -34,14 +33,17 @@ interface UserDetails {
 
 export default function AccountsTable() {
   const [details, setDetails] = useState<UserDetails[]>([]);
+  const [filteredDetails, setFilteredDetails] = useState<UserDetails[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  // const { deleteAccount } = useDeleteAccount();
+  const [selectedMunicipality, setSelectedMunicipality] = useState<string>('');
+
   useEffect(() => {
     const fetchAccounts = async () => {
       try {
         const response = await axios.get('/account/get-all');
-        const filteredDetails = response.data.filter((user: UserDetails) => user.user_type !== 's-admin');
-        setDetails(filteredDetails);
+        const allDetails = response.data.filter((user: UserDetails) => user.user_type !== 's-admin');
+        setDetails(allDetails);
+        setFilteredDetails(allDetails); // Initialize filteredDetails with all details
       } catch (error) {
         console.error("Error fetching accounts:", error);
       } finally {
@@ -52,36 +54,51 @@ export default function AccountsTable() {
     fetchAccounts();
   }, []);
 
+
+  const handleFilter = () => {
+    if (selectedMunicipality) {
+      const filtered = details.filter((detail) => detail.address.municipality_name === selectedMunicipality);
+      setFilteredDetails(filtered);
+    } else {
+      setFilteredDetails(details); // Reset to all details if no filter selected
+    }
+  };
+
+  const handleClearFilter = () => {
+    setSelectedMunicipality(''); // Clear the selected municipality to remove the filter
+    setFilteredDetails(details); // Reset filteredDetails to show all details
+  };
+  
+
   const handleDelete = async (accountId: string) => {
     try {
       await axios.delete(`/account/delete/${accountId}`);
       setDetails((prevDetails) => prevDetails.filter((detail) => detail._id !== accountId));
+      setFilteredDetails((prevDetails) => prevDetails.filter((detail) => detail._id !== accountId));
     } catch (error) {
       console.error('Failed to delete account', error);
-      // Optionally, display an error message to the user
     }
   };
 
+
+
   const getUserImageURL = (userType: string, imageName: string) => {
-    // Define the base directory for each user type
     const baseDir: { [key: string]: string } = {
       lgu_admin: '/img/user_img/lgu_admin/',
       surveyor: '/img/user_img/surveyor/',
     };
-
-    // Construct the image URL based on user type and image name
     return `${baseDir[userType] ?? ''}${imageName}`;
   };
 
 
-  const TABLE_HEAD = ["Name", "Avatar", "UserType", "Email", "Municipality", "Action"];
+  const TABLE_HEAD = ["Name", "Profile", "UserType", "Municipality", "Email", "Action"];
 
-  const TABLE_ROWS = details.map((detail) => ({
+  const TABLE_ROWS = filteredDetails.map((detail) => ({
     Name: `${detail.f_name} ${detail.m_name} ${detail.l_name}`,
     UserType: detail.user_type,
     Email: detail.email,
     Municipality: detail.address.municipality_name,
-    Avatar: (
+    Profile: (
       <Avatar
         src={getUserImageURL(detail.user_type, detail.img_name)}
       />
@@ -97,33 +114,30 @@ export default function AccountsTable() {
           }
           title=""
         >
-          {/* Child component of the modal */}
           <div className="whitespace-normal">
             <Typography className="font-bold text-center">Are you sure you want to edit this account?</Typography>
           </div>
         </Modal>
         <Modal
-        buttonText={
-          <div className="flex items-center gap-2">
-            <TrashIcon className="h-6 w-6 text-red-500" />
-            <span>Delete</span>
+          buttonText={
+            <div className="flex items-center gap-2">
+              <TrashIcon className="h-6 w-6 text-red-500" />
+              <span>Delete</span>
+            </div>
+          }
+          title="Confirm Deletion"
+          onClick={() => handleDelete(detail._id)}
+        >
+          <div className="whitespace-normal">
+            <Typography className="font-bold text-center">Are you sure you want to delete this account?</Typography>
           </div>
-        }
-        title="Confirm Deletion"
-        onClick={() => handleDelete(detail._id)}
-      >
-        <div className="whitespace-normal">
-          <Typography className="font-bold text-center">Are you sure you want to delete this account?</Typography>
-        
-        </div>
-      </Modal>
-
+        </Modal>
       </div>
     ),
   }));
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <div className='flex justify-center mt-20'><Loader/></div> ;
   }
 
   return (
@@ -137,12 +151,11 @@ export default function AccountsTable() {
             </div>
           }
           title="Filter Account"
+          onClick={handleFilter}
         >
-          {/* Child component ng modal */}
-          <>
-            <InputAddrress setState={setDetails} />
-          </>
+         <FilterMunicipality setState={setSelectedMunicipality} />
         </Modal>
+        <button onClick={handleClearFilter} className="bg-red-500 text-white px-4 py-2 rounded-md font-bold hover:shadow-xl">Clear Filter</button>
       </div>
       <TableWithStripedRows headers={TABLE_HEAD} rows={TABLE_ROWS} />
     </div>
