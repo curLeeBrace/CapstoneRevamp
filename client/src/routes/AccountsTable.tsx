@@ -69,7 +69,7 @@ export default function AccountsTable() {
     Municipality: detail.address.municipality_name,
     Avatar: (
       <Avatar
-        alt={`${detail.f_name} ${detail.l_name}`}
+       
         src={getUserImageURL(detail.user_type, detail.img_name)}
       />
     ),
