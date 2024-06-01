@@ -10,6 +10,8 @@ import {get_allAcc} from '../controller/Account/get_allAcc';
 
 
 import upload from '../middleware/handle_upload';
+import { delete_Acc } from './../controller/Account/delete_acc';
+
 const router = express.Router();
 
 router.post('/register', upload.single("img"), createAcc_Validation, register_acc)
@@ -18,6 +20,8 @@ router.post('/change-pass',authenticate_token, changePass);
 router.post('/login', authenticate_account);
 router.post('/recover', recoverAccount);
 router.get('/get-all', get_allAcc);
+router.delete('/delete/:accountId', delete_Acc );
+
 
 
 // router.post('/resend-token', resendToken);

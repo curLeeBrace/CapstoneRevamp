@@ -11,6 +11,7 @@ interface ModalProps {
     buttonText: any;
     title: string;
     children: ReactNode;
+    onClick?: () => void;
   }
   
  
@@ -18,10 +19,18 @@ export function Modal({
     buttonText,
     title,
     children,
+    onClick,
   }: ModalProps) {
   const [open, setOpen] = React.useState(false);
  
   const handleOpen = () => setOpen(!open);
+
+  const handleConfirmClick = () => {
+    if (onClick) {
+      onClick();
+    }
+    handleOpen();
+  };
  
   return (
     <>
@@ -43,7 +52,7 @@ export function Modal({
           >
             <span>Cancel</span>
           </Button>
-          <Button variant="gradient" color="green" onClick={handleOpen}>
+          <Button variant="gradient" color="green" onClick={handleConfirmClick}>
             <span>Confirm</span>
           </Button>
         </DialogFooter>
