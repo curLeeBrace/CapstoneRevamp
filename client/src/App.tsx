@@ -18,8 +18,8 @@ import ForgotPass from "./routes/not-auth/ForgotPass";
 import SignUp from "./Components/LoginForms/SignUp";
 import ChangePass from "./routes/not-auth/ChangePass";
 import AuditLogs from "./routes/AuditLogs";
-import AdminPage from "./routes/AccountsTable";
-import AccountsTable from "./routes/AccountsTable";
+import AdminPage from "./routes/s-admin/AccountsTable";
+import AccountsTable from "./routes/s-admin/AccountsTable";
 
 
 
