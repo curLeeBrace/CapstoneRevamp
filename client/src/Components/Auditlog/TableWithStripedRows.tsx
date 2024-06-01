@@ -45,7 +45,7 @@ export function TableWithStripedRows({ headers, rows }: TableProps) {
               </tr>
             ) : (
               rows.map((rowData, index) => (
-                <tr key={index} className={index % 2 === 0 ? "bg-blue-gray-50/50" : ""}>
+                <tr key={index} className={index % 2 === 1 ? "bg-blue-gray-50/50" : ""}>
                   {headers.map((header) => (
                     <td key={header} className="p-4">
                       <Typography variant="small" color="blue-gray" className="font-normal text-center">
