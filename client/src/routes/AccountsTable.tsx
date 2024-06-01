@@ -38,7 +38,8 @@ export default function AccountsTable() {
     const fetchAccounts = async () => {
       try {
         const response = await axios.get('/account/get-all');
-        setDetails(response.data);
+        const filteredDetails = response.data.filter((user: UserDetails) => user.user_type !== 's-admin');
+        setDetails(filteredDetails);
       } catch (error) {
         console.error("Error fetching accounts:", error);
       } finally {
@@ -69,7 +70,6 @@ export default function AccountsTable() {
     Municipality: detail.address.municipality_name,
     Avatar: (
       <Avatar
-       
         src={getUserImageURL(detail.user_type, detail.img_name)}
       />
     ),
