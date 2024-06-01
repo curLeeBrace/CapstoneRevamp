@@ -6,6 +6,8 @@ import { Avatar, Typography } from '@material-tailwind/react';
 import InputAddrress, {  } from '../Components/InputAddrress';
 import axios from '../api/axios'; // Import the correct axios instance
 
+
+
 interface AccInfo {
   brgy_name: string;
   municipality_name: string;
@@ -33,7 +35,7 @@ interface UserDetails {
 export default function AccountsTable() {
   const [details, setDetails] = useState<UserDetails[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-
+  // const { deleteAccount } = useDeleteAccount();
   useEffect(() => {
     const fetchAccounts = async () => {
       try {
@@ -50,6 +52,16 @@ export default function AccountsTable() {
     fetchAccounts();
   }, []);
 
+  const handleDelete = async (accountId: string) => {
+    try {
+      await axios.delete(`/account/delete/${accountId}`);
+      setDetails((prevDetails) => prevDetails.filter((detail) => detail._id !== accountId));
+    } catch (error) {
+      console.error('Failed to delete account', error);
+      // Optionally, display an error message to the user
+    }
+  };
+
   const getUserImageURL = (userType: string, imageName: string) => {
     // Define the base directory for each user type
     const baseDir: { [key: string]: string } = {
@@ -60,6 +72,7 @@ export default function AccountsTable() {
     // Construct the image URL based on user type and image name
     return `${baseDir[userType] ?? ''}${imageName}`;
   };
+
 
   const TABLE_HEAD = ["Name", "Avatar", "UserType", "Email", "Municipality", "Action"];
 
@@ -90,19 +103,21 @@ export default function AccountsTable() {
           </div>
         </Modal>
         <Modal
-          buttonText={
-            <div className="flex items-center gap-2">
-              <TrashIcon className="h-6 w-6 text-red-500" />
-              <span>Delete</span>
-            </div>
-          }
-          title=""
-        >
-          {/* Child component of the modal */}
-          <div className="whitespace-normal">
-            <Typography className="font-bold text-center">Are you sure you want to delete this account?</Typography>
+        buttonText={
+          <div className="flex items-center gap-2">
+            <TrashIcon className="h-6 w-6 text-red-500" />
+            <span>Delete</span>
           </div>
-        </Modal>
+        }
+        title="Confirm Deletion"
+        onClick={() => handleDelete(detail._id)}
+      >
+        <div className="whitespace-normal">
+          <Typography className="font-bold text-center">Are you sure you want to delete this account?</Typography>
+        
+        </div>
+      </Modal>
+
       </div>
     ),
   }));
