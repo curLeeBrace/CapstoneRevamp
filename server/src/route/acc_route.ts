@@ -11,6 +11,7 @@ import {get_allAcc} from '../controller/Account/get_allAcc';
 
 import upload from '../middleware/handle_upload';
 import { delete_Acc } from './../controller/Account/delete_acc';
+import { fetchAuditLogs } from './../controller/AuditLog/get_logs';
 
 const router = express.Router();
 
@@ -21,7 +22,7 @@ router.post('/login', authenticate_account);
 router.post('/recover', recoverAccount);
 router.get('/get-all', get_allAcc);
 router.delete('/delete/:accountId', delete_Acc );
-
+router.get('/audit-logs', fetchAuditLogs);
 
 
 // router.post('/resend-token', resendToken);

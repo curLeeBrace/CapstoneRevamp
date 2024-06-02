@@ -4,7 +4,7 @@ import { Card, Typography } from "@material-tailwind/react";
 
 // Define interface for table row
 interface TableRow {
-  [key: string]: string | React.ReactNode; // Dynamically typed properties
+  [key: string]: string | number | React.ReactNode;
 }
 
 // Define interface for component props
