@@ -13,7 +13,7 @@ const handleChange = useHandleChange;
 const [formData, setFormData] = useState({
   form_type : "",
   vehicle_type : "",
-  vehicle_age : undefined,
+  vehicle_age : 0,
   fuel_type : "",
   liters_consumption : 0,
 });
@@ -28,9 +28,13 @@ const submitHandler = () => {
   const user_info = JSON.parse(Cookies.get('user_info') as string) as user_info;
   const {email, full_name, municipality_name, municipality_code, province_code} = user_info;
   const {form_type, fuel_type, liters_consumption, vehicle_age, vehicle_type} = formData
+
+  
+
   if(form_type && fuel_type &&  liters_consumption && vehicle_age && vehicle_type){
+
     const payload = {
-      surver_data : formData,
+      survey_data : formData,
       surveyor_info : {
         email,
         full_name,
@@ -38,6 +42,18 @@ const submitHandler = () => {
         municipality_code,
         province_code
       },
+      emission_factors : formData.fuel_type === "diesel" ?
+      {
+        co2 : 2.66,
+        ch4 : 4.0e-4,
+        n2o : 2.18e-5,
+      } : 
+      {
+        co2 : 2.07,
+        ch4 : 3.2e-4,
+        n2o : 1.9e-4,
+      }
+      ,
       dateTime_created : new Date(),
       dateTime_edited : null,
     }
@@ -51,7 +67,7 @@ const submitHandler = () => {
           setFormData({
             form_type : "",
             vehicle_type : "",
-            vehicle_age : undefined,
+            vehicle_age : 0,
             fuel_type : "",
             liters_consumption : 0,
           })

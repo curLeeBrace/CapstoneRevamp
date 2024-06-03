@@ -14,7 +14,7 @@ interface SimpleCard{
 
   export function SimpleCard({header, body, trend} : SimpleCard) {
     return (
-      <Card className="mt-8 w-96">
+      <Card className="w-full">
        
           <CardBody className="flex items-center justify-around h-32">
             <div className="text-nowrap flex-shrink-0">
