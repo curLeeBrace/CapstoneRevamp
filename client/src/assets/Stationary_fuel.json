@@ -70,11 +70,13 @@
       "fuel_type": "Blended Gasoline Residential/Commercial (Philippines)",
       "fuel_type_units": "litres",
       "application": "Stationary combustion. Blend is 10% ethanol/90% gasoline for residential/commercial applications only.",
+      
       "emission_factors": {
         "CO2": 2.07,
         "CH4": 3.2e-4,
         "N2O": 1.9e-4
       },
+
       "units": [
         "kg",
         "L"

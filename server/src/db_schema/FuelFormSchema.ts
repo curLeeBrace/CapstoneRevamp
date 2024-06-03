@@ -2,12 +2,12 @@ import mongoose from 'mongoose'
 
 const FuelForm = new mongoose.Schema({
 
-    surver_data : { type : {
+    survey_data : { type : {
         form_type : {type : String},
         vehicle_type : {type : String},
         vehicle_age : {type : Number},
         fuel_type : {type : String},
-        liters_consumption : {type : Number},
+        liters_consumption : {type : Number, required : true},
         },required : true
     },
     surveyor_info : {type :  {
@@ -18,9 +18,14 @@ const FuelForm = new mongoose.Schema({
         province_code : {type : String},
     }, required : true},
 
-    dateTime_created : {type : String, required : true},
-    dateTime_edited : {type : String}
+    emission_factors : {type : {
+        co2 : {type : Number},
+        ch4 : {type : Number},
+        n2o : {type : Number}
+    }, require : true},
 
+    dateTime_created : {type : Date, required : true},
+    dateTime_edited : {type : String}
 
 
 })
