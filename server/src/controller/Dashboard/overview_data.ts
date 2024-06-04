@@ -14,8 +14,8 @@ type Emission = {
     ghge : number;
 }
 type TableData = {
-    municipalites : String;
-    emision : Emission;
+    municipality : String;
+    emission : Emission;
 }
 
 
@@ -44,7 +44,7 @@ type DashBoardData = {
 
             let today_ghge = 0;
             table_data.forEach(tb_data => {
-                    today_ghge += tb_data.emision.ghge;
+                    today_ghge += tb_data.emission.ghge;
             })
     
             const response : DashBoardData = {
@@ -129,8 +129,8 @@ type DashBoardData = {
         })
         
         table_data.push({
-            municipalites : municipality.city_name,
-            emision : {
+            municipality : municipality.city_name,
+            emission : {
                 co2e : tb_co2e,
                 ch4e : tb_ch4e,
                 n2oe : tb_n2oe,

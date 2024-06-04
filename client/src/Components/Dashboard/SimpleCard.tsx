@@ -8,11 +8,11 @@ import {
 interface SimpleCard{
     header : string;
     body : string;
-    trend : React.ReactElement;
+    icon : React.ReactElement;
     
 }
 
-  export function SimpleCard({header, body, trend} : SimpleCard) {
+  export function SimpleCard({header, body, icon} : SimpleCard) {
     return (
       <Card className="w-full">
        
@@ -27,15 +27,10 @@ interface SimpleCard{
 
             </div>
 
-            <div className="self-start flex flex-col h-full items-center justify-around">
-               <Typography color="green">
-                  +100%
-                </Typography>
-
-                <div className="h-1/2">
-                  {trend}
-                </div>
+            <div className="h-full w-12 flex justify-center items-center">
+                  {icon}
             </div>
+           
           </CardBody>
 
       </Card>
