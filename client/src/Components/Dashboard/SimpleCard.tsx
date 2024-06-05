@@ -16,7 +16,7 @@ interface SimpleCard{
     return (
       <Card className="w-full">
        
-          <CardBody className="flex items-center justify-around h-32">
+          <CardBody className="flex items-center justify-around border border-gray-300 h-32 shadow-md rounded-lg">
             <div className="text-nowrap flex-shrink-0">
               <Typography variant="h5"  className="mb-2">
                 {header}
