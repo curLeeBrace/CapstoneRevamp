@@ -93,7 +93,7 @@ const submitHandler = () => {
 }
 
   return (
-    <div className="flex justify-center min-h-screen px-4 py-10 overflow-x-hidden">
+    <div className="flex justify-center min-h-screen px-4 py-10 overflow-x-hidden bg-gray-200">
 
       <Card className="w-full h-full sm:w-96 md:w-3/4 lg:w-2/3 xl:w-1/2 px-6 py-6 -mt-10 shadow-black shadow-2xl rounded-xl relative">
             

@@ -96,7 +96,7 @@ export const register_acc = async (req: Request, res: Response) => {
           const municipality = JSON.parse(lgu_municipality);
           const log:auditLogType = {
             lgu_municipality: municipality,
-            action : `created an ${user_type} account in ${municipality.municipality_name}`,
+            action : `Created ${user_type} account in ${municipality.municipality_name}`,
             dateTime : date,
             user_type : user_type,
             name : f_name + " " + l_name,
