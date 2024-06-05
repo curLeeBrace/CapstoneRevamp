@@ -3,7 +3,7 @@ function HomePage() {
   return (
     <div
       id="home"
-      className="min-h-screen overflow-x-hidden bg-gradient-to-t from-green-400 via-green-200 to-slate-50"
+      className="min-h-screen overflow-x-hidden "
     >
       <div className="relative mx-16 -mt-8 lg:mt-8 lg:ml-40  mr-32">
         {/* Main Header */}
