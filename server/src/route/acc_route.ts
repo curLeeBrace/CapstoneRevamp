@@ -13,12 +13,14 @@ import upload from '../middleware/handle_upload';
 import { delete_Acc } from './../controller/Account/delete_acc';
 import { fetchAuditLogs } from './../controller/AuditLog/get_logs';
 
+
 const router = express.Router();
 
 router.post('/register', upload.single("img"), createAcc_Validation, register_acc)
 router.post('/verify', verify_acc)
 router.post('/change-pass',authenticate_token, changePass);
 router.post('/login', authenticate_account);
+// router.post('/logout', logout_account);
 router.post('/recover', recoverAccount);
 router.get('/get-all', get_allAcc);
 router.delete('/delete/:accountId', delete_Acc );
