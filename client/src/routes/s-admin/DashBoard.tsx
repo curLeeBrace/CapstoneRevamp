@@ -72,7 +72,7 @@ function DashBoard() {
         }
       },
       title: {
-        text: 'Today GHG Emission',
+        text: 'This Month GHG Emission',
         align: 'center' as 'center',
         style: {
           fontSize: '20px',
@@ -102,7 +102,7 @@ function DashBoard() {
 
       <div className='flex flex-col h-full w-full'>
         <div className='flex items-center gap-3 basis-1/4 px-2 overflow-x-auto'>
-          <SimpleCard body={`${dashboard_data?.today_ghge.toFixed(2)}`}header='Today GHGe'  icon={<FireIcon className='h-6 w-6 text-red-300'/>}/>
+          <SimpleCard body={`${dashboard_data?.today_ghge.toFixed(2)}`}header='This Month GHGe'  icon={<FireIcon className='h-6 w-6 text-red-300'/>}/>
           <SimpleCard body={`${dashboard_data?.total_surveryor}`} header='Total Surveyor' icon={<UserIcon className='h-6 w-6'/>}/>
           <SimpleCard body={`${dashboard_data?.total_LGU_admins}`} header='Total LGU Admin' icon={<UserIcon className='h-6 w-6'/>}/>
         </div>
@@ -110,7 +110,7 @@ function DashBoard() {
         <div className='flex flex-wrap md:flex-nowrap px-2 basis-3/4 gap-0 h-1/3 w-full'>
 
           <div className='hidden lg:block lg:basis-3/5 h-5/6 border border-gray-400 rounded-2xl overflow-hidden mr-10'>
-          <h2 className='text-center font-bold text-xl p-4'>Today's Greenhouse Gasses Emission</h2>
+          <h2 className='text-center font-bold text-xl p-4'>This Month Greenhouse Gasses Emission</h2>
              {dashboard_data && <Table TABLE_ROWS={dashboard_data.table_data}/>}
           </div>
 

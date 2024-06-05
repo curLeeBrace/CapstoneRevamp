@@ -57,7 +57,7 @@ function App() {
 
             {/*Route for Admin*/}
             <Route path = "/lgu_admin">
-
+            <Route path = "dashboard" element = {<DashBoard/>}/>
               <Route path = 'register'>
                     <Route index element = {<Registration/>}/>
                     <Route path = 'sucsess' element = {<RegistrationCompleted/>}/>

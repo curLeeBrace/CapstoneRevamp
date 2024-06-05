@@ -15,6 +15,7 @@ type Emission = {
 }
 type TableData = {
     municipality : String;
+    municipality_code : String;
     emission : Emission;
 }
 
@@ -33,18 +34,22 @@ type DashBoardData = {
     try {
         
 
+          
+            const accounts = user_type === "s-admin" ? await AccountSchema.find({'lgu_municipality.province_code' : province_code}) : await AccountSchema.find({'lgu_municipality.province_code' : province_code, 'lgu_municipality.municipality_code' : municipality_code});
+            let today_ghge = 0;
 
-        if(user_type === "s-admin"){
-            const accounts = await AccountSchema.find({'lgu_municipality.province_code' : province_code});
             const lgu_admin = accounts.filter(acc => acc.user_type === "lgu_admin");
             const surveyor = accounts.filter(acc => acc.user_type === "surveyor");
             const table_data =  await get_table_data(province_code);
-            
-      
-
-            let today_ghge = 0;
             table_data.forEach(tb_data => {
-                    today_ghge += tb_data.emission.ghge;
+                    if(user_type === "s-admin"){
+                        today_ghge += tb_data.emission.ghge;
+
+                    } else {
+                        if(municipality_code === tb_data.municipality_code){
+                            today_ghge += tb_data.emission.ghge;
+                        }
+                    }
             })
     
             const response : DashBoardData = {
@@ -58,9 +63,7 @@ type DashBoardData = {
             return res.status(200).json(response);
 
 
-        } else {
-
-        }
+      
         
         
 
@@ -135,6 +138,7 @@ type DashBoardData = {
         
         table_data.push({
             municipality : municipality.city_name,
+            municipality_code : municipality_code,
             emission : {
                 co2e : tb_co2e,
                 ch4e : tb_ch4e,
