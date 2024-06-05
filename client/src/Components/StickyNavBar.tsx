@@ -109,7 +109,7 @@ export function StickyNavbar() {
           as="li"
           variant="small"
           color="blue-gray"
-          className="p-1 font-normal lg:hover:scale-110 ease-in-out duration-100"
+          className="p-1 font-normal lg:hover:scale-110 ease-in-out duration-100 text-white"
         >
           <NavLink
             className={({ isActive, isPending }) =>
@@ -134,18 +134,18 @@ export function StickyNavbar() {
     <>
     {
       auth.token ?
-        <div className="max-h-[768px] w-full sticky top-0 z-20 bg-gradient-to-t from-green-400 via-green-200 to-slate-50">
-        <Navbar className="h-max max-w-full rounded-none px-4 py-2 lg:px-8 lg:py-4">
+        <div className="max-h-[768px] w-full sticky top-0 z-20 bg-darkgreen ">
+        <Navbar className="h-max max-w-full bg-darkgreen rounded-none px-4 py-2 lg:px-8 lg:py-4">
           <div className="flex items-center justify-between text-blue-gray-900">
             <Typography
               as="a"
               href="#"
-              className="mr-4 cursor-pointer py-1.5 font-bold"
+              className="mr-4 cursor-pointer py-1.5 font-bold text-white"
             >
               {`Welcome, ${u_type}`}
             </Typography>
-            <div className="flex items-center gap-4">
-              <div className="mr-4 hidden lg:block">{navList}</div>
+            <div className="flex items-center gap-4 ">
+              <div className="mr-4 hidden lg:block ">{navList}</div>
               
               <ProfileMenu/>
 

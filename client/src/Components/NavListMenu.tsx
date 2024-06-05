@@ -45,7 +45,7 @@ function NavListMenu(props: NavListMenuProps) {
       <Menu allowHover open={isMenuOpen} handler={setIsMenuOpen}>
         <MenuHandler>
           <Typography as="a" href="#" variant="small" className="font-normal">
-            <MenuItem className="hidden items-center gap-2 font-medium text-blue-gray-900 lg:flex lg:rounded-full">
+            <MenuItem className="hidden items-center gap-2 font-medium lg:flex lg:rounded-full text-white">
               <Square3Stack3DIcon className="h-[18px] w-[18px]" />{" "}
               Forms{" "}
               <ChevronDownIcon
