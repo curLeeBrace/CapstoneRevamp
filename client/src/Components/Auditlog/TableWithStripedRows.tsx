@@ -15,13 +15,13 @@ interface TableProps {
 
 export function TableWithStripedRows({ headers, rows }: TableProps) {
   return (
-    <div className="px-3 pt-2 shadow-xl">
-      <Card className="h-full w-full overflow-scroll overflow-y-hidden min-h-screen">
-        <table className="w-full min-w-max table-auto text-left">
+    <div className="px-3 pt-2">
+      <Card className="h-full w-full overflow-scroll overflow-y-hidden min-h-screen shadow-2xl">
+        <table className="w-full min-w-max table-auto text-left rounded-2xl border border-gray-400">
           <thead>
             <tr>
               {headers.map((head) => (
-                <th key={head} className="border-b border-blue-gray-200 bg-blue-gray-50 p-4">
+                <th key={head} className="border-b border-blue-gray-200 shadow-black  bg-blue-gray-50 p-4">
                   <Typography
                     variant="small"
                     color="blue-gray"
@@ -45,7 +45,7 @@ export function TableWithStripedRows({ headers, rows }: TableProps) {
               </tr>
             ) : (
               rows.map((rowData, index) => (
-                <tr key={index} className={index % 2 === 1 ? "bg-blue-gray-50/50" : ""}>
+                <tr key={index} className={index % 2 === 1 ? "bg-blue-gray-50/100" : ""}>
                   {headers.map((header) => (
                     <td key={header} className="p-4">
                       <Typography variant="small" color="blue-gray" className="font-normal text-center">

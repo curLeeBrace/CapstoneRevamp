@@ -60,8 +60,8 @@ export default function AuditLogs() {
   }));
 
   return (
-    <div className='min-h-screen bg-gradient-to-t from-green-400 via-green-200 to-slate-50'>
-      <div className="flex justify-end pr-4 my-2 bg-gray-300 shadow-lg py-4 gap-4">
+    <div className='min-h-screen'>
+      <div className="flex justify-end pr-4 my-2 bg-gray-300  py-4 gap-4">
         <Modal
           buttonText={<div className="flex items-center gap-2">
             <FunnelIcon className="h-6 w-6 text-gray-500" />

@@ -134,7 +134,7 @@ export function StickyNavbar() {
     <>
     {
       auth.token ?
-        <div className="max-h-[768px] w-full sticky top-0 z-20">
+        <div className="max-h-[768px] w-full sticky top-0 z-20 bg-gradient-to-t from-green-400 via-green-200 to-slate-50">
         <Navbar className="h-max max-w-full rounded-none px-4 py-2 lg:px-8 lg:py-4">
           <div className="flex items-center justify-between text-blue-gray-900">
             <Typography

@@ -40,8 +40,8 @@ export function ChangePass() {
     }else if(new_pass.length < 8){
       setAlertMsg("Password must atleast greater than 8 characters");
       setOpenAlert(true);
-    } else if (validatePass(new_pass, re_newPass)) {
-      setAlertMsg("Password must contains at least one lowercase letter, one uppercase letter, one digit, and one special character.");
+    } else if (!validatePass(new_pass, re_newPass)) {
+      setAlertMsg("Password must contains at least one lowercase letter, one uppercase letter, one digit, and one special character and no spaces.");
       setOpenAlert(true);
     } else {
       set_isLoading(true);
@@ -79,8 +79,8 @@ export function ChangePass() {
 
 
   return (
-    <div className="flex justify-center min-h-screen px-4 py-10 overflow-x-hidden bg-gradient-to-t from-green-400 via-green-200 to-slate-50">
-      <div className="w-full h-full sm:w-96 md:w-3/4 lg:w-2/3 xl:w-1/2 px-6 py-6 shadow-2xl bg-white rounded-xl relative">
+    <div className="flex justify-center min-h-screen px-4 py-10 overflow-x-hidden">
+      <div className="w-full h-full sm:w-96 md:w-3/4 lg:w-2/3 xl:w-1/2 px-6 py-6 -mt-10 shadow-black shadow-2xl bg-white rounded-xl relative">
       <img src="./../../public/img/logo/LCCAOlogo2.png" className=" max-w-48 mx-auto"/>
         <AlertBox message={alert_msg} openAlert = {openAlert} setOpenAlert={setOpenAlert}/>
         <Typography variant="h3" color="blue-gray" className="mb-2 text-center">

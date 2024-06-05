@@ -42,48 +42,63 @@ function DashBoard() {
   
   // bg-gradient-to-t from-green-400 via-green-200 to-slate-50
 
-
-const chartConfig = {
-  series: [
-    {
-      name : "TodayGHG_Emmision",
-      
-      data: dashboard_data? dashboard_data.table_data.map((tb_data) => {
-        //tb_data.emission.ghge > 0 ? tb_data.municipality : "",
-        return {
-          x :  tb_data.municipality,
+  const chartConfig = {
+    series: [
+      {
+        name: "TodayGHG_Emmision",
+        data: dashboard_data ? dashboard_data.table_data.map((tb_data) => ({
+          x: tb_data.municipality,
           y: tb_data.emission.ghge.toFixed(2)
-        }
-      }) : [{x:null, y:null}]
-     
-    },
-  ],
-
-  options: {
-    chart : {
-      toolbar : {
-        show: true,
-        offsetX: 0,
-        offsetY: 0,
-        tools : {
-          download: false
+        })) : [{ x: null, y: null }],
+      },
+    ],
+    options: {
+      chart: {
+        toolbar: {
+          show: true,
+          offsetX: 0,
+          offsetY: 0,
+          tools: {
+            download: false
+          }
+        },
+        foreColor: '#101010',
+      },
+      colors: ["#C01E01"],
+      plotOptions: {
+        bar: {
+          columnWidth: '150%',
+          barHeight: '150%'// Adjust this value to make the bars wider
         }
       },
-      foreColor: '#DDDBDB',
+      title: {
+        text: 'Today GHG Emission',
+        align: 'center' as 'center',
+        style: {
+          fontSize: '20px',
+          fontWeight: 'bold',
+          color: '#333'
+        }
+      },
+      xaxis: {
+        labels: {
+          style: {
+            fontSize: '15px',
+            fontWeight: 'bold',
+          },
+          padding: {
+            left: 20,
+            right: 20
+          },
+          
+        }
+      }
     },
-    colors: ["#C01E01"],
-    
-    
-  },
-
-  
-  
-
-};
+  };
  
 
   return (
-    <div className='h-full w-full fixed overflow-y-auto bg-gradient-to-t from-green-400 via-green-200 to-slate-50'>
+    <div className='h-full w-full fixed overflow-y-auto '>
 
       <div className='flex flex-col h-full w-full'>
         <div className='flex items-center gap-3 basis-1/4 px-2 overflow-x-auto'>
@@ -92,17 +107,18 @@ const chartConfig = {
           <SimpleCard body={`${dashboard_data?.total_LGU_admins}`} header='Total LGU Admin' icon={<UserIcon className='h-6 w-6'/>}/>
         </div>
 
-        <div className='flex flex-wrap md:flex-nowrap px-2 basis-3/4 gap-2 md:gap-2 h-1/3 w-full'>
+        <div className='flex flex-wrap md:flex-nowrap px-2 basis-3/4 gap-0 h-1/3 w-full'>
 
-          <div className='hidden lg:block lg:basis-3/5 h-5/6'>
+          <div className='hidden lg:block lg:basis-3/5 h-5/6 border border-gray-400 rounded-2xl overflow-hidden mr-10'>
+          <h2 className='text-center font-bold text-xl p-4'>Today's Greenhouse Gasses Emission</h2>
              {dashboard_data && <Table TABLE_ROWS={dashboard_data.table_data}/>}
           </div>
 
-          <div className='basis-full lg:basis-2/5 h-5/6 bg-gray-700/30'>
+          <div className='basis-full lg:basis-2/5 h-5/6 px-10 border border-gray-300 shadow-gray-500 shadow-2xl rounded-lg ml-2'>
             {
             chartConfig? 
             <Chart
-              width={'100%'}
+              width={'160%'}
               height={'100%'}
               type={'bar'}
               series={chartConfig.series}
