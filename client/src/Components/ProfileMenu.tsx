@@ -69,12 +69,12 @@ console.log(JSON.parse(Cookies.get('user_info') as string));
         <Button
           variant="text"
           color="blue-gray"
-          className="flex items-center gap-1 rounded-full py-0.5 pr-2 pl-0.5 lg:ml-auto"
+          className="flex items-center gap-1 rounded-full py-0.5 pr-2 pl-0.5 lg:ml-auto text-white"
         >
           <Avatar
             variant="circular"
             size="sm"
-            className="border border-gray-900 p-0.5"
+            className="border border-white p-0.5"
             src={`/img/user_img/${user_type}/${img_name}`}
           />
           <ChevronDownIcon

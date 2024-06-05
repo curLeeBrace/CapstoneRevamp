@@ -54,6 +54,7 @@ function DashBoard() {
     ],
     options: {
       chart: {
+        background: 'white',
         toolbar: {
           show: true,
           offsetX: 0,
@@ -98,7 +99,7 @@ function DashBoard() {
  
 
   return (
-    <div className='h-full w-full fixed overflow-y-auto '>
+    <div className='h-full w-full fixed overflow-y-auto bg-gray-200 '>
 
       <div className='flex flex-col h-full w-full'>
         <div className='flex items-center gap-3 basis-1/4 px-2 overflow-x-auto'>
@@ -110,11 +111,11 @@ function DashBoard() {
         <div className='flex flex-wrap md:flex-nowrap px-2 basis-3/4 gap-0 h-1/3 w-full'>
 
           <div className='hidden lg:block lg:basis-3/5 h-5/6 border border-gray-400 rounded-2xl overflow-hidden mr-10'>
-          <h2 className='text-center font-bold text-xl p-4'>Today's Greenhouse Gasses Emission</h2>
+          <h2 className='text-center font-bold text-xl p-4 bg-white'>Today's Greenhouse Gasses Emission</h2>
              {dashboard_data && <Table TABLE_ROWS={dashboard_data.table_data}/>}
           </div>
 
-          <div className='basis-full lg:basis-2/5 h-5/6 px-10 border border-gray-300 shadow-gray-500 shadow-2xl rounded-lg ml-2'>
+          <div className='basis-full lg:basis-2/5 h-5/6 px-10 border border-gray-300 bg-white shadow-gray-500 shadow-2xl rounded-lg ml-2'>
             {
             chartConfig? 
             <Chart
