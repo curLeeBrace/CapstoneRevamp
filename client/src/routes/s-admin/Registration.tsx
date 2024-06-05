@@ -190,7 +190,7 @@ function Registration() {
 
 
   return (
-    <div className="flex justify-center p-3 ">
+    <div className="flex justify-center p-3 bg-gray-200">
       <Card className="md:w-3/5 w-5/6 flex items-center border border-gray-400 shadow-black shadow-2xl">
         <CardHeader 
           floated={false}
