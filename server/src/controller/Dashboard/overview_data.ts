@@ -15,6 +15,7 @@ type Emission = {
 }
 type TableData = {
     municipality : String;
+    municipality_code : String;
     emission : Emission;
 }
 
@@ -33,18 +34,22 @@ type DashBoardData = {
     try {
         
 
+          
+            const accounts = user_type === "s-admin" ? await AccountSchema.find({'lgu_municipality.province_code' : province_code}) : await AccountSchema.find({'lgu_municipality.province_code' : province_code, 'lgu_municipality.municipality_code' : municipality_code});
+            let today_ghge = 0;
 
-        if(user_type === "s-admin"){
-            const accounts = await AccountSchema.find({'lgu_municipality.province_code' : province_code});
             const lgu_admin = accounts.filter(acc => acc.user_type === "lgu_admin");
             const surveyor = accounts.filter(acc => acc.user_type === "surveyor");
             const table_data =  await get_table_data(province_code);
-            
-      
-
-            let today_ghge = 0;
             table_data.forEach(tb_data => {
-                    today_ghge += tb_data.emission.ghge;
+                    if(user_type === "s-admin"){
+                        today_ghge += tb_data.emission.ghge;
+
+                    } else {
+                        if(municipality_code === tb_data.municipality_code){
+                            today_ghge += tb_data.emission.ghge;
+                        }
+                    }
             })
     
             const response : DashBoardData = {
@@ -58,9 +63,7 @@ type DashBoardData = {
             return res.status(200).json(response);
 
 
-        } else {
-
-        }
+      
         
         
 
@@ -86,19 +89,24 @@ type DashBoardData = {
     const municipalities : Municipality[] = municipality_json.filter((municipality) => municipality.province_code === province_code); // get all municipalities depends on province code
     
 
-    // Set the start of today to 00:00:00.000
-    const start = new Date();
-    start.setHours(0, 0, 0, 0);
-    // Set the end of today to 23:59:59.999
-    const end = new Date();
-    end.setHours(23, 59, 59, 999);
+    // // Set the start of today to 00:00:00.000
+    // const start = new Date();
+    // start.setHours(0, 0, 0, 0);
+    // // Set the end of today to 23:59:59.999
+    // const end = new Date();
+    // end.setHours(23, 59, 59, 999);
+
+
+    const now = new Date();
+    const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+    const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59, 999);
 
     const form_data = await FuelFormSchema.find({
         $and: [
             {'surveyor_info.province_code': province_code},
             {dateTime_created: {
-                $gte : start,
-                $lte : end
+                $gte : startOfMonth,
+                $lte : endOfMonth
             }}
         ]
     }); // find all fuel form data today in that province_code or province_name
@@ -130,6 +138,7 @@ type DashBoardData = {
         
         table_data.push({
             municipality : municipality.city_name,
+            municipality_code : municipality_code,
             emission : {
                 co2e : tb_co2e,
                 ch4e : tb_ch4e,
