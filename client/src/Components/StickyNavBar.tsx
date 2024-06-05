@@ -32,6 +32,7 @@ const navListMenuItems = [
 
 export function StickyNavbar() {
   const userInfo = Cookies.get("user_info");
+  const [municipality_name, set_municipality_name] = useState("");
   const [openNav, setOpenNav] = useState(false);
 
   const [nav, setNav] = useState([
@@ -40,7 +41,6 @@ export function StickyNavbar() {
       url: "",
     },
   ]);
-
 
   const [u_type, set_uType] = useState('');
   const auth = useAuth();
@@ -54,8 +54,9 @@ export function StickyNavbar() {
   useEffect(() => {
     
     if (userInfo) {
-      const { user_type } = JSON.parse(userInfo);
+      const { user_type, municipality_name} = JSON.parse(userInfo);
       console.log("user_type : ", user_type)
+      set_municipality_name(municipality_name);
 
       if (user_type === "s-admin") {
         set_uType("S-Admin");
@@ -84,6 +85,10 @@ export function StickyNavbar() {
           {
             name: "Register",
             url: `/${user_type}/register`,
+          },
+          {
+            name: "Dashboard",
+            url: `/${user_type}/dashboard`,
           },
         ])
 
@@ -142,7 +147,7 @@ export function StickyNavbar() {
               href="#"
               className="mr-4 cursor-pointer py-1.5 font-bold text-white"
             >
-              {`Welcome, ${u_type}`}
+              {`Welcome, ${u_type === "S-Admin" ? "":municipality_name } ${u_type}`}
             </Typography>
             <div className="flex items-center gap-4 ">
               <div className="mr-4 hidden lg:block ">{navList}</div>
