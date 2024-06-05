@@ -20,7 +20,6 @@ router.post('/register', upload.single("img"), createAcc_Validation, register_ac
 router.post('/verify', verify_acc)
 router.post('/change-pass',authenticate_token, changePass);
 router.post('/login', authenticate_account);
-// router.post('/logout', logout_account);
 router.post('/recover', recoverAccount);
 router.get('/get-all', get_allAcc);
 router.delete('/delete/:accountId', delete_Acc );
