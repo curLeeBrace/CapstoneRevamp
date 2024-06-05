@@ -86,19 +86,24 @@ type DashBoardData = {
     const municipalities : Municipality[] = municipality_json.filter((municipality) => municipality.province_code === province_code); // get all municipalities depends on province code
     
 
-    // Set the start of today to 00:00:00.000
-    const start = new Date();
-    start.setHours(0, 0, 0, 0);
-    // Set the end of today to 23:59:59.999
-    const end = new Date();
-    end.setHours(23, 59, 59, 999);
+    // // Set the start of today to 00:00:00.000
+    // const start = new Date();
+    // start.setHours(0, 0, 0, 0);
+    // // Set the end of today to 23:59:59.999
+    // const end = new Date();
+    // end.setHours(23, 59, 59, 999);
+
+
+    const now = new Date();
+    const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+    const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59, 999);
 
     const form_data = await FuelFormSchema.find({
         $and: [
             {'surveyor_info.province_code': province_code},
             {dateTime_created: {
-                $gte : start,
-                $lte : end
+                $gte : startOfMonth,
+                $lte : endOfMonth
             }}
         ]
     }); // find all fuel form data today in that province_code or province_name
