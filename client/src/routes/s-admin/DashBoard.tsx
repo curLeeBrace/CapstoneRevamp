@@ -46,11 +46,13 @@ function DashBoard() {
 const chartConfig = {
   series: [
     {
+      name : "TodayGHG_Emmision",
+      
       data: dashboard_data? dashboard_data.table_data.map((tb_data) => {
-        
+        //tb_data.emission.ghge > 0 ? tb_data.municipality : "",
         return {
-          x :  tb_data.emission.ghge > 0 ? tb_data.municipality : "",
-          y: tb_data.emission.ghge
+          x :  tb_data.municipality,
+          y: tb_data.emission.ghge.toFixed(2)
         }
       }) : [{x:null, y:null}]
      
@@ -66,11 +68,15 @@ const chartConfig = {
         tools : {
           download: false
         }
-      }
+      },
+      foreColor: '#DDDBDB',
     },
     colors: ["#C01E01"],
+    
+    
   },
 
+  
   
 
 };
@@ -88,17 +94,17 @@ const chartConfig = {
 
         <div className='flex flex-wrap md:flex-nowrap px-2 basis-3/4 gap-2 md:gap-2 h-1/3 w-full'>
 
-          <div className='hidden lg:block lg:basis-3/5 h-5/6 pt-5'>
+          <div className='hidden lg:block lg:basis-3/5 h-5/6'>
              {dashboard_data && <Table TABLE_ROWS={dashboard_data.table_data}/>}
           </div>
 
-          <div className='basis-full lg:basis-2/5 h-5/6'>
+          <div className='basis-full lg:basis-2/5 h-5/6 bg-gray-700/30'>
             {
             chartConfig? 
             <Chart
               width={'100%'}
               height={'100%'}
-              type={'treemap'}
+              type={'bar'}
               series={chartConfig.series}
               options={chartConfig.options}
             /> : null

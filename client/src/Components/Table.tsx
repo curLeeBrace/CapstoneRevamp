@@ -79,7 +79,7 @@ export default function Table({TABLE_ROWS} : TableProps) {
                     color="blue-gray"
                     className="font-normal"
                   >
-                    {emission.co2e}
+                    {emission.co2e.toFixed(2)}
                   </Typography>
                 </td>
                 <td className={classes}>
@@ -88,7 +88,7 @@ export default function Table({TABLE_ROWS} : TableProps) {
                     color="blue-gray"
                     className="font-normal"
                   >
-                    {emission.ch4e}
+                    {emission.ch4e.toFixed(2)}
                   </Typography>
                 </td>
                 <td className={classes}>
@@ -99,7 +99,7 @@ export default function Table({TABLE_ROWS} : TableProps) {
                     color="blue-gray"
                     className="font-medium"
                   >
-                    {emission.n2oe}
+                    {emission.n2oe.toFixed(2)}
                   </Typography>
                 </td>
                 <td className={classes}>
@@ -110,7 +110,7 @@ export default function Table({TABLE_ROWS} : TableProps) {
                     color="blue-gray"
                     className="font-medium"
                   >
-                    {emission.ghge}
+                    {emission.ghge.toFixed(2)}
                   </Typography>
                 </td>
               </tr>
