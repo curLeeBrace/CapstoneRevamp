@@ -24,7 +24,7 @@ const handleLogout = async (email: string, user: any) => {
                 },
                 user_type,
                 dateTime: new Date(),
-                action: "User logged out",
+                action: `User logged out. (${lgu_municipality.municipality_name})`,
             };
 
             // Save the audit log for logout
@@ -86,7 +86,7 @@ export const authenticate_account = async (req: Request, res: Response) => {
                     },
                     user_type,
                     dateTime: new Date(),
-                    action: "User logged in.",
+                    action: `User logged in. (${lgu_municipality.municipality_name})`,
                 };
 
                 // Save the audit log

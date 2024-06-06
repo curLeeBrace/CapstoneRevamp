@@ -20,7 +20,7 @@ const insertFuelFormData = async (req: Request, res: Response) => {
                 },
                 user_type: "surveyor",
                 dateTime: new Date(),
-                action: `Inserted fuel data for ${survey_data.form_type}`,
+                action: `Inserted fuel data for ${survey_data.form_type} form. (${surveyor_info.municipality_name})`,
             };
 
             // Save the audit log

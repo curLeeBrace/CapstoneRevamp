@@ -24,7 +24,7 @@ export const fetchAuditLogs = async (req: Request, res: Response) => {
     }
 
     // Fetch audit logs from the database with the filter applied
-    const auditLogs = await AuditLogSchema.find(filter).exec();
+    const auditLogs = await AuditLogSchema.find(filter).sort({ dateTime: -1 }).exec();
     res.status(200).json(auditLogs);
   } catch (error) {
     console.error("Error fetching audit logs:", error);
