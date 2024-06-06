@@ -1,10 +1,10 @@
-import { TableWithStripedRows } from "../Components/Auditlog/TableWithStripedRows";
-import { Modal } from "../Components/Modal";
+import { TableWithStripedRows } from "../../Components/Auditlog/TableWithStripedRows";
+import { Modal } from "../../Components/Modal";
 import { Input, Typography } from "@material-tailwind/react";
 import { FunnelIcon } from "@heroicons/react/24/solid";
 import { useEffect, useState } from "react";
-import axios from "../api/axios";
-import Loader from "../Components/Loader";
+import axios from "../../api/axios";
+import Loader from "../../Components/Loader";
 
 interface AuditLog {
   name: string;
