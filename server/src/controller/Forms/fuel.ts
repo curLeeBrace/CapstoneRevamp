@@ -2,6 +2,8 @@ import { Request, Response } from 'express';
 import FuelFormSchema from "../../db_schema/FuelFormSchema";
 import { auditLogType, saveAuditLog } from "../AuditLog/audit_log";
 
+
+
 const insertFuelFormData = async (req: Request, res: Response) => {
     try {
         // Insert the fuel form data
@@ -39,6 +41,10 @@ const insertFuelFormData = async (req: Request, res: Response) => {
         return res.sendStatus(500); // Internal server error
     }
 }
+
+
+
+
 
 export {
     insertFuelFormData

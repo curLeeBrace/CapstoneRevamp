@@ -28,10 +28,11 @@ type DashBoardData = {
 function DashBoard() {
 
   const [dashboard_data, setDashBoardData] = useState<DashBoardData>();
-;
+
   useEffect(()=>{
+
     const user_info = JSON.parse(Cookies.get('user_info') as string);
-    // console.log(user_info);
+    
     axios.get(`/dashboard/overview-data/${user_info.province_code}/${user_info.user_type}/${user_info.municipality_code}`)
     .then(res => {
       setDashBoardData(res.data)

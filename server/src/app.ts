@@ -6,6 +6,7 @@ import accountRoute from './route/acc_route'
 import tokenRoute from "./route/token_route"
 import formRoute from "./route/form_route"
 import dashboardRoute from "./route/dashboard_route";
+import summaryDataRoute from "./route/summaryData_route";
 
 const app = express();
 
@@ -24,6 +25,7 @@ app.use('/api/account', accountRoute);
 app.use('/api/token', tokenRoute);
 app.use('/api/forms', formRoute);
 app.use('/api/dashboard', dashboardRoute);
+app.use('/api/summary-data', summaryDataRoute);
 
 
 

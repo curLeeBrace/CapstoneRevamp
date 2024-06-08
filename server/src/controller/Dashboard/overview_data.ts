@@ -40,14 +40,15 @@ type DashBoardData = {
 
             const lgu_admin = accounts.filter(acc => acc.user_type === "lgu_admin");
             const surveyor = accounts.filter(acc => acc.user_type === "surveyor");
-            const table_data =  await get_table_data(province_code);
-            table_data.forEach(tb_data => {
+            const mobileComstion_data =  await get_mobileComstion_data(province_code, {'surveyor_info.province_code': province_code});
+
+            mobileComstion_data.forEach(mb_data => {
                     if(user_type === "s-admin"){
-                        today_ghge += tb_data.emission.ghge;
+                        today_ghge += mb_data.emission.ghge;
 
                     } else {
-                        if(municipality_code === tb_data.municipality_code){
-                            today_ghge += tb_data.emission.ghge;
+                        if(municipality_code === mb_data.municipality_code){
+                            today_ghge += mb_data.emission.ghge;
                         }
                     }
             })
@@ -55,7 +56,7 @@ type DashBoardData = {
             const response : DashBoardData = {
                     total_LGU_admins : lgu_admin.length,
                     total_surveryor : surveyor.length,
-                    table_data,
+                    table_data: mobileComstion_data,
                     today_ghge,
             }
     
@@ -83,7 +84,7 @@ type DashBoardData = {
 
 
 
- const get_table_data = async (province_code : string) : Promise<TableData[]> => {
+ const get_mobileComstion_data = async (province_code : string, query : {}) : Promise<TableData[]> => {
 
     const table_data : TableData[] = [];
     const municipalities : Municipality[] = municipality_json.filter((municipality) => municipality.province_code === province_code); // get all municipalities depends on province code
@@ -101,16 +102,18 @@ type DashBoardData = {
     const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
     const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59, 999);
 
-    const form_data = await FuelFormSchema.find({
-        $and: [
-            {'surveyor_info.province_code': province_code},
-            {dateTime_created: {
-                $gte : startOfMonth,
-                $lte : endOfMonth
-            }}
-        ]
-    }); // find all fuel form data today in that province_code or province_name
+    // const form_data = await FuelFormSchema.find({
+    //     $and: [
+    //         {'surveyor_info.province_code': province_code},
+    //         {dateTime_created: {
+    //             $gte : startOfMonth,
+    //             $lte : endOfMonth
+    //         }}
+    //     ]
+    // }); // find all fuel form data today in that province_code or province_name
 
+    const form_data = await FuelFormSchema.find(query);
+    // console.log("query : ", query)
 
     //iterate municipalities
     municipalities.forEach((municipality, index) => {
@@ -194,7 +197,7 @@ type DashBoardData = {
 
 
 
-export {overview_data}
+export {overview_data, get_emission}
 
 
 
