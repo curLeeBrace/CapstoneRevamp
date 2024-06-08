@@ -3,9 +3,9 @@ import AuditLogSchema from "../../db_schema/AuditLogSchema";
 
 export const fetchAuditLogs = async (req: Request, res: Response) => {
   try {
-    const { startDate, endDate } = req.query;
+    const { startDate, endDate, action } = req.query;
 
-    let filter = {};
+    let filter: any = {};
 
     if (startDate || endDate) {
       const start = startDate ? new Date(startDate as string) : null;
@@ -15,14 +15,16 @@ export const fetchAuditLogs = async (req: Request, res: Response) => {
         end.setHours(23, 59, 59, 999); // Set the end date to the end of the day
       }
 
-      filter = {
-        dateTime: {
-          ...(start && { $gte: start }),
-          ...(end && { $lte: end }),
-        },
+      filter.dateTime = {
+        ...(start && { $gte: start }),
+        ...(end && { $lte: end }),
       };
     }
 
+    if (action) {
+      filter.action = { $regex: new RegExp(action as string, 'i') };
+    }
+    console.log('Constructed filter:', filter);
     // Fetch audit logs from the database with the filter applied
     const auditLogs = await AuditLogSchema.find(filter).sort({ dateTime: -1 }).exec();
     res.status(200).json(auditLogs);

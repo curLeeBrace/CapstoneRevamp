@@ -1,10 +1,13 @@
 import { TableWithStripedRows } from "../../Components/Auditlog/TableWithStripedRows";
 import { Modal } from "../../Components/Modal";
-import { Input, Typography } from "@material-tailwind/react";
+import { Input, Typography, Select, Option,
+ 
+   } from "@material-tailwind/react";
 import { FunnelIcon } from "@heroicons/react/24/solid";
 import { useEffect, useState } from "react";
 import axios from "../../api/axios";
 import Loader from "../../Components/Loader";
+
 
 interface AuditLog {
   name: string;
@@ -18,7 +21,8 @@ export default function AuditLogs() {
   const [loading, setLoading] = useState(true);
   const [startDate, setStartDate] = useState<string>('');
   const [endDate, setEndDate] = useState<string>('');
-
+  const [selectedAction, setSelectedAction] = useState<string | null>(null);
+    
   const fetchAuditLogs = async (params = {}) => {
     setLoading(true);
     try {
@@ -39,7 +43,8 @@ export default function AuditLogs() {
   const handleFilter = () => {
     const params = {
       ...(startDate && { startDate }),
-      ...(endDate && { endDate })
+      ...(endDate && { endDate }),
+      ...(selectedAction && { action: selectedAction })
     };
     fetchAuditLogs(params);
   };
@@ -47,8 +52,10 @@ export default function AuditLogs() {
   const clearFilter = () => {
     setStartDate('');
     setEndDate('');
+    setSelectedAction(null);
     fetchAuditLogs();
   };
+  
 
   const TABLE_HEAD = ["Name", "UserIdentifier", "Date", "TimeStamp", "Action"];
   const TABLE_ROWS = auditLogs.map((logs) => ({
@@ -61,16 +68,29 @@ export default function AuditLogs() {
 
   return (
     <div className='min-h-screen'>
-      <div className="flex justify-end pr-4 my-2 bg-gray-300  py-4 gap-4">
+      
+      <div className="flex justify-end pr-4 my-2 bg-gray-300 py-4 gap-4">
+    
         <Modal
           buttonText={<div className="flex items-center gap-2">
             <FunnelIcon className="h-6 w-6 text-gray-500" />
             <span>Filter</span>
           </div>}
-          title="Filter Date Audit Logs"
+          title="Filter Audit Logs"
           onClick={handleFilter}
         >
           {/* Child component of the modal */}
+
+          <div className="mb-4 ">
+            <Select className="font-semibold" label="Select Action">
+            <Option onClick={() => setSelectedAction("Created")}>Created Accounts</Option>
+            <Option onClick={() => setSelectedAction("User logged in")}>Logged-in</Option>
+            <Option onClick={() => setSelectedAction("User logged out")}>Logged-out</Option>
+            <Option onClick={() => setSelectedAction("Inserted fuel data for residential form")}>Inputted data for Residential form</Option>
+            <Option onClick={() => setSelectedAction("Inserted fuel data for commercial form")}>Inputted data for Commercial form</Option>
+          </Select>
+            </div>
+
           <div className="lg:flex lg:flex-row gap-2 ">
             <Input 
               type="date" 
@@ -85,9 +105,10 @@ export default function AuditLogs() {
               value={endDate}
               onChange={(e) => setEndDate(e.target.value)}
             />
-        
-          </div>
+            </div>
+           
         </Modal>
+
         <button 
           onClick={clearFilter} 
           className="bg-red-500 text-white px-4 py-2 rounded-md font-bold hover:shadow-xl"
