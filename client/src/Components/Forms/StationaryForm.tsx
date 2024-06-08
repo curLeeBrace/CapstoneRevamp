@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import { Card, Input, Checkbox, Button, Typography } from "@material-tailwind/react";
+import { Fragment, useEffect, useState } from 'react';
+import { Card, Input, Checkbox, Button, Typography, Select, Option} from "@material-tailwind/react";
 import useHandleChange from '../../custom-hooks/useHandleChange';
 import AlertBox from './AlertBox';
 import Cookies from 'js-cookie';
@@ -17,13 +17,43 @@ const [formData, setFormData] = useState({
   fuel_type : "",
   liters_consumption : 0,
 });
+const [vehicleOptions, setVehicleOptions] = useState<string[]>();
 const [isLoading, set_isLoading] = useState<boolean>(false);
 const [openAlert, setOpenAlert] = useState<boolean>(false);
 const [aler_msg, setAlertMsg] = useState<string>("");
 const axiosPivate = useAxiosPrivate();
 
-const submitHandler = () => {
 
+
+
+
+
+useEffect(()=>{
+  
+const {form_type} =  formData;
+console.log("form_type : ", form_type)
+
+if(form_type !== ""){
+  setVehicleOptions(form_type === "residential" ? 
+    ["Car", "SUV", "Motorcycle"] : 
+    
+    ["Jeep", "Tricycle", "Bus", "Van", "Taxi", "Truck"])
+}
+
+
+},[formData.form_type])
+
+
+
+
+
+
+
+
+
+
+const submitHandler = () => {
+  console.log("formData : ", formData)
   set_isLoading(true);
   const user_info = JSON.parse(Cookies.get('user_info') as string) as user_info;
   const {email, full_name, municipality_name, municipality_code, province_code} = user_info;
@@ -152,10 +182,33 @@ const submitHandler = () => {
 
 
             <div>
-              <Typography variant="h6" color="blue-gray">
+              {/* <Typography variant="h6" color="blue-gray">
                 Vehicle Type
-              </Typography>
-              <Input
+              </Typography> */}
+       
+              <Select 
+                 color="gray" label="Select Version"
+                 name='fuel_type'
+                 onChange={(value : any) => setFormData({...formData, vehicle_type : value})}
+                 disabled = {vehicleOptions === undefined}
+              >
+                 {
+                  vehicleOptions ? 
+                  vehicleOptions?.map((v_type, index) => (
+                    <Option key={index} value={v_type}>
+                      {v_type}
+                    </Option>
+                   ))
+                   : <Option value=''> </Option>
+                 }
+ 
+              </Select>
+              
+             
+              
+
+                             
+              {/* <Input
                 name='vehicle_type'
                 value = {formData.vehicle_type}
                 onChange={(event)=> handleChange({event, setFormStateData : setFormData})}
@@ -163,7 +216,7 @@ const submitHandler = () => {
                 size="lg"
                 placeholder="Tricycle, Motor, Jeep, etc."
                 className="w-full placeholder:opacity-100 focus:!border-t-gray-900 border-t-blue-gray-200"
-              />
+              /> */}
             </div>
             <div>
               <Typography variant="h6" color="blue-gray" className="mt-2">
