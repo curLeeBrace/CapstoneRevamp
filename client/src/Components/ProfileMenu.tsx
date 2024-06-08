@@ -49,8 +49,8 @@ const ProfileMenu = () => {
         icon: PowerIcon,
         onClick: ()=>{
           Cookies.remove('user_info');
+          navigate(`/`);
           window.location.reload();
-
         }
       },
      

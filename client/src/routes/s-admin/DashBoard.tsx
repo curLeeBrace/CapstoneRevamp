@@ -6,6 +6,8 @@ import Table from '../../Components/Table';
 import axios from "../../api/axios";
 import Cookies from 'js-cookie';
 import Chart from "react-apexcharts";
+import { getCurrentMonthName } from '../../custom-hooks/getCurrentMonth';
+
 
 type Emission = {
   co2e : number;
@@ -25,7 +27,12 @@ type DashBoardData = {
   table_data : TableData[]
 
 }
+
+
+
 function DashBoard() {
+
+  const currentMonthName = getCurrentMonthName();
 
   const [dashboard_data, setDashBoardData] = useState<DashBoardData>();
 ;
@@ -45,7 +52,7 @@ function DashBoard() {
   const chartConfig = {
     series: [
       {
-        name: "TodayGHG_Emmision",
+        name: `${currentMonthName} GHG Emission`,
         data: dashboard_data ? dashboard_data.table_data.map((tb_data) => ({
           x: tb_data.municipality,
           y: tb_data.emission.ghge.toFixed(2)
@@ -68,12 +75,21 @@ function DashBoard() {
       colors: ["#C01E01"],
       plotOptions: {
         bar: {
-          columnWidth: '150%',
-          barHeight: '150%'// Adjust this value to make the bars wider
+          columnWidth: '80%',
+          barHeight: '100%',
         }
       },
+      dataLabels: {
+        enabled: true,
+        style: {
+          fontSize: '8px', // Adjust the font size here
+          fontWeight: 'bold',
+          colors: ['#fff']
+        },
+        offsetY: -10,
+      },
       title: {
-        text: 'This Month GHG Emission',
+        text: `${currentMonthName} GHG Emission`,
         align: 'center' as 'center',
         style: {
           fontSize: '20px',
@@ -84,7 +100,7 @@ function DashBoard() {
       xaxis: {
         labels: {
           style: {
-            fontSize: '15px',
+            fontSize: '10px',
             fontWeight: 'bold',
           },
           padding: {
@@ -120,7 +136,7 @@ function DashBoard() {
         <div className='flex flex-wrap md:flex-nowrap px-2 basis-3/4 gap-0 h-1/3 w-full'>
 
           <div className='hidden lg:block lg:basis-3/5 h-5/6 border border-gray-400 rounded-2xl overflow-hidden mr-10'>
-          <h2 className='text-center font-bold text-xl p-4 bg-white'>This Month Greenhouse Gasses Emission</h2>
+          <h2 className='text-center font-bold text-xl p-4 bg-white'>{`${currentMonthName} Greenhouse Gasses Emission`}</h2>
              {dashboard_data && <Table TABLE_ROWS={dashboard_data.table_data}/>}
           </div>
 
