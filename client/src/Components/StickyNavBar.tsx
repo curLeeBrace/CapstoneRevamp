@@ -87,12 +87,16 @@ export function StickyNavbar() {
         set_uType("Admin");
         setNav([
           {
-            name: "Register",
-            url: `/${user_type}/register`,
-          },
-          {
             name: "Dashboard",
             url: `/${user_type}/dashboard`,
+          },
+          {
+            name: "Mobile-Combustion",
+            url: `/${user_type}/mobile-combustion`,
+          },
+          {
+            name: "Register",
+            url: `/${user_type}/register`,
           },
         ])
 

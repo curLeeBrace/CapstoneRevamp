@@ -48,6 +48,7 @@ const ProfileMenu = () => {
         label: "Sign Out",
         icon: PowerIcon,
         onClick: ()=>{
+          navigate(`/`, {replace:true})
           Cookies.remove('user_info');
           window.location.reload();
 

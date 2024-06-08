@@ -1,27 +1,88 @@
 
 import LineChart from "../../Components/Dashboard/BarChart"
-import {Cog6ToothIcon, PowerIcon, FaceSmileIcon} from "@heroicons/react/24/solid";
+import {GlobeAsiaAustraliaIcon, TruckIcon, ExclamationTriangleIcon} from "@heroicons/react/24/solid";
 import Cookies from "js-cookie";
 import { useEffect, useState } from "react";
 import useFilterAddress, {AddressReturnDataType} from "../../custom-hooks/useFilterAddrress";
 import { Typography, Select, Option, Checkbox} from "@material-tailwind/react";
 import { SimpleCard } from "../../Components/Dashboard/SimpleCard";
+import Skeleton from "../../Components/Skeleton";
+import useAxiosPrivate from "../../custom-hooks/auth_hooks/useAxiosPrivate";
 
 const MobileCombustionSummary = () => {
     const [city_opt, set_city_opt] = useState<string[]>();
     const [address, setAddress] = useState<AddressReturnDataType>();
     const [formType, setFormType] = useState<"residential" | "commercial" | "both">();
+    const [mobileCombustionData, setMobileCombustionData] = useState<any>();
+    const [isLoading, set_isLoading] = useState<boolean>(false);
+    const [v_typeSeries, set_vTypeSeries] = useState<any[]>();
+    const [v_ageSeries, set_vAgeSeries] = useState<any[]>();
+    const [user, setUser] = useState({
+        type : "",
+        municipality_code: "",
+        province_code :"",
+        municipality_name : "",
+    });
     const filterADddress = useFilterAddress;
-
+    const axiosPrivate = useAxiosPrivate();
     useEffect(()=>{
-        const address = filterADddress({address_type : "mucipality"}) as AddressReturnDataType[]
-        set_city_opt(address.map(addr => addr.address_name));
-
+        const user_info = Cookies.get('user_info');
+        if(user_info) {
+            const {municipality_code, user_type, municipality_name, province_code} = JSON.parse(user_info as string);
+            
+            if(user_type === "lgu_admin"){
+                setUser({
+                    municipality_code,
+                    municipality_name,
+                    province_code,
+                    type : user_type
+                })
+            } else {
+                const address = filterADddress({address_type : "mucipality"}) as AddressReturnDataType[]
+                set_city_opt(address.map(addr => addr.address_name));
+            }
+        }
     },[])
 
     useEffect(()=> {
-        console.log("Sheesh")
-        console.log(address);
+        let muni_code = user.type === "lgu_admin" ? user.municipality_code : address ? address.address_code : undefined
+        let prov_code = user.type === "lgu_admin" ? user.province_code : address ? address.parent_code : undefined
+
+        if(formType){
+    
+
+            set_isLoading(true)
+            axiosPrivate.get(`/summary-data/mobile-combustion/${prov_code}/${muni_code}/${formType}`)
+            .then(res => {
+                const {vehicle} = res.data;
+                set_isLoading(false)
+                setMobileCombustionData(res.data)
+
+                set_vTypeSeries([{
+                    data : vehicle.vehicleTypes.map((v_type:any, index:any) => {
+                        return {
+                            x : v_type,
+                            y : vehicle.counts_ofVehicleTypes[index]
+                        }
+                    })
+                }])
+
+                set_vAgeSeries([{
+                    data : vehicle.vehicleAges.map((v_age:any, index:any) => {
+                        return {
+                            x : `${v_age} year(s) old`,
+                            y : vehicle.counts_ofVehicleAge[index]
+                        }
+                    })
+                }])
+
+            })
+            .catch(err => {
+                set_isLoading(false)
+                console.log(err)
+            });
+        }
+
     },[formType,address])
 
 
@@ -31,45 +92,56 @@ const MobileCombustionSummary = () => {
 
     }
 
+
+   
+
+   
+
     
     return (
         <div className="">
             <div className="flex flex-col w-full px-20 gap-5">
                 {/* TITLE */}
                 <div className="text-center mt-3">
-                    <Typography className="font-bold text-xl text-gray-800" >Summary Data of Mobile Combustion</Typography>
+                    <Typography className="font-bold text-2xl text-gray-800" >Summary Data of Mobile Combustion</Typography>
                 </div>
                 <div className="flex gap-5 flex-wrap">
                     <div className=" basis-full md:basis-1/5">
-                        <Select onChange={(value) => {
-                            setAddress((prev : any) => {
-                                let lgu_municipality:any;   
-                                
-                
-                                const mucipality_data= filterADddress({address_type : "mucipality"});
-                                mucipality_data.forEach(data =>{
-                                    if(data.address_name === value){
-                    
-                                    lgu_municipality = {
-                                        municipality_name : data.address_name,
-                                        municipality_code : data.address_code,
-                                        province_code : data.parent_code,
+
+                        {
+                            user.type !== "lgu_admin" ?
+                                <Select onChange={(value) => {
+                                    setAddress((prev : any) => {
+                                        let lgu_municipality:any;   
+                                        
+                        
+                                        const mucipality_data= filterADddress({address_type : "mucipality"});
+                                        mucipality_data.forEach(data =>{
+                                            if(data.address_name === value){
+                            
+                                            lgu_municipality = {
+                                                municipality_name : data.address_name,
+                                                address_code : data.address_code,
+                                                parent_code : data.parent_code,
+                                            }
+                                            }
+                                        })
+                        
+                                        return prev = lgu_municipality
+                                    })
+                                }}
+                                >
+                                    {city_opt? 
+                                        city_opt.map((city, index)=>(
+                                            <Option value={city} key = {index}>
+                                                {city}
+                                            </Option>
+                                        )) : <Option value =""> </Option>
                                     }
-                                    }
-                                })
-                
-                                return prev = lgu_municipality
-                            })
-                        }}
-                        >
-                            {city_opt? 
-                                city_opt.map((city, index)=>(
-                                    <Option value={city} key = {index}>
-                                        {city}
-                                    </Option>
-                                )) : <Option value =""> </Option>
-                            }
-                        </Select>
+                                </Select>
+                            : <div className="w-full h-full border-solid border-black/20 border-2 flex justify-center items-center">{user.municipality_name}</div>
+                        }
+                        
 
                     </div>
                     <div className="flex basis-8/12">
@@ -112,18 +184,38 @@ const MobileCombustionSummary = () => {
                     </div> 
                 </div>
 
-                <div className="flex gap-5">
-                        <div className="basis-2/5 ">
-                            <div className="h-1/2">
-                                <SimpleCard body="10.5" header="Total GHG Emmision" icon={<FaceSmileIcon className="h-6 2-6"/>}/>
+                <div className="flex flex-wrap w-full gap-5">
+                        <div className="w-full lg:w-1/3 shrink-0">
 
+                            <div className="h-2/5">
+                                {
+                                    !isLoading? 
+                                        mobileCombustionData ? 
+                                            <SimpleCard body={`${mobileCombustionData.emmission.tb_ghge.toFixed(2)}`} header="Total GHG Emmision" icon={<GlobeAsiaAustraliaIcon className="h-full w-full"/>}/>
+                                        :<SimpleCard body={"No Available Data"} header="" icon={<ExclamationTriangleIcon className="h-full w-full"/>}/>
+                                    :<Skeleton/>
+                                }   
                             </div>
 
                         </div>
 
-                        <div className="flex flex-col bg-slate-700 basis-3/5">
-                            <LineChart chart_icon={<FaceSmileIcon className="h-6 2-6"/>} chart_label="asd" chart_meaning="asd"/>
-                            <LineChart chart_icon={<FaceSmileIcon className="h-6 2-6"/>} chart_label="asd" chart_meaning="asd"/>
+                        <div className="flex flex-col w-full lg:w-3/5 gap-3">
+                            
+                                
+                                <div className="">
+
+                                    <LineChart chart_icon={<TruckIcon className="h-6 2-6"/>} chart_label="Vehicle Type" chart_meaning="overall surveyed vehicles" series={v_typeSeries}/>
+
+                                </div>
+                                
+                                <div className="">
+                                    <LineChart chart_icon={<TruckIcon className="h-6 2-6"/>} chart_label="Vehicle Age" chart_meaning="Total counts of diffirent vehicle age" series={v_ageSeries}/>
+                                </div>
+                                
+                              
+                            
+                            
+                        
                         </div>
         
 
