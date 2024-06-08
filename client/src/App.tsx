@@ -20,6 +20,7 @@ import ChangePass from "./routes/not-auth/ChangePass";
 import AuditLogs from "./routes/s-admin/AuditLogs";
 import AdminPage from "./routes/s-admin/AccountsTable";
 import AccountsTable from "./routes/s-admin/AccountsTable";
+import MobileCombustionSummary from "./routes/s-admin/MobileCombustionSummary";
 
 
 
@@ -46,7 +47,7 @@ function App() {
               <Route path = 'change-pass' element = {<ChangePass/>}/>
               <Route path = "audit-log" element = {<AuditLogs/>}/>
               <Route path = "accounts" element = {<AccountsTable/>}/>
-
+              <Route path = "mobile-combustion" element = {<MobileCombustionSummary/>}/>
 
               <Route path = 'register'>
                   <Route index element = {<Registration/>}/>

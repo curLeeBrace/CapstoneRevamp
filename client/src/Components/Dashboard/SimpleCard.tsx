@@ -14,9 +14,9 @@ interface SimpleCard{
 
   export function SimpleCard({header, body, icon} : SimpleCard) {
     return (
-      <Card className="w-full">
+      <Card className="w-full h-full flex justify-center">
        
-          <CardBody className="flex items-center justify-around border border-gray-300 h-32 shadow-md rounded-lg">
+          <CardBody className="flex items-center justify-around border border-gray-300 h-full shadow-md rounded-lg">
             <div className="text-nowrap flex-shrink-0">
               <Typography variant="h5"  className="mb-2">
                 {header}

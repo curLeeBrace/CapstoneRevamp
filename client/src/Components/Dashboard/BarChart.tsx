@@ -7,7 +7,7 @@ import {
   import Chart from "react-apexcharts";
   
    
-  interface LineChartProps {
+  interface BarChartProps {
     chart_label : string;
     chart_meaning : string;
     chart_icon : React.ReactElement;
@@ -15,7 +15,6 @@ import {
   }
    
   const chartConfig = {
-    type: "line",
     height: 240,
     series: [
       {
@@ -103,7 +102,7 @@ import {
     },
   };
    
-  export default function LineChart({chart_icon, chart_label, chart_meaning}:LineChartProps) {
+  export default function BarChart({chart_icon, chart_label, chart_meaning}:BarChartProps) {
     return (
       <Card className="">
         <CardHeader
@@ -133,6 +132,7 @@ import {
             options={chartConfig}
             series={chartConfig.series}
             height={"100%"}
+            type="bar"
           />
         </CardBody>
       </Card>

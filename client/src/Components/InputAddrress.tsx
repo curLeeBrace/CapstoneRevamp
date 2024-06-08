@@ -11,7 +11,7 @@ export interface Address {
 }
 
 interface InputAddrressProps {
-    setState: (filter: string) => void;
+    // setState: (filter: string) => void;
     setState : React.SetStateAction<any>;
 
 }

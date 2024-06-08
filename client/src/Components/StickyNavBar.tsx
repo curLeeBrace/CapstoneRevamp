@@ -66,6 +66,10 @@ export function StickyNavbar() {
             url: `/${user_type}/dashboard`,
           },
           {
+            name: "Mobile-Combustion",
+            url: `/${user_type}/mobile-combustion`,
+          },
+          {
             name: "Register",
             url: `/${user_type}/register`,
           },
