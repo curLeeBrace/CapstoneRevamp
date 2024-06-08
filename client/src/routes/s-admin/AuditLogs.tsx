@@ -24,7 +24,8 @@ export default function AuditLogs() {
     try {
       const response = await axios.get('/account/audit-logs', { params });
       console.log('Response:', response.data);
-      setAuditLogs(response.data);
+      const filteredLogs = response.data.filter((log: { user_type: string; }) => log.user_type !== 's_admin');
+      setAuditLogs(filteredLogs);
       setLoading(false);
     } catch (error) {
       console.error('Error fetching data:', error);
