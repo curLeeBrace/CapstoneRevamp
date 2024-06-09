@@ -46,7 +46,7 @@ function DashBoard() {
   const chartConfig = {
     series: [
       {
-        name: "TodayGHG_Emmision",
+        name: "GHGe",
         data: dashboard_data ? dashboard_data.table_data.map((tb_data) => ({
           x: tb_data.municipality,
           y: tb_data.emission.ghge.toFixed(2)
@@ -74,7 +74,7 @@ function DashBoard() {
         }
       },
       title: {
-        text: 'This Month GHG Emission',
+        text: 'Total GHG Emission',
         align: 'center' as 'center',
         style: {
           fontSize: '20px',
@@ -105,7 +105,7 @@ function DashBoard() {
       <div className='flex flex-col h-full w-full'>
         <div className='flex items-center gap-3 basis-1/4 px-2 overflow-x-auto'>
           <div className='h-4/5 w-full'>
-            <SimpleCard body={`${dashboard_data?.today_ghge.toFixed(2)}`}header='This Month GHGe'  icon={<FireIcon className='h-6 w-6 text-red-300'/>}/>
+            <SimpleCard body={`${dashboard_data?.today_ghge.toFixed(2)}`}header='Total GHGe'  icon={<FireIcon className='h-6 w-6 text-red-300'/>}/>
           </div>        
           
           <div className='h-4/5 w-full'>
@@ -118,18 +118,18 @@ function DashBoard() {
           </div>
         </div>
 
-        <div className='flex flex-wrap md:flex-nowrap px-2 basis-3/4 gap-0 h-1/3 w-full'>
+        <div className='flex flex-wrap md:flex-nowrap px-5 basis-3/4 gap-3 h-1/3 w-full'>
 
-          <div className='hidden lg:block lg:basis-3/5 h-5/6 border border-gray-400 rounded-2xl overflow-hidden mr-10'>
-          <h2 className='text-center font-bold text-xl p-4 bg-white'>This Month Greenhouse Gasses Emission</h2>
+          <div className='hidden lg:block lg:basis-2/6 h-5/6 border border-gray-400 rounded-2xl overflow-hidden'>
+          
              {dashboard_data && <Table TABLE_ROWS={dashboard_data.table_data}/>}
           </div>
 
-          <div className='basis-full lg:basis-2/5 h-5/6 px-10 border border-gray-300 bg-white shadow-gray-500 shadow-2xl rounded-lg ml-2'>
+          <div className='basis-full lg:basis-8/12 h-5/6  border border-gray-400 bg-white shadow-gray-500 shadow-2xl rounded-lg p-1'>
             {
             chartConfig? 
             <Chart
-              width={'160%'}
+              width={'100%'}
               height={'100%'}
               type={'bar'}
               series={chartConfig.series}
