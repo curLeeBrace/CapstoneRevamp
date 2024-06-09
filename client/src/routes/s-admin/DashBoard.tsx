@@ -6,6 +6,8 @@ import Table from '../../Components/Table';
 import axios from "../../api/axios";
 import Cookies from 'js-cookie';
 import Chart from "react-apexcharts";
+import { getCurrentMonthName } from '../../custom-hooks/getCurrentMonth';
+
 
 type Emission = {
   co2e : number;
@@ -25,6 +27,9 @@ type DashBoardData = {
   table_data : TableData[]
 
 }
+
+
+
 function DashBoard() {
 
   const [dashboard_data, setDashBoardData] = useState<DashBoardData>();
@@ -69,12 +74,21 @@ function DashBoard() {
       colors: ["#C01E01"],
       plotOptions: {
         bar: {
-          columnWidth: '150%',
-          barHeight: '150%'// Adjust this value to make the bars wider
+          columnWidth: '80%',
+          barHeight: '100%',
         }
       },
+      dataLabels: {
+        enabled: true,
+        style: {
+          fontSize: '8px', // Adjust the font size here
+          fontWeight: 'bold',
+          colors: ['#fff']
+        },
+        offsetY: -10,
+      },
       title: {
-        text: 'Total GHG Emission',
+        text: 'Total GHG Emission per Municipality',
         align: 'center' as 'center',
         style: {
           fontSize: '20px',
@@ -85,7 +99,7 @@ function DashBoard() {
       xaxis: {
         labels: {
           style: {
-            fontSize: '15px',
+            fontSize: '10px',
             fontWeight: 'bold',
           },
           padding: {

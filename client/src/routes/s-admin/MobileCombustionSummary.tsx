@@ -187,7 +187,7 @@ const MobileCombustionSummary = () => {
                 <div className="flex flex-wrap w-full gap-5">
                         <div className="w-full lg:w-1/3 shrink-0">
 
-                            <div className="h-full lg:h-2/5 bg-black">
+                            <div className="h-full lg:h-2/5">
                                 {
                                     !isLoading? 
                                         mobileCombustionData ? 
@@ -203,13 +203,20 @@ const MobileCombustionSummary = () => {
                             
                                 
                                 <div className="">
-
-                                    <LineChart chart_icon={<TruckIcon className="h-6 2-6"/>} chart_label="Vehicle Type" chart_meaning="overall surveyed vehicles" series={v_typeSeries}/>
+                                    {
+                                        !isLoading  ?
+                                            <LineChart chart_icon={<TruckIcon className="h-6 2-6"/>} chart_label="Vehicle Type" chart_meaning="overall surveyed vehicles" series={v_typeSeries}/>
+                                        :<Skeleton/>
+                                    }
 
                                 </div>
                                 
                                 <div className="">
-                                    <LineChart chart_icon={<TruckIcon className="h-6 2-6"/>} chart_label="Vehicle Age" chart_meaning="Total counts of diffirent vehicle age" series={v_ageSeries}/>
+                                    {
+                                        !isLoading  ?
+                                            <LineChart chart_icon={<TruckIcon className="h-6 2-6"/>} chart_label="Vehicle Age" chart_meaning="Total counts of diffirent vehicle age" series={v_ageSeries}/>
+                                        :<Skeleton/>
+                                    }
                                 </div>
                                 
                               
