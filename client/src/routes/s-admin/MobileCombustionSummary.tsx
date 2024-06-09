@@ -187,7 +187,7 @@ const MobileCombustionSummary = () => {
                 <div className="flex flex-wrap w-full gap-5">
                         <div className="w-full lg:w-1/3 shrink-0">
 
-                            <div className="h-2/5">
+                            <div className="h-full lg:h-2/5 bg-black">
                                 {
                                     !isLoading? 
                                         mobileCombustionData ? 
