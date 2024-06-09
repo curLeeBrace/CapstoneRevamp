@@ -50,8 +50,8 @@ const ProfileMenu = () => {
         onClick: ()=>{
           navigate(`/`, {replace:true})
           Cookies.remove('user_info');
+          navigate(`/`);
           window.location.reload();
-
         }
       },
      
