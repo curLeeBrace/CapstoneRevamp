@@ -88,13 +88,11 @@ export default function AuditLogs() {
   };
 
   const renderTitle = () => {
-    if (user_type === 'lgu_admin') {
-      return `${municipalityName} Admin Audit Logs`;
-    }
-    if (user_type === 's-admin') {
-      return 'Super Admin (Laguna) Audit Logs';
-    }
-   
+    return user_type === 'lgu_admin'
+      ? `${municipalityName} Admin Audit Logs`
+      : user_type === 's-admin'
+      ? 'Super Admin (Laguna) Audit Logs'
+      : 'Audit Logs';
   };
 
   const TABLE_HEAD = ["Name", "UserIdentifier", "Date", "TimeStamp", "Action"];
