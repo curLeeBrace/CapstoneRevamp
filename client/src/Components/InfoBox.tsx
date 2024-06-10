@@ -1,11 +1,10 @@
-import React from 'react'
+
 import {
     Card,
     CardHeader,
     CardBody,
     CardFooter,
     Typography,
-    Button,
   } from "@material-tailwind/react";
 import { CheckCircleIcon, XMarkIcon} from "@heroicons/react/24/solid";
 import { Link } from "react-router-dom";

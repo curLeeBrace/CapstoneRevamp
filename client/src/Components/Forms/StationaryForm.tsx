@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useState } from 'react';
+import {useEffect, useState } from 'react';
 import { Card, Input, Checkbox, Button, Typography, Select, Option} from "@material-tailwind/react";
 import useHandleChange from '../../custom-hooks/useHandleChange';
 import AlertBox from './AlertBox';
@@ -6,7 +6,7 @@ import Cookies from 'js-cookie';
 import {user_info} from '../../routes/not-auth/LogIn';
 import useAxiosPrivate from '../../custom-hooks/auth_hooks/useAxiosPrivate';
 import DialogBox from "../DialogBox";
-import { truncate } from 'fs/promises';
+
 
 export function StationaryForm() {
 
@@ -195,7 +195,7 @@ const submitValidation = () => {
               </Typography> */}
        
               <Select 
-                 color="gray" label="Select Version"
+                 color="gray" label="Vehicle Type"
                  name='fuel_type'
                  onChange={(value : any) => setFormData({...formData, vehicle_type : value})}
                  disabled = {vehicleOptions === undefined}

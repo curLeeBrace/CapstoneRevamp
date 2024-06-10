@@ -1,5 +1,5 @@
 import { Routes, Route} from "react-router-dom";
-import { AuthProvider, useAuth} from "./custom-hooks/auth_hooks/useAuth";
+import { AuthProvider} from "./custom-hooks/auth_hooks/useAuth";
 import {StickyNavbar} from "./Components/StickyNavBar";
 
 import Registration from "./routes/s-admin/Registration";
@@ -15,10 +15,8 @@ import { StationaryForm } from "./Components/Forms/StationaryForm";
 import HomePage from "./routes/HomePage";
 import LogIn from "./routes/not-auth/LogIn";
 import ForgotPass from "./routes/not-auth/ForgotPass";
-import SignUp from "./Components/LoginForms/SignUp";
 import ChangePass from "./routes/not-auth/ChangePass";
 import AuditLogs from "./routes/s-admin/AuditLogs";
-import AdminPage from "./routes/s-admin/AccountsTable";
 import AccountsTable from "./routes/s-admin/AccountsTable";
 import MobileCombustionSummary from "./routes/s-admin/MobileCombustionSummary";
 
