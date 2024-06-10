@@ -81,7 +81,7 @@ export function ChangePass() {
   return (
     <div className="flex justify-center min-h-screen px-4 py-10 overflow-x-hidden bg-gray-200">
       <div className="w-full h-full sm:w-96 md:w-3/4 lg:w-2/3 xl:w-1/2 px-6 py-6 -mt-10 shadow-black shadow-2xl bg-white rounded-xl relative">
-      <img src="./../../public/img/logo/LCCAOlogo2.png" className=" max-w-48 mx-auto"/>
+      <img src="/img/logo/LCCAOlogo2.png" className=" max-w-48 mx-auto"/>
         <AlertBox message={alert_msg} openAlert = {openAlert} setOpenAlert={setOpenAlert}/>
         <Typography variant="h3" color="blue-gray" className="mb-2 text-center">
           Change your Password
