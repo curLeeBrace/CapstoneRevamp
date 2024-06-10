@@ -5,7 +5,8 @@ import AlertBox from './AlertBox';
 import Cookies from 'js-cookie';
 import {user_info} from '../../routes/not-auth/LogIn';
 import useAxiosPrivate from '../../custom-hooks/auth_hooks/useAxiosPrivate';
-
+import DialogBox from "../DialogBox";
+import { truncate } from 'fs/promises';
 
 export function StationaryForm() {
 
@@ -22,6 +23,7 @@ const [isLoading, set_isLoading] = useState<boolean>(false);
 const [openAlert, setOpenAlert] = useState<boolean>(false);
 const [aler_msg, setAlertMsg] = useState<string>("");
 const axiosPivate = useAxiosPrivate();
+const [openDialogBox, setOpenDialogBox] = useState(false);
 
 
 
@@ -47,51 +49,42 @@ if(form_type !== ""){
 
 
 
-
-
-
-
-
 const submitHandler = () => {
-  console.log("formData : ", formData)
-  set_isLoading(true);
+
   const user_info = JSON.parse(Cookies.get('user_info') as string) as user_info;
   const {email, full_name, municipality_name, municipality_code, province_code} = user_info;
-  const {form_type, fuel_type, liters_consumption, vehicle_age, vehicle_type} = formData
 
-  
-
-  if(form_type && fuel_type &&  liters_consumption && vehicle_age && vehicle_type){
-
-    const payload = {
-      survey_data : formData,
-      surveyor_info : {
-        email,
-        full_name,
-        municipality_name,
-        municipality_code,
-        province_code
-      },
-      emission_factors : formData.fuel_type === "diesel" ?
-      {
-        co2 : 2.66,
-        ch4 : 4.0e-4,
-        n2o : 2.18e-5,
-      } : 
-      {
-        co2 : 2.07,
-        ch4 : 3.2e-4,
-        n2o : 1.9e-4,
-      }
-      ,
-      dateTime_created : new Date(),
-      dateTime_edited : null,
+  let payload = {
+    survey_data : formData,
+    surveyor_info : {
+      email,
+      full_name,
+      municipality_name,
+      municipality_code,
+      province_code
+    },
+    emission_factors : formData.fuel_type === "diesel" ?
+    {
+      co2 : 2.66,
+      ch4 : 4.0e-4,
+      n2o : 2.18e-5,
+    } : 
+    {
+      co2 : 2.07,
+      ch4 : 3.2e-4,
+      n2o : 1.9e-4,
     }
+    ,
+    dateTime_created : new Date(),
+    dateTime_edited : null,
+  }
 
-
+   setOpenDialogBox(false)
+    set_isLoading(true);
     axiosPivate.post('/forms/fuel/insert', payload)
     .then(res => {
         if(res.status === 201){
+          
           setOpenAlert(true);
           setAlertMsg("Sucsessfully Submitted!");
           setFormData({
@@ -111,19 +104,34 @@ const submitHandler = () => {
       setOpenAlert(true);
       setAlertMsg("Server Error!");
     })
-
+ 
+ 
   
+  
+
+
+}
+
+const submitValidation = () => {
+
+  const {form_type, fuel_type, liters_consumption, vehicle_age, vehicle_type} = formData
+  if(form_type && fuel_type &&  liters_consumption && vehicle_age && vehicle_type){
+    setOpenDialogBox(true);
   } else {
     set_isLoading(false);
     setOpenAlert(true);
     setAlertMsg("Some field are empty!");
   }
-
-
+  
+ 
 }
+
+
 
   return (
     <div className="flex justify-center min-h-screen px-4 py-10 overflow-x-hidden bg-gray-200">
+
+      <DialogBox open = {openDialogBox} setOpen={setOpenDialogBox} message = 'Please double check the data before submitting' label='Confirmation' submit={submitHandler} />
 
       <Card className="w-full h-full sm:w-96 md:w-3/4 lg:w-2/3 xl:w-1/2 px-6 py-6 -mt-10 shadow-black shadow-2xl rounded-xl relative">
             
@@ -204,10 +212,7 @@ const submitHandler = () => {
  
               </Select>
               
-             
-              
-
-                             
+            
               {/* <Input
                 name='vehicle_type'
                 value = {formData.vehicle_type}
@@ -293,9 +298,11 @@ const submitHandler = () => {
           {/* Full-width elements */}
           <div className="md:col-span-2">
             <Button 
-              fullWidth className="mt-6"
+              fullWidth 
+              className="mt-6 flex justify-center"
               loading = {isLoading}
-              onClick={submitHandler}
+              onClick={submitValidation}
+            
             >
               Submit
             </Button>
