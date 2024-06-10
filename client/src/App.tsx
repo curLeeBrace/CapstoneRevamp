@@ -63,6 +63,7 @@ function App() {
                     <Route path = 'sucsess' element = {<RegistrationCompleted/>}/>
               </Route> 
               <Route path = 'change-pass' element = {<ChangePass/>}/> 
+              <Route path = "audit-log" element = {<AuditLogs/>}/>
 
             </Route>
               {/*Route for Surveyor*/}
