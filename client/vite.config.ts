@@ -10,9 +10,10 @@ export default defineConfig(({ mode }) => {
       'process.env': env
     },
     plugins: [react()],
-    server: {
-      open: true, // Automatically open the app in the default browser
-      host : process.env.RAILWAY_PUBLIC_DOMAIN || "localhost",
-    },
+    // server: {
+    //   open: true, // Automatically open the app in the default browser
+    //   host : process.env.RAILWAY_PUBLIC_DOMAIN || "localhost",
+      
+    // },
   }
 })
