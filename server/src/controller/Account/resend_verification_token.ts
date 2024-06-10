@@ -19,7 +19,7 @@ const resendToken = async (req:Request, res:Response) => {
         if(!token_info) return res.sendStatus(204);
        
         //Send verification_link to Gmail
-           const base_url : string = process.env.VERIFICATION_URL as string;
+           const base_url : string = process.env.VERIFICATION_URL as string || "http://localhost:5173/verify/account/";
         
            const verification_link = base_url + acc._id + `/${token}`
            const html = `
