@@ -12,6 +12,7 @@ export default defineConfig(({ mode }) => {
     plugins: [react()],
     server: {
       open: true, // Automatically open the app in the default browser
+      host : process.env.RAILWAY_PUBLIC_DOMAIN || "localhost",
     },
   }
 })
