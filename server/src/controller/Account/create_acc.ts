@@ -144,15 +144,17 @@ export const createAcc_Validation = async (
   try {
     const acc_info = await AccountSchema.findOne({ email: email }).exec();
     const filePath = `../client/public/img/user_img/${req.body.user_type}/${req.body.img_name}`;
+
     if (acc_info) {
       if (acc_info.email === email) {
+        
         fs.access(filePath, fs.constants.F_OK, (err) => {
           if (err) {
             console.error(`${filePath} does not exist`);
             // Handle the error (e.g., send a response to the client)
+            return res.status(400).send(`Email already in used! : ${err.message}`);
           } else {
             // File exists, proceed to unlink
-
             if (acc_info.img_name !== img_name) {
               fs.unlink(filePath, (err) => {
                 if (err) throw err;
@@ -161,6 +163,7 @@ export const createAcc_Validation = async (
             }
           }
         });
+
 
         return res.status(400).send("Email already in used!");
       }
