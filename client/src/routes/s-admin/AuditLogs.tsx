@@ -8,6 +8,8 @@ import { useEffect, useState } from "react";
 import axios from "../../api/axios";
 import Loader from "../../Components/Loader";
 
+import Cookies from "js-cookie";
+
 
 interface AuditLog {
   name: string;
@@ -16,12 +18,16 @@ interface AuditLog {
   action: string;
 }
 
+
 export default function AuditLogs() {
   const [auditLogs, setAuditLogs] = useState<AuditLog[]>([]);
   const [loading, setLoading] = useState(true);
   const [startDate, setStartDate] = useState<string>('');
   const [endDate, setEndDate] = useState<string>('');
   const [selectedAction, setSelectedAction] = useState<string | null>(null);
+  const [user_type, setUserType] = useState<"s-admin"|"lgu_admin">();
+  const [municipalityName, setMunicipalityName] = useState('');;
+
     
   const fetchAuditLogs = async (params = {}) => {
     setLoading(true);
@@ -36,26 +42,60 @@ export default function AuditLogs() {
     }
   };
 
+  
+  const getUserInfo = () => {
+    const userInfo = JSON.parse(Cookies.get('user_info') as string);
+    setUserType(userInfo.user_type);
+    setMunicipalityName(userInfo.user_type === 'lgu_admin' ? userInfo.municipality_name : '');
+    return userInfo;
+  };
+
+  const handleFetchAuditLogs = (params = {}) => {
+    fetchAuditLogs(params);
+  };
+
   useEffect(() => {
-    fetchAuditLogs();
+    const userInfo = getUserInfo();
+
+    if (userInfo.user_type === 'lgu_admin') {
+      handleFetchAuditLogs({ municipality_code: userInfo.municipality_code });
+    } else {
+      handleFetchAuditLogs();
+    }
   }, []);
 
   const handleFilter = () => {
+    const userInfo = getUserInfo();
     const params = {
       ...(startDate && { startDate }),
       ...(endDate && { endDate }),
-      ...(selectedAction && { action: selectedAction })
+      ...(selectedAction && { action: selectedAction }),
+      ...(userInfo.user_type === 'lgu_admin' && { municipality_code: userInfo.municipality_code }),
     };
-    fetchAuditLogs(params);
+    handleFetchAuditLogs(params);
   };
 
   const clearFilter = () => {
     setStartDate('');
     setEndDate('');
     setSelectedAction(null);
-    fetchAuditLogs();
+    handleFilter(); // Call handleFilter to refetch audit logs after clearing filters
+    const userInfo = getUserInfo(); 
+    const params = {
+      ...(userInfo.user_type === 'lgu_admin' && { municipality_code: userInfo.municipality_code }),
+    };
+    fetchAuditLogs(params);
   };
-  
+
+  const renderTitle = () => {
+    if (user_type === 'lgu_admin') {
+      return `${municipalityName} Admin Audit Logs`;
+    }
+    if (user_type === 's-admin') {
+      return 'Super Admin (Laguna) Audit Logs';
+    }
+   
+  };
 
   const TABLE_HEAD = ["Name", "UserIdentifier", "Date", "TimeStamp", "Action"];
   const TABLE_ROWS = auditLogs.map((logs) => ({
@@ -69,14 +109,14 @@ export default function AuditLogs() {
   return (
     <div className='min-h-screen'>
       
-      <div className="flex justify-end pr-4 my-2 bg-gray-300 py-4 gap-4">
-    
+      <div className="flex justify-end pr-4 my-2 bg-gray-300 py-4 gap-4 flex-end-container">
+      <div className="ml-6 mt-2 md:text-2xl text-gray-600 md:mr-56 font-extrabold">{renderTitle()}</div>
         <Modal
           buttonText={<div className="flex items-center gap-2">
             <FunnelIcon className="h-6 w-6 text-gray-500" />
             <span>Filter</span>
           </div>}
-          title="Filter Audit Logs"
+          title="Filter Audit Logs "
           onClick={handleFilter}
         >
           {/* Child component of the modal */}
