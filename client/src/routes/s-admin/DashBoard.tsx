@@ -6,7 +6,7 @@ import Table from '../../Components/Table';
 import axios from "../../api/axios";
 import Cookies from 'js-cookie';
 import Chart from "react-apexcharts";
-import { getCurrentMonthName } from '../../custom-hooks/getCurrentMonth';
+
 
 
 type Emission = {

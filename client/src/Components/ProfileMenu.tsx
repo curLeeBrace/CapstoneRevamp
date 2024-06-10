@@ -8,7 +8,6 @@ import {
   Avatar,
 } from "@material-tailwind/react";
 import { ChevronDownIcon } from "@heroicons/react/24/solid";
-import { NavLink } from "react-router-dom";
 import {Cog6ToothIcon, PowerIcon, FaceSmileIcon} from "@heroicons/react/24/solid";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";

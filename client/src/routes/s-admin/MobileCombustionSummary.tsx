@@ -111,24 +111,22 @@ const MobileCombustionSummary = () => {
                         {
                             user.type !== "lgu_admin" ?
                                 <Select onChange={(value) => {
-                                    setAddress((prev : any) => {
-                                        let lgu_municipality:any;   
+                                    let lgu_municipality:any;   
                                         
                         
-                                        const mucipality_data= filterADddress({address_type : "mucipality"});
-                                        mucipality_data.forEach(data =>{
-                                            if(data.address_name === value){
-                            
-                                            lgu_municipality = {
-                                                municipality_name : data.address_name,
-                                                address_code : data.address_code,
-                                                parent_code : data.parent_code,
-                                            }
-                                            }
-                                        })
+                                    const mucipality_data= filterADddress({address_type : "mucipality"});
+                                    mucipality_data.forEach(data =>{
+                                        if(data.address_name === value){
                         
-                                        return prev = lgu_municipality
+                                        lgu_municipality = {
+                                            municipality_name : data.address_name,
+                                            address_code : data.address_code,
+                                            parent_code : data.parent_code,
+                                        }
+                                        }
                                     })
+
+                                    setAddress(lgu_municipality)
                                 }}
                                 >
                                     {city_opt? 

@@ -1,9 +1,7 @@
-import React, { Fragment, useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import {
   Navbar,
-  MobileNav,
   Typography,
-  Button,
   IconButton,
   Collapse,
 } from "@material-tailwind/react";
