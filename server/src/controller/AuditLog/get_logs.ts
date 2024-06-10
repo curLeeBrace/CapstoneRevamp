@@ -3,7 +3,7 @@ import AuditLogSchema from "../../db_schema/AuditLogSchema";
 
 export const fetchAuditLogs = async (req: Request, res: Response) => {
   try {
-    const { startDate, endDate, action } = req.query;
+    const { startDate, endDate, action, province_code, municipality_code } = req.query;
 
     let filter: any = {};
 
@@ -24,7 +24,15 @@ export const fetchAuditLogs = async (req: Request, res: Response) => {
     if (action) {
       filter.action = { $regex: new RegExp(action as string, 'i') };
     }
-    console.log('Constructed filter:', filter);
+
+    if (municipality_code) {
+      filter["lgu_municipality.municipality_code"] = municipality_code;
+    }
+
+    if (province_code) {
+      filter["lgu_municipality.province_code"] = province_code;
+    }
+   
     // Fetch audit logs from the database with the filter applied
     const auditLogs = await AuditLogSchema.find(filter).sort({ dateTime: -1 }).exec();
     res.status(200).json(auditLogs);

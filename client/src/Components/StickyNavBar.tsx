@@ -96,6 +96,10 @@ export function StickyNavbar() {
             name: "Register",
             url: `/${user_type}/register`,
           },
+          {
+            name: "Audit Log",
+            url: `/${user_type}/audit-log`,
+          },
         ])
 
       } else {
