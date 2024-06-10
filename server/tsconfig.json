@@ -107,8 +107,8 @@
     "skipLibCheck": true                                 /* Skip type checking all .d.ts files. */
   },
   "include": [
-    "./api/*.ts",
-    "src/app.ts"  
+    "src/**/*.ts", 
+    "types/**/*.d.ts",
   ]
 
 }
