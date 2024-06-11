@@ -190,8 +190,9 @@ function Registration() {
 
 
   return (
-    <div className="flex justify-center p-3 bg-gray-200">
-      <Card className="md:w-3/5 w-5/6 flex items-center border border-gray-400 shadow-black shadow-2xl">
+    <div className="flex justify-center p-3 bg-gray-200 min-h-screen">
+     
+      <Card className="md:w-3/5 w-5/6 min-h-full flex items-center border border-gray-400 shadow-black shadow-2xl">
         <CardHeader 
           floated={false}
           shadow={false}
@@ -210,7 +211,7 @@ function Registration() {
 
           <InputAddrress setState={setDetails}/>
           <DatePicker setState={setDetails}/>
-          <Input label="Choose Photo" type="file" accept="image/*" name="img_name" onChange={(value)=> upload_imgHandler(value)} required disabled = {!details.f_name || !details.l_name}/>
+          <Input label="Choose Profile Picture" type="file" accept="image/*" name="img_name" onChange={(value)=> upload_imgHandler(value)} required disabled = {!details.f_name || !details.l_name}/>
           <Typography variant="h5" color="gray">Account Information</Typography>
           
           {
@@ -273,7 +274,7 @@ function Registration() {
           <Button loading = {isLoading} size="lg" onClick={register}>Register</Button>
         </CardFooter>
       </Card>
-    
+     
       <Outlet/>
     </div>
 
