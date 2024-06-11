@@ -6,7 +6,6 @@ import { useEffect, useState } from "react";
 import useFilterAddress, {AddressReturnDataType} from "../../custom-hooks/useFilterAddrress";
 import { Typography, Select, Option, Checkbox} from "@material-tailwind/react";
 import { SimpleCard } from "../../Components/Dashboard/SimpleCard";
-import Skeleton from "../../Components/Skeleton";
 import useAxiosPrivate from "../../custom-hooks/auth_hooks/useAxiosPrivate";
 
 const MobileCombustionSummary = () => {
