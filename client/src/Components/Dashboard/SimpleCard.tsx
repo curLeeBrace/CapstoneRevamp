@@ -14,14 +14,14 @@ interface SimpleCard{
 
   export function SimpleCard({header, body, icon} : SimpleCard) {
     return (
-      <Card className="w-full h-full flex justify-center">
+      <Card className="w-full h-full flex">
        
-          <CardBody className="flex items-center justify-around border border-gray-300 h-full shadow-md rounded-lg">
+          <CardBody className="flex items-center justify-between px-16 border border-gray-300 h-full shadow-md rounded-lg">
             <div className="text-nowrap flex-shrink-0">
-              <Typography variant="h5"  className="mb-2">
+              <Typography  className="mb-2  md:text-sm font-extralight">
                 {header}
               </Typography>
-              <Typography variant="h2" color="blue-gray">
+              <Typography color="blue-gray" className=" md:text-2xl font-bold">
                 {body}
               </Typography>
 
