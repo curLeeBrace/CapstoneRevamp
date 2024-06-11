@@ -219,9 +219,9 @@ const MobileCombustionSummary = () => {
                                     
                                      
                                     
-                                        <BarChart chart_icon={<TruckIcon className="h-6 2-6"/>} chart_label="Vehicle Type" chart_meaning="overall surveyed vehicles" series={v_typeSeries} isLoading = {isLoading}/>
-                                        <BarChart chart_icon={<TruckIcon className="h-6 2-6"/>} chart_label="Vehicle Age" chart_meaning="Total counts of diffirent vehicle age" series={v_ageSeries}/>
-                                        <BarChart chart_icon={<TruckIcon className="h-6 2-6"/>} chart_label="Vehicle Emission Rate" chart_meaning="Total Emission rate per vehicle" series={vehicle_ghge_rate}/>
+                                        <BarChart chart_icon={<TruckIcon className="h-6 2-6"/>} chart_label="Vehicle Type" chart_meaning="Overall surveyed vehicles." series={v_typeSeries} isLoading = {isLoading}/>
+                                        <BarChart chart_icon={<TruckIcon className="h-6 2-6"/>} chart_label="Vehicle Age" chart_meaning="Total counts of diffirent vehicle age." series={v_ageSeries}/>
+                                        <BarChart chart_icon={<TruckIcon className="h-6 2-6"/>} chart_label="Vehicle Emission Rate" chart_meaning="Total Emission rate per vehicle." series={vehicle_ghge_rate}/>
                                   
                                            
                                      
