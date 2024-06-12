@@ -6,7 +6,7 @@ import { Avatar, Select, Option, Typography, Input } from '@material-tailwind/re
 import axios from '../../api/axios';
 import FilterMunicipality from './FilterMunicipality';
 import Loader from '../../Components/Loader';
-import { MagnifyingGlassIcon } from '@heroicons/react/24/outline'; // Import an icon for the search button
+import { MagnifyingGlassCircleIcon } from '@heroicons/react/24/solid'; // Import an icon for the search button
 
 interface AccInfo {
   brgy_name: string;
@@ -144,9 +144,9 @@ const AccountsTable: React.FC = () => {
           />
           <button
             className="absolute right-0 top-0 mt-2 mr-2"
-            onClick={handleSearch}
+            
           >
-            <MagnifyingGlassIcon className="h-6 w-6 text-gray-500" />
+            <MagnifyingGlassCircleIcon className="h-6 w-6 text-gray-500" />
           </button>
         </div>
 
