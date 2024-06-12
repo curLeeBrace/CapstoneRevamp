@@ -8,7 +8,8 @@ const storage = multer.diskStorage({
     destination: function (req, file, cb) {
         
         // console.log("Req : ", req.body)
-        const userDir = path.join(__dirname, '..', 'client', 'public', 'img', 'user_img', `${req.body.user_type}`);
+        console.log("Directory : ", __dirname);
+        const userDir = path.join(__dirname, '..', '..', '..', 'client', 'public', 'img', 'user_img', `${req.body.user_type}`);
 
         return cb(null, userDir);
       
