@@ -23,7 +23,7 @@ import MobileCombustionSummary from "./routes/s-admin/MobileCombustionSummary";
 
 
 function App() {
-
+  console.log("Path : ", __dirname)
   return (
     <AuthProvider>
         <StickyNavbar/>
