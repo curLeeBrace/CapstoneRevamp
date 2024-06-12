@@ -136,9 +136,6 @@ export default function AccountsTable() {
     ),
   }));
 
-  if (loading) {
-    return <div className='flex justify-center mt-20'><Loader/></div> ;
-  }
 
   return (
     <div className="min-h-screen ">
@@ -157,7 +154,11 @@ export default function AccountsTable() {
         </Modal>
         <button onClick={handleClearFilter} className="bg-red-500 text-white px-4 py-2 rounded-md font-bold hover:shadow-xl">Clear Filter</button>
       </div>
-      <TableWithStripedRows headers={TABLE_HEAD} rows={TABLE_ROWS} />
+      {loading ? (
+        <div className='flex justify-center mt-20'><Loader/></div>
+      ) : (
+        <TableWithStripedRows headers={TABLE_HEAD} rows={TABLE_ROWS} />
+      )}
     </div>
   );
 }
