@@ -81,6 +81,20 @@ export default function AccountsTable() {
     }
   };
 
+<<<<<<< HEAD
+=======
+
+
+  // const getUserImageURL = (userType: string, imageName: string) => {
+  //   const baseDir: { [key: string]: string } = {
+  //     lgu_admin: './img/user_img/lgu_admin/',
+  //     surveyor: './img/user_img/surveyor/',
+  //   };
+  //   return `${baseDir[userType] ?? ''}${imageName}`;
+  // };
+
+
+>>>>>>> ce124fa4d3589f4be6d1b09190a5ce03db366fbd
   const TABLE_HEAD = ["Name", "Profile", "UserType", "Municipality", "Email", "Action"];
 
   const TABLE_ROWS = filteredDetails.map((detail) => ({
