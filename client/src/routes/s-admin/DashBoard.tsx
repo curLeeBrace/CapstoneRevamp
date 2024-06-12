@@ -119,7 +119,7 @@ function DashBoard() {
       <div className='flex flex-col h-full w-full'>
         <div className='flex items-center gap-3 basis-1/4 px-2 overflow-x-auto'>
           <div className='h-4/5 w-full'>
-            <SimpleCard body={`${dashboard_data?.today_ghge.toFixed(2)}`}header='Total GHGe'  icon={<FireIcon className='h-6 w-6 text-red-300'/>}/>
+            <SimpleCard body={`${dashboard_data?.today_ghge.toFixed(2)}`}header='Total GHG Emission'  icon={<FireIcon className='h-6 w-6 text-red-300'/>}/>
           </div>        
           
           <div className='h-4/5 w-full'>

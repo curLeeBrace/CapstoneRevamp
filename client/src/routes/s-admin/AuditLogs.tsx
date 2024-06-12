@@ -118,7 +118,7 @@ export default function AuditLogs() {
             label="Search... (Name, User Type, Action, Date)"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className='no-clear-button'
+            className='no-clear-button bg-white'
           />
           <button
             className="absolute right-0 top-0 mt-2 mr-2"
