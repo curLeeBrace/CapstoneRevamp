@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { TableWithStripedRows } from '../../Components/Auditlog/TableWithStripedRows';
 import { Modal } from '../../Components/Modal';
 import { FunnelIcon, PencilIcon, TrashIcon } from '@heroicons/react/24/solid';
-import { Avatar, Typography } from '@material-tailwind/react';
+import { Avatar, Select, Option, Typography } from '@material-tailwind/react';
 import axios from '../../api/axios';
 import FilterMunicipality from './FilterMunicipality';
 import Loader from '../../Components/Loader';
@@ -36,6 +36,7 @@ export default function AccountsTable() {
   const [filteredDetails, setFilteredDetails] = useState<UserDetails[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [selectedMunicipality, setSelectedMunicipality] = useState<string>('');
+  const [selectedUserType, setSelectedUserType] = useState<string>('');
 
   useEffect(() => {
     const fetchAccounts = async () => {
@@ -43,7 +44,7 @@ export default function AccountsTable() {
         const response = await axios.get('/account/get-all');
         const allDetails = response.data.filter((user: UserDetails) => user.user_type !== 's-admin');
         setDetails(allDetails);
-        setFilteredDetails(allDetails); // Initialize filteredDetails with all details
+        setFilteredDetails(allDetails); 
       } catch (error) {
         console.error("Error fetching accounts:", error);
       } finally {
@@ -54,21 +55,21 @@ export default function AccountsTable() {
     fetchAccounts();
   }, []);
 
-
   const handleFilter = () => {
-    if (selectedMunicipality) {
-      const filtered = details.filter((detail) => detail.address.municipality_name === selectedMunicipality);
-      setFilteredDetails(filtered);
-    } else {
-      setFilteredDetails(details); // Reset to all details if no filter selected
-    }
-  };
-
-  const handleClearFilter = () => {
-    setSelectedMunicipality(''); // Clear the selected municipality to remove the filter
-    setFilteredDetails(details); // Reset filteredDetails to show all details
+    const filtered = details.filter((detail) => 
+      (!selectedMunicipality || detail.address.municipality_name === selectedMunicipality) &&
+      (!selectedUserType || detail.user_type === selectedUserType)
+    );
+  
+    setFilteredDetails(filtered);
   };
   
+
+  const handleClearFilter = () => {
+    setSelectedMunicipality('');
+    setSelectedUserType('');
+    setFilteredDetails(details);
+  };
 
   const handleDelete = async (accountId: string) => {
     try {
@@ -80,17 +81,6 @@ export default function AccountsTable() {
     }
   };
 
-
-
-  const getUserImageURL = (userType: string, imageName: string) => {
-    const baseDir: { [key: string]: string } = {
-      lgu_admin: '/img/user_img/lgu_admin/',
-      surveyor: '/img/user_img/surveyor/',
-    };
-    return `${baseDir[userType] ?? ''}${imageName}`;
-  };
-
-
   const TABLE_HEAD = ["Name", "Profile", "UserType", "Municipality", "Email", "Action"];
 
   const TABLE_ROWS = filteredDetails.map((detail) => ({
@@ -100,12 +90,12 @@ export default function AccountsTable() {
     Municipality: detail.address.municipality_name,
     Profile: (
       <Avatar
-        src={getUserImageURL(detail.user_type, detail.img_name)}
+        src={`/img/user_img/${detail.user_type}/${detail.img_name}`}
       />
     ),
     Action: (
       <div className="space-x-2">
-        <Modal
+        {/* <Modal
           buttonText={
             <div className="flex items-center gap-2">
               <PencilIcon className="h-6 w-6 text-gray-500" />
@@ -117,7 +107,7 @@ export default function AccountsTable() {
           <div className="whitespace-normal">
             <Typography className="font-bold text-center">Are you sure you want to edit this account?</Typography>
           </div>
-        </Modal>
+        </Modal> */}
         <Modal
           buttonText={
             <div className="flex items-center gap-2">
@@ -136,10 +126,9 @@ export default function AccountsTable() {
     ),
   }));
 
-
   return (
-    <div className="min-h-screen ">
-      <div className="flex justify-end pr-4 my-2 bg-gray-300  py-4 gap-4">
+    <div className="min-h-screen">
+      <div className="flex justify-end pr-4 my-2 bg-gray-300 py-4 gap-4">
         <Modal
           buttonText={
             <div className="flex items-center gap-2">
@@ -150,12 +139,26 @@ export default function AccountsTable() {
           title="Filter Account"
           onClick={handleFilter}
         >
-         <FilterMunicipality setState={setSelectedMunicipality} />
+          <div className="mb-4">
+            <Select
+              className="font-semibold"
+              label="Select User Type"
+             
+            
+            >
+              <Option onClick={() => setSelectedUserType("")}>All Accounts</Option>
+              <Option onClick={() => setSelectedUserType("lgu_admin")}>LGU Admin</Option>
+              <Option onClick={() => setSelectedUserType("surveyor")}>Surveyor</Option>
+            </Select>
+          </div>
+          <div>
+            <FilterMunicipality setState={setSelectedMunicipality} />
+          </div>
         </Modal>
         <button onClick={handleClearFilter} className="bg-red-500 text-white px-4 py-2 rounded-md font-bold hover:shadow-xl">Clear Filter</button>
       </div>
       {loading ? (
-        <div className='flex justify-center mt-20'><Loader/></div>
+        <div className="flex justify-center mt-20"><Loader/></div>
       ) : (
         <TableWithStripedRows headers={TABLE_HEAD} rows={TABLE_ROWS} />
       )}

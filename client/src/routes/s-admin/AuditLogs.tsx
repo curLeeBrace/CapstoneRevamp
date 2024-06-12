@@ -108,7 +108,7 @@ export default function AuditLogs() {
     <div className='min-h-screen'>
       
       <div className="flex justify-end pr-4 my-2 bg-gray-300 py-4 gap-4 flex-end-container">
-      <div className="ml-6 mt-2 md:text-2xl text-gray-600 md:mr-56 font-extrabold">{renderTitle()}</div>
+      <div className="ml-6 mt-2 md:text-2xl text-gray-600 md:mr-56 font-extrabold text-center">{renderTitle()}</div>
         <Modal
           buttonText={<div className="flex items-center gap-2">
             <FunnelIcon className="h-6 w-6 text-gray-500" />
