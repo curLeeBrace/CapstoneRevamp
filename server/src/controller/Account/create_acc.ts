@@ -153,12 +153,16 @@ export const createAcc_Validation = async (
         if (fs.existsSync(filePath)) {
           console.log('File path exists');
           if (acc_info.img_name !== img_name) {
+
             fs.unlink(filePath, (err) => {
               if (err) throw err;
               console.log("File Deleted!");
             });
+
           }
 
+        } else {
+          return res.status(400).send("Email already in used!");
         }
 
         return res.status(400).send("Email already in used!");
