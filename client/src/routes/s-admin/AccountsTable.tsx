@@ -82,13 +82,13 @@ export default function AccountsTable() {
 
 
 
-  const getUserImageURL = (userType: string, imageName: string) => {
-    const baseDir: { [key: string]: string } = {
-      lgu_admin: '/img/user_img/lgu_admin/',
-      surveyor: '/img/user_img/surveyor/',
-    };
-    return `${baseDir[userType] ?? ''}${imageName}`;
-  };
+  // const getUserImageURL = (userType: string, imageName: string) => {
+  //   const baseDir: { [key: string]: string } = {
+  //     lgu_admin: './img/user_img/lgu_admin/',
+  //     surveyor: './img/user_img/surveyor/',
+  //   };
+  //   return `${baseDir[userType] ?? ''}${imageName}`;
+  // };
 
 
   const TABLE_HEAD = ["Name", "Profile", "UserType", "Municipality", "Email", "Action"];
@@ -100,7 +100,7 @@ export default function AccountsTable() {
     Municipality: detail.address.municipality_name,
     Profile: (
       <Avatar
-        src={getUserImageURL(detail.user_type, detail.img_name)}
+        src={`/img/user_img/${detail.user_type}/${detail.img_name}`}
       />
     ),
     Action: (
