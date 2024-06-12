@@ -127,10 +127,15 @@ export const register_acc = async (req: Request, res: Response) => {
     // console.log("token id ", result_ofCreating._id);
     // console.log(token.split('.')[1])
   } catch (error) {
-    console.log(error);
-    return res.status(500).send("Server Error!");
+    console.log(error, "create account!");
+    return res.status(500).send("Server Error! in register_acc");
   }
 };
+
+
+
+
+
 
 //==Middleware==//
 //check email if exisiting // validation when crreating an account
@@ -140,7 +145,6 @@ export const createAcc_Validation = async (
   next: NextFunction
 ) => {
   const { email, img_name } = req.body as Acc_Data;
-  console.log("Email", email);
   try {
     const acc_info = await AccountSchema.findOne({ email: email }).exec();
     const filePath = `../client/public/img/user_img/${req.body.user_type}/${req.body.img_name}`;
@@ -161,8 +165,6 @@ export const createAcc_Validation = async (
 
           }
 
-        } else {
-          return res.status(400).send("Email already in used!");
         }
 
         return res.status(400).send("Email already in used!");
@@ -171,6 +173,6 @@ export const createAcc_Validation = async (
 
     next();
   } catch (error) {
-    return res.sendStatus(500);
+    return res.status(500).send("Server error in create account validation");
   }
 };
