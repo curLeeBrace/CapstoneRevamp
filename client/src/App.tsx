@@ -19,11 +19,11 @@ import ChangePass from "./routes/not-auth/ChangePass";
 import AuditLogs from "./routes/s-admin/AuditLogs";
 import AccountsTable from "./routes/s-admin/AccountsTable";
 import MobileCombustionSummary from "./routes/s-admin/MobileCombustionSummary";
-
+import path from "path";
 
 
 function App() {
-  console.log("Path : ", __dirname)
+  console.log("Path : ",path.join(__dirname, 'ey'));
   return (
     <AuthProvider>
         <StickyNavbar/>
