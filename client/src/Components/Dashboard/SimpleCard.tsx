@@ -18,7 +18,7 @@ interface SimpleCard{
        
           <CardBody className="flex items-center justify-between px-16 border border-gray-300 h-full shadow-md rounded-lg">
             <div className="text-nowrap flex-shrink-0">
-              <Typography  className="mb-2  md:text-sm font-extralight">
+              <Typography  className="mb-2 text-sm md:text-lg font-semibold">
                 {header}
               </Typography>
               <Typography color="blue-gray" className=" md:text-2xl font-bold">
