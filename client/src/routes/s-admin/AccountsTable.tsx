@@ -30,6 +30,7 @@ interface UserDetails {
   img_name: string;
   user_type: string;
   verified: boolean;
+  img_url?: string; 
 }
 
 const AccountsTable: React.FC = () => {
@@ -60,6 +61,7 @@ const AccountsTable: React.FC = () => {
   useEffect(() => {
     handleSearch();
   }, [searchQuery]);
+
 
   const handleSearch = () => {
     const searchFiltered = details.filter((detail) =>
