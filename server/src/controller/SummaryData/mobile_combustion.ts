@@ -17,8 +17,9 @@ const getMobileCombustionData = async (req:Request, res:Response) => {
 
         let counts_ofVehicleTypes:number[] = [];
         let counts_ofVehicleAge: number[] = [];
+        let vehicle_ghge_rate : number[] = [];
+
         const vehicleTypes = form_type === "residential" ? ['Car','SUV','Motorcycle'] : form_type === "commercial" ? ['Jeep','Tricycle','Bus','Van','Taxi','Truck'] : ['Car','SUV','Motorcycle','Jeep','Tricycle','Bus','Van','Taxi','Truck'];
-        
         const mobile_combustionForm = await FuelFormSchema.find({
             $and: [
                     {'surveyor_info.province_code': province_code},
@@ -53,14 +54,19 @@ const getMobileCombustionData = async (req:Request, res:Response) => {
 
         vehicleTypes.forEach(vehicle => {
             let count = 0;
+            let vehicle_emssion = 0;
             mobile_combustionForm.forEach(formData => {
                 if(formData.survey_data.vehicle_type === vehicle){
                     count++;
+                    const single_form_emmmsion = get_emission(formData.emission_factors, formData.survey_data.liters_consumption);
+                    const {co2e, ch4e, n2oe, ghge} = single_form_emmmsion
+
+                    vehicle_emssion += ghge;
 
                 }
             })
 
-
+            vehicle_ghge_rate.push(vehicle_emssion)
             counts_ofVehicleTypes.push(count);
         })
 
@@ -81,6 +87,7 @@ const getMobileCombustionData = async (req:Request, res:Response) => {
 
         return res.status(200).json({
             emmission, vehicle : {
+                vehicle_ghge_rate,
                 vehicleTypes, 
                 counts_ofVehicleTypes,
                 vehicleAges : uniqueVehicleAges,

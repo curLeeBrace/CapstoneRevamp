@@ -1,11 +1,12 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { TableWithStripedRows } from '../../Components/Auditlog/TableWithStripedRows';
 import { Modal } from '../../Components/Modal';
-import { FunnelIcon, PencilIcon, TrashIcon } from '@heroicons/react/24/solid';
-import { Avatar, Typography } from '@material-tailwind/react';
+import { FunnelIcon, TrashIcon } from '@heroicons/react/24/solid';
+import { Avatar, Select, Option, Typography, Input } from '@material-tailwind/react';
 import axios from '../../api/axios';
 import FilterMunicipality from './FilterMunicipality';
 import Loader from '../../Components/Loader';
+import { MagnifyingGlassCircleIcon } from '@heroicons/react/24/solid'; // Import an icon for the search button
 
 interface AccInfo {
   brgy_name: string;
@@ -29,13 +30,16 @@ interface UserDetails {
   img_name: string;
   user_type: string;
   verified: boolean;
+  img_url?: string; 
 }
 
-export default function AccountsTable() {
+const AccountsTable: React.FC = () => {
   const [details, setDetails] = useState<UserDetails[]>([]);
   const [filteredDetails, setFilteredDetails] = useState<UserDetails[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [selectedMunicipality, setSelectedMunicipality] = useState<string>('');
+  const [selectedUserType, setSelectedUserType] = useState<string>('');
+  const [searchQuery, setSearchQuery] = useState<string>('');
 
   useEffect(() => {
     const fetchAccounts = async () => {
@@ -43,7 +47,7 @@ export default function AccountsTable() {
         const response = await axios.get('/account/get-all');
         const allDetails = response.data.filter((user: UserDetails) => user.user_type !== 's-admin');
         setDetails(allDetails);
-        setFilteredDetails(allDetails); // Initialize filteredDetails with all details
+        setFilteredDetails(allDetails);
       } catch (error) {
         console.error("Error fetching accounts:", error);
       } finally {
@@ -54,21 +58,47 @@ export default function AccountsTable() {
     fetchAccounts();
   }, []);
 
+  useEffect(() => {
+    handleSearch();
+  }, [searchQuery]);
+
+
+  const handleSearch = () => {
+    const searchFiltered = details.filter((detail) => {
+        // Concatenate all relevant fields into one string
+        const searchDetails = (
+            `${detail.f_name} ${detail.m_name} ${detail.l_name} ` +
+            `${detail.email} ` +
+            `${detail.user_type} ` +
+            `${detail.address.municipality_name}`
+        ).toLowerCase();
+
+       
+        const searchQueryLower = searchQuery.toLowerCase();
+
+        return searchDetails.includes(searchQueryLower);
+    });
+
+    setFilteredDetails(searchFiltered);
+};
+
+
 
   const handleFilter = () => {
-    if (selectedMunicipality) {
-      const filtered = details.filter((detail) => detail.address.municipality_name === selectedMunicipality);
-      setFilteredDetails(filtered);
-    } else {
-      setFilteredDetails(details); // Reset to all details if no filter selected
-    }
+    const filtered = details.filter((detail) =>
+      (!selectedMunicipality || detail.address.municipality_name === selectedMunicipality) &&
+      (!selectedUserType || detail.user_type === selectedUserType)
+    );
+
+    setFilteredDetails(filtered);
   };
 
   const handleClearFilter = () => {
-    setSelectedMunicipality(''); // Clear the selected municipality to remove the filter
-    setFilteredDetails(details); // Reset filteredDetails to show all details
+    setSelectedMunicipality('');
+    setSelectedUserType('');
+    setSearchQuery('');
+    setFilteredDetails(details);
   };
-  
 
   const handleDelete = async (accountId: string) => {
     try {
@@ -80,17 +110,6 @@ export default function AccountsTable() {
     }
   };
 
-
-
-  const getUserImageURL = (userType: string, imageName: string) => {
-    const baseDir: { [key: string]: string } = {
-      lgu_admin: '/img/user_img/lgu_admin/',
-      surveyor: '/img/user_img/surveyor/',
-    };
-    return `${baseDir[userType] ?? ''}${imageName}`;
-  };
-
-
   const TABLE_HEAD = ["Name", "Profile", "UserType", "Municipality", "Email", "Action"];
 
   const TABLE_ROWS = filteredDetails.map((detail) => ({
@@ -100,24 +119,11 @@ export default function AccountsTable() {
     Municipality: detail.address.municipality_name,
     Profile: (
       <Avatar
-        src={getUserImageURL(detail.user_type, detail.img_name)}
+        src={`/img/user_img/${detail.user_type}/${detail.img_name}`}
       />
     ),
     Action: (
       <div className="space-x-2">
-        <Modal
-          buttonText={
-            <div className="flex items-center gap-2">
-              <PencilIcon className="h-6 w-6 text-gray-500" />
-              <span>Edit</span>
-            </div>
-          }
-          title=""
-        >
-          <div className="whitespace-normal">
-            <Typography className="font-bold text-center">Are you sure you want to edit this account?</Typography>
-          </div>
-        </Modal>
         <Modal
           buttonText={
             <div className="flex items-center gap-2">
@@ -136,28 +142,61 @@ export default function AccountsTable() {
     ),
   }));
 
-  if (loading) {
-    return <div className='flex justify-center mt-20'><Loader/></div> ;
-  }
-
   return (
-    <div className="min-h-screen ">
-      <div className="flex justify-end pr-4 my-2 bg-gray-300  py-4 gap-4">
-        <Modal
-          buttonText={
-            <div className="flex items-center gap-2">
-              <FunnelIcon className="h-6 w-6 text-gray-500" />
-              <span>Filter</span>
+    <div className="min-h-screen">
+      <div className="flex flex-col md:flex-row justify-end pr-4 my-2 bg-gray-300 py-4 gap-4">
+        <div className='relative w-full max-w-full md:max-w-[24rem] ml-2'>
+          <Input
+            type="search"
+            label="Search... (Names, User Type, Municipality)"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className='no-clear-button bg-white'
+          />
+          <button
+            className="absolute right-0 top-0 mt-2 mr-2"
+            
+          >
+            <MagnifyingGlassCircleIcon className="h-6 w-6 text-gray-500" />
+          </button>
+        </div>
+
+        <div className='mx-auto flex justify-end 2xl:mx-0 gap-2 lg:mx-0'>
+          <Modal
+            buttonText={
+              <div className="flex items-center gap-2 justify-center">
+                <FunnelIcon className="h-6 w-6 text-gray-500" />
+                Filter
+              </div>
+            }
+            title="Filter Account"
+            onClick={handleFilter}
+          >
+            <div className="mb-4">
+              <Select
+                className="font-semibold"
+                label="Select User Type"
+              >
+                <Option onClick={() => setSelectedUserType("")}>All Accounts</Option>
+                <Option onClick={() => setSelectedUserType("lgu_admin")}>LGU Admin</Option>
+                <Option onClick={() => setSelectedUserType("surveyor")}>Surveyor</Option>
+              </Select>
             </div>
-          }
-          title="Filter Account"
-          onClick={handleFilter}
-        >
-         <FilterMunicipality setState={setSelectedMunicipality} />
-        </Modal>
-        <button onClick={handleClearFilter} className="bg-red-500 text-white px-4 py-2 rounded-md font-bold hover:shadow-xl">Clear Filter</button>
+            <div>
+              <FilterMunicipality setState={setSelectedMunicipality} />
+            </div>
+          </Modal>
+
+          <button onClick={handleClearFilter} className="bg-red-500 text-white px-2 py-2 rounded-md font-bold hover:shadow-xl">Clear Filter</button>
+        </div>
       </div>
-      <TableWithStripedRows headers={TABLE_HEAD} rows={TABLE_ROWS} />
+      {loading ? (
+        <div className="flex justify-center mt-20"><Loader /></div>
+      ) : (
+        <TableWithStripedRows headers={TABLE_HEAD} rows={TABLE_ROWS} />
+      )}
     </div>
   );
 }
+
+export default AccountsTable;
