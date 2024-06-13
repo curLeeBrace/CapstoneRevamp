@@ -7,19 +7,21 @@ import {
   import Chart from "react-apexcharts";
 import { SimpleCard } from "./SimpleCard";
 import { ExclamationTriangleIcon } from "@heroicons/react/16/solid";
+import Skeleton from "../Skeleton";
   
    
   interface BarChartProps {
     chart_label : string;
     chart_meaning : string;
     chart_icon : React.ReactElement;
-    series : any[] | undefined
+    series : any[] | undefined;
+    isLoading? : boolean;
   }
 
   
    
    
-  export default function BarChart({chart_icon, chart_label, chart_meaning, series}:BarChartProps) {
+  export default function BarChart({chart_icon, chart_label, chart_meaning, series, isLoading = false}:BarChartProps) {
 
     const chartConfig = {
       height: 240,
@@ -121,13 +123,14 @@ import { ExclamationTriangleIcon } from "@heroicons/react/16/solid";
         <CardBody className="px-2 pb-0">
           {
             series ? 
-              <Chart
-                options={chartConfig}
-                series={chartConfig.series}
-                height={"100%"}
-                width={"100%"}
-                type="bar"
-              />
+              !isLoading ?
+                <Chart
+                  options={chartConfig}
+                  series={chartConfig.series}
+                  height={"100%"}
+                  width={"100%"}
+                  type="bar"
+                /> : <Skeleton/>
             :<SimpleCard body={"No Available Data"} header="" icon={<ExclamationTriangleIcon className="h-full w-full"/>}/>
           }
           
