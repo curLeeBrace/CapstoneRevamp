@@ -65,19 +65,23 @@ const AccountsTable: React.FC = () => {
 
   const handleSearch = () => {
     const searchFiltered = details.filter((detail) => {
-      const fullName = `${detail.f_name} ${detail.m_name} ${detail.l_name}`.toLowerCase();
-      const searchQueryLower = searchQuery.toLowerCase();
+        // Concatenate all relevant fields into one string
+        const searchDetails = (
+            `${detail.f_name} ${detail.m_name} ${detail.l_name} ` +
+            `${detail.email} ` +
+            `${detail.user_type} ` +
+            `${detail.address.municipality_name}`
+        ).toLowerCase();
 
-      return (
-        fullName.includes(searchQueryLower) ||
-        detail.email.toLowerCase().includes(searchQueryLower) ||
-        detail.user_type.toLowerCase().includes(searchQueryLower) ||
-        detail.address.municipality_name.toLowerCase().includes(searchQueryLower)
-      );
+       
+        const searchQueryLower = searchQuery.toLowerCase();
+
+        return searchDetails.includes(searchQueryLower);
     });
 
     setFilteredDetails(searchFiltered);
 };
+
 
 
   const handleFilter = () => {
