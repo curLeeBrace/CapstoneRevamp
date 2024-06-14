@@ -60,10 +60,12 @@ export const register_acc = async (req: Request, res: Response) => {
     user_type, //"0-user | 1-admin | 2-super_admin"
   };
 
-  const token = CryptoJS.SHA256(crypto.randomUUID()[0].toString()).toString(
-    CryptoJS.enc.Hex
-  );
-
+  // const token = CryptoJS.SHA256(crypto.randomUUID()[0].toString()).toString(
+  //   CryptoJS.enc.Hex
+  // );
+  const token = CryptoJS.lib.WordArray.random(32).toString(CryptoJS.enc.Hex);
+  console.log(token);
+  
   try {
     let register;
     // Create Account and Token to MongooDB
