@@ -36,8 +36,8 @@ function AccountVerification() {
     <>
       {
         verified  && verified
-        ?  <InfoBox type="sucsess" message="Account Verified!" link="/login"/>
-        :  <InfoBox type="failed" message="404 Token Not Found" link="/login" color="red"/>
+        ?  <InfoBox type="sucsess" message="Account Verified!" link="/login" info="Press 'Go back' to sign in."/>
+        :  <InfoBox type="failed" message="404 Token Not Found" link="/login" color="red" info=""/>
       }
      
       

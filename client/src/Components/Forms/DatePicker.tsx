@@ -28,7 +28,7 @@ export default function DatePicker({setState} : DatePickerProps) {
       <Popover placement="bottom">
         <PopoverHandler>
           <Input
-            label="Select a Date"
+            label="Birth Date"
             onChange={() => null}
             value={date ? format(date, "PPP") : ""}
             required
