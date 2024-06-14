@@ -119,7 +119,7 @@ const AccountsTable: React.FC = () => {
     Municipality: detail.address.municipality_name,
     Profile: (
       <Avatar
-        src={`/img/user_img/${detail.user_type}/${detail.img_name}`}
+        src={`${process.env.SERVER_URL || 'localhost:3001'}/img/user_img/${detail.user_type}/${detail.img_name}`}
       />
     ),
     Action: (
