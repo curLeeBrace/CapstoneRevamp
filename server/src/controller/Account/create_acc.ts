@@ -150,25 +150,6 @@ export const createAcc_Validation = async (
     const filePath = `../client/public/img/user_img/${req.body.user_type}/${req.body.img_name}`;
 
 
-<<<<<<< HEAD
-    if (acc_info) {
-      if (acc_info.email === email) {
-        
-        fs.access(filePath, fs.constants.F_OK, (err) => {
-          if (err) {
-            console.error(`${filePath} does not exist`);
-            // Handle the error (e.g., send a response to the client)
-          } else {
-            // File exists, proceed to unlink
-            if (acc_info.img_name !== img_name) {
-              fs.unlink(filePath, (err) => {
-                if (err) throw err;
-                console.log("File Deleted!");
-              });
-            }
-          }
-        });
-=======
     
     if (acc_info) {
       if (acc_info.email === email) {
@@ -176,7 +157,6 @@ export const createAcc_Validation = async (
         if (fs.existsSync(filePath)) {
           console.log('File path exists');
           if (acc_info.img_name !== img_name) {
->>>>>>> eb6a41207723f061f08b1faeade8a9909677dec3
 
             fs.unlink(filePath, (err) => {
               if (err) throw err;
