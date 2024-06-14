@@ -30,10 +30,10 @@ function NavListMenu(props: NavListMenuProps) {
   const renderItems = navListMenuItems.map(({ title, description, href }) => (
     <Link to={href} key={title}>
       <MenuItem>
-        <Typography variant="h6" color="blue-gray" className="mb-1">
+        <Typography variant="h6" className="mb-1">
           {title}
         </Typography>
-        <Typography variant="small" color="gray" className="font-normal">
+        <Typography variant="small" className="font-normal">
           {description}
         </Typography>
       </MenuItem>
@@ -67,11 +67,11 @@ function NavListMenu(props: NavListMenuProps) {
           </ul>
         </MenuList>
       </Menu>
-      <MenuItem className="flex items-center gap-2 font-medium text-blue-gray-900 lg:hidden">
+      <MenuItem className="flex items-center gap-2 font-medium text-white lg:hidden">
         <Square3Stack3DIcon className="h-[18px]" />{" "}
         Forms{" "}
       </MenuItem>
-      <ul className="ml-6 flex w-full flex-col gap-1 lg:hidden">
+      <ul className="ml-6 flex w-full flex-col gap-1 text-white lg:hidden">
         {renderItems} {/* Ensure correct links are rendered */}
       </ul>
     </React.Fragment>

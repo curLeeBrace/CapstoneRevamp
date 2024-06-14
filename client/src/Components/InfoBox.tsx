@@ -14,12 +14,13 @@ import { colors } from '@material-tailwind/react/types/generic';
 interface InfoBoxProps {
     type : "sucsess" | "failed";
     message : string;
+    info: string;
     link : string;
     color? : colors
 
 }
 
-function InfoBox({type, message, link, color = 'green'} : InfoBoxProps) {
+function InfoBox({type, message, link, info, color = 'green'} : InfoBoxProps) {
   return (
     <div className=" h-full fixed w-full flex justify-center">
 
@@ -38,6 +39,10 @@ function InfoBox({type, message, link, color = 'green'} : InfoBoxProps) {
         <CardBody className="text-center">
             <Typography variant="h5" color="blue-gray" className="mb-2">
                 {message}
+            </Typography>
+
+            <Typography variant="h5" color="blue-gray" className="mb-2 font-extralight text-gray-600 text-md">
+                {info}
             </Typography>
         </CardBody>
 
