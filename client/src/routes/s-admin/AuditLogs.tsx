@@ -21,8 +21,8 @@ export default function AuditLogs() {
   const [startDate, setStartDate] = useState<string>('');
   const [endDate, setEndDate] = useState<string>('');
   const [selectedAction, setSelectedAction] = useState<string | null>(null);
-  const [user_type, setUserType] = useState<"s-admin" | "lgu_admin">();
-  const [municipalityName, setMunicipalityName] = useState('');
+  // const [user_type, setUserType] = useState<"s-admin" | "lgu_admin">();
+  // const [municipalityName, setMunicipalityName] = useState('');
   const [searchQuery, setSearchQuery] = useState<string>('');
 
   const fetchAuditLogs = async (params = {}) => {
@@ -40,8 +40,8 @@ export default function AuditLogs() {
 
   const getUserInfo = () => {
     const userInfo = JSON.parse(Cookies.get('user_info') as string);
-    setUserType(userInfo.user_type);
-    setMunicipalityName(userInfo.user_type === 'lgu_admin' ? userInfo.municipality_name : '');
+    // setUserType(userInfo.user_type);
+    // setMunicipalityName(userInfo.user_type === 'lgu_admin' ? userInfo.municipality_name : '');
     return userInfo;
   };
 

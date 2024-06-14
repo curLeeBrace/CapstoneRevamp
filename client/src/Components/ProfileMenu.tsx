@@ -75,7 +75,7 @@ console.log(JSON.parse(Cookies.get('user_info') as string));
             variant="circular"
             size="sm"
             className="border border-white p-0.5"
-            src={`/img/user_img/${user_type}/${img_name}`}
+            src={`${process.env.SERVER_URL || 'localhost:3001'}/img/user_img/${user_type}/${img_name}`}
           />
           <ChevronDownIcon
             strokeWidth={2.5}
