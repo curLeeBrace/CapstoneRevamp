@@ -7,7 +7,7 @@ import { changePass } from "../controller/Account/change_pass";
 import { authenticate_token } from "../controller/Token/auth_token";
 import {resendToken} from '../controller/Account/resend_verification_token';
 import {get_allAcc} from '../controller/Account/get_allAcc';
-
+import { get_acc } from "../controller/Account/get_acc";
 
 import upload from '../middleware/handle_upload';
 import { delete_Acc } from './../controller/Account/delete_acc';
@@ -24,6 +24,8 @@ router.post('/recover', recoverAccount);
 router.get('/get-all', get_allAcc);
 router.delete('/delete/:accountId', delete_Acc );
 router.get('/audit-logs', fetchAuditLogs);
+
+router.get('/get-acc/:municipality_code/:user_type/:get_all', get_acc);
 
 
 // router.post('/resend-token', resendToken);

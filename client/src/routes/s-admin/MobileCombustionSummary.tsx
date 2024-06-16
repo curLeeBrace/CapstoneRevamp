@@ -3,47 +3,51 @@ import BarChart from "../../Components/Dashboard/BarChart"
 import {GlobeAsiaAustraliaIcon, TruckIcon, ExclamationTriangleIcon} from "@heroicons/react/24/solid";
 import Cookies from "js-cookie";
 import { useEffect, useState } from "react";
-import useFilterAddress, {AddressReturnDataType} from "../../custom-hooks/useFilterAddrress";
-import { Typography, Select, Option, Checkbox} from "@material-tailwind/react";
-import { SimpleCard } from "../../Components/Dashboard/SimpleCard";
+import {AddressReturnDataType} from "../../custom-hooks/useFilterAddrress";
+import { Typography, Checkbox} from "@material-tailwind/react";
+import SimpleCard from "../../Components/Dashboard/SimpleCard";
 import useAxiosPrivate from "../../custom-hooks/auth_hooks/useAxiosPrivate";
+import Municipality from "../../custom-hooks/Municipality";
 
 const MobileCombustionSummary = () => {
-    const [city_opt, set_city_opt] = useState<string[]>();
-    const [address, setAddress] = useState<AddressReturnDataType>();
+    
+    const axiosPrivate = useAxiosPrivate();
+
     const [formType, setFormType] = useState<"residential" | "commercial" | "both">();
     const [mobileCombustionData, setMobileCombustionData] = useState<any>();
     const [isLoading, set_isLoading] = useState<boolean>(false);
     const [v_typeSeries, set_vTypeSeries] = useState<any[]>();
     const [v_ageSeries, set_vAgeSeries] = useState<any[]>();
     const [vehicle_ghge_rate, setVehicleGHGeRate] = useState<any[]>();
+
+    const [address, setAddress] = useState<AddressReturnDataType>();
+
     const [user, setUser] = useState({
         type : "",
         municipality_code: "",
         province_code :"",
         municipality_name : "",
     });
-    const filterADddress = useFilterAddress;
-    const axiosPrivate = useAxiosPrivate();
+
 
     useEffect(()=>{
-        const user_info = Cookies.get('user_info');
-        if(user_info) {
-            const {municipality_code, user_type, municipality_name, province_code} = JSON.parse(user_info as string);
-            
-            if(user_type === "lgu_admin"){
-                setUser({
-                    municipality_code,
-                    municipality_name,
-                    province_code,
-                    type : user_type
-                })
-            } else {
-                const address = filterADddress({address_type : "mucipality"}) as AddressReturnDataType[]
-                set_city_opt(address.map(addr => addr.address_name));
+        const user_info = Cookies.get("user_info");
+        if (user_info) {
+            const { municipality_code, user_type, municipality_name, province_code } = JSON.parse(user_info as string);
+            if (user_type === "lgu_admin") {
+              setUser({
+                municipality_code,
+                municipality_name,
+                province_code,
+                type: user_type,
+              });
             }
-        }
+          }
     },[])
+  
+
+
+
 
     useEffect(()=> {
         let muni_code = user.type === "lgu_admin" ? user.municipality_code : address ? address.address_code : undefined
@@ -124,38 +128,9 @@ const MobileCombustionSummary = () => {
                 </div>
                 <div className="flex gap-5 flex-wrap">
                     <div className=" basis-full md:basis-1/5">
-
-                        {
-                            user.type !== "lgu_admin" ?
-                                <Select onChange={(value) => {
-                                    let lgu_municipality:any;   
-                                        
-                        
-                                    const mucipality_data= filterADddress({address_type : "mucipality"});
-                                    mucipality_data.forEach(data =>{
-                                        if(data.address_name === value){
-                        
-                                        lgu_municipality = {
-                                            municipality_name : data.address_name,
-                                            address_code : data.address_code,
-                                            parent_code : data.parent_code,
-                                        }
-                                        }
-                                    })
-
-                                    setAddress(lgu_municipality)
-                                }}
-                                >
-                                    {city_opt? 
-                                        city_opt.map((city, index)=>(
-                                            <Option value={city} key = {index}>
-                                                {city}
-                                            </Option>
-                                        )) : <Option value =""> </Option>
-                                    }
-                                </Select>
-                            : <div className="w-full h-full border-solid border-black/20 border-2 flex justify-center items-center">{user.municipality_name}</div>
-                        }
+                        {/* dito */}
+                        <Municipality setAddress={setAddress} />
+                       
                         
 
                     </div>
