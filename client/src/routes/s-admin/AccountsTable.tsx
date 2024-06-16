@@ -30,7 +30,7 @@ interface UserDetails {
   img_name: string;
   user_type: string;
   verified: boolean;
-  img_url?: string; 
+
 }
 
 const AccountsTable: React.FC = () => {
@@ -45,6 +45,7 @@ const AccountsTable: React.FC = () => {
     const fetchAccounts = async () => {
       try {
         const response = await axios.get('/account/get-all');
+        console.log("Accounts : ", response.data)
         const allDetails = response.data.filter((user: UserDetails) => user.user_type !== 's-admin');
         setDetails(allDetails);
         setFilteredDetails(allDetails);
@@ -119,7 +120,7 @@ const AccountsTable: React.FC = () => {
     Municipality: detail.address.municipality_name,
     Profile: (
       <Avatar
-        src={`${process.env.SERVER_URL || 'localhost:3001'}/img/user_img/${detail.user_type}/${detail.img_name}`}
+        src={`${process.env.SERVER_URL || 'http://localhost:3001'}/img/user_img/${detail.user_type}/${detail.img_name}`}
       />
     ),
     Action: (
