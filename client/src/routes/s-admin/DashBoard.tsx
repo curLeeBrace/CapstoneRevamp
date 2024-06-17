@@ -6,7 +6,7 @@ import Table from '../../Components/Table';
 import axios from "../../api/axios";
 import Cookies from 'js-cookie';
 import Chart from "react-apexcharts";
-import UserList from '../../Components/Dashboard/UserList';
+import SurveyorInfo from '../../Components/Dashboard/SuerveyorInfo';
 
 
 type Emission = {
@@ -123,11 +123,11 @@ function DashBoard() {
           </div>        
           
           <div className='h-4/5 w-full'>
-            <SimpleCard body={`${dashboard_data?.total_surveryor}`} header='Total Surveyor' icon={<UserIcon className='h-6 w-6'/>} child_card={<UserList user_type='surveyor'/>}/>
+            <SimpleCard body={`${dashboard_data?.total_surveryor}`} header='Total Surveyor' icon={<UserIcon className='h-6 w-6'/>} child_card={<SurveyorInfo/>}/>
           
           </div>
           <div className='h-4/5 w-full'>
-            <SimpleCard body={`${dashboard_data?.total_LGU_admins}`} header='Total LGU Admin' icon={<UserIcon className='h-6 w-6'/>} child_card={<UserList user_type='lgu_admin'/>}/>
+            <SimpleCard body={`${dashboard_data?.total_LGU_admins}`} header='Total LGU Admin' icon={<UserIcon className='h-6 w-6'/>}/>
 
           </div>
         </div>
