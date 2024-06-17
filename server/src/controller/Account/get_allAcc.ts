@@ -9,15 +9,6 @@ const get_allAcc = async (req: Request, res: Response): Promise<Response> => {
     
     if (accs.length > 0) {
       const all_acc = accs.map(acc => {
-        let img_url = null;
-        
-        if (acc.img_name) {
-          const imgPath = path.join(__dirname, '..', '..', 'client', 'public', 'img', 'user_img', `${acc.user_type}`, acc.img_name);
-          // Check if the file exists
-          if (fs.existsSync(imgPath)) {
-            img_url = `/img/user_img/${acc.user_type}/${acc.img_name}`;
-          }
-        }
 
         return {
           _id: acc._id,
@@ -35,7 +26,6 @@ const get_allAcc = async (req: Request, res: Response): Promise<Response> => {
             province_code: acc.lgu_municipality.province_code
           },
           img_name: acc.img_name,
-          img_url, // Include the image URL
           user_type: acc.user_type,
           verified: acc.verified
         };
