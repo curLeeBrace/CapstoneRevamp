@@ -70,7 +70,7 @@ const AccountsTable: React.FC = () => {
             `${detail.f_name} ${detail.m_name} ${detail.l_name} ` +
             `${detail.email} ` +
             `${detail.user_type} ` +
-            `${detail.address.municipality_name}`
+            `${detail.lgu_municipality.municipality_name}`
         ).toLowerCase();
 
        
@@ -86,7 +86,7 @@ const AccountsTable: React.FC = () => {
 
   const handleFilter = () => {
     const filtered = details.filter((detail) =>
-      (!selectedMunicipality || detail.address.municipality_name === selectedMunicipality) &&
+      (!selectedMunicipality || detail.lgu_municipality.municipality_name === selectedMunicipality) &&
       (!selectedUserType || detail.user_type === selectedUserType)
     );
 
@@ -116,7 +116,7 @@ const AccountsTable: React.FC = () => {
     Name: `${detail.f_name} ${detail.m_name} ${detail.l_name}`,
     UserType: detail.user_type,
     Email: detail.email,
-    Municipality: detail.address.municipality_name,
+    Municipality: detail.lgu_municipality.municipality_name,
     Profile: (
       <Avatar
         src={`${process.env.SERVER_URL || 'localhost:3001'}/img/user_img/${detail.user_type}/${detail.img_name}`}

@@ -207,7 +207,7 @@ const MobileCombustionSummary = () => {
 
                                     <div className="h-full lg:h-40">
 
-                                         <SimpleCard body={`${mobileCombustionData.emmission.tb_ghge.toFixed(2)}`} header="Total GHG Emmision" icon={<GlobeAsiaAustraliaIcon className="h-full w-full"/>}/>
+                                         <SimpleCard body={`${mobileCombustionData.emmission.tb_ghge.toFixed(2)}`} header="Total GHG Emmision" icon={<GlobeAsiaAustraliaIcon className="h-full w-full"/>} content=""/>
                                         {/* <SimpleCard body={"No Available Data"} header="" icon={<ExclamationTriangleIcon className="h-full w-full"/>}/> */}
                             
                                     </div>
@@ -250,7 +250,7 @@ const MobileCombustionSummary = () => {
                             </div> :
                             <div className="flex justify-center w-full">
                                 <div className="basis-1/2">
-                                    <SimpleCard body={"No available data yet"} header="Please select some option first to filter the data" icon={<ExclamationTriangleIcon className="h-full w-full"/>}/>
+                                    <SimpleCard body={"No available data yet"} header="Please select some option first to filter the data" icon={<ExclamationTriangleIcon className="h-full w-full"/>} content=""/>
 
                                 </div>
                             </div>
