@@ -5,7 +5,7 @@ import {
     Typography,
   } from "@material-tailwind/react";
   import Chart from "react-apexcharts";
-import { SimpleCard } from "./SimpleCard";
+import  SimpleCard from "./SimpleCard";
 import { ExclamationTriangleIcon } from "@heroicons/react/16/solid";
 import Skeleton from "../Skeleton";
   

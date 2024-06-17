@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react'
-import { SimpleCard } from '../../Components/Dashboard/SimpleCard'
+import  SimpleCard from '../../Components/Dashboard/SimpleCard'
 
 import { FireIcon, UserIcon} from "@heroicons/react/24/outline";
 import Table from '../../Components/Table';
 import axios from "../../api/axios";
 import Cookies from 'js-cookie';
 import Chart from "react-apexcharts";
-
+import SurveyorInfo from '../../Components/Dashboard/SuerveyorInfo';
 
 
 type Emission = {
@@ -25,15 +25,7 @@ type DashBoardData = {
   total_LGU_admins : number;
   today_ghge : number;
   table_data : TableData[]
-  surveyors: { f_name: string, l_name: string, address: { municipality_name: string } }[];
-  admins: { f_name: string, l_name: string, address: { municipality_name: string } }[];
-}
 
-type User = {
-  f_name: string;
-  l_name: string;
-  user_type: string;
-  lgu_municipality: { municipality_name: string };
 }
 
 
@@ -41,9 +33,6 @@ type User = {
 function DashBoard() {
 
   const [dashboard_data, setDashBoardData] = useState<DashBoardData>();
-  
-  const [surveyors, setSurveyors] = useState<User[]>([]);
-  const [admins, setAdmins] = useState<User[]>([]);
 
   useEffect(()=>{
 
@@ -55,26 +44,7 @@ function DashBoard() {
      
     })
     .catch(err => console.error(err))
-
-    const fetchSurveyorsAndAdmins = async () => {
-      try {
-        const [surveyorsResponse, adminsResponse] = await Promise.all([
-          axios.get(`/account/get-all/?user_type=surveyor`),
-          axios.get(`/account/get-all/?user_type=lgu_admin`),
-        ]);
-    
-        const surveyorsData = surveyorsResponse.data.filter((user: User) => user.user_type === 'surveyor');
-        const adminsData = adminsResponse.data.filter((user: User) => user.user_type === 'lgu_admin');
-    
-        setSurveyors(surveyorsData);
-        setAdmins(adminsData);
-      } catch (error) {
-        console.error("Error fetching surveyors and admins:", error);
-      }
-    };
-
-    fetchSurveyorsAndAdmins();
-  }, []);
+  },[])
   
   // bg-gradient-to-t from-green-400 via-green-200 to-slate-50
 
@@ -142,26 +112,6 @@ function DashBoard() {
     },
   };
  
-  const formatUserDetails = (users: User[]) => {
-    const surveyorCounts: { [key: string]: number } = {};
-  
-    // Count users by municipality
-    users.forEach(user => {
-      const municipality = user.lgu_municipality.municipality_name;
-      surveyorCounts[municipality] = (surveyorCounts[municipality] || 0) + 1;
-    });
-  
-    // Format the surveyor counts into a string
-    const formattedContent = Object.entries(surveyorCounts)
-      .map(([municipality, count]) => `${municipality}: ${count}`)
-      .join('; ');
-  
-    return formattedContent;
-  };
-  
-
-  const surveyorsContent = formatUserDetails(surveyors);
-  const adminsContent = formatUserDetails(admins);
 
   return (
     <div className='h-full w-full fixed overflow-y-auto bg-gray-200 '>
@@ -169,15 +119,15 @@ function DashBoard() {
       <div className='flex flex-col h-full w-full'>
         <div className='flex items-center gap-3 basis-1/4 px-2 overflow-x-auto'>
           <div className='h-4/5 w-full'>
-            <SimpleCard body={`${dashboard_data?.today_ghge.toFixed(2)}`}header='Total GHG Emission'  icon={<FireIcon className='h-6 w-6 text-red-300'/>} content=''/>
+            <SimpleCard body={`${dashboard_data?.today_ghge.toFixed(2)}`}header='Total GHG Emission'  icon={<FireIcon className='h-6 w-6 text-red-300'/>}/>
           </div>        
           
           <div className='h-4/5 w-full'>
-            <SimpleCard body={`${dashboard_data?.total_surveryor}`} header='Total Surveyor' icon={<UserIcon className='h-6 w-6'/>} content={surveyorsContent}/>
+            <SimpleCard body={`${dashboard_data?.total_surveryor}`} header='Total Surveyor' icon={<UserIcon className='h-6 w-6'/>} child_card={<SurveyorInfo/>}/>
           
           </div>
           <div className='h-4/5 w-full'>
-            <SimpleCard body={`${dashboard_data?.total_LGU_admins}`} header='Total LGU Admin' icon={<UserIcon className='h-6 w-6'/>} content={adminsContent} />
+            <SimpleCard body={`${dashboard_data?.total_LGU_admins}`} header='Total LGU Admin' icon={<UserIcon className='h-6 w-6'/>}/>
 
           </div>
         </div>
