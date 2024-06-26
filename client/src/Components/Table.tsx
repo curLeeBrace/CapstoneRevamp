@@ -37,7 +37,7 @@ interface TableProps  {
  
 export default function Table({TABLE_ROWS} : TableProps) {
   return (
-    <Card className="h-full w-full overflow-scroll">
+    <Card className="h-full w-full overflow-scroll custom-scrollbar">
       <table className="w-full min-w-max table-auto text-left">
         <thead>
           <tr>
