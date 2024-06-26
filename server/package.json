@@ -6,12 +6,13 @@
   "scripts": {
     "dev": "nodemon src/app.ts",
     "build": "tsc --project .",
-    "start" : "node ./dist/src/app.js"
+    "start": "node ./dist/src/app.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@tensorflow/tfjs": "^4.20.0",
     "@types/cors": "^2.8.17",
     "@types/crypto-js": "^4.2.2",
     "@types/jsonwebtoken": "^9.0.6",
