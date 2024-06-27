@@ -101,6 +101,7 @@ const AccountsTable: React.FC = () => {
     setFilteredDetails(details);
   };
 
+  
   const handleDelete = async (accountId: string) => {
     try {
       await axios.delete(`/account/delete/${accountId}`);
@@ -110,6 +111,9 @@ const AccountsTable: React.FC = () => {
       console.error('Failed to delete account', error);
     }
   };
+
+
+
 
   const TABLE_HEAD = ["Name", "Profile", "UserType", "Municipality", "Email", "Action"];
 

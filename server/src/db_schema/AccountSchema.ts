@@ -6,7 +6,7 @@ const AccountSchema = new mongoose.Schema({
     email : {type : String, required : true, unique: true},
     pass : { type: String, required: true },
     f_name : {type:String, required : true},
-    m_name : {type:String},
+    m_name : {type:String, default : ""},
     l_name : {type:String, required : true},
 
     address : {type :{

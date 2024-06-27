@@ -50,7 +50,7 @@ export const register_acc = async (req: Request, res: Response) => {
   const acc_data: Acc_Data = {
     email,
     f_name,
-    m_name,
+    m_name: m_name ? m_name: "",
     l_name,
     address: JSON.parse(address),
     pass: encrypt_pass.toString(),
@@ -149,10 +149,9 @@ export const createAcc_Validation = async (
   const { email, img_name } = req.body as Acc_Data;
   try {
     const acc_info = await AccountSchema.findOne({ email: email }).exec();
-    const filePath = `../client/public/img/user_img/${req.body.user_type}/${req.body.img_name}`;
+    const filePath = `/img/user_img/${req.body.user_type}/${req.body.img_name}`;
 
 
-    
     if (acc_info) {
       if (acc_info.email === email) {
         
