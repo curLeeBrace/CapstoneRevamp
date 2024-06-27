@@ -58,24 +58,7 @@ function Registration() {
   const handleChange = useHandleChange;
  const [user_type, setUserType] = useState<"s-admin"|"lgu_admin">();
 
-  const [details, setDetails] = useState<DetailsTypes>({
-                f_name : "",
-                m_name : "",
-                l_name : "",
-                address : {
-                  brgy_name : "",
-                  municipality_name : "",
-                },
-                email : "",
-                img_name : "",
-                lgu_municipality : {
-                  municipality_code : "",
-                  municipality_name : "",
-                  province_code : "",
-                  
-                },
-                user_type : "",
-  } as DetailsTypes)
+  const [details, setDetails] = useState<DetailsTypes | undefined>()
 
 
 
@@ -171,7 +154,7 @@ function Registration() {
     setUserType(user_info.user_type)
 
     if(user_info.user_type === "lgu_admin"){
-      setDetails(prev => {
+      setDetails((prev:any) => {
         let lgu_municipality:any;
         lgu_municipality = {
           municipality_name : user_info.municipality_name,
@@ -210,8 +193,8 @@ function Registration() {
           <Input label="Last Name" name = "l_name"  onChange={(value)=>handleChange({event : value, setFormStateData : setDetails})}  required/>
 
           <InputAddrress setState={setDetails}/>
-          <DatePicker setState={setDetails}/>
-          <Input label="Choose Profile Picture" type="file" accept="image/*" name="img_name" onChange={(value)=> upload_imgHandler(value)} required disabled = {!details.f_name || !details.l_name}/>
+          {/* <DatePicker setState={setDetails}/> */}
+          <Input label="Choose Profile Picture" type="file" accept="image/*" name="img_name" onChange={(value)=> upload_imgHandler(value)} required disabled = {!details?.f_name || !details.l_name}/>
           <Typography variant="h5" color="gray">Account Information</Typography>
           
           {
@@ -250,7 +233,7 @@ function Registration() {
                
             </Select> 
             :<Typography>
-                LGU Municipality : {details.lgu_municipality.municipality_name}
+                LGU Municipality : {details?.lgu_municipality.municipality_name}
             </Typography>
           } 
 
