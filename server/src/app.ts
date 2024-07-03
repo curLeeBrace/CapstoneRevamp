@@ -7,12 +7,12 @@ import tokenRoute from "./route/token_route"
 import formRoute from "./route/form_route"
 import dashboardRoute from "./route/dashboard_route";
 import summaryDataRoute from "./route/summaryData_route";
-
-import forecast from "./controller/Forcasting/emobile";
-
+import forecastingRoute from "./route/forecasting_route";
 
 
-forecast();
+
+
+
 
 
 const app = express();
@@ -34,6 +34,7 @@ app.use('/api/token', tokenRoute);
 app.use('/api/forms', formRoute);
 app.use('/api/dashboard', dashboardRoute);
 app.use('/api/summary-data', summaryDataRoute);
+app.use('/api/forecast', forecastingRoute);
 
 
 
