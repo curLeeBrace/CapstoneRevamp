@@ -7,12 +7,13 @@ interface Municipality {
     city_name : String;
     province_code : String;
 }
-type Emission = {
+export type Emission = {
     co2e : number;
     ch4e : number;
     n2oe : number;
     ghge : number;
 }
+
 type TableData = {
     municipality : String;
     municipality_code : String;
