@@ -8,7 +8,6 @@ import Cookies from 'js-cookie';
 import Chart from "react-apexcharts";
 import SurveyorInfo from '../../Components/Dashboard/SuerveyorInfo';
 
-
 type Emission = {
   co2e : number;
   ch4e : number;

@@ -2,32 +2,37 @@
 import BarChart from "../../Components/Dashboard/BarChart"
 import {GlobeAsiaAustraliaIcon, TruckIcon, ExclamationTriangleIcon} from "@heroicons/react/24/solid";
 import Cookies from "js-cookie";
-import { useEffect, useState } from "react";
+import React, {useEffect, useState } from "react";
 import {AddressReturnDataType} from "../../custom-hooks/useFilterAddrress";
 import { Typography, Checkbox} from "@material-tailwind/react";
 import SimpleCard from "../../Components/Dashboard/SimpleCard";
 import useAxiosPrivate from "../../custom-hooks/auth_hooks/useAxiosPrivate";
 import Municipality from "../../custom-hooks/Municipality";
+import { Button } from '@material-tailwind/react';
+import axios from "../../api/axios";
 
 const MobileCombustionSummary = () => {
     
     const axiosPrivate = useAxiosPrivate();
 
-    const [formType, setFormType] = useState<"residential" | "commercial" | "both">();
+    const [formType, setFormType] = useState<"residential" | "commercial">();
     const [mobileCombustionData, setMobileCombustionData] = useState<any>();
     const [isLoading, set_isLoading] = useState<boolean>(false);
     const [v_typeSeries, set_vTypeSeries] = useState<any[]>();
     const [v_ageSeries, set_vAgeSeries] = useState<any[]>();
     const [vehicle_ghge_rate, setVehicleGHGeRate] = useState<any[]>();
-
     const [address, setAddress] = useState<AddressReturnDataType>();
-
     const [user, setUser] = useState({
         type : "",
         municipality_code: "",
         province_code :"",
         municipality_name : "",
     });
+
+
+    const [expected_ghgThisYear, set_expected_ghgThisYear] = useState<number>();
+    const [isPredicting, set_isPredicting] = useState<boolean>(false);
+
 
 
     useEffect(()=>{
@@ -99,10 +104,13 @@ const MobileCombustionSummary = () => {
 
             })
             .catch(err => {
-                set_isLoading(false)
                 console.log(err)
-            });
+            })
+            .finally(()=>set_isLoading(false))
         }
+
+
+        set_expected_ghgThisYear(undefined);
 
     },[formType,address])
 
@@ -114,11 +122,42 @@ const MobileCombustionSummary = () => {
     }
 
 
- 
+    const getExpected_ghgThisYear = () => {
+        
+        set_isPredicting(true);
+        axios.get(`/forecast/e-mobile/${address?.address_code}/${formType}`)
+        .then(res => {
 
-   
 
-    
+            let totalExpetedGHG_thisYear = 0;
+            const result:{
+                co2e : number,
+                ch4e : number,
+                n2oe : number,
+                ghge : number
+            }[]= res.data;
+            
+
+
+            result.forEach(res => {
+                totalExpetedGHG_thisYear += res.ghge;
+            })
+            totalExpetedGHG_thisYear+=mobileCombustionData.emmission.tb_ghge
+
+            set_expected_ghgThisYear(totalExpetedGHG_thisYear);
+
+
+
+        })
+        .catch(err => console.log(err))
+        .finally(()=>set_isPredicting(false))
+
+
+    }
+
+
+
+
     return (
         <div className="">
             <div className="flex flex-col w-full px-20 gap-5">
@@ -136,6 +175,7 @@ const MobileCombustionSummary = () => {
                     </div>
                     <div className="flex basis-8/12">
                         <Checkbox
+                            disabled = {address == undefined}
                             name='formType'
                             value={'residential'}
                             checked={formType === "residential"} // Checked if this is selected
@@ -148,6 +188,7 @@ const MobileCombustionSummary = () => {
                             containerProps={{ className: "-ml-2.5" }}
                         />
                         <Checkbox
+                            disabled = {address == undefined}
                             name='formType'
                             value={'commercial'}
                             checked={formType === "commercial"} // Checked if this is selected
@@ -159,7 +200,8 @@ const MobileCombustionSummary = () => {
                             }
                             containerProps={{ className: "-ml-2.5" }}
                         />
-                          <Checkbox
+                          {/* <Checkbox
+                            disabled = {address == undefined}
                             name='formType'
                             value={'both'}
                             checked={formType === "both"} // Checked if this is selected
@@ -170,7 +212,7 @@ const MobileCombustionSummary = () => {
                             </Typography>
                             }
                             containerProps={{ className: "-ml-2.5" }}
-                        />
+                        /> */}
                     </div> 
                 </div>
                 {
@@ -183,7 +225,11 @@ const MobileCombustionSummary = () => {
                                     <div className="flex flex-col gap-5 h-96">
                                         
                                         <SimpleCard body={`${mobileCombustionData.emmission.tb_ghge.toFixed(2)}`} header="Total GHGe" icon={<GlobeAsiaAustraliaIcon className="h-full w-full"/>} isLoading = {isLoading}/>
-                                        <SimpleCard body={`${mobileCombustionData.emmission.tb_ghge.toFixed(2)}`} header="Expected GHGe this year" icon={<GlobeAsiaAustraliaIcon className="h-full w-full"/>} isLoading = {isLoading}/>
+                                        <SimpleCard body={
+                                            expected_ghgThisYear ? expected_ghgThisYear.toFixed(5)
+                                            :<Button onClick={()=>getExpected_ghgThisYear()} loading = {isPredicting}>{isPredicting ? "This may take a few minutes" : "Click me to predict"}</Button>
+                                            
+                                        } header="Expected GHGe this year" icon={<GlobeAsiaAustraliaIcon className="h-full w-full"/>} isLoading = {isLoading}/>
                                         
                                     </div>
                         
@@ -191,33 +237,9 @@ const MobileCombustionSummary = () => {
 
                                 <div className="flex flex-col w-full lg:w-3/5 gap-3 h-full">
                                     
-                                     
-                                    
                                         <BarChart chart_icon={<TruckIcon className="h-6 2-6"/>} chart_label="Vehicle Type" chart_meaning="Overall surveyed vehicles." series={v_typeSeries} isLoading = {isLoading}/>
                                         <BarChart chart_icon={<TruckIcon className="h-6 2-6"/>} chart_label="Vehicle Age" chart_meaning="Total counts of diffirent vehicle age." series={v_ageSeries} isLoading = {isLoading}/>
                                         <BarChart chart_icon={<TruckIcon className="h-6 2-6"/>} chart_label="Vehicle Emission Rate" chart_meaning="Total Emission rate per vehicle." series={vehicle_ghge_rate} isLoading = {isLoading}/>
-                                  
-                                           
-                                     
-                                        
-                                        {/* <div className="">
-                                            {
-                                                !isLoading  ?
-                                                    
-                                                :<Skeleton/>
-                                            }
-                                        </div>
-                                        <div className="">
-                                            {
-                                                !isLoading  ?
-                                                    
-                                                :<Skeleton/>
-                                            }
-                                        </div> */}
-                                        
-                                    
-                                    
-                                    
                                 
                                 </div>
                 
