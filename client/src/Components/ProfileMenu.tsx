@@ -36,7 +36,7 @@ const ProfileMenu = () => {
       {
         label: username,
         icon: FaceSmileIcon,
-        onClick: ()=> navigate(`/${user_type}/dashboard`),
+        // onClick: ()=> navigate(`/${user_type}/dashboard`),
       },
       {
         label: "Change Password",

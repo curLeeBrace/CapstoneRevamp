@@ -16,23 +16,26 @@ export const e_mobileForecasting = async(req : Request, res:Response) => {
       //                       "survey_data.form_type" : form_type
                     
       //                   }).exec() : 
-        const query =  form_type === "both" ?
-                                      await FuelFormSchema.find({
-                                        "surveyor_info.municipality_code" : municipality_code,
-                                        dateTime_created : {
-                                            $gte: new Date(`${year}-01-01T00:00:00.000Z`),
-                                            $lte: new Date(`${year}-12-30T23:59:59.000Z`)
-                                        },
-                                    }).exec():
+      const query = await FuelFormSchema.find({
+                      "surveyor_info.municipality_code" : municipality_code,
+                      dateTime_created : {
+                      $gte: new Date(`${year}-01-01T00:00:00.000Z`),
+                      $lte: new Date(`${year}-12-30T23:59:59.000Z`)
+                      },
+                      "survey_data.form_type" : form_type
+                    }).exec()
+
+
+
+        //await FuelFormSchema.find({
+        //                                 "surveyor_info.municipality_code" : municipality_code,
+        //                                 dateTime_created : {
+        //                                     $gte: new Date(`${year}-01-01T00:00:00.000Z`),
+        //                                     $lte: new Date(`${year}-12-30T23:59:59.000Z`)
+        //                                 },
+        //                             }).exec():
                                       
-                                    await FuelFormSchema.find({
-                                            "surveyor_info.municipality_code" : municipality_code,
-                                            dateTime_created : {
-                                            $gte: new Date(`${year}-01-01T00:00:00.000Z`),
-                                            $lte: new Date(`${year}-12-30T23:59:59.000Z`)
-                                            },
-                                            "survey_data.form_type" : form_type
-                                      }).exec()
+                                   
         
 
 
@@ -41,7 +44,7 @@ export const e_mobileForecasting = async(req : Request, res:Response) => {
         
     
         if(!query) return res.sendStatus(404);
-        console.log(query.length);
+        // console.log(query.length);
 
         // if(query.length < 10) return res.status(200).send("Insuficient Data can't forecast!!");
 
@@ -55,8 +58,8 @@ export const e_mobileForecasting = async(req : Request, res:Response) => {
 
 
        const forecast_result =  await forecast(data);
-
        const ghge = computeTotalForecastGHG(forecast_result, form_type as "residential" | "commercial");
+
         console.log(ghge)
        return res.status(200).send(ghge);
        
@@ -149,43 +152,6 @@ const emission_factors = type === "residential" ?
  return emission
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -292,7 +258,7 @@ const forecast = async (data : {x:Date,y:number}[]) => {
         const xs = x_buff.toTensor();
         const ys = y_buff.toTensor();
 
-        xs.print();
+        // xs.print();
         console.log("Creating Model !");
         const model = await createModel(dataLength);
         console.log("Model Created !");
@@ -309,7 +275,7 @@ const forecast = async (data : {x:Date,y:number}[]) => {
 
 
 
-      for(let i = 0; i < 10; i++){  
+      for(let i = 0; i <= 10; i++){  
        
 
         const xT_input = toTimeStamp(x_val);
@@ -335,8 +301,8 @@ const forecast = async (data : {x:Date,y:number}[]) => {
 
 const predict = async (model : tf.Sequential, input : number[]) => {
 
-   console.log("Start to Predict future value ! ....");
-   console.log(input)
+  //  console.log("Start to Predict future value ! ....");
+  //  console.log(input)
    const predict: tf.Tensor = model.predict(tf.tensor3d(input, [1, input.length, 1])) as tf.Tensor;
    const predictedValue = predict.dataSync();
    tf.dispose(predict);
@@ -347,6 +313,21 @@ const predict = async (model : tf.Sequential, input : number[]) => {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//Data Normalize
 
 
 
