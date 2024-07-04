@@ -178,15 +178,15 @@ const MobileCombustionSummary = () => {
                         
                         <div className="flex flex-wrap w-full gap-5 h-full">
 
-                                <div className="w-full lg:w-1/3 shrink-0">
+                                <div className="w-full lg:w-1/3 shrink-0 ">
 
-                                    <div className="h-full lg:h-40">
-
-                                         <SimpleCard body={`${mobileCombustionData.emmission.tb_ghge.toFixed(2)}`} header="Total GHG Emmision" icon={<GlobeAsiaAustraliaIcon className="h-full w-full"/>}/>
-                                        {/* <SimpleCard body={"No Available Data"} header="" icon={<ExclamationTriangleIcon className="h-full w-full"/>}/> */}
-                            
+                                    <div className="flex flex-col gap-5 h-96">
+                                        
+                                        <SimpleCard body={`${mobileCombustionData.emmission.tb_ghge.toFixed(2)}`} header="Total GHGe" icon={<GlobeAsiaAustraliaIcon className="h-full w-full"/>} isLoading = {isLoading}/>
+                                        <SimpleCard body={`${mobileCombustionData.emmission.tb_ghge.toFixed(2)}`} header="Expected GHGe this year" icon={<GlobeAsiaAustraliaIcon className="h-full w-full"/>} isLoading = {isLoading}/>
+                                        
                                     </div>
-
+                        
                                 </div>
 
                                 <div className="flex flex-col w-full lg:w-3/5 gap-3 h-full">
@@ -225,7 +225,7 @@ const MobileCombustionSummary = () => {
                             </div> :
                             <div className="flex justify-center w-full">
                                 <div className="basis-1/2">
-                                    <SimpleCard body={"No available data yet"} header="Please select some option first to filter the data" icon={<ExclamationTriangleIcon className="h-full w-full"/>}/>
+                                    <SimpleCard body={"No available data yet"} header="Please select some option first to filter the data" icon={<ExclamationTriangleIcon className="h-full w-full"/>} isLoading = {isLoading}/>
 
                                 </div>
                             </div>
