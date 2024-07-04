@@ -40,7 +40,7 @@ app.use('/api/forecast', forecastingRoute);
 
 
 app.get('/', (req : express.Request, res:express.Response)=>{
-    return res.send("Hello Erika!");
+    return res.send("Server Confirmed!");
 })
 
 const start = async () =>{ 

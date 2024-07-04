@@ -3,7 +3,7 @@ import { e_mobileForecasting } from "../controller/Forcasting/e_mobileForecastin
 const router = express.Router();
 
 
-router.get('/e-mobile/:user_type/:municipality_code/:form_type', e_mobileForecasting);
+router.get('/e-mobile/:municipality_code/:form_type', e_mobileForecasting);
 
 
 export default router

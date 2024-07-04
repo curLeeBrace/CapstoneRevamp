@@ -7,17 +7,19 @@ import {
 import SimpleCardChild from "./SimpleCardChild";
 import { useState } from "react";
 
+import Skeleton from "../Skeleton";
+
 interface SimpleCardProps{
   header : string;
-  body : string;
+  body : string | React.ReactElement;
   icon : React.ReactElement;
-  child_card? : React.ReactElement
-  
+  child_card? : React.ReactElement 
+  isLoading : boolean
 }
 
 
 
-function SimpleCard({header, body, icon, child_card} : SimpleCardProps) {
+function SimpleCard({header, body, icon, child_card, isLoading} : SimpleCardProps) {
   const [open, setOpen] = useState(false);
 
 
@@ -29,21 +31,23 @@ function SimpleCard({header, body, icon, child_card} : SimpleCardProps) {
     }
     
 
-    <Card className="w-full h-full flex" onClick={()=>setOpen(true)}>
+    <Card className={`w-full h-full flex ${child_card && "hover:bg-blue-gray-50 cursor-pointer"}`}onClick={()=>setOpen(true)}>
         <CardBody className="flex items-center justify-between px-16 border border-gray-300 h-full shadow-md rounded-lg">
-          <div className="text-nowrap flex-shrink-0">
-            <Typography  className="mb-2 text-sm md:text-lg font-semibold">
+          <div className="overflow-hidden">
+            <Typography  className="mb-2 text-sm md:text-lg font-semibold text-nowrap ">
               {header}
             </Typography>
 
 
-            <Typography color="blue-gray" className=" md:text-2xl font-bold">
-              {body}
+            <Typography color="blue-gray" className=" md:text-2xl font-bold ">
+              {
+                isLoading ? <Skeleton/> : body
+              }
             </Typography>
 
           </div>
 
-          <div className="h-full w-12 flex justify-center items-center">
+          <div className="h-full w-12 flex justify-center items-center shrink-0">
                 {icon}
           </div>
          

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import  SimpleCard from '../../Components/Dashboard/SimpleCard'
 
-import { FireIcon, UserIcon} from "@heroicons/react/24/outline";
+import {UserIcon, GlobeAsiaAustraliaIcon} from "@heroicons/react/24/outline";
 import Table from '../../Components/Table';
 import axios from "../../api/axios";
 import Cookies from 'js-cookie';
@@ -33,6 +33,7 @@ type DashBoardData = {
 function DashBoard() {
 
   const [dashboard_data, setDashBoardData] = useState<DashBoardData>();
+  const [isLoading, setisLoading] = useState<boolean>(true);
 
   useEffect(()=>{
 
@@ -41,6 +42,7 @@ function DashBoard() {
     axios.get(`/dashboard/overview-data/${user_info.province_code}/${user_info.user_type}/${user_info.municipality_code}`)
     .then(res => {
       setDashBoardData(res.data)
+      setisLoading(false);
      
     })
     .catch(err => console.error(err))
@@ -88,7 +90,7 @@ function DashBoard() {
         offsetY: -10,
       },
       title: {
-        text: 'Total GHG Emission per Municipality',
+        text: 'Total GHGe per Municipality',
         align: 'center' as 'center',
         style: {
           fontSize: '20px',
@@ -119,15 +121,15 @@ function DashBoard() {
       <div className='flex flex-col h-full w-full'>
         <div className='flex items-center gap-3 basis-1/4 px-2 overflow-x-auto'>
           <div className='h-4/5 w-full'>
-            <SimpleCard body={`${dashboard_data?.today_ghge.toFixed(2)}`}header='Total GHG Emission'  icon={<FireIcon className='h-6 w-6 text-red-300'/>}/>
+            <SimpleCard body={`${dashboard_data?.today_ghge.toFixed(2)}`}header='Total GHGe'  icon={<GlobeAsiaAustraliaIcon className='h-6 w-6'/>} isLoading={isLoading}/>
           </div>        
           
           <div className='h-4/5 w-full'>
-            <SimpleCard body={`${dashboard_data?.total_surveryor}`} header='Total Surveyor' icon={<UserIcon className='h-6 w-6'/>} child_card={<SurveyorInfo/>}/>
+            <SimpleCard body={`${dashboard_data?.total_surveryor}`} header='Total Surveyor' icon={<UserIcon className='h-6 w-6'/>} child_card={<SurveyorInfo/>} isLoading={isLoading}/>
           
           </div>
           <div className='h-4/5 w-full'>
-            <SimpleCard body={`${dashboard_data?.total_LGU_admins}`} header='Total LGU Admin' icon={<UserIcon className='h-6 w-6'/>}/>
+            <SimpleCard body={`${dashboard_data?.total_LGU_admins}`} header='Total LGU Admin' icon={<UserIcon className='h-6 w-6'/>} isLoading={isLoading}/>
 
           </div>
         </div>
