@@ -14,7 +14,7 @@ interface SimpleCardProps{
   body : string | React.ReactElement;
   icon : React.ReactElement;
   child_card? : React.ReactElement 
-  isLoading : boolean
+  isLoading? : boolean
 }
 
 
