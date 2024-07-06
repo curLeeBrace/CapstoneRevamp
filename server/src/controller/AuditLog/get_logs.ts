@@ -3,8 +3,8 @@ import AuditLogSchema from "../../db_schema/AuditLogSchema";
 
 export const fetchAuditLogs = async (req: Request, res: Response) => {
   try {
-    const { startDate, endDate, action, province_code, municipality_code } = req.query;
-
+    const { startDate, endDate, action, province_code, municipality_code, user_type} = req.query;
+    const query = req.query;
     let filter: any = {};
 
     if (startDate || endDate) {
@@ -32,9 +32,16 @@ export const fetchAuditLogs = async (req: Request, res: Response) => {
     if (province_code) {
       filter["lgu_municipality.province_code"] = province_code;
     }
-   
+
+ 
     // Fetch audit logs from the database with the filter applied
+    
+    if(user_type === "lgu_admin") filter = {...filter, $or : [{user_type : "suveyor"}, {user_type : "lgu_admin"}]};
+
+    
     const auditLogs = await AuditLogSchema.find(filter).sort({ dateTime: -1 }).exec();
+
+
     res.status(200).json(auditLogs);
   } catch (error) {
     console.error("Error fetching audit logs:", error);

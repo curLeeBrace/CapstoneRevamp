@@ -53,9 +53,9 @@ export default function AuditLogs() {
     const userInfo = getUserInfo();
 
     if (userInfo.user_type === 'lgu_admin') {
-      handleFetchAuditLogs({ municipality_code: userInfo.municipality_code });
+      handleFetchAuditLogs({ municipality_code: userInfo.municipality_code, user_type : userInfo.user_type});
     } else {
-      handleFetchAuditLogs();
+      handleFetchAuditLogs({user_type : userInfo.user_type});
     }
   }, []);
 
