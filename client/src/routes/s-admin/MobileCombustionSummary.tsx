@@ -57,7 +57,7 @@ const MobileCombustionSummary = () => {
     useEffect(()=> {
         let muni_code = user.type === "lgu_admin" ? user.municipality_code : address ? address.address_code : undefined
         let prov_code = user.type === "lgu_admin" ? user.province_code : address ? address.parent_code : undefined
-
+        const barColor = "#006400";
         if(formType){
     
 
@@ -74,19 +74,11 @@ const MobileCombustionSummary = () => {
                     data : vehicle.vehicleTypes.map((v_type:any, index:any) => {
                         return {
                             x : v_type,
-                            y : vehicle.counts_ofVehicleTypes[index]
+                            y : vehicle.counts_ofVehicleTypes[index],
+                            fillColor: barColor
                         }
-                    })
-                }])
-
-                set_vAgeSeries([{
-                    name: 'count',
-                    data : vehicle.vehicleAges.map((v_age:any, index:any) => {
-                        return {
-                            x : `${v_age} year(s) old`,
-                            y : vehicle.counts_ofVehicleAge[index]
-                        }
-                    })
+                    }),
+                  
                 }])
 
                 setVehicleGHGeRate([{
@@ -94,10 +86,41 @@ const MobileCombustionSummary = () => {
                     data : vehicle.vehicleTypes.map((v_type:any, index:any) => {
                         return {
                             x : v_type,
-                            y : vehicle.vehicle_ghge_rate[index].toFixed(2)
+                            y : vehicle.vehicle_ghge_rate[index].toFixed(2),
+                            fillColor: barColor
                         }
                     })
                 }])
+
+                // set_vAgeSeries([{
+
+                //     data : vehicle.vehicleAges.map((v_age:any, index:any) => {
+                //         return {
+                           
+                //             x : `${v_age} year(s) old`,
+                //             y : vehicle.counts_ofVehicleAge[index],
+                //             fillColor: barColor
+                //         }
+                //     })
+                // }])
+
+                set_vAgeSeries(
+
+                    vehicle.vehicleTypes.map((v_type:any, o_index:number)=>{
+                        return {
+                            name : v_type,
+                            data : vehicle.vehicleAges.map((v_age:any, index:number) =>{
+                                    // console.log(v_age);
+                                    return {
+                                        x : v_age.toString() +" year(s)",
+                                        y : vehicle.counts_ofVehicleAge[index].ageCount_perVehicle[o_index].counts
+                                    }
+                            })
+                          
+                        }
+                }),
+                
+                )
 
 
 
@@ -237,9 +260,9 @@ const MobileCombustionSummary = () => {
 
                                 <div className="flex flex-col w-full lg:w-3/5 gap-3 h-full">
                                     
-                                        <BarChart chart_icon={<TruckIcon className="h-6 2-6"/>} chart_label="Vehicle Type" chart_meaning="Overall surveyed vehicles." series={v_typeSeries} isLoading = {isLoading}/>
-                                        <BarChart chart_icon={<TruckIcon className="h-6 2-6"/>} chart_label="Vehicle Age" chart_meaning="Total counts of diffirent vehicle age." series={v_ageSeries} isLoading = {isLoading}/>
-                                        <BarChart chart_icon={<TruckIcon className="h-6 2-6"/>} chart_label="Vehicle Emission Rate" chart_meaning="Total Emission rate per vehicle." series={vehicle_ghge_rate} isLoading = {isLoading}/>
+                                        <BarChart chart_icon={<TruckIcon className="w-6 h-6"/>} chart_label="Vehicle Type" chart_meaning="Overall surveyed vehicles." series={v_typeSeries} isLoading = {isLoading}/>
+                                        <BarChart chart_icon={<TruckIcon className="h-6 w-6"/>} chart_label="Vehicle Emission Rate" chart_meaning="Total Emission rate per vehicle." series={vehicle_ghge_rate} isLoading = {isLoading}/>
+                                        <BarChart chart_icon={<TruckIcon className="h-6 w-6"/>} chart_label="Vehicle Age" chart_meaning="Total counts of diffirent vehicle age." series={v_ageSeries} isLoading = {isLoading}/>
                                 
                                 </div>
                 

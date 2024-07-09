@@ -56,6 +56,7 @@ function App() {
 
             {/*Route for Admin*/}
             <Route path = "/lgu_admin">
+            <Route index element = {<DashBoard/>}/>
             <Route path = "dashboard" element = {<DashBoard/>}/>
             <Route path = "mobile-combustion" element = {<MobileCombustionSummary/>}/>
               <Route path = 'register'>
@@ -76,7 +77,7 @@ function App() {
               <Route path = 'change-pass' element = {<ChangePass/>}/>
             </Route>
 
-            <Route path="*" element = {<>Nothing here</>}/>
+            <Route path="*" element = {<>404 not found!!</>}/>
 
 
 {/* 

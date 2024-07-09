@@ -57,6 +57,7 @@ function DashBoard() {
           x: tb_data.municipality,
           y: tb_data.emission.ghge.toFixed(2)
         })) : [{ x: null, y: null }],
+        
       },
     ],
     options: {
@@ -72,7 +73,7 @@ function DashBoard() {
         },
         foreColor: '#101010',
       },
-      colors: ["#C01E01"],
+      colors : ["#248003"],
       plotOptions: {
         bar: {
           columnWidth: '80%',
