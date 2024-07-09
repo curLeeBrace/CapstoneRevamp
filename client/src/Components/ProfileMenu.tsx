@@ -7,7 +7,7 @@ import {
   MenuList,
   Avatar,
 } from "@material-tailwind/react";
-import { ChevronDownIcon } from "@heroicons/react/24/solid";
+import { ChevronDownIcon, UserCircleIcon} from "@heroicons/react/24/solid";
 import {Cog6ToothIcon, PowerIcon, FaceSmileIcon} from "@heroicons/react/24/solid";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
@@ -58,7 +58,7 @@ const ProfileMenu = () => {
   },[])
 
 
-console.log(JSON.parse(Cookies.get('user_info') as string));
+// console.log(JSON.parse(Cookies.get('user_info') as string));
 
 
 
@@ -71,12 +71,16 @@ console.log(JSON.parse(Cookies.get('user_info') as string));
           color="blue-gray"
           className="flex items-center gap-1 rounded-full py-0.5 pr-2 pl-0.5 lg:ml-auto text-white"
         >
-          <Avatar
-            variant="circular"
-            size="sm"
-            className="border border-white p-0.5"
-            src={`${process.env.SERVER_URL || 'localhost:3001'}/img/user_img/${user_type}/${img_name}`}
-          />
+          {user_type === "s-admin" ? <UserCircleIcon className="h-full w-10"/>:
+          
+            <Avatar
+              variant="circular"
+              size="sm"
+              className="border border-white p-0.5"
+              src={`${process.env.SERVER_URL || 'localhost:3001'}/img/user_img/${user_type}/${img_name}`}
+            />
+          }
+          
           <ChevronDownIcon
             strokeWidth={2.5}
             className={`h-3 w-3 transition-transform ${

@@ -24,76 +24,54 @@ import Skeleton from "../Skeleton";
   export default function BarChart({chart_icon, chart_label, chart_meaning, series, isLoading = false}:BarChartProps) {
 
     const chartConfig = {
-      height: 240,
       series,
       options: {
         chart: {
+          stacked: true,
+          background: 'white',
           toolbar: {
             show: false,
+            offsetX: 0,
+            offsetY: 0,
+            tools: {
+              download: false
+            }
           },
+          foreColor: '#101010',
         },
-        title: {
-          show: "",
+        plotOptions: {
+          bar: {
+            columnWidth: '50%',
+            barHeight: '100%',
+            dataLabels: {
+              total: {
+                enabled: true,
+                style: {
+                  fontSize: '13px',
+                  fontWeight: 900,
+                }
+              }
+            }
+          },
         },
         dataLabels: {
           enabled: false,
         },
-        colors: ["#020617"],
-        stroke: {
-          lineCap: "round",
-          curve: "smooth",
-        },
-        markers: {
-          size: 0,
-        },
-        xaxis: {
-          axisTicks: {
-            show: false,
-          },
-          axisBorder: {
-            show: false,
-          },
-          labels: {
-            style: {
-              colors: "#616161",
-              fontSize: "12px",
-              fontFamily: "inherit",
-              fontWeight: 400,
-            },
-          },
-        },
-        yaxis: {
-          labels: {
-            style: {
-              colors: "#616161",
-              fontSize: "12px",
-              fontFamily: "inherit",
-              fontWeight: 400,
-            },
-          },
-        },
-        grid: {
-          show: true,
-          borderColor: "#dddddd",
-          strokeDashArray: 5,
-          xaxis: {
-            lines: {
-              show: true,
-            },
-          },
-          padding: {
-            top: 5,
-            right: 20,
-          },
-        },
-        fill: {
-          opacity: 0.8,
-        },
-        tooltip: {
-          theme: "dark",
-        },
+
+        // xaxis: {
+        //   labels: {
+        //     style: {
+        //       fontSize: '12px',
+        //     },
+        //   }
+        // }
       },
     };
+
+
+
+
+
 
 
     return (
@@ -104,7 +82,7 @@ import Skeleton from "../Skeleton";
           color="transparent"
           className="flex flex-col gap-4 rounded-none md:flex-row md:items-center"
         >
-          <div className="w-max rounded-lg bg-gray-900 p-5 text-white">
+          <div className="w-10 h-10 flex justify-center items-center rounded-lg bg-gray-900 text-white">
             {chart_icon}
           </div>
           <div>
@@ -122,10 +100,10 @@ import Skeleton from "../Skeleton";
         </CardHeader>
         <CardBody className="px-2 pb-0">
           {
-            series ? 
+            series && chartConfig ? 
               !isLoading ?
                 <Chart
-                  options={chartConfig}
+                  options={chartConfig.options}
                   series={chartConfig.series}
                   height={"100%"}
                   width={"100%"}
