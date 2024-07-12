@@ -25,6 +25,3 @@ dist-ssr
 *.sw?
 .env
 
-public/img/user_img/lgu_admin/*
-public/img/user_img/s-admin/*
-public/img/user_img/surveyor/*
