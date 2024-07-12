@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import  SimpleCard from '../../Components/Dashboard/SimpleCard'
 
 import {UserIcon, GlobeAsiaAustraliaIcon} from "@heroicons/react/24/outline";
-import Table from '../../Components/Table';
+// import Table from '../../Components/Table';
 import axios from "../../api/axios";
 import Cookies from 'js-cookie';
 import Chart from "react-apexcharts";
@@ -101,8 +101,7 @@ function DashBoard() {
       xaxis: {
         labels: {
           style: {
-            fontSize: '10px',
-            fontWeight: 'bold',
+            fontSize: '15px',
           },
           padding: {
             left: 20,
@@ -136,12 +135,13 @@ function DashBoard() {
 
         <div className='flex flex-wrap md:flex-nowrap px-5 basis-3/4 gap-3 h-1/3 w-full'>
 
-          <div className='hidden lg:block lg:basis-2/6 h-5/6 border border-gray-400 rounded-2xl overflow-hidden'>
+          {/* <div className='hidden lg:block lg:basis-2/6 h-5/6 border border-gray-400 rounded-2xl overflow-hidden'>
           
              {dashboard_data && <Table TABLE_ROWS={dashboard_data.table_data}/>}
-          </div>
+          </div> */}
 
-          <div className='basis-full lg:basis-8/12 h-5/6  border border-gray-400 bg-white shadow-gray-500 shadow-2xl rounded-lg p-1'>
+          {/* lg:basis-8/12 */}
+          <div className='basis-full  h-5/6  border border-gray-400 bg-white shadow-gray-500 shadow-2xl rounded-lg p-1'>
             {
             chartConfig? 
             <Chart

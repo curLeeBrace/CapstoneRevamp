@@ -138,7 +138,7 @@ const submitValidation = () => {
              <AlertBox openAlert = {openAlert}  setOpenAlert={setOpenAlert}  message={aler_msg}/>
         
         <Typography variant="h4" color="blue-gray" className="text-center">
-          Stationary Fuel Combustion Form
+          Mobile Combustion Form
         </Typography>
 
         <div className="mt-8 grid grid-cols-1 gap-6">
@@ -276,7 +276,7 @@ const submitValidation = () => {
 
             <div>
               <Typography variant="h6" color="blue-gray">
-                Consumption of Fuel (in Liters)
+                Fuel Consumption in a whole day - (liters)
               </Typography>
               <Input
                  name='liters_consumption'

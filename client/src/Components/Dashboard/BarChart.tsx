@@ -41,7 +41,7 @@ import Skeleton from "../Skeleton";
         },
         plotOptions: {
           bar: {
-            columnWidth: '50%',
+            columnWidth: '20%',
             barHeight: '100%',
             dataLabels: {
               total: {
@@ -75,7 +75,7 @@ import Skeleton from "../Skeleton";
 
 
     return (
-      <Card className="">
+      <Card className="h-96 border-y-2 border-gray-300 shadow-none">
         <CardHeader
           floated={false}
           shadow={false}
@@ -98,7 +98,7 @@ import Skeleton from "../Skeleton";
             </Typography>
           </div>
         </CardHeader>
-        <CardBody className="px-2 pb-0">
+        <CardBody className="px-2 pb-0 h-full">
           {
             series && chartConfig ? 
               !isLoading ?
