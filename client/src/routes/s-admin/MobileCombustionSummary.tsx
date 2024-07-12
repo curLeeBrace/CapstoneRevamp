@@ -8,7 +8,7 @@ import { Typography, Checkbox} from "@material-tailwind/react";
 import SimpleCard from "../../Components/Dashboard/SimpleCard";
 import useAxiosPrivate from "../../custom-hooks/auth_hooks/useAxiosPrivate";
 import Municipality from "../../custom-hooks/Municipality";
-import { TabsDefault, TabsProps } from "../../Components/Tabs";
+import { TabsDefault} from "../../Components/Tabs";
 import { Button } from '@material-tailwind/react';
 import axios from "../../api/axios";
 import MC_SurveyData from "../MC_SurveyData";

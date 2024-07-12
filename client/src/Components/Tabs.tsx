@@ -8,8 +8,7 @@ import {
    
 
 
-
-  export type TabsProps = {
+ type TabsProps = {
     data : {
         label : string;
         value : string;
