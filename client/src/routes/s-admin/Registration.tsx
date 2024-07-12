@@ -112,7 +112,7 @@ function Registration() {
           formData.append('img_name', img_fileName);
           formData.append('l_name', l_name);
           formData.append('lgu_municipality', JSON.stringify(lgu_municipality));
-          formData.append('m_name', m_name);
+          formData.append('m_name', m_name ? m_name : "");
           formData.append('user_type', user_type);
           formData.append('img', img as File, img_fileName);
 

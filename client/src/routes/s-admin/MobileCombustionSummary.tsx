@@ -8,8 +8,10 @@ import { Typography, Checkbox} from "@material-tailwind/react";
 import SimpleCard from "../../Components/Dashboard/SimpleCard";
 import useAxiosPrivate from "../../custom-hooks/auth_hooks/useAxiosPrivate";
 import Municipality from "../../custom-hooks/Municipality";
+import { TabsDefault, TabsProps } from "../../Components/Tabs";
 import { Button } from '@material-tailwind/react';
 import axios from "../../api/axios";
+import MC_SurveyData from "../MC_SurveyData";
 
 const MobileCombustionSummary = () => {
     
@@ -33,7 +35,8 @@ const MobileCombustionSummary = () => {
     const [expected_ghgThisYear, set_expected_ghgThisYear] = useState<number>();
     const [isPredicting, set_isPredicting] = useState<boolean>(false);
 
-
+    let muni_code = user.type === "lgu_admin" ? user.municipality_code : address ? address.address_code : undefined
+    let prov_code = user.type === "lgu_admin" ? user.province_code : address ? address.parent_code : undefined
 
     useEffect(()=>{
         const user_info = Cookies.get("user_info");
@@ -55,8 +58,8 @@ const MobileCombustionSummary = () => {
 
 
     useEffect(()=> {
-        let muni_code = user.type === "lgu_admin" ? user.municipality_code : address ? address.address_code : undefined
-        let prov_code = user.type === "lgu_admin" ? user.province_code : address ? address.parent_code : undefined
+
+        
         const barColor = "#006400";
         if(formType){
     
@@ -91,18 +94,6 @@ const MobileCombustionSummary = () => {
                         }
                     })
                 }])
-
-                // set_vAgeSeries([{
-
-                //     data : vehicle.vehicleAges.map((v_age:any, index:any) => {
-                //         return {
-                           
-                //             x : `${v_age} year(s) old`,
-                //             y : vehicle.counts_ofVehicleAge[index],
-                //             fillColor: barColor
-                //         }
-                //     })
-                // }])
 
                 set_vAgeSeries(
 
@@ -223,49 +214,52 @@ const MobileCombustionSummary = () => {
                             }
                             containerProps={{ className: "-ml-2.5" }}
                         />
-                          {/* <Checkbox
-                            disabled = {address == undefined}
-                            name='formType'
-                            value={'both'}
-                            checked={formType === "both"} // Checked if this is selected
-                            onChange={(event) => handleFormType(event)} // Handler for selection
-                            label={
-                            <Typography variant="small" color="gray" className="font-normal mr-4">
-                                Both
-                            </Typography>
-                            }
-                            containerProps={{ className: "-ml-2.5" }}
-                        /> */}
                     </div> 
                 </div>
                 {
                     mobileCombustionData?
                         
-                        <div className="flex flex-wrap w-full gap-5 h-full">
+                        <div className="flex gap-5 h-full flex-col">
 
-                                <div className="w-full lg:w-1/3 shrink-0 ">
-
-                                    <div className="flex flex-col gap-5 h-96">
-                                        
+                                
+                                <div className="w-full flex gap-5 flex-wrap lg:flex-nowrap">
+                                    
+                                    <div className="h-40 w-full lg:w-1/2">
                                         <SimpleCard body={`${mobileCombustionData.emmission.tb_ghge.toFixed(2)}`} header="Total GHGe" icon={<GlobeAsiaAustraliaIcon className="h-full w-full"/>} isLoading = {isLoading}/>
+                                    </div>
+                                    <div className="h-40 w-full lg:w-1/2">
                                         <SimpleCard body={
                                             expected_ghgThisYear ? expected_ghgThisYear.toFixed(5)
                                             :<Button onClick={()=>getExpected_ghgThisYear()} loading = {isPredicting}>{isPredicting ? "This may take a few minutes" : "Click me to predict"}</Button>
                                             
                                         } header="Expected GHGe this year" icon={<GlobeAsiaAustraliaIcon className="h-full w-full"/>} isLoading = {isLoading}/>
-                                        
-                                    </div>
-                        
+                                    </div>  
                                 </div>
-
-                                <div className="flex flex-col w-full lg:w-3/5 gap-3 h-full">
+            
+                                    <TabsDefault data={[
+                                    {
+                                        label : 'Survey Data',
+                                        value : 's-data',
+                                        tabPanelChild : <MC_SurveyData form_type={formType} muni_code={muni_code} prov_code={prov_code}/>
+                                    },
+                                    {
+                                        label : 'Graph',
+                                        value : 'm-graph',
+                                        tabPanelChild : 
+                                            <div className="flex flex-col w-full gap-3 h-auto">
+                                            
+                                                <BarChart chart_icon={<TruckIcon className="w-6 h-6"/>} chart_label="Vehicle Type" chart_meaning="Overall surveyed vehicles." series={v_typeSeries} isLoading = {isLoading}/>
+                                                <BarChart chart_icon={<TruckIcon className="h-6 w-6"/>} chart_label="Vehicle Emission Rate" chart_meaning="Total Emission rate per vehicle." series={vehicle_ghge_rate} isLoading = {isLoading}/>
+                                                <BarChart chart_icon={<TruckIcon className="h-6 w-6"/>} chart_label="Vehicle Age" chart_meaning="Total counts of diffirent vehicle age." series={v_ageSeries} isLoading = {isLoading}/>
                                     
-                                        <BarChart chart_icon={<TruckIcon className="w-6 h-6"/>} chart_label="Vehicle Type" chart_meaning="Overall surveyed vehicles." series={v_typeSeries} isLoading = {isLoading}/>
-                                        <BarChart chart_icon={<TruckIcon className="h-6 w-6"/>} chart_label="Vehicle Emission Rate" chart_meaning="Total Emission rate per vehicle." series={vehicle_ghge_rate} isLoading = {isLoading}/>
-                                        <BarChart chart_icon={<TruckIcon className="h-6 w-6"/>} chart_label="Vehicle Age" chart_meaning="Total counts of diffirent vehicle age." series={v_ageSeries} isLoading = {isLoading}/>
-                                
-                                </div>
+                                            </div>
                 
+                                    }
+                                    ]} />
+                              
+                               
+
+                          
 
                             </div> :
                             <div className="flex justify-center w-full">

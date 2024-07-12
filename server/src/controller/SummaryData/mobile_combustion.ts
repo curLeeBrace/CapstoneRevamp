@@ -6,7 +6,7 @@ import {get_emission} from "../Dashboard/overview_data"
 
 const getMobileCombustionData = async (req:Request, res:Response) => {
     const {province_code, municipality_code, form_type} = req.params;
-   
+    const year = new Date().getFullYear();
     try {   
         let emmission  = {
             tb_co2e : 0,
@@ -34,7 +34,13 @@ const getMobileCombustionData = async (req:Request, res:Response) => {
             $and: [
                     {'surveyor_info.province_code': province_code},
                     {'surveyor_info.municipality_code' : municipality_code},
-                    form_type === "both" ? {} : {'survey_data.form_type' : form_type}
+                    { dateTime_created : {
+                            $gte: new Date(`${year}-01-01T00:00:00.000Z`),
+                            $lte: new Date(`${year}-12-30T23:59:59.000Z`)
+                        },
+                    },
+                    form_type === "both" ? {} : {'survey_data.form_type' : form_type},
+                    
                 ]   
         })
 
