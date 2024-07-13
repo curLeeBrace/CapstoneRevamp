@@ -30,6 +30,7 @@ interface UserDetails {
   img_name: string;
   user_type: string;
   verified: boolean;
+  img_id : string;
 
 }
 
@@ -124,8 +125,10 @@ const AccountsTable: React.FC = () => {
     Municipality: detail.lgu_municipality.municipality_name,
     Profile: (
       <Avatar
-        src={`${process.env.SERVER_URL || 'http://localhost:3001'}/img/user_img/${detail.user_type}/${detail.img_name}`}
+        src={`https://drive.google.com/thumbnail?id=${detail.img_id}&sz=w1000`}
       />
+
+     
     ),
     Action: (
       <div className="space-x-2">

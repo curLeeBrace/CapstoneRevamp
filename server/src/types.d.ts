@@ -11,6 +11,8 @@ declare global {
         PASS : string;
         SECRET_KEY : string;
         MONGO_URI : string;
+        CLIENT_EMAIL:string
+        PRIVATE_KEY:string
     }
   }
 }

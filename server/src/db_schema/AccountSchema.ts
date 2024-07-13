@@ -25,6 +25,7 @@ const AccountSchema = new mongoose.Schema({
     },
 
     img_name : {type : String, required : true},
+    img_id : {type : String, required : true},
     user_type : {type : String, required : true}, 
     verified : { type: Boolean, default: false },
 })
