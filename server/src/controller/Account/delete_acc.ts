@@ -1,7 +1,7 @@
 
 import { Request, Response } from 'express';
 import AccountSchema from '../../db_schema/AccountSchema';
-import fs from "fs"
+import {deleteFile} from "../../middleware/g_driveUpload";
 
 export const delete_Acc = async (req: Request, res: Response) => {
   const { accountId } = req.params;
@@ -11,13 +11,13 @@ export const delete_Acc = async (req: Request, res: Response) => {
     if (!account)return res.status(404).json({ message: 'Account not found' });
     
 
-    const {user_type, img_name} = account;
+    const {user_type, img_name, img_id} = account;
     const path  = `./public/img/user_img/${user_type}/${img_name}`;
 
 
 
 
-    if(delete_img(path) == 'sucsess'){
+    if(await deleteFile(img_id)){
       await AccountSchema.deleteOne({_id : account._id}).exec();
       return res.status(200).json({ message: 'Account successfully deleted' });
     } else {
@@ -33,23 +33,51 @@ export const delete_Acc = async (req: Request, res: Response) => {
 };
 
 
-const delete_img = (filePath:string) : "sucsess" | "failed"=> {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// const delete_img = (filePath:string) : "sucsess" | "failed"=> {
   
-  let info : "sucsess" | "failed" = "failed";
+//   let info : "sucsess" | "failed" = "failed";
 
-  if (fs.existsSync(filePath)) {
+//   if (fs.existsSync(filePath)) {
 
-      info = "sucsess";
-      fs.unlink(filePath, (err) => {
-        if (err) throw err;
-        console.log("File Deleted!");
-      });
+//       info = "sucsess";
+//       fs.unlink(filePath, (err) => {
+//         if (err) throw err;
+//         console.log("File Deleted!");
+//       });
 
     
 
-  }
+//   }
 
-  return info;
+//   return info;
 
 
-}
+// }

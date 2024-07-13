@@ -8,8 +8,9 @@ import CryptoJS from "crypto-js";
 import { send_email } from "../../nodemailer";
 import crypto from "crypto";
 import fs from "fs";
+import path from 'path'
 import {auditLogType, saveAuditLog} from "../AuditLog/audit_log";
-
+import {authorize, uploadFile} from "../../middleware/g_driveUpload";
 
 interface Acc_Data {
   email: string;
@@ -24,6 +25,7 @@ interface Acc_Data {
   lgu_municipality: string;
 
   img_name: string;
+  img_id : string;
   user_type: string;
 }
 
@@ -38,8 +40,11 @@ export const register_acc = async (req: Request, res: Response) => {
     address,
     date,
     img_name,
+    img_id,
     lgu_municipality,
   } = req.body as Acc_Data;
+
+  console.log(req.file);
 
   //Generate DefaultPassword
   const default_pass = crypto.randomBytes(3).toString("hex");
@@ -56,6 +61,7 @@ export const register_acc = async (req: Request, res: Response) => {
     pass: encrypt_pass.toString(),
     date,
     img_name,
+    img_id,
     lgu_municipality: JSON.parse(lgu_municipality),
     user_type, //"0-user | 1-admin | 2-super_admin"
   };
@@ -146,10 +152,10 @@ export const createAcc_Validation = async (
   res: Response,
   next: NextFunction
 ) => {
-  const { email, img_name } = req.body as Acc_Data;
+  const { email, img_name, user_type} = req.body as Acc_Data;
   try {
     const acc_info = await AccountSchema.findOne({ email: email }).exec();
-    const filePath = `/img/user_img/${req.body.user_type}/${req.body.img_name}`;
+    const filePath = path.join(__dirname, `../../../public/img/user_img/${req.body.user_type}/${req.body.img_name}`);
 
 
     if (acc_info) {
@@ -172,7 +178,29 @@ export const createAcc_Validation = async (
       }
     }
 
+    //upload image to gdrive
+
+    const folderID = user_type === "lgu_admin" ? ["1qKT1sE8qdqUKZoZL-E-DHLa15J4izl3i"] : ["1Sbwt8lJlev1f_fnoEXcOGNQgNaKG4_yK"]
+
+
+    const auth = await authorize();
+
+    if(auth){
+      // const filePath = req.file?.path;
+      const fileName = req.file?.originalname;
+      const mimeType = req.file?.mimetype;
+      const img_id = await uploadFile(auth, filePath, fileName, mimeType, folderID, res);  // this will return img_id
+      req.body['img_id'] = img_id;
+    } else {
+      console.log("asd")
+    }
+
+
+
+
     next();
+
+   
   } catch (error) {
     return res.status(500).send("Server error in create account validation");
   }
