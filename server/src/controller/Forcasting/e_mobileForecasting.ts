@@ -213,7 +213,7 @@ const createModel = async (dataLength : number) => {
       })
     );
   
-    model.compile({ optimizer: "adam", loss: "meanSquaredError" });
+    model.compile({ optimizer: "adam", loss: "meanSquaredError" }); 
   
     return model;
   };
