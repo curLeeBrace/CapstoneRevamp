@@ -27,7 +27,7 @@ const ProfileMenu = () => {
   const closeMenu = () => setIsMenuOpen(false);
   const [menuItems, setMenuItems] = useState<ProfileMenuItem[]>();
   const navigate = useNavigate();
-  const {username,user_type,img_name, img_id} = JSON.parse(Cookies.get('user_info') as string);
+  const {username,user_type, img_id} = JSON.parse(Cookies.get('user_info') as string);
   console.log(JSON.parse(Cookies.get('user_info') as string))
   //`https://drive.google.com/thumbnail?id=${detail.img_id}&sz=w1000`
 
