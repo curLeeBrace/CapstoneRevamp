@@ -36,7 +36,7 @@ export const fetchAuditLogs = async (req: Request, res: Response) => {
  
     // Fetch audit logs from the database with the filter applied
     
-    if(user_type === "lgu_admin") filter = {...filter, $or : [{user_type : "suveyor"}, {user_type : "lgu_admin"}]};
+    if(user_type === "lgu_admin") filter = {...filter, $or : [{user_type : "surveyor"}, {user_type : "lgu_admin"}]};
 
     
     const auditLogs = await AuditLogSchema.find(filter).sort({ dateTime: -1 }).exec();
