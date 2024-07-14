@@ -23,6 +23,7 @@ export type user_info  = {
   user_type : string;
   username : string;
   full_name : string;
+  img_id: string;
 
 }
 

@@ -32,7 +32,7 @@ const get_surveyor_info = async (req : Request, res : Response) => {
 
             user_infos.push({
                 full_name : acc.f_name + " " + acc.l_name,
-                img_name : acc.img_name,
+                img_id : acc.img_id,
                 municipality_name : acc.lgu_municipality.municipality_name,
                 user_type : acc.user_type,
                 survey_count

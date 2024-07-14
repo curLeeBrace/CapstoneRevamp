@@ -48,7 +48,7 @@ export const authenticate_account = async (req: Request, res: Response) => {
         const auth_acc = await AccountSchema.findOne({ email }).exec();
 
         if (auth_acc) {
-            const { email, user_type, verified, lgu_municipality, f_name, m_name, l_name, img_name } = auth_acc;
+            const { email, user_type, verified, lgu_municipality, f_name, m_name, l_name, img_name, img_id} = auth_acc;
             const encrypted_db_pass = auth_acc.pass;
 
             const secret_key: string = process.env.SECRET_KEY as string;
@@ -71,7 +71,8 @@ export const authenticate_account = async (req: Request, res: Response) => {
                     user_type,
                     username: f_name,
                     img_name,
-                    full_name: `${f_name} ${m_name ? m_name[0] : ''} ${l_name}`
+                    full_name: `${f_name} ${m_name ? m_name[0] : ''} ${l_name}`,
+                    img_id : img_id
                 };
 
                 handleLogout(email, auth_acc);
