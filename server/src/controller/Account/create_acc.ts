@@ -8,7 +8,6 @@ import CryptoJS from "crypto-js";
 import { send_email } from "../../nodemailer";
 import crypto from "crypto";
 import fs from "fs";
-import path from 'path'
 import {auditLogType, saveAuditLog} from "../AuditLog/audit_log";
 import {authorize, uploadFile} from "../../middleware/g_driveUpload";
 
@@ -155,7 +154,7 @@ export const createAcc_Validation = async (
   const { email, img_name, user_type} = req.body as Acc_Data;
   try {
     const acc_info = await AccountSchema.findOne({ email: email }).exec();
-    const filePath = path.join(__dirname, `../../../public/img/user_img/${req.body.user_type}/${req.body.img_name}`);
+    const filePath = `public/img/user_img/${req.body.user_type}/${req.body.img_name}`;
 
 
     if (acc_info) {
