@@ -30,11 +30,11 @@ import Skeleton from "../Skeleton";
           stacked: true,
           background: 'white',
           toolbar: {
-            show: false,
+            show: true,
             offsetX: 0,
             offsetY: 0,
             tools: {
-              download: false
+              download: true
             }
           },
           foreColor: '#101010',

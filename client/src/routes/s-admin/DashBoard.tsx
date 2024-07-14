@@ -68,7 +68,7 @@ function DashBoard() {
           offsetX: 0,
           offsetY: 0,
           tools: {
-            download: false
+            download: true
           }
         },
         foreColor: '#101010',
