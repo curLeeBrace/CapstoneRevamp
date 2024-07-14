@@ -8,16 +8,19 @@ import useAxiosPrivate from '../../custom-hooks/auth_hooks/useAxiosPrivate';
 import DialogBox from "../DialogBox";
 
 
+
+type formDataTypes = {
+  form_type : string,
+  vehicle_type : string,
+  vehicle_age : number | undefined,
+  fuel_type : string,
+  liters_consumption : number | undefined,
+}
 export function StationaryForm() {
 
 const handleChange = useHandleChange; 
-const [formData, setFormData] = useState({
-  form_type : "",
-  vehicle_type : "",
-  vehicle_age : 0,
-  fuel_type : "",
-  liters_consumption : 0,
-});
+const [formData, setFormData] = useState<formDataTypes>({} as formDataTypes);
+
 const [vehicleOptions, setVehicleOptions] = useState<string[]>();
 const [isLoading, set_isLoading] = useState<boolean>(false);
 const [openAlert, setOpenAlert] = useState<boolean>(false);
@@ -32,18 +35,33 @@ const [openDialogBox, setOpenDialogBox] = useState(false);
 
 useEffect(()=>{
   
-const {form_type} =  formData;
-console.log("form_type : ", form_type)
-
-if(form_type !== ""){
-  setVehicleOptions(form_type === "residential" ? 
-    ["Car", "SUV", "Motorcycle"] : 
-    
-    ["Jeep", "Tricycle", "Bus", "Van", "Taxi", "Truck"])
-}
+    setVehicleOptions(formData.form_type === "residential" ? 
+        ["Car", "SUV", "Motorcycle"] : 
+      formData.form_type === "commercial" ? 
+        ["Jeep", "Tricycle", "Bus", "Van", "Taxi", "Truck"]
+      :undefined
+    )
+  
 
 
 },[formData.form_type])
+
+
+useEffect(()=>{
+    const {vehicle_age, liters_consumption} = formData
+
+    if(vehicle_age && vehicle_age > 99){
+      alert("Vehicle Age Limit Exceeded")
+      setFormData({...formData, vehicle_age : 0})
+    }
+  
+    if(liters_consumption && liters_consumption > 999) {
+  
+      alert("Liters Limit Exceeded")
+      setFormData({...formData, liters_consumption : 0})
+  }
+
+},[formData?.vehicle_age, formData?.liters_consumption])
 
 
 
@@ -114,14 +132,17 @@ const submitHandler = () => {
 
 const submitValidation = () => {
 
-  const {form_type, fuel_type, liters_consumption, vehicle_age, vehicle_type} = formData
-  if(form_type && fuel_type &&  liters_consumption && vehicle_age && vehicle_type){
-    setOpenDialogBox(true);
-  } else {
-    set_isLoading(false);
-    setOpenAlert(true);
-    setAlertMsg("Some field are empty!");
-  }
+
+
+    const {form_type, fuel_type, liters_consumption, vehicle_age, vehicle_type} = formData
+    if(form_type && fuel_type &&  liters_consumption && vehicle_age && vehicle_type){
+      setOpenDialogBox(true);
+    } else {
+      set_isLoading(false);
+      setOpenAlert(true);
+      setAlertMsg("Some field are empty!");
+    }
+    
   
  
 }
@@ -235,6 +256,9 @@ const submitValidation = () => {
                 size="lg"
                 placeholder="Age of Vehicle"
                 className="w-full placeholder:opacity-100 focus:!border-t-gray-900 border-t-blue-gray-200"
+                maxLength={2}
+                min={0}
+                max={99}
               />
             </div>
             
@@ -250,8 +274,9 @@ const submitValidation = () => {
               <Checkbox
                 name='fuel_type'
                 value={'diesel'}
-                checked={formData.fuel_type === "diesel"} // Checked if this is selected
+                checked={formData?.fuel_type === "diesel"} // Checked if this is selected
                 onChange={(event) => handleChange({event, setFormStateData : setFormData})} // Handler for selection
+                
                 label={
                   <Typography variant="small" color="gray" className="mr-4">
                     Diesel
@@ -263,7 +288,7 @@ const submitValidation = () => {
               
               name='fuel_type'
               value={'gasoline'}
-              checked={formData.fuel_type === "gasoline"} // Checked if this is selected
+              checked={formData?.fuel_type === "gasoline"} // Checked if this is selected
               onChange={(event) => handleChange({event, setFormStateData : setFormData})} // Handler for selection
                 label={
                   <Typography variant="small" color="gray">
@@ -280,13 +305,16 @@ const submitValidation = () => {
               </Typography>
               <Input
                  name='liters_consumption'
-                 value = {formData.liters_consumption}
+                 value = {formData?.liters_consumption}
                  onChange={(event)=> handleChange({event, setFormStateData : setFormData})}
-                type="number"
-                size="lg"
-                placeholder="Example: 3"
-                className="w-full placeholder:opacity-100 focus:!border-t-gray-900 border-t-blue-gray-200"
-                min={0}
+                  type="number"
+                  size="lg"
+                  placeholder="Example: 3"
+                  className="w-full placeholder:opacity-100 focus:!border-t-gray-900 border-t-blue-gray-200"
+                  min={0}
+                  max={999}
+                  maxLength={3}
+                  onClick={()=>setFormData({...formData, vehicle_age : undefined})}
               />
             </div>
 
