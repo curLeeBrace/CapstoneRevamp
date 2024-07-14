@@ -62,7 +62,7 @@ const getMobileCombustionData = async (req:Request, res:Response) => {
         })
 
         const vehicleAges = mobile_combustionForm.map(mbc_data => mbc_data.survey_data.vehicle_age);
-        const uniqueVehicleAges = Array.from(new Set(vehicleAges));
+        const uniqueVehicleAges = Array.from(new Set(vehicleAges)).sort();
 
 
 
