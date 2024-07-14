@@ -1,19 +1,19 @@
 import fs from 'fs';
 import {google} from 'googleapis'
-// import dotenv from 'dotenv';
-// dotenv.config();
 import api_key from "../../api_key.json"
 const SCOPE = ['https://www.googleapis.com/auth/drive'];
 
 
 async function authorize(){
     let jwtClient;
+   console.log("private_key : ", api_key.private_key);
 
+    
     try {
 
         jwtClient = new google.auth.JWT(
             api_key.client_email,
-            "",
+            undefined,
             api_key.private_key,
             SCOPE
         );
