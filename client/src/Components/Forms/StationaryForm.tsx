@@ -12,9 +12,9 @@ import DialogBox from "../DialogBox";
 type formDataTypes = {
   form_type : string,
   vehicle_type : string,
-  vehicle_age : number | undefined,
+  vehicle_age : number,
   fuel_type : string,
-  liters_consumption : number | undefined,
+  liters_consumption : number,
 }
 export function StationaryForm() {
 
@@ -97,6 +97,8 @@ const submitHandler = () => {
     dateTime_edited : null,
   }
 
+
+
    setOpenDialogBox(false)
     set_isLoading(true);
     axiosPivate.post('/forms/fuel/insert', payload)
@@ -133,7 +135,7 @@ const submitHandler = () => {
 const submitValidation = () => {
 
 
-
+    console.log(formData)
     const {form_type, fuel_type, liters_consumption, vehicle_age, vehicle_type} = formData
     if(form_type && fuel_type &&  liters_consumption && vehicle_age && vehicle_type){
       setOpenDialogBox(true);
@@ -305,7 +307,7 @@ const submitValidation = () => {
               </Typography>
               <Input
                  name='liters_consumption'
-                 value = {formData?.liters_consumption}
+                 value = {formData.liters_consumption}
                  onChange={(event)=> handleChange({event, setFormStateData : setFormData})}
                   type="number"
                   size="lg"
@@ -314,7 +316,6 @@ const submitValidation = () => {
                   min={0}
                   max={999}
                   maxLength={3}
-                  onClick={()=>setFormData({...formData, vehicle_age : undefined})}
               />
             </div>
 
