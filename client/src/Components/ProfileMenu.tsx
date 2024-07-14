@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+  import React, { useEffect, useState } from "react";
 import {
   Typography,
   Button,
@@ -27,8 +27,9 @@ const ProfileMenu = () => {
   const closeMenu = () => setIsMenuOpen(false);
   const [menuItems, setMenuItems] = useState<ProfileMenuItem[]>();
   const navigate = useNavigate();
-  const {username,user_type,img_name} = JSON.parse(Cookies.get('user_info') as string);
-
+  const {username,user_type,img_name, img_id} = JSON.parse(Cookies.get('user_info') as string);
+  console.log(JSON.parse(Cookies.get('user_info') as string))
+  //`https://drive.google.com/thumbnail?id=${detail.img_id}&sz=w1000`
 
   useEffect(()=>{
 
@@ -77,7 +78,7 @@ const ProfileMenu = () => {
               variant="circular"
               size="sm"
               className="border border-white p-0.5"
-              src={`${process.env.SERVER_URL || 'localhost:3001'}/img/user_img/${user_type}/${img_name}`}
+              src={`https://drive.google.com/thumbnail?id=${img_id}&sz=w1000`}
             />
           }
           

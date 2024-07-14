@@ -11,7 +11,7 @@ const SurveyorInfo = () => {
   const [get_all, setGetAll] = useState(true);
   const [accs, setAccs] = useState<any[]>();
   const userInfo = useUserInfo();
-
+  
   useEffect(() => {
     if(address) setGetAll(false)
 
@@ -68,7 +68,7 @@ const SurveyorInfo = () => {
                               variant="circular"
                               size="md"
                               className="border border-gray-900 p-0.5"
-                              src={`${process.env.SERVER_URL || 'http://localhost:3001'}/img/user_img/${acc.user_type}/${acc.img_name}`}
+                              src={`https://drive.google.com/thumbnail?id=${acc.img_id}&sz=w1000`}
                           />
                           <div className="text-black text-nowrap overflow-hidden">{acc.full_name}</div>
                           <div className="text-black text-nowrap overflow-hidden">{acc.municipality_name}</div>
