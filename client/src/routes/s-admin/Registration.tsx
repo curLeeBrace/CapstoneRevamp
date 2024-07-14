@@ -119,7 +119,7 @@ function Registration() {
           axios.post('/account/register', formData)
           .then(res => {
             if(res.status === 201){
-              // alert(res.data)
+             
               navigate('sucsess');
               
             }
