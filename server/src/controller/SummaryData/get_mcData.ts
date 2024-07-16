@@ -1,6 +1,6 @@
-    import { Request, Response } from 'express';
+import { Request, Response } from 'express';
 import FuelFormSchema from "../../db_schema/FuelFormSchema";
-
+import {get_emission} from '../Dashboard/overview_data'
 
 
 
@@ -11,6 +11,7 @@ type MC_DATA = {
     f_type : string;
     f_consumption : string;
     dateTime : Date;
+    ghge : number;
 
 }
 
@@ -18,8 +19,13 @@ type MC_DATA = {
 
 const get_mcData = async (req : Request, res : Response) => {
     const {province_code, municipality_code, form_type} = req.params;
+
+    
+
     const year = new Date().getFullYear();
     try {
+
+
         const data = await FuelFormSchema.find({
             'survey_data.form_type' : form_type,
             'surveyor_info.municipality_code' : municipality_code,
@@ -33,15 +39,20 @@ const get_mcData = async (req : Request, res : Response) => {
 
         if(!data) return res.sendStatus(204);
 
-        const filterData:MC_DATA[] = data.map(dt => {
 
+
+      
+
+        const filterData:MC_DATA[] = data.map(dt => {
+            const ghge = get_emission(dt.emission_factors, dt.survey_data.liters_consumption);
             return {
                 surveyor : dt.surveyor_info.full_name as string,
                 f_type : dt.survey_data.fuel_type as string,
                 v_age : dt.survey_data.vehicle_age?.toString(),
                 v_type : dt.survey_data.vehicle_type as string,
                 f_consumption : dt.survey_data.liters_consumption.toString(),
-                dateTime : dt.dateTime_created as Date
+                dateTime : dt.dateTime_created as Date,
+                ghge : ghge.ghge
             }
         }) as MC_DATA[]
 

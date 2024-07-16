@@ -16,7 +16,7 @@ const SurveyorInfo = () => {
     if(address) setGetAll(false)
 
     axios
-      .get(`account/get-surveyor-info/${address?.address_code}/${get_all}`)
+      .get(`dashboard/get-surveyor-info/${address?.address_code}/${get_all}`)
       .then((res) => {
         setAccs(res.data);
         // console.log("Sheeesh Accounts! : ", res.data);

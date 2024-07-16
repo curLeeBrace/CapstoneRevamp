@@ -7,6 +7,11 @@ import {get_emission} from "../Dashboard/overview_data"
 const getMobileCombustionData = async (req:Request, res:Response) => {
     const {province_code, municipality_code, form_type} = req.params;
     const year = new Date().getFullYear();
+
+
+
+
+
     try {   
         let emmission  = {
             tb_co2e : 0,
