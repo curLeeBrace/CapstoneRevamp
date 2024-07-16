@@ -195,7 +195,7 @@ const MobileCombustionSummary = () => {
                 {
                     mobileCombustionData?
                         
-                        <div className="flex gap-5 h-full flex-col">
+                        <div className="flex h-auto flex-col gap-3">
 
                                 
                                 <div className="w-full flex gap-5 flex-wrap lg:flex-nowrap">
@@ -211,12 +211,16 @@ const MobileCombustionSummary = () => {
                                         } header="Expected GHGe this year" icon={<GlobeAsiaAustraliaIcon className="h-full w-full"/>} isLoading = {isLoading}/>
                                     </div>  
                                 </div>
-            
+                                
+                               
                                     <TabsDefault data={[
                                     {
                                         label : 'Survey Data',
                                         value : 's-data',
                                         tabPanelChild : <MC_SurveyData form_type={formType} muni_code={muni_code} prov_code={prov_code}/>
+
+                                    
+                                        
                                     },
                                     {
                                         label : 'Graph',
@@ -232,6 +236,9 @@ const MobileCombustionSummary = () => {
                 
                                     }
                                     ]} />
+
+
+           
                               
                                
 

@@ -31,7 +31,7 @@ import {
         </TabsHeader>
         <TabsBody className="border-2 border-gray-300 rounded-lg mb-5 shadow-lg">
           {data.map(({ value, tabPanelChild }) => (
-            <TabPanel key={value} value={value}>
+            <TabPanel key={value} value={value} className="overflow-auto h-96">
               {tabPanelChild}
             </TabPanel>
           ))}

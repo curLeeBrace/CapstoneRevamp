@@ -4,6 +4,7 @@ import { AddressReturnDataType } from "../../custom-hooks/useFilterAddrress";
 import { Avatar, Checkbox, Typography } from "@material-tailwind/react";
 import useUserInfo from "../../custom-hooks/useUserType";
 import axios from "../../api/axios";
+import Skeleton from "../Skeleton";
 
 
 const SurveyorInfo = () => {
@@ -11,17 +12,20 @@ const SurveyorInfo = () => {
   const [get_all, setGetAll] = useState(true);
   const [accs, setAccs] = useState<any[]>();
   const userInfo = useUserInfo();
+  const [isLoading, setIsLoading] = useState(false);
   
   useEffect(() => {
     if(address) setGetAll(false)
-
+    
+    setIsLoading(true)
     axios
       .get(`dashboard/get-surveyor-info/${address?.address_code}/${get_all}`)
       .then((res) => {
         setAccs(res.data);
         // console.log("Sheeesh Accounts! : ", res.data);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => console.log(err))
+      .finally(()=>setIsLoading(false))
 
   }, [address, get_all]);
 
@@ -53,6 +57,8 @@ const SurveyorInfo = () => {
         }
         
       </div>
+      {
+        !isLoading ?
         <div className="overflow-y-auto bg-gray-500/10 h-full px-5 rounded-md">
             <div className={`grid grid-flow-col py-2 grid-cols-4 gap-5`}>
                 <div className="text-nowrap overflow-hidden">Profile</div>
@@ -79,7 +85,10 @@ const SurveyorInfo = () => {
                 ))
                 : null}
 
-        </div>
+        </div> : <Skeleton/>
+      
+      }
+        
     </div>
   );
 };
