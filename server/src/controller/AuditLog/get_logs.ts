@@ -39,7 +39,7 @@ export const fetchAuditLogs = async (req: Request, res: Response) => {
     if(user_type === "lgu_admin") filter = {...filter, $or : [{user_type : "surveyor"}, {user_type : "lgu_admin"}]};
 
     
-    const auditLogs = await AuditLogSchema.find(filter).sort({ dateTime: -1 }).exec();
+    const auditLogs = await AuditLogSchema.find(filter).sort({ dateTime: -1 }).limit(100).exec();
 
 
     res.status(200).json(auditLogs);

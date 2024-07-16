@@ -234,7 +234,7 @@ const forecast = async (data : {x:Date,y:number}[]) => {
     let x_val = data.map(dt => dt.x);
     let y_val = data.map(dt => dt.y);
     let predictions:any[] = [];
-    let cycle = 330
+    let cycle = 500
 
 
     
