@@ -141,23 +141,27 @@ const MobileCombustionSummary = () => {
         axios.get(`/forecast/e-mobile/${address?.address_code}/${formType}`)
         .then(res => {
 
-
-            let totalExpetedGHG_thisYear = 0;
-            const result:{
-                co2e : number,
-                ch4e : number,
-                n2oe : number,
-                ghge : number
-            }[]= res.data;
-            
-
-
-            result.forEach(res => {
-                totalExpetedGHG_thisYear += res.ghge;
-            })
-            totalExpetedGHG_thisYear+=mobileCombustionData.emmission.tb_ghge
-
-            set_expected_ghgThisYear(totalExpetedGHG_thisYear);
+            if(res.status == 200){
+                let totalExpetedGHG_thisYear = 0;
+                const result:{
+                    co2e : number,
+                    ch4e : number,
+                    n2oe : number,
+                    ghge : number
+                }[]= res.data;
+                
+    
+    
+                result.forEach(res => {
+                    totalExpetedGHG_thisYear += res.ghge;
+                })
+                totalExpetedGHG_thisYear+=mobileCombustionData.emmission.tb_ghge
+    
+                set_expected_ghgThisYear(totalExpetedGHG_thisYear);
+              
+            } else {
+                alert("Insuficient Data can't forecast!!");
+            }
 
 
 
