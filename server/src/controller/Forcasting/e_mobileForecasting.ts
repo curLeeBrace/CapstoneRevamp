@@ -2,6 +2,14 @@ import * as tf from "@tensorflow/tfjs-node";
 import {Request, Response} from "express"
 import FuelFormSchema from "../../db_schema/FuelFormSchema";
 import { Emission } from "../Dashboard/overview_data";
+
+
+
+
+
+
+
+
 export const e_mobileForecasting = async(req : Request, res:Response) => {
 
     const {municipality_code, form_type} = req.params;
@@ -46,18 +54,14 @@ export const e_mobileForecasting = async(req : Request, res:Response) => {
         if(!query) return res.sendStatus(404);
         // console.log(query.length);
 
-        // if(query.length < 10) return res.status(200).send("Insuficient Data can't forecast!!");
+        // if(query.length < 20) return res.status(200).send("Insuficient Data can't forecast!!");
+          
+        const {x, y} = prepareData(query)
+        console.log("x : ", x);
+        console.log("y : ", y);
 
-        
-        let data = query.map((data) => {
-            return {
-                x : data.dateTime_created,
-                y : data.survey_data.liters_consumption
-            }
-        }).sort();
-
-
-       const forecast_result =  await forecast(data);
+        if(x.length <= 10) return res.status(204).send("Insuficient Data can't forecast!!");
+       const forecast_result =  await forecast(x, y);
        const ghge = computeTotalForecastGHG(forecast_result, form_type as "residential" | "commercial");
 
         console.log(ghge)
@@ -73,6 +77,61 @@ export const e_mobileForecasting = async(req : Request, res:Response) => {
 }
 
 
+
+const prepareData = (formCollection : any[]) =>{
+  const year = new Date().getFullYear();
+  let liters:number[] = [];
+  let x_date :Date[] = [];
+
+
+
+  const dates = formCollection.map(dt => {
+  const date = dt.dateTime_created;
+    const month = date.getMonth();
+    const day = date.getDate();
+
+    return {
+      month,
+      day,
+      year
+
+    }
+
+  })
+  const uniqueDate = new Set(dates.map((date)=>JSON.stringify(date)));
+  const normalizeUniqueDate = Array.from(uniqueDate).map((date)=>JSON.parse(date));
+  // console.log("normalizeDate  : ",  normalizeUniqueDate);
+
+  normalizeUniqueDate.map((date)=>{
+    // console.log("dateMap : ", date)
+    const {month, day, year} = date
+    x_date.push(new Date(year, month, day))
+    let liter = 0;
+
+    formCollection.map(dt => {
+      const db_date = dt.dateTime_created;
+      const db_month = db_date.getMonth();
+      const db_day = db_date.getDate();
+      const db_year = db_date.getFullYear();
+      
+
+      if(month == db_month && day == db_day && db_year == year){
+          liter += dt.survey_data.liters_consumption;
+      }
+
+    })
+
+    liters.push(liter);
+
+  })
+
+
+
+  return {
+    x : x_date,
+    y : liters
+  }
+}
 
 
 
@@ -141,13 +200,15 @@ const emission_factors = type === "residential" ?
  const  co2e = (liters_consumption * emission_factors.co2) / 1000;
  const  ch4e =  (liters_consumption * emission_factors.ch4) / 1000;
  const  n2oe =  (liters_consumption * emission_factors.n2o) / 1000;
-
+  
  const emission : Emission = {
      co2e,
      ch4e,
      n2oe, 
      ghge : (co2e * 1) + (ch4e * 28) + (n2oe * 265)     
  }
+
+
 
  return emission
 
@@ -171,25 +232,31 @@ const createModel = async (dataLength : number) => {
     }));
 
 
-
-    // model.add(
-    //   tf.layers.lstm({
-    //     units: dataLength,
-    //     kernelInitializer: "glorotUniform",
-    //     activation: "tanh",
-    
-     
-    //   })
-    // );
-
-
     model.add(
       tf.layers.lstm({
         units: dataLength,
         kernelInitializer: "heUniform",
         activation: "relu",
-        // returnSequences : true,
-      
+        returnSequences : true,
+      })
+    );
+    
+    model.add(
+      tf.layers.lstm({
+        units: dataLength,
+        kernelInitializer: "heUniform",
+        activation: "relu",
+        returnSequences : true,
+        
+     
+      })
+    );
+    
+    model.add(
+      tf.layers.lstm({
+        units: dataLength,
+        kernelInitializer: "heUniform",
+        activation: "relu",
      
       })
     );
@@ -223,18 +290,13 @@ const createModel = async (dataLength : number) => {
 
 
 
+const forecast = async (x:Date[], y:number[]) => {
 
-
-
-
-
-const forecast = async (data : {x:Date,y:number}[]) => {
-
-    const dataLength = data.length;
-    let x_val = data.map(dt => dt.x);
-    let y_val = data.map(dt => dt.y);
+    const dataLength = x.length;
+    let x_val = x;
+    let y_val = y;
     let predictions:any[] = [];
-    let cycle = 500
+    let cycle = 200
 
 
     
