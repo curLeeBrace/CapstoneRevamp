@@ -8,14 +8,14 @@ interface TableProps  {
  
 export default function Table({tb_datas, tb_head} : TableProps) {
   return (
-    <Card className="w-full overflow-scroll custom-scrollbar">
-      <table className="w-full min-w-max table-auto text-left">
-        <thead>
+    <Card className="w-full overflow-scroll custom-scrollbar h-full">
+      <table className="w-full h-full min-w-max table-auto text-left">
+        <thead className="sticky top-0">
           <tr>
             {tb_head.map((head) => (
               <th
                 key={head}
-                className="border-b border-blue-gray-100 bg-blue-gray-50 p-4"
+                className="border-b border-blue-gray-100 bg-blue-gray-100 p-4"
               >
                 <Typography
                   variant="small"

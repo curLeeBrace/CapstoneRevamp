@@ -2,38 +2,42 @@
 import BarChart from "../../Components/Dashboard/BarChart"
 import {GlobeAsiaAustraliaIcon, TruckIcon, ExclamationTriangleIcon} from "@heroicons/react/24/solid";
 import Cookies from "js-cookie";
-import React, {useEffect, useState } from "react";
+import {useEffect, useState } from "react";
 import {AddressReturnDataType} from "../../custom-hooks/useFilterAddrress";
-import { Typography, Checkbox} from "@material-tailwind/react";
+import { Typography} from "@material-tailwind/react";
 import SimpleCard from "../../Components/Dashboard/SimpleCard";
-import useAxiosPrivate from "../../custom-hooks/auth_hooks/useAxiosPrivate";
-import Municipality from "../../custom-hooks/Municipality";
+
 import { TabsDefault} from "../../Components/Tabs";
 import { Button } from '@material-tailwind/react';
 import axios from "../../api/axios";
 import MC_SurveyData from "../MC_SurveyData";
+import FilterComponent from "../../Components/FilterComponent";
 
 const MobileCombustionSummary = () => {
     
-    const axiosPrivate = useAxiosPrivate();
 
     const [formType, setFormType] = useState<"residential" | "commercial">();
+    const [address, setAddress] = useState<AddressReturnDataType>();
+
+
     const [mobileCombustionData, setMobileCombustionData] = useState<any>();
     const [isLoading, set_isLoading] = useState<boolean>(false);
     const [v_typeSeries, set_vTypeSeries] = useState<any[]>();
     const [v_ageSeries, set_vAgeSeries] = useState<any[]>();
     const [vehicle_ghge_rate, setVehicleGHGeRate] = useState<any[]>();
-    const [address, setAddress] = useState<AddressReturnDataType>();
+ 
+
     const [user, setUser] = useState({
         type : "",
         municipality_code: "",
         province_code :"",
         municipality_name : "",
     });
-
+   
 
     const [expected_ghgThisYear, set_expected_ghgThisYear] = useState<number>();
     const [isPredicting, set_isPredicting] = useState<boolean>(false);
+
 
     let muni_code = user.type === "lgu_admin" ? user.municipality_code : address ? address.address_code : undefined
     let prov_code = user.type === "lgu_admin" ? user.province_code : address ? address.parent_code : undefined
@@ -65,7 +69,7 @@ const MobileCombustionSummary = () => {
     
 
             set_isLoading(true)
-            axiosPrivate.get(`/summary-data/mobile-combustion/${prov_code}/${muni_code}/${formType}`)
+            axios.get(`/summary-data/mobile-combustion/${prov_code}/${muni_code}/${formType}`)
             .then(res => {
                 const {vehicle} = res.data;
                 console.log("Summary Data : ", res.data)
@@ -129,11 +133,6 @@ const MobileCombustionSummary = () => {
     },[formType,address])
 
 
-    const handleFormType = (event : React.ChangeEvent<HTMLInputElement|HTMLSelectElement>) =>{
-        const value = event.target.value
-        setFormType(value as any);
-
-    }
 
 
     const getExpected_ghgThisYear = () => {
@@ -170,8 +169,6 @@ const MobileCombustionSummary = () => {
     }
 
 
-
-
     return (
         <div className="">
             <div className="flex flex-col w-full px-20 gap-5">
@@ -179,43 +176,22 @@ const MobileCombustionSummary = () => {
                 <div className="text-center mt-3">
                     <Typography className="font-bold text-2xl text-gray-800" >Summary Data of Mobile Combustion</Typography>
                 </div>
-                <div className="flex gap-5 flex-wrap">
-                    <div className=" basis-full md:basis-1/5">
-                        {/* dito */}
-                        <Municipality setAddress={setAddress} />
-                       
-                        
-
-                    </div>
-                    <div className="flex basis-8/12">
-                        <Checkbox
-                            disabled = {address == undefined}
-                            name='formType'
-                            value={'residential'}
-                            checked={formType === "residential"} // Checked if this is selected
-                            onChange={(event) => handleFormType(event)} // Handler for selection
-                            label={
-                            <Typography variant="small" color="gray" className="font-normal mr-4">
-                                Residential
-                            </Typography>
-                            }
-                            containerProps={{ className: "-ml-2.5" }}
-                        />
-                        <Checkbox
-                            disabled = {address == undefined}
-                            name='formType'
-                            value={'commercial'}
-                            checked={formType === "commercial"} // Checked if this is selected
-                            onChange={(event) => handleFormType(event)} // Handler for selection
-                            label={
-                            <Typography variant="small" color="gray" className="font-normal mr-4">
-                                Commercial
-                            </Typography>
-                            }
-                            containerProps={{ className: "-ml-2.5" }}
-                        />
-                    </div> 
-                </div>
+                <FilterComponent 
+                addressState={
+                    {
+                        state : address,
+                        setState : setAddress
+                    }
+                    
+                }
+                formTypeState={
+                    {
+                        state : formType,
+                        setState : setFormType
+                    }
+                }
+                
+                />
                 {
                     mobileCombustionData?
                         

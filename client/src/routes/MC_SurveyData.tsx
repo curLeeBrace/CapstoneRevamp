@@ -48,11 +48,12 @@ const MC_SurveyData = ({form_type, muni_code, prov_code} : MC_SurveyDataProps) =
     },[form_type,muni_code])
 
 
-    console.log(mc_datas);
     return (
-        <div className="">
+        <div className="h-full">
             {
-                mc_datas && <Table tb_datas={mc_datas} tb_head={column}/>
+                mc_datas && mc_datas.length > 0 ? 
+                    <Table tb_datas={mc_datas} tb_head={column}/>
+                : <div className="h-full flex justify-center items-center">No data found</div>
             }
           
         </div>
