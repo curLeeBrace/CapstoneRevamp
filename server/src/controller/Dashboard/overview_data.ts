@@ -129,7 +129,7 @@ type DashBoardData = {
 
             if(data.surveyor_info.municipality_code === municipality_code)  {
                 //compute the municipality emmisions
-                const single_form_emmmsion = get_emission(data.emission_factors, data.survey_data.liters_consumption);
+                const single_form_emmmsion = get_emission(data.survey_data.fuel_type as string, data.survey_data.liters_consumption);
                 const {co2e, ch4e, n2oe, ghge} = single_form_emmmsion
 
                 tb_co2e += co2e;
@@ -162,7 +162,7 @@ type DashBoardData = {
 
 
 
- const get_emission = (emission_factors : any, liters_consumption: number) : Emission  => {
+ const get_emission = (fuel_type : string,  liters_consumption: number) : Emission  => {
 
      /*
         ==========================================
@@ -173,6 +173,17 @@ type DashBoardData = {
 
          ==========================================
     */
+
+    const emission_factors = fuel_type === "diesel" ? {
+        co2 : 2.66,
+        ch4 : 4.0e-4,
+        n2o : 2.18e-5,
+    } : {
+        co2 : 2.07,
+        ch4 : 3.2e-4,
+        n2o : 1.9e-4,
+    }
+
 
     const  co2e = (liters_consumption * emission_factors.co2) / 1000;
     const  ch4e =  (liters_consumption * emission_factors.ch4) / 1000;

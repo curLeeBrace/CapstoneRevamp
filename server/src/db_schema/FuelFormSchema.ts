@@ -18,12 +18,6 @@ const FuelForm = new mongoose.Schema({
         province_code : {type : String},
     }, required : true},
 
-    emission_factors : {type : {
-        co2 : {type : Number},
-        ch4 : {type : Number},
-        n2o : {type : Number}
-    }, require : true},
-
     dateTime_created : {type : Date, required : true},
     dateTime_edited : {type : String}
 

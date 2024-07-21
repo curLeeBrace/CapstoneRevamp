@@ -44,7 +44,7 @@ const get_mcData = async (req : Request, res : Response) => {
       
 
         const filterData:MC_DATA[] = data.map(dt => {
-            const ghge = get_emission(dt.emission_factors, dt.survey_data.liters_consumption);
+            const ghge = get_emission(dt.survey_data.fuel_type as string, dt.survey_data.liters_consumption);
             return {
                 surveyor : dt.surveyor_info.full_name as string,
                 f_type : dt.survey_data.fuel_type as string,
