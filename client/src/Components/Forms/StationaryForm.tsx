@@ -81,18 +81,6 @@ const submitHandler = () => {
       municipality_code,
       province_code
     },
-    emission_factors : formData.fuel_type === "diesel" ?
-    {
-      co2 : 2.66,
-      ch4 : 4.0e-4,
-      n2o : 2.18e-5,
-    } : 
-    {
-      co2 : 2.07,
-      ch4 : 3.2e-4,
-      n2o : 1.9e-4,
-    }
-    ,
     dateTime_created : new Date(),
     dateTime_edited : null,
   }
