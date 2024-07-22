@@ -46,7 +46,7 @@ const [onLoadBrgy, setOnloadBrgy] = useState("Anibong");
 
 
 
-const [searchParams, setSearchParams] = useSearchParams();
+const [searchParams] = useSearchParams();
 const params = useParams()
 
 
