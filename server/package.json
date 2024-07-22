@@ -12,7 +12,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@tensorflow/tfjs-node": "^4.20.0",
+    "@mapbox/node-pre-gyp": "^1.0.11",
+    "@tensorflow/tfjs-node": "3.1.0",
     "@types/cors": "^2.8.17",
     "@types/crypto-js": "^4.2.2",
     "@types/jsonwebtoken": "^9.0.6",
