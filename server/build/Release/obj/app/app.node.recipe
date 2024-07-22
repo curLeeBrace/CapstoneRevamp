@@ -2,7 +2,11 @@
 <Project>
   <ProjectOutputs>
     <ProjectOutput>
+<<<<<<< HEAD
+      <FullPath>C:\Users\angel\OneDrive\Documents\TOTOY\CAPSTONE 2 ARC\TESTING AREA\CapstoneRevamp\server\build\Release\app.node</FullPath>
+=======
       <FullPath>C:\Users\angel\OneDrive\Documents\TOTOY\CAPSTONE 2 ARC\CapstoneRevamp\server\build\Release\app.node</FullPath>
+>>>>>>> 332fbe9e9c0304f10f196614132a9b4f80a99602
     </ProjectOutput>
   </ProjectOutputs>
   <ContentFiles />

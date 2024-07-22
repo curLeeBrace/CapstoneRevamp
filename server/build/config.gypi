@@ -417,6 +417,6 @@
     "nodedir": "C:\\Users\\angel\\AppData\\Local\\node-gyp\\Cache\\21.7.3",
     "python": "C:\\Users\\angel\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
     "standalone_static_library": 1,
-    "msbuild_path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\MSBuild\\Current\\Bin\\MSBuild.exe"
+    "msbuild_path": "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\MSBuild\\Current\\Bin\\MSBuild.exe"
   }
 }
