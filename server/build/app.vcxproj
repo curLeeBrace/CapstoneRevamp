@@ -11,7 +11,11 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
+<<<<<<< HEAD
+    <ProjectGuid>{F87B3BAE-95C9-B974-7A53-DCA476AFD31E}</ProjectGuid>
+=======
     <ProjectGuid>{B77AE2F0-00EC-0059-9705-7C0027E8E1F8}</ProjectGuid>
+>>>>>>> 332fbe9e9c0304f10f196614132a9b4f80a99602
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>app</RootNamespace>
     <IgnoreWarnCompileDuplicatedFilename>true</IgnoreWarnCompileDuplicatedFilename>
@@ -138,7 +142,11 @@
     <None Include="..\binding.gyp"/>
   </ItemGroup>
   <ItemGroup>
+<<<<<<< HEAD
+    <ClCompile Include="C:\Program Files\nodejs\node_modules\npm\node_modules\node-gyp\src\win_delay_load_hook.cc"/>
+=======
     <ClCompile Include="C:\Users\angel\AppData\Roaming\npm\node_modules\node-gyp\src\win_delay_load_hook.cc"/>
+>>>>>>> 332fbe9e9c0304f10f196614132a9b4f80a99602
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets"/>
   <Import Project="$(VCTargetsPath)\BuildCustomizations\masm.targets"/>
