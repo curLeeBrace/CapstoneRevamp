@@ -46,6 +46,38 @@ const insertFuelFormData = async (req: Request, res: Response) => {
 
 
 
+
+
+
+const updateMobileCombustionData = async (req: Request, res: Response) => {
+    const {form_id} = req.params;
+    const {survey_data} = req.body;
+    console.log(req.body);
+    try {
+
+        const mc_data = await FuelFormSchema.findByIdAndUpdate(form_id, {
+            survey_data : survey_data,
+            dateTime_edited : new Date()
+        }).exec()
+
+        if(!mc_data) return res.sendStatus(204);
+
+        return res.status(200).send("Success Requesting Update!");
+        
+    } catch (error) {
+        console.log("updateMobileCombustionData : ", error);
+        return res.sendStatus(500)
+    }
+
+
+
+}
+
+
+
+
 export {
-    insertFuelFormData
+    insertFuelFormData,
+    updateMobileCombustionData
+
 }

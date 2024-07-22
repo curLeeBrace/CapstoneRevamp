@@ -22,6 +22,8 @@ import AccountsTable from "./routes/s-admin/AccountsTable";
 import MobileCombustionSummary from "./routes/s-admin/MobileCombustionSummary";
 
 
+import SurveyedList from "./routes/surveyor/SurveyedList";
+
 
 function App() {
  
@@ -75,6 +77,7 @@ function App() {
               <Route path = 'forms'>
                 <Route path = ':action/:form_type' element = {<StationaryForm/>}/>
               </Route>
+              <Route path="surveyed-list" element ={<SurveyedList/>}/>
               <Route path = 'change-pass' element = {<ChangePass/>}/>
             </Route>
 
