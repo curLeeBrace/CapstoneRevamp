@@ -58,7 +58,7 @@ const useFilterAddress= ({parent_code, address_type} : useFilterAddressProps) : 
     addresses.map((data:BRGY)=> {
  
         return {
-            address_code : data.city_code,
+            address_code : data.brgy_code,
             address_name : data.brgy_name,
             parent_code : data.province_code
         } as AddressReturnDataType

@@ -2,14 +2,13 @@ import {useEffect, useState } from 'react';
 import { Card, Input, Checkbox, Button, Typography, Select, Option} from "@material-tailwind/react";
 import useHandleChange from '../../custom-hooks/useHandleChange';
 import AlertBox from './AlertBox';
-import Cookies from 'js-cookie';
-import {user_info} from '../../routes/not-auth/LogIn';
 import useAxiosPrivate from '../../custom-hooks/auth_hooks/useAxiosPrivate';
 import DialogBox from "../DialogBox";
-import { useLocation, useParams, useSearchParams } from 'react-router-dom';
+import {useParams, useSearchParams } from 'react-router-dom';
 import BrgyMenu from '../../custom-hooks/BrgyMenu';
 import useUserInfo from '../../custom-hooks/useUserType';
 import { AddressReturnDataType } from '../../custom-hooks/useFilterAddrress';
+import axios from '../../api/axios';
 
 
 type formDataTypes = {
@@ -18,11 +17,22 @@ type formDataTypes = {
   vehicle_age : number,
   fuel_type : string,
   liters_consumption : number,
+
 }
+
+type Payload = {
+  survey_data : any
+  surveyor_info : any
+  dateTime_created:Date
+  dateTime_edited:Date|null
+}
+
 export function StationaryForm() {
 
 const handleChange = useHandleChange; 
-const [formData, setFormData] = useState<formDataTypes>({} as formDataTypes);
+const [formData, setFormData] = useState<formDataTypes>({
+  form_type : "residential"
+} as formDataTypes);
 
 const [vehicleOptions, setVehicleOptions] = useState<string[]>();
 const [isLoading, set_isLoading] = useState<boolean>(false);
@@ -31,18 +41,53 @@ const [aler_msg, setAlertMsg] = useState<string>("");
 const axiosPivate = useAxiosPrivate();
 const [openDialogBox, setOpenDialogBox] = useState(false);
 const user_info = useUserInfo();
-const [brgy, setBrgy] = useState({} as AddressReturnDataType);
-
-
-
-
-
-
+const [brgy, setBrgy] = useState<AddressReturnDataType>();
+const [onLoadBrgy, setOnloadBrgy] = useState("Anibong");
 
 
 
 const [searchParams, setSearchParams] = useSearchParams();
 const params = useParams()
+
+
+useEffect(()=>{
+const {action} = params
+
+if(action !== "submit"){
+  axios.get('/forms/mobile-combustion/one-surveyed-data', {params : {
+    form_id : searchParams.get("form_id")
+  }})
+  .then(res => {
+    const {brgy_name, form_type, fuel_type, liters_consumption, vehicle_age, vehicle_type} = res.data.survey_data;
+    setOnloadBrgy(brgy_name);
+    setFormData({
+      form_type,
+      fuel_type,
+      liters_consumption,
+      vehicle_age : new Date().getFullYear() - vehicle_age,
+      vehicle_type
+    })
+    console.log("ONE FORM DATA : ", res.data);
+  })
+  .catch((err) => console.log(err));
+
+}
+
+
+
+
+},[])
+
+
+
+
+
+
+
+
+
+
+
 
 
 useEffect(()=>{
@@ -61,8 +106,9 @@ useEffect(()=>{
 useEffect(()=>{
     const {vehicle_age, liters_consumption} = formData
 
-    if(vehicle_age && vehicle_age > 99){
-      alert("Vehicle Age Limit Exceeded")
+    const yearNow = new Date().getFullYear();
+    if(vehicle_age && vehicle_age > yearNow){
+      alert("Year Model Limit Exceeded")
       setFormData({...formData, vehicle_age : 0})
     }
   
@@ -75,17 +121,19 @@ useEffect(()=>{
 },[formData?.vehicle_age, formData?.liters_consumption])
 
 
-console.log("BRGY : ", brgy)
 
 
 
 
-const submitHandler = () => {
 
+
+
+const preparePayLoad = () : Payload => {
   const {email, full_name, municipality_name, municipality_code, province_code} = user_info;
-  
+  const yearNow = new Date().getFullYear();
+  formData.vehicle_age = yearNow - formData.vehicle_age;
   let payload = {
-    survey_data : {...formData, brgy_name : brgy.address_name, brgy_code : brgy.address_code},
+    survey_data : {...formData, brgy_name : brgy?.address_name, brgy_code : brgy?.address_code},
     surveyor_info : {
       email,
       full_name,
@@ -97,23 +145,33 @@ const submitHandler = () => {
     dateTime_edited : null,
   }
 
+  return payload
+}
 
 
+const clearForm = () => {
+  setFormData({
+    form_type : "",
+    vehicle_type : "",
+    vehicle_age : 0,
+    fuel_type : "",
+    liters_consumption : 0,
+  })
+}
+
+
+
+const submitHandler = () => {
+
+  const payload = preparePayLoad();
    setOpenDialogBox(false)
     set_isLoading(true);
     axiosPivate.post('/forms/fuel/insert', payload)
     .then(res => {
         if(res.status === 201){
-          
           setOpenAlert(true);
           setAlertMsg("Sucsessfully Submitted!");
-          setFormData({
-            form_type : "",
-            vehicle_type : "",
-            vehicle_age : 0,
-            fuel_type : "",
-            liters_consumption : 0,
-          })
+          clearForm();
         }
 
       set_isLoading(false);
@@ -126,6 +184,38 @@ const submitHandler = () => {
     })
 
 }
+
+
+
+const updateHandler = () => {
+  const payload = preparePayLoad();
+  payload.survey_data.status  = "1";
+  const form_id = searchParams.get("form_id");
+  setOpenDialogBox(false)
+  set_isLoading(true);
+  axios.put(`/forms/mobile-combustion/update-surveyed-data/${form_id}`, payload)
+  .then((res) => {
+
+    if(res.status === 204){
+      alert("can't request update because form data not found!");
+    } else if(res.status === 200){
+      setOpenAlert(true);
+      setAlertMsg(res.data);
+    }
+   
+  })
+  .catch(err => {
+    console.log(err)
+    set_isLoading(false);
+    setOpenAlert(true);
+    setAlertMsg("Server Error!");
+  })
+  .finally(()=>set_isLoading(false))
+  
+}
+
+
+
 
 
 
@@ -148,7 +238,11 @@ const submitValidation = () => {
   return (
     <div className="flex justify-center min-h-screen px-4 py-10 overflow-x-hidden bg-gray-200">
 
-      <DialogBox open = {openDialogBox} setOpen={setOpenDialogBox} message = 'Please double check the data before submitting' label='Confirmation' submit={submitHandler} />
+      <DialogBox open = {openDialogBox} setOpen={setOpenDialogBox} message = 'Please double check the data before submitting' label='Confirmation' submit={
+        params.action === "submit" ? submitHandler
+        : params.action === "update" ? updateHandler
+        :()=>{}//just an empty function. soon...
+      } />
 
       <Card className="w-full h-full sm:w-96 md:w-3/4 lg:w-2/3 xl:w-1/2 px-6 py-6 -mt-10 shadow-black shadow-2xl rounded-xl relative">
             
@@ -171,7 +265,8 @@ const submitValidation = () => {
                 className="w-full placeholder:opacity-100 focus:!border-t-gray-900 border-t-blue-gray-200"
               />
             </div> */}
-            <BrgyMenu municipality_code= {user_info.municipality_code} setBrgys={setBrgy}/>
+            {onLoadBrgy && <BrgyMenu municipality_code= {user_info.municipality_code} setBrgys={setBrgy} onLoadBrgyName={onLoadBrgy}/>}
+            
             <div>
               <Typography variant="h6" color="blue-gray">
                 Form Type
@@ -191,6 +286,7 @@ const submitValidation = () => {
 
               />
               <Checkbox
+                
                 disabled = {params.action === "view"}
                 name='form_type'
                 value={'commercial'}
@@ -209,27 +305,31 @@ const submitValidation = () => {
 
 
             <div>
-              {/* <Typography variant="h6" color="blue-gray">
-                Vehicle Type
-              </Typography> */}
-       
-              <Select 
-                 color="gray" label="Vehicle Type"
-                 name='fuel_type'
-                 onChange={(value : any) => setFormData({...formData, vehicle_type : value})}
-                 disabled = {vehicleOptions === undefined && params.action === "view"}
-              >
-                 {
-                  vehicleOptions ? 
-                  vehicleOptions?.map((v_type, index) => (
-                    <Option key={index} value={v_type}>
-                      {v_type}
-                    </Option>
-                   ))
-                   : <Option value=''> </Option>
-                 }
- 
-              </Select>
+             
+              {
+                vehicleOptions ?
+                  <Select 
+                  color="gray" label="Vehicle Type"
+                  name='fuel_type'
+                  value={formData.vehicle_type}
+                  onChange={(value : any) => setFormData({...formData, vehicle_type : value})}
+                  disabled = {vehicleOptions === undefined && params.action === "view"}
+                >
+                  {
+                    
+                    vehicleOptions?.map((v_type, index) => (
+                      <Option key={index} value={v_type}>
+                        {v_type}
+                      </Option>
+                    ))
+                    
+                  }
+  
+                  </Select>
+                  :null
+              
+              }
+              
               
             
               {/* <Input
@@ -244,7 +344,7 @@ const submitValidation = () => {
             </div>
             <div>
               <Typography variant="h6" color="blue-gray" className="mt-2">
-                Vehicle Age
+                Vehicle Year Model
               </Typography>
               <Input
               disabled = {params.action === "view"}
@@ -253,11 +353,11 @@ const submitValidation = () => {
                onChange={(event)=> handleChange({event, setFormStateData : setFormData})}
                 type="number"
                 size="lg"
-                placeholder="Age of Vehicle"
+                placeholder="Example : 1990"
                 className="w-full placeholder:opacity-100 focus:!border-t-gray-900 border-t-blue-gray-200"
-                maxLength={2}
-                min={0}
-                max={99}
+                maxLength={4}
+                min={1500}
+                max={new Date().getFullYear()}
               />
             </div>
             
@@ -325,16 +425,23 @@ const submitValidation = () => {
 
           {/* Full-width elements */}
           <div className="md:col-span-2">
-            <Button 
-              fullWidth 
-              className="mt-6 flex justify-center"
-              loading = {isLoading}
-              onClick={submitValidation}
-              disabled = {params.action === "view"  }
-            
-            >
-              Submit
-            </Button>
+                  <Button 
+                  fullWidth 
+                  className="mt-6 flex justify-center"
+                  loading = {isLoading}
+                  onClick={submitValidation}
+               
+                
+                  >
+                    {
+                      params.action === "submit" ?
+                      "Submit"
+                      : params.action === "update" ?
+                      "Request Update"
+                      : "Accept Update"
+                    }
+                  </Button>
+  
           </div>
         </div>
       </Card>

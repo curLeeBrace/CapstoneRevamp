@@ -7,27 +7,56 @@ interface BrgyMenuyProps {
     setBrgys : React.SetStateAction<any>;
     disabled? : boolean;
     municipality_code : string;
+    onLoadBrgyName? : string
   }
-const BrgyMenu = ({setBrgys, municipality_code ,disabled = false}:BrgyMenuyProps)=>{
+const BrgyMenu = ({setBrgys, municipality_code ,disabled = false, onLoadBrgyName}:BrgyMenuyProps)=>{
     const filterADddress = useFilterAddress
     const brgys = filterADddress({parent_code : municipality_code, address_type : "brgy"})
     const [brgy_opt, set_brgy_opt] = useState<string[]>();
-
+    const [selectedBrgy, setSelectedBrgy] = useState<string>();
     
 
+
+
+    console.log("BRGYS : ", brgys)
+
+
     useEffect(()=>{
+
         set_brgy_opt(brgys.map(brgy => brgy.address_name));
+        
+        setSelectedBrgy(onLoadBrgyName)
+
+        if(onLoadBrgyName) {
+            
+                    let brgysMenu: AddressReturnDataType = {} as AddressReturnDataType;
+                    brgys.forEach((data) => {
+                        if (data.address_name === onLoadBrgyName) {
+                          brgysMenu = {
+                            address_name: data.address_name,
+                            address_code: data.address_code,
+                            parent_code: data.parent_code,
+                          };
+                        }
+                      });
+                    setBrgys(brgysMenu);
+
+        }
+
+
+
     },[])
 
-    const onChangeHandler = (value:string|undefined) => {
-        console.log("VALUE : ", value)
-        let brgysMenu: AddressReturnDataType = {} as AddressReturnDataType;
 
+
+    const onChangeHandler = (value:string|undefined) => {
+
+        value && setSelectedBrgy(value)
+        let brgysMenu: AddressReturnDataType = {} as AddressReturnDataType;
        
         brgys.forEach((data) => {
             
           if (data.address_name === value) {
-            console.log("brgysMenu : ", brgysMenu)
             brgysMenu = {
               address_name: data.address_name,
               address_code: data.address_code,
@@ -41,19 +70,23 @@ const BrgyMenu = ({setBrgys, municipality_code ,disabled = false}:BrgyMenuyProps
     }
 
 
-
+    console.log("SELECTED BRGY : ", selectedBrgy)
 
     return (
-        <>  
-            <Select onChange={(value)=>{onChangeHandler(value)}} disabled = {disabled} label="Choose Brgy">
-                {
-                    brgy_opt ? 
-                    brgy_opt.map((brgy, index) => (<Option key={index} value= {brgy}>{brgy}</Option>))
-                    : 
-                    <Option>{" "}</Option>
-                }
+        <> 
+          
+            {  brgy_opt ? 
             
-            </Select>
+                <Select value={selectedBrgy} onChange={(value)=>{onChangeHandler(value)}} disabled = {disabled} label="Choose Brgy"  >
+                    {
+                        brgy_opt.map((brgy, index) => (<Option key={index} value= {brgy}>{brgy}</Option>))
+                    }
+                </Select>
+                : null
+        
+        
+            }
+            
         
         </>
     )

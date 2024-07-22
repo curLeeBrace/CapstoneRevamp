@@ -109,6 +109,10 @@ export function StickyNavbar() {
             name: "Home",
             url: `/${user_type}/home`,
           },
+          {
+            name: "Surveyed List",
+            url: `/${user_type}/surveyed-list`,
+          },
         ]);
       }
     }
