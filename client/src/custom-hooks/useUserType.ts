@@ -9,6 +9,7 @@ type userInfoType = {
     full_name : string;
     municipality_name : string;
     province_code : string;
+    email : string;
 }
 
 const useUserInfo = () => {
@@ -17,13 +18,14 @@ const useUserInfo = () => {
         const user_info = Cookies.get("user_info");
         let userinfo : userInfoType = {} as userInfoType;
         if(user_info){
-            const {user_type, municipality_code, full_name, municipality_name, province_code} = JSON.parse(user_info) as user_info;
+            const {user_type, municipality_code, full_name, municipality_name, province_code, email} = JSON.parse(user_info) as user_info;
              userinfo = {
                 user_type,
                 municipality_code,
                 full_name,
                 municipality_name,
-                province_code
+                province_code,
+                email
 
             }
             
