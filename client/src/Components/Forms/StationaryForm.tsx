@@ -6,7 +6,10 @@ import Cookies from 'js-cookie';
 import {user_info} from '../../routes/not-auth/LogIn';
 import useAxiosPrivate from '../../custom-hooks/auth_hooks/useAxiosPrivate';
 import DialogBox from "../DialogBox";
-
+import { useLocation, useParams, useSearchParams } from 'react-router-dom';
+import BrgyMenu from '../../custom-hooks/BrgyMenu';
+import useUserInfo from '../../custom-hooks/useUserType';
+import { AddressReturnDataType } from '../../custom-hooks/useFilterAddrress';
 
 
 type formDataTypes = {
@@ -27,23 +30,31 @@ const [openAlert, setOpenAlert] = useState<boolean>(false);
 const [aler_msg, setAlertMsg] = useState<string>("");
 const axiosPivate = useAxiosPrivate();
 const [openDialogBox, setOpenDialogBox] = useState(false);
+const user_info = useUserInfo();
+const [brgy, setBrgy] = useState({} as AddressReturnDataType);
 
 
 
 
+
+
+
+
+
+const [searchParams, setSearchParams] = useSearchParams();
+const params = useParams()
 
 
 useEffect(()=>{
-  
+
     setVehicleOptions(formData.form_type === "residential" ? 
         ["Car", "SUV", "Motorcycle"] : 
       formData.form_type === "commercial" ? 
         ["Jeep", "Tricycle", "Bus", "Van", "Taxi", "Truck"]
       :undefined
     )
-  
 
-
+    
 },[formData.form_type])
 
 
@@ -64,16 +75,17 @@ useEffect(()=>{
 },[formData?.vehicle_age, formData?.liters_consumption])
 
 
+console.log("BRGY : ", brgy)
+
 
 
 
 const submitHandler = () => {
 
-  const user_info = JSON.parse(Cookies.get('user_info') as string) as user_info;
   const {email, full_name, municipality_name, municipality_code, province_code} = user_info;
-
+  
   let payload = {
-    survey_data : formData,
+    survey_data : {...formData, brgy_name : brgy.address_name, brgy_code : brgy.address_code},
     surveyor_info : {
       email,
       full_name,
@@ -112,29 +124,23 @@ const submitHandler = () => {
       setOpenAlert(true);
       setAlertMsg("Server Error!");
     })
- 
- 
-  
-  
-
 
 }
 
+
+
 const submitValidation = () => {
-
-
-    console.log(formData)
     const {form_type, fuel_type, liters_consumption, vehicle_age, vehicle_type} = formData
-    if(form_type && fuel_type &&  liters_consumption && vehicle_age && vehicle_type){
+    if(form_type && fuel_type &&  liters_consumption && vehicle_age && vehicle_type && brgy){
+ 
       setOpenDialogBox(true);
     } else {
       set_isLoading(false);
       setOpenAlert(true);
       setAlertMsg("Some field are empty!");
     }
+
     
-  
- 
 }
 
 
@@ -165,12 +171,13 @@ const submitValidation = () => {
                 className="w-full placeholder:opacity-100 focus:!border-t-gray-900 border-t-blue-gray-200"
               />
             </div> */}
-
+            <BrgyMenu municipality_code= {user_info.municipality_code} setBrgys={setBrgy}/>
             <div>
               <Typography variant="h6" color="blue-gray">
                 Form Type
               </Typography>
               <Checkbox
+                disabled = {params.action === "view"}
                 name='form_type'
                 value={'residential'}
                 checked={formData.form_type === "residential"} // Checked if this is selected
@@ -184,6 +191,7 @@ const submitValidation = () => {
 
               />
               <Checkbox
+                disabled = {params.action === "view"}
                 name='form_type'
                 value={'commercial'}
                 checked={formData.form_type === "commercial"} // Checked if this is selected
@@ -209,7 +217,7 @@ const submitValidation = () => {
                  color="gray" label="Vehicle Type"
                  name='fuel_type'
                  onChange={(value : any) => setFormData({...formData, vehicle_type : value})}
-                 disabled = {vehicleOptions === undefined}
+                 disabled = {vehicleOptions === undefined && params.action === "view"}
               >
                  {
                   vehicleOptions ? 
@@ -239,6 +247,7 @@ const submitValidation = () => {
                 Vehicle Age
               </Typography>
               <Input
+              disabled = {params.action === "view"}
                name='vehicle_age'
                value = {formData.vehicle_age}
                onChange={(event)=> handleChange({event, setFormStateData : setFormData})}
@@ -262,6 +271,7 @@ const submitValidation = () => {
                 Fuel Type
               </Typography>
               <Checkbox
+                disabled={params.action === "view"}
                 name='fuel_type'
                 value={'diesel'}
                 checked={formData?.fuel_type === "diesel"} // Checked if this is selected
@@ -275,7 +285,7 @@ const submitValidation = () => {
                 containerProps={{ className: "-ml-2.5" }}
               />
               <Checkbox
-              
+              disabled ={params.action === "view"}
               name='fuel_type'
               value={'gasoline'}
               checked={formData?.fuel_type === "gasoline"} // Checked if this is selected
@@ -294,6 +304,7 @@ const submitValidation = () => {
                 Fuel Consumption in a whole day - (liters)
               </Typography>
               <Input
+                disabled= {params.action === "view"}
                  name='liters_consumption'
                  value = {formData.liters_consumption}
                  onChange={(event)=> handleChange({event, setFormStateData : setFormData})}
@@ -319,6 +330,7 @@ const submitValidation = () => {
               className="mt-6 flex justify-center"
               loading = {isLoading}
               onClick={submitValidation}
+              disabled = {params.action === "view"  }
             
             >
               Submit

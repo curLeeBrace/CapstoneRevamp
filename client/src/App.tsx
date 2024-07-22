@@ -73,7 +73,7 @@ function App() {
               <Route index element = {<HomePage/>}/>
               <Route path = 'home' element = {<HomePage/>}/>
               <Route path = 'forms'>
-                <Route path = ':fuel' element = {<StationaryForm/>}/>
+                <Route path = ':action/:form_type' element = {<StationaryForm/>}/>
               </Route>
               <Route path = 'change-pass' element = {<ChangePass/>}/>
             </Route>

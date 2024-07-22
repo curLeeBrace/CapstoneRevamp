@@ -20,9 +20,9 @@ const navListMenuItems = [
   {
     title: "Stationary Fuel Combustion",
     description: "Fill up form for Fuel Combustion Inventory",
-    href: "/surveyor/forms/fuel",
+    href: `/surveyor/forms/submit/mobile-combustion?form_id=abc`,
   },
-];
+];  
 
 //========================================================================
 
