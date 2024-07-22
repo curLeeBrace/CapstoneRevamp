@@ -417,17 +417,6 @@
     "nodedir": "C:\\Users\\angel\\AppData\\Local\\node-gyp\\Cache\\21.7.3",
     "python": "C:\\Users\\angel\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
     "standalone_static_library": 1,
-    "msbuild_path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\MSBuild\\Current\\Bin\\MSBuild.exe",
-    "cache": "C:\\Users\\angel\\AppData\\Local\\npm-cache",
-    "globalconfig": "C:\\Users\\angel\\AppData\\Roaming\\npm\\etc\\npmrc",
-    "global_prefix": "C:\\Users\\angel\\AppData\\Roaming\\npm",
-    "init_module": "C:\\Users\\angel\\.npm-init.js",
-    "legacy_peer_deps": "true",
-    "local_prefix": "C:\\Users\\angel\\OneDrive\\Documents\\TOTOY\\CAPSTONE 2 ARC\\TESTING AREA\\CapstoneRevamp\\server",
-    "node_gyp": "C:\\Program Files\\nodejs\\node_modules\\npm\\node_modules\\node-gyp\\bin\\node-gyp.js",
-    "npm_version": "10.5.0",
-    "prefix": "C:\\Users\\angel\\AppData\\Roaming\\npm",
-    "userconfig": "C:\\Users\\angel\\.npmrc",
-    "user_agent": "npm/10.5.0 node/v21.7.3 win32 x64 workspaces/false"
+    "msbuild_path": "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\MSBuild\\Current\\Bin\\MSBuild.exe"
   }
 }
