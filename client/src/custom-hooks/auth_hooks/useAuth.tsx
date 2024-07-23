@@ -1,55 +1,59 @@
-import { useState, useContext, createContext, ReactNode, useEffect} from "react";
-import {useNavigate, useMatch} from "react-router-dom"
+import { useState, useContext, createContext, ReactNode, useEffect } from "react";
+import { useNavigate, useMatch } from "react-router-dom";
 
-
- interface AuthProps{
-    children : ReactNode;
-    
+interface AuthProps {
+  children: ReactNode;
 }
+
 interface AuthProv {
-    token : string;
-    setToken: (token : string)=>string;
-
+  token: string | undefined;
+  setToken: (token: string) => void;
+  logout: () => void;
 }
 
-const AuthContext = createContext({} as AuthProv);
+const AuthContext = createContext<AuthProv>({} as AuthProv);
 
+export function AuthProvider({ children }: AuthProps) {
+  const [token, setTokenState] = useState<string | undefined>(() => {
+    // Initialize state from localStorage
+    return localStorage.getItem("token") || undefined;
+  });
 
-export function AuthProvider ({children} : AuthProps) {
-    const [token, setToken] = useState<string|undefined>("");
-    const navigate = useNavigate()
-    const recoverRoute = useMatch("/recover");
-    
-    // const testRoute = useMatch('/testArea/:children');
-    const verfiyAcc = useMatch('/verify/account/:acc_id/:token')
-   
+  const navigate = useNavigate();
+  const recoverRoute = useMatch("/recover");
+  const verifyAcc = useMatch("/verify/account/:acc_id/:token");
 
-    useEffect(()=>{
-        console.log("token : ", token)
+// Set token and save it to localStorage
+  const setToken = (token: string) => {
+    setTokenState(token);
+    localStorage.setItem("token", token);
+  };
 
-        if(!recoverRoute && !verfiyAcc){
+  // Logout function to clear token and navigate to home
+  const logout = () => {
+    setTokenState(undefined);
+    localStorage.removeItem("token");
+    navigate('/', { replace: true });
+  };
 
-            if(token == "" || token == undefined ){
-                navigate('/', {replace : true})
-            }
-        }
+// navigate to home if token is not set and not in specific route
+  useEffect(() => {
+    console.log("token:", token);
 
-    // console.log(token   )
+    if (!recoverRoute && !verifyAcc) {
+      if (token === "" || token === undefined) {
+        navigate('/', { replace: true });
+      }
+    }
+  }, [token, navigate, recoverRoute, verifyAcc]);
 
-
-    },[token])
-    
-    
-    return(
-        <AuthContext.Provider value = {{token, setToken} as AuthProv}>
-
-            {children}
-
-        </AuthContext.Provider>
-    )
-    
+  return (
+    <AuthContext.Provider value={{ token, setToken, logout }}>
+      {children}
+    </AuthContext.Provider>
+  );
 }
 
 export const useAuth = () => {
-    return useContext(AuthContext);
-}
+  return useContext(AuthContext);
+};

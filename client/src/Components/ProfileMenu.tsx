@@ -11,6 +11,7 @@ import { ChevronDownIcon, UserCircleIcon} from "@heroicons/react/24/solid";
 import {Cog6ToothIcon, PowerIcon, FaceSmileIcon} from "@heroicons/react/24/solid";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../custom-hooks/auth_hooks/useAuth";
 
 
 
@@ -28,6 +29,8 @@ const ProfileMenu = () => {
   const [menuItems, setMenuItems] = useState<ProfileMenuItem[]>();
   const navigate = useNavigate();
   const {username,user_type, img_id} = JSON.parse(Cookies.get('user_info') as string);
+  const { logout } = useAuth();
+  
   // console.log(JSON.parse(Cookies.get('user_info') as string))
   //`https://drive.google.com/thumbnail?id=${detail.img_id}&sz=w1000`
 
@@ -52,6 +55,7 @@ const ProfileMenu = () => {
           Cookies.remove('user_info');
           navigate(`/`);
           window.location.reload();
+          logout();
         }
       },
      
