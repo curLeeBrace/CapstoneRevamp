@@ -23,7 +23,7 @@ const FuelForm = new mongoose.Schema({
     }, required : true},
 
     dateTime_created : {type : Date, required : true},
-    dateTime_edited : {type : String}
+    dateTime_edited : {type : Date}
 
 
 })
