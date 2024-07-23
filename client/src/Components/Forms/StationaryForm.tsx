@@ -76,7 +76,7 @@ if(action !== "submit"){
 
 
 
-},[])
+},[searchParams])
 
 
 
@@ -217,6 +217,30 @@ const updateHandler = () => {
 }
 
 
+const acceptUpdateHandler = () => {
+  const form_id = searchParams.get("form_id");
+  setOpenDialogBox(false)
+  axios.put(`/forms/mobile-combustion/accept-update`, {form_id})
+  .then((res) => {
+
+    if(res.status === 204){
+      alert("can't accep request update because form data not found!");
+    } else if(res.status === 200){
+      setOpenAlert(true);
+      setAlertMsg(res.data);
+    }
+   
+  })
+  .catch(err => {
+    console.log(err)
+    set_isLoading(false);
+    setOpenAlert(true);
+    setAlertMsg("Server Error!");
+  })
+  .finally(()=>set_isLoading(false))
+}
+
+
 
 
 
@@ -231,9 +255,10 @@ const submitValidation = () => {
       setOpenAlert(true);
       setAlertMsg("Some field are empty!");
     }
-
-    
 }
+
+
+
 
 
 
@@ -243,7 +268,7 @@ const submitValidation = () => {
       <DialogBox open = {openDialogBox} setOpen={setOpenDialogBox} message = 'Please double check the data before submitting' label='Confirmation' submit={
         params.action === "submit" ? submitHandler
         : params.action === "update" ? updateHandler
-        :()=>{}//just an empty function. soon...
+        :acceptUpdateHandler
       } />
 
       <Card className="w-full h-full sm:w-96 md:w-3/4 lg:w-2/3 xl:w-1/2 px-6 py-6 -mt-10 shadow-black shadow-2xl rounded-xl relative">
