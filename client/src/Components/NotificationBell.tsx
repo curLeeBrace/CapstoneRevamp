@@ -14,41 +14,69 @@ import useUserInfo from "../custom-hooks/useUserType";
 import Skeleton from "./Skeleton";
 import { Link } from "react-router-dom";
 
+
 const NotificationBell = () => {
   const userInfo = useUserInfo();
   const [notificationList, setNotificationList] = useState<any[]>();
   const [isLoading, set_isLoading] = useState(false);
   const [openNotiff, setOpenNotiff] = useState(false)
+  const [notiffCount, setNotiffCount] = useState(0);
+
+    
+
+  useEffect(()=>{
+    getNotiffication()
+    .then((lenth)=> setNotiffCount(lenth));
+
+    const intervalId = setInterval(()=>{
+      getNotiffication()
+    .then((lenth)=> setNotiffCount(lenth));
+    }, 120000);
 
 
-    // const openNotiff = () => {
+    
+    return () => clearInterval(intervalId);
 
-    // }
+  },[])
+
+
+
 
 
   useEffect(() => {
-    if(openNotiff) {
-        set_isLoading(true);
-        axios
-          .get("/notiff/get-mobile-combustion/req-update-notification", {
-            params: {
-              municipality_code: userInfo.municipality_code,
-            },
-          })
-          .then((res) => {
-            setNotificationList(res.data)
-            // console.log("NOTIFICATION ! ", res.data);
-          })
-          .catch((err) => console.log(err))
-          .finally(()=>set_isLoading(false));
+      if(openNotiff){
+        setNotiffCount(0)
+        getNotiffication();
+      }
 
-    }
   }, [openNotiff]);
+
+
+
+  const getNotiffication = async () : Promise<number> =>{
+
+    let notiffLength = 0;
+    set_isLoading(true);
+    const nottiff_data = await axios.get("/notiff/get-mobile-combustion/req-update-notification", {
+      params: {
+        municipality_code: userInfo.municipality_code,
+      },
+    });
+    notiffLength = nottiff_data.data.length;
+    setNotificationList(nottiff_data.data);
+    set_isLoading(false);
+
+    return notiffLength
+   
+  }
+
+
+
 
   return (
     <div>
       <Menu open = {openNotiff} handler={setOpenNotiff}>
-        <Badge content="5" overlap="circular">
+        <Badge content={notiffCount} overlap="circular" invisible = {notiffCount == 0}>
           <MenuHandler>
             <IconButton className="bg-transparent shadow-none">
               <BellIcon className="h-full w-full" />
@@ -69,7 +97,7 @@ const NotificationBell = () => {
                                 src={`https://drive.google.com/thumbnail?id=${notiff.img_id}&sz=w1000`}
                             />
                             </div>
-                            <Link className="h-full gap-1 flex flex-col" to = {`/surveyor/forms/view/mobile-combustion?form_id=${notiff.form_id}`} target="_blank">
+                            <Link className="h-full gap-1 flex flex-col" to = {`/surveyor/forms/view/mobile-combustion?form_id=${notiff.form_id}`}>
                                 <div className="font-bold tex-black">{notiff.surveyor_name}</div>
                                     <div className="text-sm text-nowrap">
                                         Request an Survey Update!
