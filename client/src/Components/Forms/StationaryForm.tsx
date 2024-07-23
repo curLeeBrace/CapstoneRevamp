@@ -139,7 +139,9 @@ const preparePayLoad = () : Payload => {
       full_name,
       municipality_name,
       municipality_code,
-      province_code
+      province_code,
+      img_id : user_info.img_id
+
     },
     dateTime_created : new Date(),
     dateTime_edited : null,
@@ -151,7 +153,7 @@ const preparePayLoad = () : Payload => {
 
 const clearForm = () => {
   setFormData({
-    form_type : "",
+    form_type : "residential",
     vehicle_type : "",
     vehicle_age : 0,
     fuel_type : "",

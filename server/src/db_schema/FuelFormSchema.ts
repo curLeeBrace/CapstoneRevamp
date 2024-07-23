@@ -14,11 +14,12 @@ const FuelForm = new mongoose.Schema({
         },required : true
     },
     surveyor_info : {type :  {
-        email : {type : String},
-        full_name : {type : String},
-        municipality_name : {type : String},
-        municipality_code : {type : String},
-        province_code : {type : String},
+        email : {type : String, required : true},
+        full_name : {type : String, required : true},
+        municipality_name : {type : String, required : true},
+        municipality_code : {type : String, required : true},
+        province_code : {type : String, required : true},
+        img_id : {type : String, required : true}
     }, required : true},
 
     dateTime_created : {type : Date, required : true},
