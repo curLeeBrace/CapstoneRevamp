@@ -69,7 +69,7 @@ const NotificationBell = () => {
                                 src={`https://drive.google.com/thumbnail?id=${notiff.img_id}&sz=w1000`}
                             />
                             </div>
-                            <Link className="h-full gap-1 flex flex-col" to = {`/surveyor/forms/view/mobile-combustion?form_id=${notiff.form_id}`}>
+                            <Link className="h-full gap-1 flex flex-col" to = {`/surveyor/forms/view/mobile-combustion?form_id=${notiff.form_id}`} target="_blank">
                                 <div className="font-bold tex-black">{notiff.surveyor_name}</div>
                                     <div className="text-sm text-nowrap">
                                         Request an Survey Update!
