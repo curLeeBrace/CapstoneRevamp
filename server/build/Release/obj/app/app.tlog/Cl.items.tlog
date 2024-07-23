@@ -1,5 +1,1 @@
-<<<<<<< HEAD
-C:\Program Files\nodejs\node_modules\npm\node_modules\node-gyp\src\win_delay_load_hook.cc;C:\Users\angel\OneDrive\Documents\TOTOY\CAPSTONE 2 ARC\TESTING AREA\CapstoneRevamp\server\build\Release\obj\app\win_delay_load_hook.obj
-=======
-C:\Program Files\nodejs\node_modules\npm\node_modules\node-gyp\src\win_delay_load_hook.cc;C:\Users\angel\OneDrive\Documents\TOTOY\CAPSTONE 2 ARC\CapstoneRevamp\server\build\Release\obj\app\win_delay_load_hook.obj
->>>>>>> 332fbe9e9c0304f10f196614132a9b4f80a99602
+C:\Users\leean\AppData\Roaming\nvm\v18.16.0\node_modules\npm\node_modules\node-gyp\src\win_delay_load_hook.cc;C:\Users\leean\OneDrive\Desktop\CapstoneRevamp\server\build\Release\obj\app\win_delay_load_hook.obj
