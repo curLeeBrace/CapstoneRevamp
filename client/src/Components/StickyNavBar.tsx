@@ -11,7 +11,6 @@ import { NavLink } from "react-router-dom";
 // import ProfileMenu from "./ProfileMenu";
 import NavListMenu from "./NavListMenu";
 import ProfileMenu from "./ProfileMenu";
-import Cookies from "js-cookie";
 import { useAuth } from "../custom-hooks/auth_hooks/useAuth";
 import NotificationBell from "./NotificationBell";
 import useUserInfo from "../custom-hooks/useUserType";
