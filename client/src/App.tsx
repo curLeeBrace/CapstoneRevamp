@@ -80,8 +80,19 @@ function App() {
               <Route path="surveyed-list" element ={<SurveyedList/>}/>
               <Route path = 'change-pass' element = {<ChangePass/>}/>
             </Route>
+            <Route path="*"
+              element={
+                <div className="flex items-center justify-center h-screen">
+                  <img
+                    src="/img/notfound.jpg"
+                    alt="404 NOT FOUND!"
+                    className="max-h-screen"
+                  />
+                </div>
+              }
+            />
 
-            <Route path="*" element = {<>404 not found!!</>}/>
+
 
 
 {/* 

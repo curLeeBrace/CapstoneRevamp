@@ -11,7 +11,11 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{18DA7158-3FF5-7BC3-3AEE-BF3DDA63F620}</ProjectGuid>
+<<<<<<< HEAD
+    <ProjectGuid>{F87B3BAE-95C9-B974-7A53-DCA476AFD31E}</ProjectGuid>
+=======
+    <ProjectGuid>{B77AE2F0-00EC-0059-9705-7C0027E8E1F8}</ProjectGuid>
+>>>>>>> 332fbe9e9c0304f10f196614132a9b4f80a99602
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>app</RootNamespace>
     <IgnoreWarnCompileDuplicatedFilename>true</IgnoreWarnCompileDuplicatedFilename>
@@ -48,7 +52,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>C:\Users\leean\AppData\Local\node-gyp\Cache\18.16.0\include\node;C:\Users\leean\AppData\Local\node-gyp\Cache\18.16.0\src;C:\Users\leean\AppData\Local\node-gyp\Cache\18.16.0\deps\openssl\config;C:\Users\leean\AppData\Local\node-gyp\Cache\18.16.0\deps\openssl\openssl\include;C:\Users\leean\AppData\Local\node-gyp\Cache\18.16.0\deps\uv\include;C:\Users\leean\AppData\Local\node-gyp\Cache\18.16.0\deps\zlib;C:\Users\leean\AppData\Local\node-gyp\Cache\18.16.0\deps\v8\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\angel\AppData\Local\node-gyp\Cache\21.7.3\include\node;C:\Users\angel\AppData\Local\node-gyp\Cache\21.7.3\src;C:\Users\angel\AppData\Local\node-gyp\Cache\21.7.3\deps\openssl\config;C:\Users\angel\AppData\Local\node-gyp\Cache\21.7.3\deps\openssl\openssl\include;C:\Users\angel\AppData\Local\node-gyp\Cache\21.7.3\deps\uv\include;C:\Users\angel\AppData\Local\node-gyp\Cache\21.7.3\deps\zlib;C:\Users\angel\AppData\Local\node-gyp\Cache\21.7.3\deps\v8\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>/Zc:__cplusplus -std:c++17 %(AdditionalOptions)</AdditionalOptions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <BufferSecurityCheck>true</BufferSecurityCheck>
@@ -60,7 +64,7 @@
       <OmitFramePointers>false</OmitFramePointers>
       <Optimization>Disabled</Optimization>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <PreprocessorDefinitions>NODE_GYP_MODULE_NAME=app;USING_UV_SHARED=1;USING_V8_SHARED=1;V8_DEPRECATION_WARNINGS=1;V8_DEPRECATION_WARNINGS;V8_IMMINENT_DEPRECATION_WARNINGS;_GLIBCXX_USE_CXX11_ABI=1;WIN32;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;_HAS_EXCEPTIONS=0;OPENSSL_NO_PINSHARED;OPENSSL_THREADS;BUILDING_NODE_EXTENSION;HOST_BINARY=&quot;node.exe&quot;;DEBUG;_DEBUG;V8_ENABLE_CHECKS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NODE_GYP_MODULE_NAME=app;USING_UV_SHARED=1;USING_V8_SHARED=1;V8_DEPRECATION_WARNINGS=1;_GLIBCXX_USE_CXX11_ABI=1;WIN32;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;_HAS_EXCEPTIONS=0;OPENSSL_NO_PINSHARED;OPENSSL_THREADS;BUILDING_NODE_EXTENSION;HOST_BINARY=&quot;node.exe&quot;;DEBUG;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <StringPooling>true</StringPooling>
       <SuppressStartupBanner>true</SuppressStartupBanner>
@@ -72,7 +76,7 @@
       <AdditionalOptions>/LTCG:INCREMENTAL %(AdditionalOptions)</AdditionalOptions>
     </Lib>
     <Link>
-      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;DelayImp.lib;&quot;C:\\Users\\leean\\AppData\\Local\\node-gyp\\Cache\\18.16.0\\x64\\node.lib&quot;</AdditionalDependencies>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;DelayImp.lib;&quot;C:\\Users\\angel\\AppData\\Local\\node-gyp\\Cache\\21.7.3\\x64\\node.lib&quot;</AdditionalDependencies>
       <AdditionalOptions>/LTCG:INCREMENTAL /ignore:4199 %(AdditionalOptions)</AdditionalOptions>
       <DelayLoadDLLs>node.exe;%(DelayLoadDLLs)</DelayLoadDLLs>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -84,13 +88,13 @@
       <TargetMachine>MachineX64</TargetMachine>
     </Link>
     <ResourceCompile>
-      <AdditionalIncludeDirectories>C:\Users\leean\AppData\Local\node-gyp\Cache\18.16.0\include\node;C:\Users\leean\AppData\Local\node-gyp\Cache\18.16.0\src;C:\Users\leean\AppData\Local\node-gyp\Cache\18.16.0\deps\openssl\config;C:\Users\leean\AppData\Local\node-gyp\Cache\18.16.0\deps\openssl\openssl\include;C:\Users\leean\AppData\Local\node-gyp\Cache\18.16.0\deps\uv\include;C:\Users\leean\AppData\Local\node-gyp\Cache\18.16.0\deps\zlib;C:\Users\leean\AppData\Local\node-gyp\Cache\18.16.0\deps\v8\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>NODE_GYP_MODULE_NAME=app;USING_UV_SHARED=1;USING_V8_SHARED=1;V8_DEPRECATION_WARNINGS=1;V8_DEPRECATION_WARNINGS;V8_IMMINENT_DEPRECATION_WARNINGS;_GLIBCXX_USE_CXX11_ABI=1;WIN32;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;_HAS_EXCEPTIONS=0;OPENSSL_NO_PINSHARED;OPENSSL_THREADS;BUILDING_NODE_EXTENSION;HOST_BINARY=&quot;node.exe&quot;;DEBUG;_DEBUG;V8_ENABLE_CHECKS;%(PreprocessorDefinitions);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\Users\angel\AppData\Local\node-gyp\Cache\21.7.3\include\node;C:\Users\angel\AppData\Local\node-gyp\Cache\21.7.3\src;C:\Users\angel\AppData\Local\node-gyp\Cache\21.7.3\deps\openssl\config;C:\Users\angel\AppData\Local\node-gyp\Cache\21.7.3\deps\openssl\openssl\include;C:\Users\angel\AppData\Local\node-gyp\Cache\21.7.3\deps\uv\include;C:\Users\angel\AppData\Local\node-gyp\Cache\21.7.3\deps\zlib;C:\Users\angel\AppData\Local\node-gyp\Cache\21.7.3\deps\v8\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>NODE_GYP_MODULE_NAME=app;USING_UV_SHARED=1;USING_V8_SHARED=1;V8_DEPRECATION_WARNINGS=1;_GLIBCXX_USE_CXX11_ABI=1;WIN32;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;_HAS_EXCEPTIONS=0;OPENSSL_NO_PINSHARED;OPENSSL_THREADS;BUILDING_NODE_EXTENSION;HOST_BINARY=&quot;node.exe&quot;;DEBUG;_DEBUG;%(PreprocessorDefinitions);%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>C:\Users\leean\AppData\Local\node-gyp\Cache\18.16.0\include\node;C:\Users\leean\AppData\Local\node-gyp\Cache\18.16.0\src;C:\Users\leean\AppData\Local\node-gyp\Cache\18.16.0\deps\openssl\config;C:\Users\leean\AppData\Local\node-gyp\Cache\18.16.0\deps\openssl\openssl\include;C:\Users\leean\AppData\Local\node-gyp\Cache\18.16.0\deps\uv\include;C:\Users\leean\AppData\Local\node-gyp\Cache\18.16.0\deps\zlib;C:\Users\leean\AppData\Local\node-gyp\Cache\18.16.0\deps\v8\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\angel\AppData\Local\node-gyp\Cache\21.7.3\include\node;C:\Users\angel\AppData\Local\node-gyp\Cache\21.7.3\src;C:\Users\angel\AppData\Local\node-gyp\Cache\21.7.3\deps\openssl\config;C:\Users\angel\AppData\Local\node-gyp\Cache\21.7.3\deps\openssl\openssl\include;C:\Users\angel\AppData\Local\node-gyp\Cache\21.7.3\deps\uv\include;C:\Users\angel\AppData\Local\node-gyp\Cache\21.7.3\deps\zlib;C:\Users\angel\AppData\Local\node-gyp\Cache\21.7.3\deps\v8\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>/Zc:__cplusplus -std:c++17 %(AdditionalOptions)</AdditionalOptions>
       <BufferSecurityCheck>true</BufferSecurityCheck>
       <DebugInformationFormat>OldStyle</DebugInformationFormat>
@@ -104,7 +108,7 @@
       <OmitFramePointers>true</OmitFramePointers>
       <Optimization>Full</Optimization>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <PreprocessorDefinitions>NODE_GYP_MODULE_NAME=app;USING_UV_SHARED=1;USING_V8_SHARED=1;V8_DEPRECATION_WARNINGS=1;V8_DEPRECATION_WARNINGS;V8_IMMINENT_DEPRECATION_WARNINGS;_GLIBCXX_USE_CXX11_ABI=1;WIN32;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;_HAS_EXCEPTIONS=0;OPENSSL_NO_PINSHARED;OPENSSL_THREADS;BUILDING_NODE_EXTENSION;HOST_BINARY=&quot;node.exe&quot;;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NODE_GYP_MODULE_NAME=app;USING_UV_SHARED=1;USING_V8_SHARED=1;V8_DEPRECATION_WARNINGS=1;_GLIBCXX_USE_CXX11_ABI=1;WIN32;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;_HAS_EXCEPTIONS=0;OPENSSL_NO_PINSHARED;OPENSSL_THREADS;BUILDING_NODE_EXTENSION;HOST_BINARY=&quot;node.exe&quot;;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <RuntimeTypeInfo>false</RuntimeTypeInfo>
       <StringPooling>true</StringPooling>
@@ -117,7 +121,7 @@
       <AdditionalOptions>/LTCG:INCREMENTAL %(AdditionalOptions)</AdditionalOptions>
     </Lib>
     <Link>
-      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;DelayImp.lib;&quot;C:\\Users\\leean\\AppData\\Local\\node-gyp\\Cache\\18.16.0\\x64\\node.lib&quot;</AdditionalDependencies>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;DelayImp.lib;&quot;C:\\Users\\angel\\AppData\\Local\\node-gyp\\Cache\\21.7.3\\x64\\node.lib&quot;</AdditionalDependencies>
       <AdditionalOptions>/LTCG:INCREMENTAL /ignore:4199 %(AdditionalOptions)</AdditionalOptions>
       <DelayLoadDLLs>node.exe;%(DelayLoadDLLs)</DelayLoadDLLs>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -129,8 +133,8 @@
       <TargetMachine>MachineX64</TargetMachine>
     </Link>
     <ResourceCompile>
-      <AdditionalIncludeDirectories>C:\Users\leean\AppData\Local\node-gyp\Cache\18.16.0\include\node;C:\Users\leean\AppData\Local\node-gyp\Cache\18.16.0\src;C:\Users\leean\AppData\Local\node-gyp\Cache\18.16.0\deps\openssl\config;C:\Users\leean\AppData\Local\node-gyp\Cache\18.16.0\deps\openssl\openssl\include;C:\Users\leean\AppData\Local\node-gyp\Cache\18.16.0\deps\uv\include;C:\Users\leean\AppData\Local\node-gyp\Cache\18.16.0\deps\zlib;C:\Users\leean\AppData\Local\node-gyp\Cache\18.16.0\deps\v8\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>NODE_GYP_MODULE_NAME=app;USING_UV_SHARED=1;USING_V8_SHARED=1;V8_DEPRECATION_WARNINGS=1;V8_DEPRECATION_WARNINGS;V8_IMMINENT_DEPRECATION_WARNINGS;_GLIBCXX_USE_CXX11_ABI=1;WIN32;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;_HAS_EXCEPTIONS=0;OPENSSL_NO_PINSHARED;OPENSSL_THREADS;BUILDING_NODE_EXTENSION;HOST_BINARY=&quot;node.exe&quot;;%(PreprocessorDefinitions);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\Users\angel\AppData\Local\node-gyp\Cache\21.7.3\include\node;C:\Users\angel\AppData\Local\node-gyp\Cache\21.7.3\src;C:\Users\angel\AppData\Local\node-gyp\Cache\21.7.3\deps\openssl\config;C:\Users\angel\AppData\Local\node-gyp\Cache\21.7.3\deps\openssl\openssl\include;C:\Users\angel\AppData\Local\node-gyp\Cache\21.7.3\deps\uv\include;C:\Users\angel\AppData\Local\node-gyp\Cache\21.7.3\deps\zlib;C:\Users\angel\AppData\Local\node-gyp\Cache\21.7.3\deps\v8\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>NODE_GYP_MODULE_NAME=app;USING_UV_SHARED=1;USING_V8_SHARED=1;V8_DEPRECATION_WARNINGS=1;_GLIBCXX_USE_CXX11_ABI=1;WIN32;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;_HAS_EXCEPTIONS=0;OPENSSL_NO_PINSHARED;OPENSSL_THREADS;BUILDING_NODE_EXTENSION;HOST_BINARY=&quot;node.exe&quot;;%(PreprocessorDefinitions);%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -138,7 +142,11 @@
     <None Include="..\binding.gyp"/>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="C:\Users\leean\AppData\Roaming\npm\node_modules\node-gyp\src\win_delay_load_hook.cc"/>
+<<<<<<< HEAD
+    <ClCompile Include="C:\Program Files\nodejs\node_modules\npm\node_modules\node-gyp\src\win_delay_load_hook.cc"/>
+=======
+    <ClCompile Include="C:\Users\angel\AppData\Roaming\npm\node_modules\node-gyp\src\win_delay_load_hook.cc"/>
+>>>>>>> 332fbe9e9c0304f10f196614132a9b4f80a99602
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets"/>
   <Import Project="$(VCTargetsPath)\BuildCustomizations\masm.targets"/>
