@@ -267,7 +267,7 @@ const submitValidation = () => {
                 className="w-full placeholder:opacity-100 focus:!border-t-gray-900 border-t-blue-gray-200"
               />
             </div> */}
-            {onLoadBrgy && <BrgyMenu municipality_code= {user_info.municipality_code} setBrgys={setBrgy} onLoadBrgyName={onLoadBrgy}/>}
+            {onLoadBrgy && <BrgyMenu disabled = {params.action === "view"} municipality_code= {user_info.municipality_code} setBrgys={setBrgy} onLoadBrgyName={onLoadBrgy}/>}
             
             <div>
               <Typography variant="h6" color="blue-gray">
@@ -315,7 +315,8 @@ const submitValidation = () => {
                   name='fuel_type'
                   value={formData.vehicle_type}
                   onChange={(value : any) => setFormData({...formData, vehicle_type : value})}
-                  disabled = {vehicleOptions === undefined && params.action === "view"}
+                  disabled = {vehicleOptions === undefined || params.action === "view"}
+                  
                 >
                   {
                     

@@ -12,6 +12,7 @@ import { useEffect, useState } from "react";
 import axios from "../api/axios";
 import useUserInfo from "../custom-hooks/useUserType";
 import Skeleton from "./Skeleton";
+import { Link } from "react-router-dom";
 
 const NotificationBell = () => {
   const userInfo = useUserInfo();
@@ -68,12 +69,13 @@ const NotificationBell = () => {
                                 src={`https://drive.google.com/thumbnail?id=${notiff.img_id}&sz=w1000`}
                             />
                             </div>
-                            <div className="h-full gap-1 flex flex-col">
-                            <div className="font-bold tex-black">{notiff.surveyor_name}</div>
-                            <div className="text-sm text-nowrap">
-                                Request an Survey Update!
-                            </div>
-                            </div>
+                            <Link className="h-full gap-1 flex flex-col" to = {`/surveyor/forms/view/mobile-combustion?form_id=${notiff.form_id}`}>
+                                <div className="font-bold tex-black">{notiff.surveyor_name}</div>
+                                    <div className="text-sm text-nowrap">
+                                        Request an Survey Update!
+                                </div>
+                            </Link>
+                      
                         </MenuItem>
                         ))
                     ) : (
