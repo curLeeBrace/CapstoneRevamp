@@ -13,6 +13,8 @@ import NavListMenu from "./NavListMenu";
 import ProfileMenu from "./ProfileMenu";
 import Cookies from "js-cookie";
 import { useAuth } from "../custom-hooks/auth_hooks/useAuth";
+import NotificationBell from "./NotificationBell";
+import useUserInfo from "../custom-hooks/useUserType";
 //==========================FOR OUTER COMPONENTS======================================
 
 
@@ -29,7 +31,6 @@ const navListMenuItems = [
 
 
 export function StickyNavbar() {
-  const userInfo = Cookies.get("user_info");
   const [municipality_name, set_municipality_name] = useState("");
   const [openNav, setOpenNav] = useState(false);
 
@@ -42,6 +43,8 @@ export function StickyNavbar() {
 
   const [u_type, set_uType] = useState('');
   const auth = useAuth();
+  const user_info = useUserInfo();
+  
   useEffect(() => {
     window.addEventListener(
       "resize",
@@ -51,8 +54,8 @@ export function StickyNavbar() {
 
   useEffect(() => {
     
-    if (userInfo) {
-      const { user_type, municipality_name} = JSON.parse(userInfo);
+    if (user_info) {
+      const { user_type, municipality_name} = user_info;
       console.log("user_type : ", user_type)
       set_municipality_name(municipality_name);
 
@@ -116,7 +119,7 @@ export function StickyNavbar() {
         ]);
       }
     }
-  }, [auth.token, userInfo]);
+  }, [auth.token]);
 
 
 
@@ -165,7 +168,12 @@ export function StickyNavbar() {
             </Typography>
             <div className="flex items-center gap-4 ">
               <div className="mr-4 hidden lg:block ">{navList}</div>
+            
+            {
+              user_info.user_type === "lgu_admin" ? <NotificationBell/> : null
+            }
               
+
               <ProfileMenu/>
 
               <IconButton
