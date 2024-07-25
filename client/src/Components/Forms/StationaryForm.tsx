@@ -42,7 +42,7 @@ const axiosPivate = useAxiosPrivate();
 const [openDialogBox, setOpenDialogBox] = useState(false);
 const user_info = useUserInfo();
 const [brgy, setBrgy] = useState<AddressReturnDataType>();
-const [onLoadBrgy, setOnloadBrgy] = useState("Anibong");
+
 
 
 
@@ -58,8 +58,7 @@ if(action !== "submit"){
     form_id : searchParams.get("form_id")
   }})
   .then(res => {
-    const {brgy_name, form_type, fuel_type, liters_consumption, vehicle_age, vehicle_type} = res.data.survey_data;
-    setOnloadBrgy(brgy_name);
+    const {form_type, fuel_type, liters_consumption, vehicle_age, vehicle_type} = res.data.survey_data;
     setFormData({
       form_type,
       fuel_type,
@@ -292,7 +291,7 @@ const submitValidation = () => {
                 className="w-full placeholder:opacity-100 focus:!border-t-gray-900 border-t-blue-gray-200"
               />
             </div> */}
-            {onLoadBrgy && <BrgyMenu disabled = {params.action === "view"} municipality_code= {user_info.municipality_code} setBrgys={setBrgy} onLoadBrgyName={onLoadBrgy}/>}
+            <BrgyMenu disabled = {params.action === "view"} municipality_code= {user_info.municipality_code} setBrgys={setBrgy}/>
             
             <div>
               <Typography variant="h6" color="blue-gray">
