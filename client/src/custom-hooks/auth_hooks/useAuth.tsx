@@ -22,6 +22,7 @@ export function AuthProvider({ children }: AuthProps) {
   const navigate = useNavigate();
   const recoverRoute = useMatch("/recover");
   const verifyAcc = useMatch("/verify/account/:acc_id/:token");
+  const forgotRoute = useMatch("/forgot-pass");
 
 // Set token and save it to localStorage
   const setToken = (token: string) => {
@@ -40,12 +41,12 @@ export function AuthProvider({ children }: AuthProps) {
   useEffect(() => {
     console.log("token:", token);
 
-    if (!recoverRoute && !verifyAcc) {
+    if (!recoverRoute && !verifyAcc && !forgotRoute) {
       if (token === "" || token === undefined) {
         navigate('/', { replace: true });
       }
     }
-  }, [token, navigate, recoverRoute, verifyAcc]);
+  }, [token, navigate, recoverRoute, verifyAcc, forgotRoute]);
 
   return (
     <AuthContext.Provider value={{ token, setToken, logout }}>
