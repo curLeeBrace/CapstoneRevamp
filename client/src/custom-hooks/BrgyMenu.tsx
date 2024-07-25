@@ -7,9 +7,8 @@ interface BrgyMenuyProps {
     setBrgys : React.SetStateAction<any>;
     disabled? : boolean;
     municipality_code : string;
-    onLoadBrgyName? : string
   }
-const BrgyMenu = ({setBrgys, municipality_code ,disabled = false, onLoadBrgyName}:BrgyMenuyProps)=>{
+const BrgyMenu = ({setBrgys, municipality_code ,disabled = false}:BrgyMenuyProps)=>{
     const filterADddress = useFilterAddress
     const brgys = filterADddress({parent_code : municipality_code, address_type : "brgy"})
     const [brgy_opt, set_brgy_opt] = useState<string[]>();
@@ -25,13 +24,13 @@ const BrgyMenu = ({setBrgys, municipality_code ,disabled = false, onLoadBrgyName
 
         set_brgy_opt(brgys.map(brgy => brgy.address_name));
         
-        setSelectedBrgy(onLoadBrgyName)
+        setSelectedBrgy(brgys[0].address_name)
 
-        if(onLoadBrgyName) {
+   
             
                     let brgysMenu: AddressReturnDataType = {} as AddressReturnDataType;
                     brgys.forEach((data) => {
-                        if (data.address_name === onLoadBrgyName) {
+                        if (data.address_name === brgys[0].address_name) {
                           brgysMenu = {
                             address_name: data.address_name,
                             address_code: data.address_code,
@@ -40,9 +39,6 @@ const BrgyMenu = ({setBrgys, municipality_code ,disabled = false, onLoadBrgyName
                         }
                       });
                     setBrgys(brgysMenu);
-
-        }
-
 
 
     },[])

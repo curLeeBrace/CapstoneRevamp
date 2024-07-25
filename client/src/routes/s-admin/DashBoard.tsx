@@ -16,14 +16,14 @@ type Emission = {
   ghge : number;
 }
 export type TableData = {
-  municipality : String;
+  loc_name : String;
   emission : Emission;
 }
 
 type DashBoardData = {
   total_surveryor : number;
   total_LGU_admins : number;
-  today_ghge : number;
+  total_ghge : number;
   table_data : TableData[]
 
 }
@@ -55,7 +55,7 @@ function DashBoard() {
       {
         name: "GHGe",
         data: dashboard_data ? dashboard_data.table_data.map((tb_data) => ({
-          x: tb_data.municipality,
+          x: tb_data.loc_name,
           y: tb_data.emission.ghge.toFixed(2)
         })) : [{ x: null, y: null }],
         
@@ -121,7 +121,7 @@ function DashBoard() {
       <div className='flex flex-col h-full w-full'>
         <div className='flex items-center gap-3 basis-1/4 px-2 overflow-x-auto'>
           <div className='h-4/5 w-full'>
-            <SimpleCard body={`${dashboard_data?.today_ghge.toFixed(2)}`}header='Total GHGe'  icon={<GlobeAsiaAustraliaIcon className='h-6 w-6'/>} isLoading={isLoading} child_card={<DashMobileCombustionSummary/>}/>
+            <SimpleCard body={`${dashboard_data?.total_ghge.toFixed(2)}`}header='Total GHGe'  icon={<GlobeAsiaAustraliaIcon className='h-6 w-6'/>} isLoading={isLoading} child_card={<DashMobileCombustionSummary/>}/>
           </div>        
           
           <div className='h-4/5 w-full'>

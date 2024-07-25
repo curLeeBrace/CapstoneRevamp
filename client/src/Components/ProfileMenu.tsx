@@ -12,7 +12,7 @@ import {Cog6ToothIcon, PowerIcon, FaceSmileIcon} from "@heroicons/react/24/solid
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../custom-hooks/auth_hooks/useAuth";
-
+import useUserInfo from "../custom-hooks/useUserType";
 
 
 interface ProfileMenuItem {
@@ -28,24 +28,26 @@ const ProfileMenu = () => {
   const closeMenu = () => setIsMenuOpen(false);
   const [menuItems, setMenuItems] = useState<ProfileMenuItem[]>();
   const navigate = useNavigate();
-  const {username,user_type, img_id} = JSON.parse(Cookies.get('user_info') as string);
   const { logout } = useAuth();
+  const user_info = useUserInfo();
   
   // console.log(JSON.parse(Cookies.get('user_info') as string))
   //`https://drive.google.com/thumbnail?id=${detail.img_id}&sz=w1000`
 
   useEffect(()=>{
 
+
+
     setMenuItems([
       {
-        label: username,
+        label: user_info.full_name,
         icon: FaceSmileIcon,
         // onClick: ()=> navigate(`/${user_type}/dashboard`),
       },
       {
         label: "Change Password",
         icon: Cog6ToothIcon,
-        onClick: ()=> navigate(`/${user_type}/change-pass`),
+        onClick: ()=> navigate(`/${user_info.user_type}/change-pass`),
       },
       {
         label: "Sign Out",
@@ -69,6 +71,7 @@ const ProfileMenu = () => {
 
 
   return (
+
     <Menu open={isMenuOpen} handler={setIsMenuOpen} placement="bottom-end">
       <MenuHandler>
         <Button
@@ -76,13 +79,13 @@ const ProfileMenu = () => {
           color="blue-gray"
           className="flex items-center gap-1 rounded-full py-0.5 pr-2 pl-0.5 lg:ml-auto text-white"
         >
-          {user_type === "s-admin" ? <UserCircleIcon className="h-full w-10"/>:
+          {user_info.user_type === "s-admin" ? <UserCircleIcon className="h-full w-10"/>:
           
             <Avatar
               variant="circular"
               size="sm"
               className="border border-white p-0.5"
-              src={`https://drive.google.com/thumbnail?id=${img_id}&sz=w1000`}
+              src={`https://drive.google.com/thumbnail?id=${user_info.img_id}&sz=w1000`}
             />
           }
           

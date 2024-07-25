@@ -108,7 +108,7 @@ const [tb_data, setTbData] = useState();
             </div>
 
             <div className="self-center">
-              <BrgyMenu municipality_code={user_info.municipality_code} setBrgys={setBrgy} onLoadBrgyName="Anibong"/>
+              <BrgyMenu municipality_code={user_info.municipality_code} setBrgys={setBrgy}/>
 
             </div>
               
