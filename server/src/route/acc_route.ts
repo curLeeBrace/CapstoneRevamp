@@ -5,7 +5,7 @@ import {recoverAccount} from "../controller/Account/recover_acc"
 import {authenticate_account} from "../controller/Account/authenticate_acc";
 import { changePass } from "../controller/Account/change_pass";
 import { authenticate_token } from "../controller/Token/auth_token";
-import {resendToken} from '../controller/Account/resend_verification_token';
+
 import {get_allAcc} from '../controller/Account/get_allAcc';
 
 
@@ -21,15 +21,11 @@ router.post('/verify', verify_acc)
 router.post('/change-pass',authenticate_token, changePass);
 router.post('/login', authenticate_account);
 router.post('/recover', recoverAccount);
-router.get('/get-all', get_allAcc);
-router.delete('/delete/:accountId', delete_Acc );
-router.get('/audit-logs', fetchAuditLogs);
 
+router.get('/get-all',authenticate_token, get_allAcc);
+router.delete('/delete/:accountId', authenticate_token, delete_Acc );
+router.get('/audit-logs', authenticate_token,  fetchAuditLogs);
 
-
-
-// router.post('/resend-token', resendToken);
-// router.get('/get-all',get_allAcc);
 
 
 export default router

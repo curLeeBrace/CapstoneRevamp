@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Table from "../Components/Table";
-import axios from "../api/axios";
 import Skeleton from "../Components/Skeleton";
+import useAxiosPrivate from "../custom-hooks/auth_hooks/useAxiosPrivate";
 
 
 
@@ -15,7 +15,7 @@ type MC_SurveyDataProps = {
 
 
 const MC_SurveyData = ({form_type, muni_code, prov_code} : MC_SurveyDataProps) => {
-
+    const axiosPrivate = useAxiosPrivate();
     const column = ['Surveyor','Vehicle Type', 'Vehicle Age', 'Fuel Type', 'Fuel Consumption', 'GHGe', 'DateTime'];
     const [mc_datas, set_mcDatas] = useState<any[]>();
     const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -31,7 +31,7 @@ const MC_SurveyData = ({form_type, muni_code, prov_code} : MC_SurveyDataProps) =
 
         if(form_type && muni_code){
             setIsLoading(true);
-            axios.get(`/summary-data/mc-surveyData/${prov_code}/${muni_code}/${form_type}`)
+            axiosPrivate.get(`/summary-data/mc-surveyData/${prov_code}/${muni_code}/${form_type}`)
             .then(res => {
                 console.log("eyy", res.data)
                 const res_mcData = res.data;

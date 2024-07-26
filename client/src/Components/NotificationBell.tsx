@@ -9,13 +9,14 @@ import {
 } from "@material-tailwind/react";
 import { BellIcon } from "@heroicons/react/24/solid";
 import { useEffect, useState } from "react";
-import axios from "../api/axios";
 import useUserInfo from "../custom-hooks/useUserType";
 import Skeleton from "./Skeleton";
 import { Link } from "react-router-dom";
+import useAxiosPrivate from "../custom-hooks/auth_hooks/useAxiosPrivate";
 
 
 const NotificationBell = () => {
+  const axiosPrivate = useAxiosPrivate();
   const userInfo = useUserInfo();
   const [notificationList, setNotificationList] = useState<any[]>();
   const [isLoading, set_isLoading] = useState(false);
@@ -57,7 +58,7 @@ const NotificationBell = () => {
 
     let notiffLength = 0;
     set_isLoading(true);
-    const nottiff_data = await axios.get("/notiff/get-mobile-combustion/req-update-notification", {
+    const nottiff_data = await axiosPrivate.get("/notiff/get-mobile-combustion/req-update-notification", {
       params: {
         municipality_code: userInfo.municipality_code,
       },

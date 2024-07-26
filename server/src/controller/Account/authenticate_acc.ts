@@ -56,8 +56,8 @@ export const authenticate_account = async (req: Request, res: Response) => {
             const decrypt_db_pass = CryptoJS.AES.decrypt(encrypted_db_pass.toString(), secret_key);
 
             if (decrypt_pass.toString(CryptoJS.enc.Utf8) === decrypt_db_pass.toString(CryptoJS.enc.Utf8)) {
-                const access_token = jwt.sign({ email }, process.env.ACCESS_TOKEN_SECRET as Secret);
-                const refresh_token = jwt.sign({ email }, process.env.REFRESH_TOKEN_SECRET as Secret);
+                const access_token = jwt.sign({ email }, process.env.ACCESS_TOKEN_SECRET as Secret, {expiresIn : "1d"});
+                const refresh_token = jwt.sign({ email }, process.env.REFRESH_TOKEN_SECRET as Secret, {expiresIn : "3d"});
 
                 const respo = {
                     email,

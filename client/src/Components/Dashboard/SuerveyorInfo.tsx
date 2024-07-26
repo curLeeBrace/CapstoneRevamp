@@ -3,8 +3,8 @@ import { useState, useEffect, Fragment } from "react";
 import { AddressReturnDataType } from "../../custom-hooks/useFilterAddrress";
 import { Avatar, Checkbox, Typography } from "@material-tailwind/react";
 import useUserInfo from "../../custom-hooks/useUserType";
-import axios from "../../api/axios";
 import Skeleton from "../Skeleton";
+import useAxiosPrivate from "../../custom-hooks/auth_hooks/useAxiosPrivate";
 
 
 const SurveyorInfo = () => {
@@ -13,12 +13,13 @@ const SurveyorInfo = () => {
   const [accs, setAccs] = useState<any[]>();
   const userInfo = useUserInfo();
   const [isLoading, setIsLoading] = useState(false);
+  const axiosPrivate = useAxiosPrivate();
   
   useEffect(() => {
     if(address) setGetAll(false)
     
     setIsLoading(true)
-    axios
+    axiosPrivate
       .get(`dashboard/get-surveyor-info/${address?.address_code}/${get_all}`)
       .then((res) => {
         setAccs(res.data);
