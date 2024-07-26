@@ -9,13 +9,13 @@ import SimpleCard from "../../Components/Dashboard/SimpleCard";
 
 import { TabsDefault} from "../../Components/Tabs";
 import { Button } from '@material-tailwind/react';
-import axios from "../../api/axios";
+import useAxiosPrivate from "../../custom-hooks/auth_hooks/useAxiosPrivate";
 import MC_SurveyData from "../MC_SurveyData";
 import FilterComponent from "../../Components/FilterComponent";
 
 const MobileCombustionSummary = () => {
     
-
+    const axiosPrivate = useAxiosPrivate();
     const [formType, setFormType] = useState<"residential" | "commercial">();
     const [address, setAddress] = useState<AddressReturnDataType>();
 
@@ -69,7 +69,7 @@ const MobileCombustionSummary = () => {
     
 
             set_isLoading(true)
-            axios.get(`/summary-data/mobile-combustion/${prov_code}/${muni_code}/${formType}`)
+            axiosPrivate.get(`/summary-data/mobile-combustion/${prov_code}/${muni_code}/${formType}`)
             .then(res => {
                 const {vehicle} = res.data;
                 console.log("Summary Data : ", res.data)
@@ -138,7 +138,7 @@ const MobileCombustionSummary = () => {
     const getExpected_ghgThisYear = () => {
         
         set_isPredicting(true);
-        axios.get(`/forecast/e-mobile/${address?.address_code}/${formType}`)
+        axiosPrivate.get(`/forecast/e-mobile/${address?.address_code}/${formType}`)
         .then(res => {
 
             if(res.status == 200){

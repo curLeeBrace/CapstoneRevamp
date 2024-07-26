@@ -3,10 +3,11 @@ import { TableWithStripedRows } from '../../Components/Auditlog/TableWithStriped
 import { Modal } from '../../Components/Modal';
 import { FunnelIcon, TrashIcon } from '@heroicons/react/24/solid';
 import { Avatar, Select, Option, Typography, Input } from '@material-tailwind/react';
-import axios from '../../api/axios';
+
 import FilterMunicipality from './FilterMunicipality';
 import Loader from '../../Components/Loader';
 import { MagnifyingGlassCircleIcon } from '@heroicons/react/24/solid'; // Import an icon for the search button
+import useAxiosPrivate from '../../custom-hooks/auth_hooks/useAxiosPrivate';
 
 interface AccInfo {
   brgy_name: string;
@@ -35,6 +36,7 @@ interface UserDetails {
 }
 
 const AccountsTable: React.FC = () => {
+  const axiosPrivate = useAxiosPrivate();
   const [details, setDetails] = useState<UserDetails[]>([]);
   const [filteredDetails, setFilteredDetails] = useState<UserDetails[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -45,7 +47,7 @@ const AccountsTable: React.FC = () => {
   useEffect(() => {
     const fetchAccounts = async () => {
       try {
-        const response = await axios.get('/account/get-all');
+        const response = await axiosPrivate.get('/account/get-all');
         console.log("Accounts : ", response.data)
         const allDetails = response.data.filter((user: UserDetails) => user.user_type !== 's-admin');
         setDetails(allDetails);
@@ -105,7 +107,7 @@ const AccountsTable: React.FC = () => {
   
   const handleDelete = async (accountId: string) => {
     try {
-      await axios.delete(`/account/delete/${accountId}`);
+      await axiosPrivate.delete(`/account/delete/${accountId}`);
       setDetails((prevDetails) => prevDetails.filter((detail) => detail._id !== accountId));
       setFilteredDetails((prevDetails) => prevDetails.filter((detail) => detail._id !== accountId));
     } catch (error) {
