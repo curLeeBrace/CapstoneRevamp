@@ -3,7 +3,6 @@ import  SimpleCard from '../../Components/Dashboard/SimpleCard'
 
 import {UserIcon, GlobeAsiaAustraliaIcon} from "@heroicons/react/24/outline";
 // import Table from '../../Components/Table';
-import axios from "../../api/axios";
 import Cookies from 'js-cookie';
 import Chart from "react-apexcharts";
 import SurveyorInfo from '../../Components/Dashboard/SuerveyorInfo';
