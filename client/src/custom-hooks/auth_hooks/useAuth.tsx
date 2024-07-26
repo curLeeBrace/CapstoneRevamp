@@ -24,16 +24,16 @@ export function AuthProvider({ children }: AuthProps) {
   const verifyAcc = useMatch("/verify/account/:acc_id/:token");
   const forgotRoute = useMatch("/forgot-pass");
 
-// Set token and save it to localStorage
+// Set token and save it
   const setToken = (token: string) => {
     setTokenState(token);
-    localStorage.setItem("token", token);
+    Cookies.set("token", token);
   };
 
   // Logout function to clear token and navigate to home
   const logout = () => {
     setTokenState(undefined);
-    localStorage.removeItem("token");
+    Cookies.remove("token");
     Cookies.remove("user_info");
     navigate('/', { replace: true });
   };

@@ -154,8 +154,8 @@ const AccountsTable: React.FC = () => {
 
   return (
     <div className="min-h-screen">
-      <div className="flex flex-col md:flex-row justify-end pr-4 my-2 bg-gray-300 py-4 gap-4">
-        <div className='relative w-full max-w-full md:max-w-[24rem] ml-2'>
+      <div className="flex flex-col md:flex-row justify-end pr-4 my-2 sticky top-20 z-20 bg-gray-300 border-y-2 border-gray-400 py-4 gap-4">
+      <div className='relative w-full max-w-full md:max-w-[24rem] ml-2'>
           <Input
             type="search"
             label="Search... (Names, User Type, Municipality)"
