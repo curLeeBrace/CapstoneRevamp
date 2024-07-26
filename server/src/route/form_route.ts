@@ -7,9 +7,10 @@ import { mobile_combustionData, oneMobileCombustionData} from "../controller/For
 
 router.post('/fuel/insert', authenticate_token,insertFuelFormData)
 router.get('/fuel/audit', authenticate_token, fetchAuditLogs);
-router.get('/mobile-combustion/surveyed-data', mobile_combustionData);
-router.get('/mobile-combustion/one-surveyed-data', oneMobileCombustionData);
-router.put('/mobile-combustion/update-surveyed-data/:form_id', updateMobileCombustionData);
-router.put('/mobile-combustion/accept-update', acceptUpdateMobileCombustionData);
+
+router.get('/mobile-combustion/surveyed-data', authenticate_token, mobile_combustionData);
+router.get('/mobile-combustion/one-surveyed-data', authenticate_token,  oneMobileCombustionData);
+router.put('/mobile-combustion/update-surveyed-data/:form_id', authenticate_token, updateMobileCombustionData);
+router.put('/mobile-combustion/accept-update', authenticate_token,  acceptUpdateMobileCombustionData);
 
 export default router

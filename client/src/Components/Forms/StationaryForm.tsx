@@ -2,13 +2,12 @@ import {useEffect, useState } from 'react';
 import { Card, Input, Checkbox, Button, Typography, Select, Option} from "@material-tailwind/react";
 import useHandleChange from '../../custom-hooks/useHandleChange';
 import AlertBox from './AlertBox';
-import useAxiosPrivate from '../../custom-hooks/auth_hooks/useAxiosPrivate';
 import DialogBox from "../DialogBox";
 import {useParams, useSearchParams } from 'react-router-dom';
 import BrgyMenu from '../../custom-hooks/BrgyMenu';
 import useUserInfo from '../../custom-hooks/useUserType';
 import { AddressReturnDataType } from '../../custom-hooks/useFilterAddrress';
-import axios from '../../api/axios';
+import useAxiosPrivate from '../../custom-hooks/auth_hooks/useAxiosPrivate';
 
 
 type formDataTypes = {
@@ -33,7 +32,7 @@ const handleChange = useHandleChange;
 const [formData, setFormData] = useState<formDataTypes>({
   form_type : "residential"
 } as formDataTypes);
-
+const axiosPrivate = useAxiosPrivate();
 const [vehicleOptions, setVehicleOptions] = useState<string[]>();
 const [isLoading, set_isLoading] = useState<boolean>(false);
 const [openAlert, setOpenAlert] = useState<boolean>(false);
@@ -54,7 +53,7 @@ useEffect(()=>{
 const {action} = params
 
 if(action !== "submit"){
-  axios.get('/forms/mobile-combustion/one-surveyed-data', {params : {
+  axiosPrivate.get('/forms/mobile-combustion/one-surveyed-data', {params : {
     form_id : searchParams.get("form_id")
   }})
   .then(res => {
@@ -194,7 +193,7 @@ const updateHandler = () => {
   const form_id = searchParams.get("form_id");
   setOpenDialogBox(false)
   set_isLoading(true);
-  axios.put(`/forms/mobile-combustion/update-surveyed-data/${form_id}`, payload)
+  axiosPrivate.put(`/forms/mobile-combustion/update-surveyed-data/${form_id}`, payload)
   .then((res) => {
 
     if(res.status === 204){
@@ -219,7 +218,7 @@ const updateHandler = () => {
 const acceptUpdateHandler = () => {
   const form_id = searchParams.get("form_id");
   setOpenDialogBox(false)
-  axios.put(`/forms/mobile-combustion/accept-update`, {form_id})
+  axiosPrivate.put(`/forms/mobile-combustion/accept-update`, {form_id})
   .then((res) => {
 
     if(res.status === 204){
