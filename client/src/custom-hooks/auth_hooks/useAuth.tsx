@@ -16,7 +16,7 @@ const AuthContext = createContext<AuthProv>({} as AuthProv);
 export function AuthProvider({ children }: AuthProps) {
   const [token, setTokenState] = useState<string | undefined>(() => {
     // Initialize state from localStorage
-    return localStorage.getItem("token") || undefined;
+    return  Cookies.get("token") || undefined;
   });
 
   const navigate = useNavigate();
