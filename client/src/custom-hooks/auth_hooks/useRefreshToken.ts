@@ -11,14 +11,23 @@ function useRefreshToken() {
         // const refresh_token = Cookies.get('refresh_token') as string;
 
         const response  = await axios.post('/token/refresh', {refresh_token});
-        const {acces_token} = response.data;
+       
+          const {acces_token} = response.data;
+          setToken(acces_token)
+          return acces_token
 
-        setToken(acces_token)
-        return acces_token
+       
 
-      }catch (error) {
+      }catch (error:any) {
+
+        if(error.response.status === 403){
+          alert("Authorization Expired, you need to re log-in!")
+          logout()
+        }
+        
         console.error("Error refreshing token", error);
-        logout();
+
+
       }
     }
 

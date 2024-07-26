@@ -6,13 +6,13 @@ import useUserInfo from "../../custom-hooks/useUserType"
 import BrgyMenu from "../../custom-hooks/BrgyMenu"
 import { useEffect, useState } from "react"
 import { AddressReturnDataType } from "../../custom-hooks/useFilterAddrress"
-import axios from "../../api/axios"
+import useAxiosPrivate from "../../custom-hooks/auth_hooks/useAxiosPrivate"
 const tb_head = ['Brgy','Vehicle Type','Vehicle Age','Fuel Type','Liters Consumption','Survey Type','Status', 'DateTime', 'Action']
 
 
 
 const SurveyedList = () => {
-
+const axiosPrivate = useAxiosPrivate();
 const user_info = useUserInfo();
 
 const [surveyType, setSurveyType] = useState<'residential' | 'commercial'>('residential');
@@ -27,7 +27,7 @@ const [tb_data, setTbData] = useState();
 
         if(brgy){
             console.log("brgy.address_code" , brgy.address_code)
-            axios.get('/forms/mobile-combustion/surveyed-data', {params : {
+            axiosPrivate.get('/forms/mobile-combustion/surveyed-data', {params : {
                 municipality_code : user_info.municipality_code,
                 brgy_code : brgy.address_code,
                 surveyType

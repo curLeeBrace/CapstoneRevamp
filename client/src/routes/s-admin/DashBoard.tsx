@@ -8,6 +8,7 @@ import Cookies from 'js-cookie';
 import Chart from "react-apexcharts";
 import SurveyorInfo from '../../Components/Dashboard/SuerveyorInfo';
 import DashMobileCombustionSummary from '../../Components/Dashboard/DashMobileCombustionSummary';
+import useAxiosPrivate from '../../custom-hooks/auth_hooks/useAxiosPrivate';
 
 type Emission = {
   co2e : number;
@@ -34,12 +35,13 @@ function DashBoard() {
 
   const [dashboard_data, setDashBoardData] = useState<DashBoardData>();
   const [isLoading, setisLoading] = useState<boolean>(true);
+  const axiosPrivate = useAxiosPrivate();
 
   useEffect(()=>{
 
     const user_info = JSON.parse(Cookies.get('user_info') as string);
     
-    axios.get(`/dashboard/overview-data/${user_info.province_code}/${user_info.user_type}/${user_info.municipality_code}`)
+    axiosPrivate.get(`/dashboard/overview-data/${user_info.province_code}/${user_info.user_type}/${user_info.municipality_code}`)
     .then(res => {
       setDashBoardData(res.data)
       setisLoading(false);

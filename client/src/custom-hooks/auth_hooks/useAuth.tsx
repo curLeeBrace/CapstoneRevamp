@@ -1,6 +1,6 @@
 import { useState, useContext, createContext, ReactNode, useEffect } from "react";
 import { useNavigate, useMatch } from "react-router-dom";
-
+import Cookies from "js-cookie";
 interface AuthProps {
   children: ReactNode;
 }
@@ -34,6 +34,7 @@ export function AuthProvider({ children }: AuthProps) {
   const logout = () => {
     setTokenState(undefined);
     localStorage.removeItem("token");
+    Cookies.remove("user_info");
     navigate('/', { replace: true });
   };
 

@@ -3,9 +3,9 @@ import { TableWithStripedRows } from "../../Components/Auditlog/TableWithStriped
 import { Modal } from "../../Components/Modal";
 import { Input, Typography, Select, Option } from "@material-tailwind/react";
 import { FunnelIcon, MagnifyingGlassCircleIcon } from "@heroicons/react/24/solid";
-import axios from "../../api/axios";
 import Loader from "../../Components/Loader";
 import Cookies from "js-cookie";
+import useAxiosPrivate from '../../custom-hooks/auth_hooks/useAxiosPrivate';
 
 interface AuditLog {
   name: string;
@@ -15,6 +15,7 @@ interface AuditLog {
 }
 
 export default function AuditLogs() {
+  const axiosPrivate = useAxiosPrivate();
   const [auditLogs, setAuditLogs] = useState<AuditLog[]>([]);
   const [filteredLogs, setFilteredLogs] = useState<AuditLog[]>([]);
   const [loading, setLoading] = useState(true);
@@ -28,7 +29,7 @@ export default function AuditLogs() {
   const fetchAuditLogs = async (params = {}) => {
     setLoading(true);
     try {
-      const response = await axios.get('/account/audit-logs', { params });
+      const response = await axiosPrivate.get('/account/audit-logs', { params });
       setAuditLogs(response.data);
       setFilteredLogs(response.data);
       setLoading(false);
