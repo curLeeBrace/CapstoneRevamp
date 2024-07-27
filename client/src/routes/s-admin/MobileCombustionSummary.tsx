@@ -17,7 +17,8 @@ const MobileCombustionSummary = () => {
     
     const axiosPrivate = useAxiosPrivate();
     const [formType, setFormType] = useState<"residential" | "commercial">();
-    const [address, setAddress] = useState<AddressReturnDataType>();
+    const [municipality, setMunicipality] = useState<AddressReturnDataType>();
+    const [brgy, setBrgy] = useState<AddressReturnDataType>();
 
 
     const [mobileCombustionData, setMobileCombustionData] = useState<any>();
@@ -39,8 +40,8 @@ const MobileCombustionSummary = () => {
     const [isPredicting, set_isPredicting] = useState<boolean>(false);
 
 
-    let muni_code = user.type === "lgu_admin" ? user.municipality_code : address ? address.address_code : undefined
-    let prov_code = user.type === "lgu_admin" ? user.province_code : address ? address.parent_code : undefined
+    let muni_code = user.type === "lgu_admin" ? user.municipality_code : municipality ? municipality.address_code : undefined
+    let prov_code = user.type === "lgu_admin" ? user.province_code : municipality ? municipality.parent_code : undefined
 
     useEffect(()=>{
         const user_info = Cookies.get("user_info");
@@ -130,7 +131,7 @@ const MobileCombustionSummary = () => {
 
         set_expected_ghgThisYear(undefined);
 
-    },[formType,address])
+    },[formType,municipality])
 
 
 
@@ -138,7 +139,7 @@ const MobileCombustionSummary = () => {
     const getExpected_ghgThisYear = () => {
         
         set_isPredicting(true);
-        axiosPrivate.get(`/forecast/e-mobile/${address?.address_code}/${formType}`)
+        axiosPrivate.get(`/forecast/e-mobile/${municipality?.address_code}/${formType}`)
         .then(res => {
 
             if(res.status == 200){
@@ -180,22 +181,31 @@ const MobileCombustionSummary = () => {
                 <div className="text-center mt-3">
                     <Typography className="font-bold text-2xl text-gray-800" >Summary Data of Mobile Combustion</Typography>
                 </div>
-                <FilterComponent 
-                addressState={
-                    {
-                        state : address,
-                        setState : setAddress
-                    }
+          
+
+                    <FilterComponent 
+                        municipalityState={
+                            {
+                                state : municipality,
+                                setState : setMunicipality
+                            }
+                            
+                        }
+                        formTypeState={
+                            {
+                                state : formType,
+                                setState : setFormType
+                            }
+                        }
+                        brgyState={
+                            {
+                                state : brgy,
+                                setState : setBrgy
+                            }
+                        }
                     
-                }
-                formTypeState={
-                    {
-                        state : formType,
-                        setState : setFormType
-                    }
-                }
+                    />
                 
-                />
                 {
                     mobileCombustionData?
                         
