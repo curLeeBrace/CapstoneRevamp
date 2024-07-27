@@ -1,28 +1,30 @@
+import BrgyMenu from "../custom-hooks/BrgyMenu";
 import Municipality from "../custom-hooks/Municipality"
 // import MC_SurveyData from "../../routes/MC_SurveyData" 
 import {AddressReturnDataType} from "../custom-hooks/useFilterAddrress";
 import { Checkbox, Typography } from "@material-tailwind/react";
-
+import useUserInfo from "../custom-hooks/useUserType";
 
 interface FilterComponentProps  {
-    addressState :  {
+    municipalityState :  {
         state : AddressReturnDataType | undefined
         setState : React.Dispatch<React.SetStateAction<AddressReturnDataType | undefined>>
     },
 
+    brgyState :  {
+        state : AddressReturnDataType | undefined
+        setState : React.Dispatch<React.SetStateAction<AddressReturnDataType | undefined>>
+    },
+    
     formTypeState : {
         state : "residential" | "commercial"|undefined
         setState : React.Dispatch<React.SetStateAction<"residential" | "commercial"|undefined>>
-    }
-
-
+    },
 }
 
-const FilterComponent = ({addressState, formTypeState}:FilterComponentProps) => {
+const FilterComponent = ({municipalityState, formTypeState, brgyState}:FilterComponentProps) => {
 
-
-
-
+    const userInfo = useUserInfo();
     const handleFormType = (event : React.ChangeEvent<HTMLInputElement|HTMLSelectElement>) =>{
         const value = event.target.value
 
@@ -31,16 +33,18 @@ const FilterComponent = ({addressState, formTypeState}:FilterComponentProps) => 
 
     return(
 
-             <div className="flex gap-5 flex-wrap">
+             <div className="flex flex-wrap">
                     <div className=" basis-full md:basis-1/5">
                         {/* dito */}
-                        <Municipality setAddress={addressState.setState} />
+                        <Municipality setAddress={municipalityState.setState} />
                     
 
                     </div>
-                    <div className="flex basis-8/12">
+                    
+                    <div className="flex basis-8/12 gap-3">
+                        {municipalityState.state && userInfo.user_type === "lgu_admin" && <div className="self-center"><BrgyMenu setBrgys={brgyState.setState} municipality_code={municipalityState.state.address_code}/></div>}
                         <Checkbox
-                            disabled = {addressState.state == undefined}
+                            disabled = {municipalityState.state == undefined}
                             name='formType'
                             value={'residential'}
                             checked={formTypeState.state === "residential"} // Checked if this is selected
@@ -53,7 +57,7 @@ const FilterComponent = ({addressState, formTypeState}:FilterComponentProps) => 
                             containerProps={{ className: "-ml-2.5" }}
                         />
                         <Checkbox
-                            disabled = {addressState.state == undefined}
+                            disabled = {municipalityState.state == undefined}
                             name='formType'
                             value={'commercial'}
                             checked={formTypeState.state === "commercial"} // Checked if this is selected

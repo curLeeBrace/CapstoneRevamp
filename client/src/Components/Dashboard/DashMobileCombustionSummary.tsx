@@ -13,7 +13,7 @@ const DashMobileCombustionSummary = () => {
                 GHGe Summary
             </div>
 
-           <FilterComponent addressState={{
+           <FilterComponent MunicipalityState={{
             setState : setAddress,
             state : address
            }}
