@@ -20,9 +20,16 @@ interface FilterComponentProps  {
         state : "residential" | "commercial"|undefined
         setState : React.Dispatch<React.SetStateAction<"residential" | "commercial"|undefined>>
     },
+
+    selectAllState : {
+        state : boolean;
+        setState : React.Dispatch<React.SetStateAction<boolean>>;
+    }
+
+
 }
 
-const FilterComponent = ({municipalityState, formTypeState, brgyState}:FilterComponentProps) => {
+const FilterComponent = ({municipalityState, formTypeState, brgyState, selectAllState}:FilterComponentProps) => {
 
     const userInfo = useUserInfo();
     const handleFormType = (event : React.ChangeEvent<HTMLInputElement|HTMLSelectElement>) =>{
@@ -36,13 +43,19 @@ const FilterComponent = ({municipalityState, formTypeState, brgyState}:FilterCom
              <div className="flex flex-wrap">
                     <div className=" basis-full md:basis-1/5">
                         {/* dito */}
-                        <Municipality setAddress={municipalityState.setState} />
+                        <Municipality setAddress={municipalityState.setState} disabled = {userInfo.user_type === "s-admin" && selectAllState.state === true}/>
                     
 
                     </div>
                     
                     <div className="flex basis-8/12 gap-3">
-                        {municipalityState.state && userInfo.user_type === "lgu_admin" && <div className="self-center"><BrgyMenu setBrgys={brgyState.setState} municipality_code={municipalityState.state.address_code}/></div>}
+                        {
+                            municipalityState.state && userInfo.user_type === "lgu_admin" && 
+                            <div className="self-center">
+                                <BrgyMenu setBrgys={brgyState.setState} municipality_code={municipalityState.state.address_code}
+                                 disabled = {userInfo.user_type === "lgu_admin" && selectAllState.state === true}   />
+                            </div>
+                        }
                         <Checkbox
                             disabled = {municipalityState.state == undefined}
                             name='formType'
@@ -65,6 +78,20 @@ const FilterComponent = ({municipalityState, formTypeState, brgyState}:FilterCom
                             label={
                             <Typography variant="small" color="gray" className="font-normal mr-4">
                                 Commercial
+                            </Typography>
+                            }
+                            containerProps={{ className: "-ml-2.5" }}
+                        />
+
+                        <Checkbox
+                            disabled = {municipalityState.state == undefined}
+                            name='selectAll'
+                            value={'selectAll'}
+                            checked={selectAllState.state === true} // Checked if this is selected
+                            onChange={() => selectAllState.setState(!selectAllState.state)} // Handler for selection
+                            label={
+                            <Typography variant="small" color="gray" className="font-normal mr-4">
+                                Select all data in {userInfo.user_type === "s-admin" ?  "Laguna" : `${userInfo.municipality_name}`}
                             </Typography>
                             }
                             containerProps={{ className: "-ml-2.5" }}

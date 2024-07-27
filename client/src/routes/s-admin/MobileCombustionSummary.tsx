@@ -19,6 +19,7 @@ const MobileCombustionSummary = () => {
     const [formType, setFormType] = useState<"residential" | "commercial">();
     const [municipality, setMunicipality] = useState<AddressReturnDataType>();
     const [brgy, setBrgy] = useState<AddressReturnDataType>();
+    const [selectAll, setSelectAll] = useState(false);
 
 
     const [mobileCombustionData, setMobileCombustionData] = useState<any>();
@@ -201,6 +202,12 @@ const MobileCombustionSummary = () => {
                             {
                                 state : brgy,
                                 setState : setBrgy
+                            }
+                        }
+                        selectAllState={
+                            {
+                                setState : setSelectAll,
+                                state : selectAll
                             }
                         }
                     
