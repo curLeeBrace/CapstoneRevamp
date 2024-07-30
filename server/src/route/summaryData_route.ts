@@ -5,6 +5,6 @@ import { authenticate_token } from "../controller/Token/auth_token";
 
 const router = express.Router();
 
-router.get('/mobile-combustion/:province_code/:municipality_code/:form_type', authenticate_token, getMobileCombustionData);
-router.get('/mc-surveyData/:province_code/:municipality_code/:form_type', authenticate_token,  get_mcData);
+router.get('/mobile-combustion', authenticate_token, getMobileCombustionData);
+router.get('/mc-surveyData', authenticate_token,  get_mcData);
 export default router

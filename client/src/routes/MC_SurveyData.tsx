@@ -31,7 +31,11 @@ const MC_SurveyData = ({form_type, muni_code, prov_code} : MC_SurveyDataProps) =
 
         if(form_type && muni_code){
             setIsLoading(true);
-            axiosPrivate.get(`/summary-data/mc-surveyData/${prov_code}/${muni_code}/${form_type}`)
+            axiosPrivate.get(`/summary-data/mc-surveyData`, {params : {
+                prov_code : prov_code,
+                municipality_code : muni_code,
+                form_type : form_type
+            }})
             .then(res => {
                 console.log("eyy", res.data)
                 const res_mcData = res.data;
