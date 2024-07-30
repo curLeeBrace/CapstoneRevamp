@@ -8,6 +8,7 @@ import Chart from "react-apexcharts";
 import SurveyorInfo from '../../Components/Dashboard/SuerveyorInfo';
 import DashMobileCombustionSummary from '../../Components/Dashboard/DashMobileCombustionSummary';
 import useAxiosPrivate from '../../custom-hooks/auth_hooks/useAxiosPrivate';
+import useUserInfo from '../../custom-hooks/useUserType';
 
 type Emission = {
   co2e : number;
@@ -35,10 +36,10 @@ function DashBoard() {
   const [dashboard_data, setDashBoardData] = useState<DashBoardData>();
   const [isLoading, setisLoading] = useState<boolean>(true);
   const axiosPrivate = useAxiosPrivate();
-
+  const user_info = useUserInfo();
   useEffect(()=>{
 
-    const user_info = JSON.parse(Cookies.get('user_info') as string);
+
     
     axiosPrivate.get(`/dashboard/overview-data/${user_info.province_code}/${user_info.user_type}/${user_info.municipality_code}`)
     .then(res => {
@@ -92,7 +93,7 @@ function DashBoard() {
         offsetY: -10,
       },
       title: {
-        text: 'Total GHGe per Municipality',
+        text: `Total GHGe per ${user_info.user_type === "s-admin" ? "Municipality" : "Brgy"}`,
         align: 'center' as 'center',
         style: {
           fontSize: '20px',
