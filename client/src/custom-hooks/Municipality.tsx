@@ -83,8 +83,8 @@ const Municipality = ({setAddress, disabled}:MunicipalityProps) => {
         
         </Select>
       ) : (
-        <div className="w-11/12 h-full p-1">
-          <div className="h-full border-solid border-black/20 border-2 flex justify-center items-center rounded-md">
+        <div className="w-full h-10">
+          <div className="h-full border-solid border-black/20 border-2 flex justify-center items-center rounded-md ">
            {userInfo.municipality_name}
 
           </div>

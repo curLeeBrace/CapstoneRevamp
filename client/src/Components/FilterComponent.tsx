@@ -40,15 +40,12 @@ const FilterComponent = ({municipalityState, formTypeState, brgyState, selectAll
 
     return(
 
-             <div className="flex flex-wrap">
-                    <div className=" basis-full md:basis-1/5">
-                        {/* dito */}
-                        <Municipality setAddress={municipalityState.setState} disabled = {userInfo.user_type === "s-admin" && selectAllState.state === true}/>
+             <div>
                     
+                    <div className="flex w-full flex-wrap gap-2">
 
-                    </div>
-                    
-                    <div className="flex basis-8/12 gap-3">
+                    <div className="w-96 flex items-center gap-2">
+                        <Municipality setAddress={municipalityState.setState} disabled = {userInfo.user_type === "s-admin" && selectAllState.state === true}/>
                         {
                             municipalityState.state && userInfo.user_type === "lgu_admin" && 
                             <div className="self-center">
@@ -56,6 +53,11 @@ const FilterComponent = ({municipalityState, formTypeState, brgyState, selectAll
                                  disabled = {userInfo.user_type === "lgu_admin" && selectAllState.state === true}   />
                             </div>
                         }
+
+                    </div>
+
+                    <div className="">
+                       
                         <Checkbox
                             disabled = {municipalityState.state == undefined}
                             name='formType'
@@ -84,19 +86,22 @@ const FilterComponent = ({municipalityState, formTypeState, brgyState, selectAll
                         />
 
                         <Checkbox
-                            disabled = {municipalityState.state == undefined}
+                            disabled = {municipalityState.state == undefined || formTypeState.state === undefined}
                             name='selectAll'
                             value={'selectAll'}
                             checked={selectAllState.state === true} // Checked if this is selected
                             onChange={() => selectAllState.setState(!selectAllState.state)} // Handler for selection
                             label={
-                            <Typography variant="small" color="gray" className="font-normal mr-4">
-                                Select all data in {userInfo.user_type === "s-admin" ?  "Laguna" : `${userInfo.municipality_name}`}
+                            <Typography variant="small" color="gray" className="font-normal">
+                                Select all {formTypeState.state} data in {userInfo.user_type === "s-admin" ?  "Laguna" : `${userInfo.municipality_name}`}
                             </Typography>
                             }
                             containerProps={{ className: "-ml-2.5" }}
                         />
 
+
+                    </div>
+                        
                         
                     </div> 
                 </div>

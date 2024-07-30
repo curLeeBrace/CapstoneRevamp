@@ -12,9 +12,10 @@ import { Button } from '@material-tailwind/react';
 import useAxiosPrivate from "../../custom-hooks/auth_hooks/useAxiosPrivate";
 import MC_SurveyData from "../MC_SurveyData";
 import FilterComponent from "../../Components/FilterComponent";
+import useUserInfo from "../../custom-hooks/useUserType";
 
 const MobileCombustionSummary = () => {
-    
+    const user_info = useUserInfo();
     const axiosPrivate = useAxiosPrivate();
     const [formType, setFormType] = useState<"residential" | "commercial">();
     const [municipality, setMunicipality] = useState<AddressReturnDataType>();
@@ -29,35 +30,35 @@ const MobileCombustionSummary = () => {
     const [vehicle_ghge_rate, setVehicleGHGeRate] = useState<any[]>();
  
 
-    const [user, setUser] = useState({
-        type : "",
-        municipality_code: "",
-        province_code :"",
-        municipality_name : "",
-    });
+    // const [user, setUser] = useState({
+    //     type : "",
+    //     municipality_code: "",
+    //     province_code :"",
+    //     municipality_name : "",
+    // });
    
 
     const [expected_ghgThisYear, set_expected_ghgThisYear] = useState<number>();
     const [isPredicting, set_isPredicting] = useState<boolean>(false);
 
 
-    let muni_code = user.type === "lgu_admin" ? user.municipality_code : municipality ? municipality.address_code : undefined
-    let prov_code = user.type === "lgu_admin" ? user.province_code : municipality ? municipality.parent_code : undefined
+    // let muni_code = user.type === "lgu_admin" ? user.municipality_code : municipality ? municipality.address_code : undefined
+    // let prov_code = user.type === "lgu_admin" ? user.province_code : municipality ? municipality.parent_code : undefined
 
-    useEffect(()=>{
-        const user_info = Cookies.get("user_info");
-        if (user_info) {
-            const { municipality_code, user_type, municipality_name, province_code } = JSON.parse(user_info as string);
-            if (user_type === "lgu_admin") {
-              setUser({
-                municipality_code,
-                municipality_name,
-                province_code,
-                type: user_type,
-              });
-            }
-          }
-    },[])
+    // useEffect(()=>{
+    //     const user_info = Cookies.get("user_info");
+    //     if (user_info) {
+    //         const { municipality_code, user_type, municipality_name, province_code } = JSON.parse(user_info as string);
+    //         if (user_type === "lgu_admin") {
+    //           setUser({
+    //             municipality_code,
+    //             municipality_name,
+    //             province_code,
+    //             type: user_type,
+    //           });
+    //         }
+    //       }
+    // },[])
   
 
 
@@ -67,11 +68,20 @@ const MobileCombustionSummary = () => {
 
         
         const barColor = "#006400";
-        if(formType){
+        if(formType && municipality){
     
 
             set_isLoading(true)
-            axiosPrivate.get(`/summary-data/mobile-combustion/${prov_code}/${muni_code}/${formType}`)
+            axiosPrivate.get('/summary-data/mobile-combustion', {params : {
+                user_type : user_info.user_type,
+                province_code : user_info.province_code,
+                municipality_code : municipality.address_code,
+                brgy_code : brgy?.address_code,
+                form_type : formType,
+                selectAll : selectAll
+
+
+            }})
             .then(res => {
                 const {vehicle} = res.data;
                 console.log("Summary Data : ", res.data)
@@ -132,7 +142,7 @@ const MobileCombustionSummary = () => {
 
         set_expected_ghgThisYear(undefined);
 
-    },[formType,municipality])
+    },[formType,municipality, selectAll, brgy])
 
 
 
@@ -238,7 +248,7 @@ const MobileCombustionSummary = () => {
                                     {
                                         label : 'Survey Data',
                                         value : 's-data',
-                                        tabPanelChild : <MC_SurveyData form_type={formType} muni_code={muni_code} prov_code={prov_code}/>
+                                        tabPanelChild : <MC_SurveyData form_type={formType} muni_code={municipality?.address_code} prov_code={user_info.province_code}/>
 
                                     
                                         

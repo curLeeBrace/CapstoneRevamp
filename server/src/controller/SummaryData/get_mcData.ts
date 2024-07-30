@@ -1,8 +1,7 @@
 import { Request, Response } from 'express';
 import FuelFormSchema from "../../db_schema/FuelFormSchema";
 import {get_emission} from '../Dashboard/overview_data'
-
-
+import { prepareQuery, RequestQueryTypes } from './mobile_combustion';
 
 type MC_DATA = {
     surveyor : string;
@@ -18,24 +17,26 @@ type MC_DATA = {
 
 
 const get_mcData = async (req : Request, res : Response) => {
-    const {province_code, municipality_code, form_type} = req.params;
-
+    const {province_code, municipality_code, form_type, brgy_code, selectAll, user_type} = req.query;
     
 
     const year = new Date().getFullYear();
     try {
+        
+
+        // dateTime_created : {
+        //     $gte: new Date(`${year}-01-01T00:00:00.000Z`),
+        //     $lte: new Date(`${year}-12-30T23:59:59.000Z`)
+        // },
+
+        const preparedQuery = prepareQuery(req.query as RequestQueryTypes)
 
 
-        const data = await FuelFormSchema.find({
-            'survey_data.form_type' : form_type,
-            'surveyor_info.municipality_code' : municipality_code,
-            'surveyor_info.province_code' : province_code,
-            dateTime_created : {
-                $gte: new Date(`${year}-01-01T00:00:00.000Z`),
-                $lte: new Date(`${year}-12-30T23:59:59.000Z`)
-            },
+        const data = await FuelFormSchema.find(preparedQuery).exec();
 
-        }).exec();
+
+
+
 
         if(!data) return res.sendStatus(204);
 
