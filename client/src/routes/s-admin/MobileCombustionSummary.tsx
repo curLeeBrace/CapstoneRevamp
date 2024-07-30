@@ -1,7 +1,7 @@
 
 import BarChart from "../../Components/Dashboard/BarChart"
 import {GlobeAsiaAustraliaIcon, TruckIcon, ExclamationTriangleIcon} from "@heroicons/react/24/solid";
-import Cookies from "js-cookie";
+
 import {useEffect, useState } from "react";
 import {AddressReturnDataType} from "../../custom-hooks/useFilterAddrress";
 import { Typography} from "@material-tailwind/react";
@@ -248,7 +248,7 @@ const MobileCombustionSummary = () => {
                                     {
                                         label : 'Survey Data',
                                         value : 's-data',
-                                        tabPanelChild : <MC_SurveyData form_type={formType} muni_code={municipality?.address_code} prov_code={user_info.province_code}/>
+                                        tabPanelChild : <MC_SurveyData form_type={formType} muni_code={municipality?.address_code} prov_code={user_info.province_code} brgy_code={brgy?.address_code} selectAll = {selectAll}/>
 
                                     
                                         
