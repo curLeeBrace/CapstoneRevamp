@@ -31,7 +31,7 @@ const get_mcData = async (req : Request, res : Response) => {
 
         const preparedQuery = prepareQuery(req.query as RequestQueryTypes)
 
-
+        
         const data = await FuelFormSchema.find(preparedQuery).exec();
 
 

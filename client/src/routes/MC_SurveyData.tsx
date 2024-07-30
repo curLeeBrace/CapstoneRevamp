@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Table from "../Components/Table";
 import Skeleton from "../Components/Skeleton";
 import useAxiosPrivate from "../custom-hooks/auth_hooks/useAxiosPrivate";
+import useUserInfo from "../custom-hooks/useUserType";
 
 
 
@@ -9,16 +10,21 @@ type MC_SurveyDataProps = {
     form_type : string | undefined;
     muni_code : string | undefined;
     prov_code : string | undefined;
+    brgy_code :string | undefined;
+    selectAll : boolean;
+
+
 }
 
 
 
 
-const MC_SurveyData = ({form_type, muni_code, prov_code} : MC_SurveyDataProps) => {
+const MC_SurveyData = ({form_type, muni_code, prov_code, brgy_code, selectAll} : MC_SurveyDataProps) => {
     const axiosPrivate = useAxiosPrivate();
     const column = ['Surveyor','Vehicle Type', 'Vehicle Age', 'Fuel Type', 'Fuel Consumption', 'GHGe', 'DateTime'];
     const [mc_datas, set_mcDatas] = useState<any[]>();
     const [isLoading, setIsLoading] = useState<boolean>(false);
+    const userInfo = useUserInfo();
 
 
 
@@ -32,9 +38,12 @@ const MC_SurveyData = ({form_type, muni_code, prov_code} : MC_SurveyDataProps) =
         if(form_type && muni_code){
             setIsLoading(true);
             axiosPrivate.get(`/summary-data/mc-surveyData`, {params : {
-                prov_code : prov_code,
+                province_code : prov_code,
                 municipality_code : muni_code,
-                form_type : form_type
+                form_type : form_type,
+                brgy_code : brgy_code,
+                selectAll : selectAll,
+                user_type : userInfo.user_type
             }})
             .then(res => {
                 console.log("eyy", res.data)
@@ -55,7 +64,7 @@ const MC_SurveyData = ({form_type, muni_code, prov_code} : MC_SurveyDataProps) =
         }
 
 
-    },[form_type,muni_code])
+    },[form_type,muni_code, brgy_code, selectAll, prov_code])
 
 
     return (
