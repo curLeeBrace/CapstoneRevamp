@@ -193,7 +193,7 @@ const MobileCombustionSummary = () => {
                     <Typography className="font-bold text-2xl text-gray-800" >Summary Data of Mobile Combustion</Typography>
                 </div>
           
-
+                    
                     <FilterComponent 
                         municipalityState={
                             {

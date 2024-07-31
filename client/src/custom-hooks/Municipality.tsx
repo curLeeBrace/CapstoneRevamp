@@ -50,7 +50,6 @@ const Municipality = ({setAddress, disabled}:MunicipalityProps) => {
         <Select
           disabled = {disabled}
           value={selectedMunicipality}
-          
           onChange={(value) => {
             
             value && setSelectedMunicipality(value);
@@ -83,8 +82,8 @@ const Municipality = ({setAddress, disabled}:MunicipalityProps) => {
         
         </Select>
       ) : (
-        <div className="w-full h-10">
-          <div className="h-full border-solid border-black/20 border-2 flex justify-center items-center rounded-md ">
+        <div className="h-10">
+          <div className="h-full border-solid border-black/20 border-2 flex justify-center items-center rounded-md px-5">
            {userInfo.municipality_name}
 
           </div>

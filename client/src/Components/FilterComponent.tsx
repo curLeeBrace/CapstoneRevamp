@@ -4,6 +4,8 @@ import Municipality from "../custom-hooks/Municipality"
 import {AddressReturnDataType} from "../custom-hooks/useFilterAddrress";
 import { Checkbox, Typography } from "@material-tailwind/react";
 import useUserInfo from "../custom-hooks/useUserType";
+import YearMenu from "../Components/YearMenu"
+
 
 interface FilterComponentProps  {
     municipalityState :  {
@@ -26,10 +28,15 @@ interface FilterComponentProps  {
         setState : React.Dispatch<React.SetStateAction<boolean>>;
     }
 
+    yearState ? : {
+        state : string;
+        setState : React.Dispatch<React.SetStateAction<string>>;
+    }
+
 
 }
 
-const FilterComponent = ({municipalityState, formTypeState, brgyState, selectAllState}:FilterComponentProps) => {
+const FilterComponent = ({municipalityState, formTypeState, brgyState, selectAllState, yearState}:FilterComponentProps) => {
 
     const userInfo = useUserInfo();
     const handleFormType = (event : React.ChangeEvent<HTMLInputElement|HTMLSelectElement>) =>{
@@ -41,10 +48,9 @@ const FilterComponent = ({municipalityState, formTypeState, brgyState, selectAll
     return(
 
              <div>
-                    
-                    <div className="flex w-full flex-wrap gap-2">
+                    <div className="flex w-full flex-wrap gap-2 justify-center">
 
-                    <div className="w-96 flex items-center gap-2">
+                    <div className="flex items-center gap-2">
                         <Municipality setAddress={municipalityState.setState} disabled = {userInfo.user_type === "s-admin" && selectAllState.state === true}/>
                         {
                             municipalityState.state && userInfo.user_type === "lgu_admin" && 
@@ -56,7 +62,7 @@ const FilterComponent = ({municipalityState, formTypeState, brgyState, selectAll
 
                     </div>
 
-                    <div className="">
+                    <div className="flex gap-3">
                        
                         <Checkbox
                             disabled = {municipalityState.state == undefined}
@@ -98,6 +104,8 @@ const FilterComponent = ({municipalityState, formTypeState, brgyState, selectAll
                             }
                             containerProps={{ className: "-ml-2.5" }}
                         />
+
+                      <YearMenu/>
 
 
                     </div>
