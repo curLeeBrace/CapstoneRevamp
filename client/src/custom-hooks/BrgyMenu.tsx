@@ -73,7 +73,7 @@ const BrgyMenu = ({setBrgys, municipality_code ,disabled = false}:BrgyMenuyProps
           
             {  brgy_opt ? 
             
-                <Select value={selectedBrgy} onChange={(value)=>{onChangeHandler(value)}} disabled = {disabled} label="Choose Brgy"  >
+                <Select value={selectedBrgy} onChange={(value)=>{onChangeHandler(value)}} disabled = {disabled} label="Choose Brgy">
                     {
                         brgy_opt.map((brgy, index) => (<Option key={index} value= {brgy}>{brgy}</Option>))
                     }
