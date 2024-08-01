@@ -29,8 +29,8 @@ interface FilterComponentProps  {
     }
 
     yearState ? : {
-        state : string;
-        setState : React.Dispatch<React.SetStateAction<string>>;
+        state : string|undefined;
+        setState : React.Dispatch<React.SetStateAction<string|undefined>>;
     }
 
 
@@ -48,7 +48,7 @@ const FilterComponent = ({municipalityState, formTypeState, brgyState, selectAll
     return(
 
              <div>
-                    <div className="flex w-full flex-wrap gap-2 justify-center">
+                    <div className="flex w-full flex-wrap gap-2">
 
                     <div className="flex items-center gap-2">
                         <Municipality setAddress={municipalityState.setState} disabled = {userInfo.user_type === "s-admin" && selectAllState.state === true}/>
@@ -62,7 +62,7 @@ const FilterComponent = ({municipalityState, formTypeState, brgyState, selectAll
 
                     </div>
 
-                    <div className="flex gap-3">
+                    <div className="flex gap-3 flex-wrap">
                        
                         <Checkbox
                             disabled = {municipalityState.state == undefined}
@@ -104,8 +104,12 @@ const FilterComponent = ({municipalityState, formTypeState, brgyState, selectAll
                             }
                             containerProps={{ className: "-ml-2.5" }}
                         />
+                        {
+                            yearState && 
+                            <YearMenu useYearState={[yearState.state, yearState.setState]}/>
+                        }
 
-                      <YearMenu/>
+                      
 
 
                     </div>

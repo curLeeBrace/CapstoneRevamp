@@ -12,6 +12,7 @@ type MC_SurveyDataProps = {
     prov_code : string | undefined;
     brgy_code :string | undefined;
     selectAll : boolean;
+    selectedYear? : string | undefined;
 
 
 }
@@ -19,7 +20,7 @@ type MC_SurveyDataProps = {
 
 
 
-const MC_SurveyData = ({form_type, muni_code, prov_code, brgy_code, selectAll} : MC_SurveyDataProps) => {
+const MC_SurveyData = ({form_type, muni_code, prov_code, brgy_code, selectAll, selectedYear} : MC_SurveyDataProps) => {
     const axiosPrivate = useAxiosPrivate();
     const column = ['Surveyor','Vehicle Type', 'Vehicle Age', 'Fuel Type', 'Fuel Consumption', 'GHGe', 'DateTime'];
     const [mc_datas, set_mcDatas] = useState<any[]>();
@@ -43,7 +44,8 @@ const MC_SurveyData = ({form_type, muni_code, prov_code, brgy_code, selectAll} :
                 form_type : form_type,
                 brgy_code : brgy_code,
                 selectAll : selectAll,
-                user_type : userInfo.user_type
+                user_type : userInfo.user_type,
+                selectedYear : selectedYear
             }})
             .then(res => {
                 console.log("eyy", res.data)
@@ -64,7 +66,7 @@ const MC_SurveyData = ({form_type, muni_code, prov_code, brgy_code, selectAll} :
         }
 
 
-    },[form_type,muni_code, brgy_code, selectAll, prov_code])
+    },[form_type,muni_code, brgy_code, selectAll, prov_code, selectedYear])
 
 
     return (

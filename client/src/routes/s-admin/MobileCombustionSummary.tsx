@@ -21,7 +21,7 @@ const MobileCombustionSummary = () => {
     const [municipality, setMunicipality] = useState<AddressReturnDataType>();
     const [brgy, setBrgy] = useState<AddressReturnDataType>();
     const [selectAll, setSelectAll] = useState(false);
-
+    const [yearState, setYearState] = useState<string>();
 
     const [mobileCombustionData, setMobileCombustionData] = useState<any>();
     const [isLoading, set_isLoading] = useState<boolean>(false);
@@ -78,7 +78,8 @@ const MobileCombustionSummary = () => {
                 municipality_code : municipality.address_code,
                 brgy_code : brgy?.address_code,
                 form_type : formType,
-                selectAll : selectAll
+                selectAll : selectAll,
+                selectedYear : yearState
 
 
             }})
@@ -142,7 +143,7 @@ const MobileCombustionSummary = () => {
 
         set_expected_ghgThisYear(undefined);
 
-    },[formType,municipality, selectAll, brgy])
+    },[formType,municipality, selectAll, brgy, yearState])
 
 
 
@@ -220,6 +221,13 @@ const MobileCombustionSummary = () => {
                                 state : selectAll
                             }
                         }
+
+                        yearState={
+                            {
+                                state : yearState,
+                                setState : setYearState
+                            }
+                        }
                     
                     />
                 
@@ -248,7 +256,7 @@ const MobileCombustionSummary = () => {
                                     {
                                         label : 'Survey Data',
                                         value : 's-data',
-                                        tabPanelChild : <MC_SurveyData form_type={formType} muni_code={municipality?.address_code} prov_code={user_info.province_code} brgy_code={brgy?.address_code} selectAll = {selectAll}/>
+                                        tabPanelChild : <MC_SurveyData form_type={formType} muni_code={municipality?.address_code} prov_code={user_info.province_code} brgy_code={brgy?.address_code} selectAll = {selectAll} selectedYear = {yearState}/>
 
                                     
                                         

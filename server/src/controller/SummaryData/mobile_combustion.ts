@@ -13,6 +13,7 @@ export type RequestQueryTypes = {
     form_type : string;
     municipality_code : string;
     brgy_code : string
+    selectedYear : string
 
 }
 
@@ -33,6 +34,7 @@ const prepareQuery = (requestQuery : RequestQueryTypes) : {} => {
             form_type,
             municipality_code,
             brgy_code,
+            selectedYear
         } = requestQuery
 
         let query : {} = {};
@@ -78,6 +80,15 @@ const prepareQuery = (requestQuery : RequestQueryTypes) : {} => {
                     ]   
                 };
             }
+        }
+
+
+
+        query = {...query, 
+            dateTime_created : {
+                $gte: new Date(`${selectedYear}-01-01T00:00:00.000Z`),
+                $lte: new Date(`${selectedYear}-12-30T23:59:59.000Z`)
+            },
         }
 
 
