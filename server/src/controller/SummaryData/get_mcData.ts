@@ -17,8 +17,6 @@ type MC_DATA = {
 
 
 const get_mcData = async (req : Request, res : Response) => {
-    const {province_code, municipality_code, form_type, brgy_code, selectAll, user_type} = req.query;
-    
 
     const year = new Date().getFullYear();
     try {

@@ -47,7 +47,7 @@ const DashMobileCombustionSummary = () => {
            />
             <div className="mt-5 h-full">
 
-                <MC_SurveyData form_type={formType} muni_code={address?.address_code} prov_code={address?.parent_code} brgy_code={brgy?.address_code} selectAll = {selectAll}/>
+                <MC_SurveyData form_type={formType} muni_code={address?.address_code} prov_code={address?.parent_code} brgy_code={brgy?.address_code} selectAll = {selectAll} />
 
             </div>
 
