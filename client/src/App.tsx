@@ -12,7 +12,7 @@ import AccountVerification from "./routes/not-auth/AccountVerification";
 
 
 import DashBoard from "./routes/s-admin/DashBoard"
-import { StationaryForm } from "./Components/Forms/StationaryForm";
+import { StationaryForm } from "./routes/surveyor/StationaryForm";
 import HomePage from "./routes/HomePage";
 import LogIn from "./routes/not-auth/LogIn";
 import ForgotPass from "./routes/not-auth/ForgotPass";
@@ -23,6 +23,7 @@ import MobileCombustionSummary from "./routes/s-admin/MobileCombustionSummary";
 
 
 import SurveyedList from "./routes/surveyor/SurveyedList";
+import WasteWaterForm from "./routes/surveyor/WasteWaterForm";
 
 
 function App() {
@@ -76,6 +77,7 @@ function App() {
               <Route path = 'home' element = {<HomePage/>}/>
               <Route path = 'forms'>
                 <Route path = ':action/:form_type' element = {<StationaryForm/>}/>
+                <Route path = ':action/waste-water' element = {<WasteWaterForm/>}/>
               </Route>
               <Route path="surveyed-list" element ={<SurveyedList/>}/>
               <Route path = 'change-pass' element = {<ChangePass/>}/>
