@@ -19,9 +19,12 @@ import useUserInfo from "../custom-hooks/useUserType";
 
 const navListMenuItems = [
   {
-    title: "Stationary Fuel Combustion",
-    description: "Fill up form for Fuel Combustion Inventory",
+    title: "Mobile Combustion",
     href: `/surveyor/forms/submit/mobile-combustion`,
+  },
+  {
+    title: "Waste Water",
+    href: `/surveyor/forms/submit/waste-water`,
   },
 ];  
 

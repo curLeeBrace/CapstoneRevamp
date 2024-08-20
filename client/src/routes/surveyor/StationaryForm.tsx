@@ -1,8 +1,8 @@
 import {useEffect, useState } from 'react';
 import { Card, Input, Checkbox, Button, Typography, Select, Option} from "@material-tailwind/react";
 import useHandleChange from '../../custom-hooks/useHandleChange';
-import AlertBox from './AlertBox';
-import DialogBox from "../DialogBox";
+import AlertBox from '../../Components/Forms/AlertBox';
+import DialogBox from "../../Components/DialogBox";
 import {useParams, useSearchParams } from 'react-router-dom';
 import BrgyMenu from '../../custom-hooks/BrgyMenu';
 import useUserInfo from '../../custom-hooks/useUserType';

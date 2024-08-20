@@ -14,7 +14,6 @@ import React from "react";
 import { Link } from "react-router-dom";
 interface NavListItem {
   title: string;
-  description: string;
   href: string;
 }
 
@@ -27,15 +26,15 @@ function NavListMenu(props: NavListMenuProps) {
 
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 
-  const renderItems = navListMenuItems.map(({ title, description, href }) => (
+  const renderItems = navListMenuItems.map(({ title, href }) => (
     <Link to={href} state={{testValue : "yow"}} key={title}>
       <MenuItem>
-        <Typography variant="h6" className="mb-1">
+        <Typography className="mb-1 text-sm">
           {title}
         </Typography>
-        <Typography variant="small" className="font-normal">
+        {/* <Typography variant="small" className="font-normal">
           {description}
-        </Typography>
+        </Typography> */}
       </MenuItem>
     </Link>
   ));
