@@ -17,7 +17,7 @@ const BrgyMenu = ({setBrgys, municipality_code ,disabled = false}:BrgyMenuyProps
 
 
 
-    console.log("BRGYS : ", brgys)
+    // console.log("BRGYS : ", brgys)
 
 
     useEffect(()=>{
@@ -66,7 +66,7 @@ const BrgyMenu = ({setBrgys, municipality_code ,disabled = false}:BrgyMenuyProps
     }
 
 
-    console.log("SELECTED BRGY : ", selectedBrgy)
+    // console.log("SELECTED BRGY : ", selectedBrgy)
 
     return (
         <> 

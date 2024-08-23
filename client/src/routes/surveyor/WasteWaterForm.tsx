@@ -1,7 +1,6 @@
 import {
+  Button,
   Card,
-  CardBody,
-  CardHeader,
   Checkbox,
   Input,
   Typography,
@@ -13,16 +12,61 @@ import { AddressReturnDataType } from "../../custom-hooks/useFilterAddrress";
 import BrgyMenu from "../../custom-hooks/BrgyMenu";
 import useHandleChange from "../../custom-hooks/useHandleChange";
 import { InformationCircleIcon } from "@heroicons/react/24/solid";
+import DialogBox from "../../Components/DialogBox";
+import AlertBox from "../../Components/Forms/AlertBox";
+
+
+
+
+
+
 
 type wasteWaterFormTypes = {
   form_type: string;
-  septic_tanks: number;
-  open_pits: number;
-  latrines: number;
-  flush_waterUse: number;
-  sodrl: number;
-  rle: number;
+  septic_tanks : number
+  openPits_latrinesCat1 : number;
+  openPits_latrinesCat2 : number;
+  openPits_latrinesCat3 : number;
+  openPits_latrinesCat4 : number;
+  riverDischargeCat1 : number;
+  riverDischargeCat2 : number;
 };
+
+
+
+
+
+type payload = {
+  survey_data: {
+    form_type: string;
+    septic_tanks: number;
+    openPits_latrines : {
+      cat1 : number,
+      cat2 : number,
+      cat3 : number,
+      cat4 : number,
+    }
+    riverDischarge : {
+      cat1 : number,
+      cat2 : number,
+    }
+    brgy_name : string;
+    brgy_code : string;
+    status : string;
+  }
+  surveyor_info: {
+    email : string;
+    full_name : string;
+    municipality_name : string;
+    municipality_code : string;
+    province_code : string;
+    img_id : string;
+  }
+  dateTime_created: Date
+  dateTime_edited:  Date
+}
+
+
 
 const WasteWaterForm = () => {
   const params = useParams();
@@ -30,12 +74,62 @@ const WasteWaterForm = () => {
   const handleChange = useHandleChange;
   const [brgy, setBrgy] = useState<AddressReturnDataType>();
   const [formData, setFormData] = useState<wasteWaterFormTypes>({
-    form_type: "residential",
+    form_type :"residential",
   } as wasteWaterFormTypes);
+  const [isLoading, set_isLoading] = useState<boolean>(false);
+  const [openDialogBox, setOpenDialogBox] = useState(false);
+  const [openAlert, setOpenAlert] = useState(false);
+  const [alert_msg, setAlertMsg] = useState("");
+
+
+
+  const submitValidation = () => {
+    if(!formData.openPits_latrinesCat1 ||!formData.openPits_latrinesCat2 || !formData.openPits_latrinesCat3 || !formData.openPits_latrinesCat4
+      ||!formData.riverDischargeCat1 || !formData.openPits_latrinesCat2 || !formData.septic_tanks
+    ){
+      set_isLoading(false);
+      setOpenAlert(true);
+      setAlertMsg("Some field are undefined!");
+
+    } else {
+      setOpenDialogBox(true);
+    }
+  }
+
+  const submitHandler = () => {
+
+  }
+
+
+
+
+
+
+
+
+
+  const updateHandler = () => {
+
+
+  }
+  const acceptUpdateHandler = () => {
+
+  }
 
   return (
+    <>
+      <AlertBox openAlert = {openAlert}  setOpenAlert={setOpenAlert}  message={alert_msg}/>
+    
+  
     <div className="flex justify-center min-h-screen px-4 py-10 overflow-x-hidden bg-gray-200">
+       <DialogBox open = {openDialogBox} setOpen={setOpenDialogBox} message = 'Please double check the data before submitting' label='Confirmation' submit={
+        params.action === "submit" ? submitHandler
+        : params.action === "update" ? updateHandler
+        :acceptUpdateHandler
+      } />
+      
       <Card className="w-full h-full sm:w-96 md:w-3/4 lg:w-2/3 xl:w-2/3 px-6 py-6 -mt-10 shadow-black shadow-2xl rounded-xl relative gap-5">
+        
         <Typography variant="h4" color="blue-gray" className="text-center">
           Waste Water Form
         </Typography>
@@ -88,27 +182,60 @@ const WasteWaterForm = () => {
           />
         </div>
 
+          
+
+
         <div className="flex gap-2 bg-gray-600 p-2 rounded-md shadow-gray-500 shadow-md">
           <div>
             <InformationCircleIcon className="w-8 h-8" color="white" />
           </div>
-          <Typography color="white">
-            Lagyan ng numero ang alinman sa mga sumusunod na inyong ginagamit{" "}
+          <Typography color="white" className="self-center">
+            Lagyan ng bilang ang alinman sa mga sumusunod ang inyong ginagamit{" "}
             <br /> na daluyan ng basurang tubig (waste water)
           </Typography>
         </div>
 
-        <div className="flex flex-col gap-2 justify-around">
-          <div className="w-full flex gap-2 flex-wrap xl:flex-nowrap">
-            <div className="xl:w-1/2 w-full">
+        <div className="w-full">
               <Typography variant="h6" color="blue-gray">
                 Poso Negro (Septic Tank)
               </Typography>
               <Input
                 disabled={params.action === "view"}
-                name="liters_consumption"
-                // value = {formData.liters_consumption}
-                // onChange={(event)=> handleChange({event, setFormStateData : setFormData})}
+                name="septic_tanks"
+                value = {formData.septic_tanks}
+                onChange={(event)=> handleChange({event, setFormStateData : setFormData})}
+                type="number"
+                size="lg"
+                placeholder="Example: 3"
+                className="w-full placeholder:opacity-100 focus:!border-t-gray-900 border-t-blue-gray-200"
+                min={0}
+                max={999}
+                maxLength={3}
+              />
+          </div>
+
+          <div className="flex gap-2 bg-gray-600 p-2 rounded-md shadow-gray-500 shadow-md">
+          <div>
+            <InformationCircleIcon className="w-8 h-8" color="white" />
+          </div>
+            <Typography color="white" className="self-center">
+            Open Pits/latrines
+            </Typography>
+        </div>
+
+
+
+        <div className="flex flex-col gap-2 justify-around">
+          <div className="w-full flex gap-2 flex-wrap xl:flex-nowrap">
+            <div className="xl:w-1/2 w-full">
+              <Typography variant="h6" color="blue-gray">
+                dry climate, ground water table lower than latrine, small family (2-5 people)		
+              </Typography>
+              <Input
+                disabled={params.action === "view"}
+                name='openPits_latrinesCat1'
+                value = {formData.openPits_latrinesCat1}
+                onChange={(event)=> handleChange({event, setFormStateData : setFormData})}
                 type="number"
                 size="lg"
                 placeholder="Example: 3"
@@ -120,13 +247,13 @@ const WasteWaterForm = () => {
             </div>
             <div className="xl:w-1/2 w-full">
               <Typography variant="h6" color="blue-gray">
-                Balon/Hukay (Open pit/s)
+              dry climate, ground water table lower than latrine, communal
               </Typography>
               <Input
                 disabled={params.action === "view"}
-                name="liters_consumption"
-                // value = {formData.liters_consumption}
-                // onChange={(event)=> handleChange({event, setFormStateData : setFormData})}
+                name="openPits_latrinesCat2"
+                value = {formData.openPits_latrinesCat2}
+                onChange={(event)=> handleChange({event, setFormStateData : setFormData})}
                 type="number"
                 size="lg"
                 placeholder="Example: 3"
@@ -141,13 +268,14 @@ const WasteWaterForm = () => {
           <div className="w-full flex gap-2 flex-wrap xl:flex-nowrap">
             <div className="xl:w-1/2 w-full">
               <Typography variant="h6" color="blue-gray">
-                Palikuran na walang inidoro (Latrine/s)
+              wet climate/flush water use, ground water table than latrine		
+
               </Typography>
               <Input
                 disabled={params.action === "view"}
-                name="liters_consumption"
-                // value = {formData.liters_consumption}
-                // onChange={(event)=> handleChange({event, setFormStateData : setFormData})}
+                name="openPits_latrinesCat3"
+                value = {formData.openPits_latrinesCat3}
+                onChange={(event)=> handleChange({event, setFormStateData : setFormData})}
                 type="number"
                 size="lg"
                 placeholder="Example: 3"
@@ -160,13 +288,13 @@ const WasteWaterForm = () => {
 
             <div className="xl:w-1/2 w-full">
               <Typography variant="h6" color="blue-gray">
-                Palikuran na may inidoro (Flush water use)
+                regular sedimentremoval for <br/> fertilizer				
               </Typography>
               <Input
                 disabled={params.action === "view"}
-                name="liters_consumption"
-                // value = {formData.liters_consumption}
-                // onChange={(event)=> handleChange({event, setFormStateData : setFormData})}
+                name="openPits_latrinesCat4"
+                value = {formData.openPits_latrinesCat4}
+                onChange={(event)=> handleChange({event, setFormStateData : setFormData})}
                 type="number"
                 size="lg"
                 placeholder="Example: 3"
@@ -197,9 +325,9 @@ const WasteWaterForm = () => {
               </Typography>
               <Input
                 disabled={params.action === "view"}
-                name="liters_consumption"
-                // value = {formData.liters_consumption}
-                // onChange={(event)=> handleChange({event, setFormStateData : setFormData})}
+                name="riverDischargeCat1"
+                value = {formData.riverDischargeCat1}
+                onChange={(event)=> handleChange({event, setFormStateData : setFormData})}
                 type="number"
                 size="lg"
                 placeholder="Example: 3"
@@ -216,9 +344,9 @@ const WasteWaterForm = () => {
               </Typography>
               <Input
                 disabled={params.action === "view"}
-                name="liters_consumption"
-                // value = {formData.liters_consumption}
-                // onChange={(event)=> handleChange({event, setFormStateData : setFormData})}
+                name="riverDischargeCat2"
+                value = {formData.riverDischargeCat2}
+                onChange={(event)=> handleChange({event, setFormStateData : setFormData})}
                 type="number"
                 size="lg"
                 placeholder="Example: 3"
@@ -231,10 +359,28 @@ const WasteWaterForm = () => {
           </div>
         </div>
 
-
+        <div className="md:col-span-2">
+              <Button 
+                  fullWidth 
+                  className="flex justify-center"
+                  loading = {isLoading}
+                  onClick={submitValidation}
+               
+                  >
+                    {
+                      params.action === "submit" ?
+                      "Submit"
+                      : params.action === "update" ?
+                      "Request Update"
+                      : "Accept Update"
+                    }
+              </Button>
+  
+          </div>
 
       </Card>
     </div>
+    </>
   );
 };
 
