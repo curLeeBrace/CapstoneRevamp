@@ -46,7 +46,7 @@ function AlertBox({openAlert, message, setOpenAlert}: AlertBoxProps) {
   return (
     <>
           <Alert
-            className="absolute w-11/12 self-center"
+            className="fixed top-20 z-10 w-1/2 flex left-1/4"
             icon = {<IconOutlined/>}
             onClose={()=>setOpenAlert(false)}
             open={openAlert}

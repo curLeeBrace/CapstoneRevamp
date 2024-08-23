@@ -5,12 +5,21 @@ const WasteWaterForm = new mongoose.Schema({
 
     survey_data : { type : {
         form_type : {type : String, required : true},
+
         septic_tanks : {type : Number, default : 0},
-        open_pits : {type : Number, default : 0},
-        latrines : {type : Number, default : 0},
-        flush_waterUse : {type : Number, default : 0},
-        sodrl : {type : Number, default : 0}, // Stagnant oxygen deficient rivers and lakes
-        rle : {type : Number, default : 0}, //Rivers, lakes, estuaries
+
+        openPits_latrines : {type : {
+            cat1 : {type : Number, default : 0}, //dry climate, ground water table lower than latrine, small family (2-5 people)		
+            cat2 : {type : Number, default : 0}, // dry climate, ground water table lower than latrine, communal		
+            cat3 : {type : Number, default : 0}, // wet climate/flush water use, ground water table than latrine		
+            cat4 : {type : Number, default : 0}, // regular sediment removal for fertilizer		
+        }},
+        riverDischarge : {type : {
+            cat1 : {type : Number, default : 0},// Stagnant oxygen deficient rivers and lakes
+            cat2 : {type : Number, default : 0},//Rivers, lakes, estuaries
+
+        }},
+
         brgy_name  :{type : String, required : true},
         brgy_code : {type : String, required : true},
         status : {type : String, required : true, default : "0"}
