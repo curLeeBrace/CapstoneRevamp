@@ -14,6 +14,8 @@ import useHandleChange from "../../custom-hooks/useHandleChange";
 import { InformationCircleIcon } from "@heroicons/react/24/solid";
 import DialogBox from "../../Components/DialogBox";
 import AlertBox from "../../Components/Forms/AlertBox";
+import useAxiosPrivate from "../../custom-hooks/auth_hooks/useAxiosPrivate";
+
 
 
 
@@ -23,35 +25,35 @@ import AlertBox from "../../Components/Forms/AlertBox";
 
 type wasteWaterFormTypes = {
   form_type: string;
-  septic_tanks : number
-  openPits_latrinesCat1 : number;
-  openPits_latrinesCat2 : number;
-  openPits_latrinesCat3 : number;
-  openPits_latrinesCat4 : number;
-  riverDischargeCat1 : number;
-  riverDischargeCat2 : number;
+  septic_tanks : number | undefined
+  openPits_latrinesCat1 : number | undefined;
+  openPits_latrinesCat2 : number | undefined;
+  openPits_latrinesCat3 : number | undefined;
+  openPits_latrinesCat4 : number | undefined;
+  riverDischargeCat1 : number | undefined;
+  riverDischargeCat2 : number | undefined;
 };
 
 
 
 
 
-type payload = {
+type Payload = {
   survey_data: {
     form_type: string;
-    septic_tanks: number;
+    septic_tanks: number | undefined;
     openPits_latrines : {
-      cat1 : number,
-      cat2 : number,
-      cat3 : number,
-      cat4 : number,
+      cat1 : number | undefined,
+      cat2 : number | undefined,
+      cat3 : number | undefined,
+      cat4 : number | undefined,
     }
     riverDischarge : {
-      cat1 : number,
-      cat2 : number,
+      cat1 : number | undefined,
+      cat2 : number | undefined,
     }
-    brgy_name : string;
-    brgy_code : string;
+    brgy_name : any;
+    brgy_code : any;
     status : string;
   }
   surveyor_info: {
@@ -63,7 +65,7 @@ type payload = {
     img_id : string;
   }
   dateTime_created: Date
-  dateTime_edited:  Date
+  dateTime_edited:  Date | null
 }
 
 
@@ -72,6 +74,7 @@ const WasteWaterForm = () => {
   const params = useParams();
   const user_info = useUserInfo();
   const handleChange = useHandleChange;
+  const axiosPrivate = useAxiosPrivate();
   const [brgy, setBrgy] = useState<AddressReturnDataType>();
   const [formData, setFormData] = useState<wasteWaterFormTypes>({
     form_type :"residential",
@@ -96,16 +99,40 @@ const WasteWaterForm = () => {
     }
   }
 
-  const submitHandler = () => {
-
+  const clearForm = () => {
+    setFormData({
+      form_type : "residential",
+      openPits_latrinesCat1 : undefined,
+      openPits_latrinesCat2 : undefined,
+      openPits_latrinesCat3 : undefined,
+      openPits_latrinesCat4 : undefined,
+      riverDischargeCat1 : undefined,
+      riverDischargeCat2 : undefined,
+      septic_tanks : undefined
+    })
   }
 
-
-
-
-
-
-
+  const submitHandler = () => {
+    const payload = preparePayLoad();
+     setOpenDialogBox(false)
+      set_isLoading(true);
+      axiosPrivate  .post('/forms/waste-water/insert', payload)
+      .then(res => {
+          if(res.status === 201){
+            setOpenAlert(true);
+            setAlertMsg("Sucsessfully Submitted!");
+            clearForm();
+          }
+  
+        set_isLoading(false);
+      })
+      .catch(err => {
+        console.log(err)
+        set_isLoading(false);
+        setOpenAlert(true);
+        setAlertMsg("Server Error!");
+      })
+  }
 
 
   const updateHandler = () => {
@@ -115,6 +142,49 @@ const WasteWaterForm = () => {
   const acceptUpdateHandler = () => {
 
   }
+
+
+
+  const preparePayLoad = () : Payload => {
+    const {email, full_name, municipality_name, municipality_code, province_code} = user_info;
+    let payload : Payload = {
+      survey_data : {
+        form_type : formData.form_type,
+        septic_tanks : formData.septic_tanks,
+        openPits_latrines : {
+          cat1 : formData.openPits_latrinesCat1,
+          cat2 : formData.openPits_latrinesCat2,
+          cat3 : formData.openPits_latrinesCat3,
+          cat4 : formData.openPits_latrinesCat4
+        },
+        riverDischarge : {
+          cat1 : formData.riverDischargeCat1,
+          cat2 : formData.riverDischargeCat2
+
+        },
+        brgy_name : brgy?.address_name, 
+        brgy_code : brgy?.address_code,
+        status : "0",
+      },
+
+      surveyor_info : {
+        email,
+        full_name,
+        municipality_name,
+        municipality_code,
+        province_code,
+        img_id : user_info.img_id
+  
+      },
+      dateTime_created : new Date(),
+      dateTime_edited : null
+    }
+  
+    return payload 
+  }
+
+
+
 
   return (
     <>
