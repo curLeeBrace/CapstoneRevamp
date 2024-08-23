@@ -1,14 +1,16 @@
 import { Request, Response } from 'express';
 import FuelFormSchema from "../../db_schema/FuelFormSchema";
+import WasteWaterFormShema from '../../db_schema/WasteWaterFormShema';
 import { auditLogType, saveAuditLog } from "../AuditLog/audit_log";
 
 
 
-const insertFuelFormData = async (req: Request, res: Response) => {
+const insertFormData = async (req: Request, res: Response) => {
+    const {form_category} = req.params
     try {
         // Insert the fuel form data
         console.log("Request body:", req.body);
-        const insert = await FuelFormSchema.create(req.body);
+        const insert = form_category === "fuel" ? await FuelFormSchema.create(req.body) :  await WasteWaterFormShema.create(req.body)
 
         if (insert) {
             // Create the audit log
@@ -22,7 +24,7 @@ const insertFuelFormData = async (req: Request, res: Response) => {
                 },
                 user_type: "surveyor",
                 dateTime: new Date(),
-                action: `Inserted fuel data for ${survey_data.form_type} form. (${surveyor_info.municipality_name})`,
+                action: `Inserted ${form_category} data for ${survey_data.form_type} form. (${surveyor_info.municipality_name})`,
             };
 
             // Save the audit log
@@ -37,7 +39,7 @@ const insertFuelFormData = async (req: Request, res: Response) => {
             return res.sendStatus(409); // Conflict, insertion failed
         }
     } catch (error) {
-        console.error("Error inserting fuel form data:", error);
+        console.error("Error inserting form data:", error);
         return res.sendStatus(500); // Internal server error
     }
 }
@@ -98,7 +100,7 @@ const acceptUpdateMobileCombustionData = async (req: Request, res: Response) => 
 
 
 export {
-    insertFuelFormData,
+    insertFormData,
     updateMobileCombustionData,
     acceptUpdateMobileCombustionData
 

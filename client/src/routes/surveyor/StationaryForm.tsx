@@ -81,13 +81,6 @@ if(action !== "submit"){
 
 
 
-
-
-
-
-
-
-
 useEffect(()=>{
 
     setVehicleOptions(formData.form_type === "residential" ? 
