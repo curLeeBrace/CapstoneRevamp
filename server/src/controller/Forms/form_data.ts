@@ -51,23 +51,25 @@ const formData = async (req:Request, res:Response) => {
 
 
 
-const oneMobileCombustionData = async (req:Request, res:Response) =>{
+const oneFormData = async (req:Request, res:Response) =>{
     
     const {
        form_id
     } = req.query
+
+    const {form_category} = req.params
     
     try {
         
 
-        const mc_data = await FuelFormSchema.findById(form_id).exec()
+        const form_data = form_category === "waste-water" ? await WasteWaterFormShema.findById(form_id).exec() : await FuelFormSchema.findById(form_id).exec()
         
-        if(!mc_data) return res.sendStatus(204);
+        if(!form_data) return res.sendStatus(204);
 
 
         return res.status(200).send({
-            survey_data : mc_data.survey_data,
-            form_id : mc_data._id
+            survey_data : form_data.survey_data,
+            form_id : form_data._id
         })
 
 
@@ -83,4 +85,4 @@ const oneMobileCombustionData = async (req:Request, res:Response) =>{
 
 
 
-export {formData, oneMobileCombustionData}
+export {formData, oneFormData}

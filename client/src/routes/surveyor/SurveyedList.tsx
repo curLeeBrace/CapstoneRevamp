@@ -87,10 +87,17 @@ const SurveyedList = () => {
           form_type,
         } = data.survey_data;
         const dateTime = new Date(data.dateTime_created).toLocaleDateString() + " " + new Date(data.dateTime_created).toLocaleTimeString();
-        const form_id = data.form_id;
         const LinkComponent = (
           <Link
-            to={`/surveyor/forms/update/mobile-combustion?form_id=${form_id}`}
+            to={`/surveyor/forms/update/mobile-combustion`}
+            state={{
+              brgy_name,
+              vehicle_type,
+              vehicle_age,
+              fuel_type,
+              liters_consumption,
+              form_type,
+            }}
           >
             <div className="text-green-700">Update</div>
           </Link>
@@ -169,6 +176,7 @@ const SurveyedList = () => {
           <BrgyMenu
             municipality_code={user_info.municipality_code}
             setBrgys={setBrgy}
+            deafult_brgyName="Anibong"
           />
         </div>
 

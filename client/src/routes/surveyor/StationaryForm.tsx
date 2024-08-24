@@ -3,7 +3,7 @@ import { Card, Input, Checkbox, Button, Typography, Select, Option} from "@mater
 import useHandleChange from '../../custom-hooks/useHandleChange';
 import AlertBox from '../../Components/Forms/AlertBox';
 import DialogBox from "../../Components/DialogBox";
-import {useParams, useSearchParams } from 'react-router-dom';
+import {useLocation, useParams, useSearchParams } from 'react-router-dom';
 import BrgyMenu from '../../custom-hooks/BrgyMenu';
 import useUserInfo from '../../custom-hooks/useUserType';
 import { AddressReturnDataType } from '../../custom-hooks/useFilterAddrress';
@@ -16,6 +16,7 @@ type formDataTypes = {
   vehicle_age : number,
   fuel_type : string,
   liters_consumption : number,
+  brgy_name : string
 
 }
 
@@ -30,8 +31,9 @@ export function StationaryForm() {
 
 const handleChange = useHandleChange; 
 const [formData, setFormData] = useState<formDataTypes>({
-  form_type : "residential"
+  form_type : "residential",
 } as formDataTypes);
+
 const axiosPrivate = useAxiosPrivate();
 const [vehicleOptions, setVehicleOptions] = useState<string[]>();
 const [isLoading, set_isLoading] = useState<boolean>(false);
@@ -43,55 +45,55 @@ const user_info = useUserInfo();
 const [brgy, setBrgy] = useState<AddressReturnDataType>();
 
 
-
-
 const [searchParams] = useSearchParams();
 const params = useParams()
+const {state} = useLocation();
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 useEffect(()=>{
-const {action} = params
 
-if(action !== "submit"){
-  axiosPrivate.get('/forms/mobile-combustion/one-surveyed-data', {params : {
-    form_id : searchParams.get("form_id")
-  }})
-  .then(res => {
-    const {form_type, fuel_type, liters_consumption, vehicle_age, vehicle_type} = res.data.survey_data;
-    setFormData({
-      form_type,
-      fuel_type,
-      liters_consumption,
-      vehicle_age : new Date().getFullYear() - vehicle_age,
-      vehicle_type
-    })
-    console.log("ONE FORM DATA : ", res.data);
-  })
-  .catch((err) => console.log(err));
+  const vType_options = formData.form_type == "residential" ? 
+  ["Car", "SUV", "Motorcycle"] : 
+  formData.form_type === "commercial" ?
+  ["Jeep", "Tricycle", "Bus", "Van", "Taxi", "Truck"]
+  :undefined
+  
+  setVehicleOptions(vType_options)
+  // console.log("State : ", state)
 
-}
+  if(vType_options){
+    setFormData({...formData, vehicle_type : ""})
+  }
+
+},[formData.form_type])
 
 
 
 
+
+useEffect(()=>{
+  const {action} = params
+  if(action !== "submit"){
+    // const {form_type, fuel_type, liters_consumption, vehicle_age, vehicle_type, brgy_name} = state;
+    setFormData(state)
+  }
 },[searchParams])
 
 
 
 
-
-
-useEffect(()=>{
-
-    setVehicleOptions(formData.form_type === "residential" ? 
-        ["Car", "SUV", "Motorcycle"] : 
-      formData.form_type === "commercial" ? 
-        ["Jeep", "Tricycle", "Bus", "Van", "Taxi", "Truck"]
-      :undefined
-    )
-
-    
-},[formData.form_type])
 
 
 useEffect(()=>{
@@ -149,6 +151,7 @@ const clearForm = () => {
     vehicle_age : 0,
     fuel_type : "",
     liters_consumption : 0,
+    brgy_name : ""
   })
 }
 
@@ -238,7 +241,7 @@ const acceptUpdateHandler = () => {
 
 const submitValidation = () => {
     const {form_type, fuel_type, liters_consumption, vehicle_age, vehicle_type} = formData
-    if(form_type && fuel_type &&  liters_consumption && vehicle_age && vehicle_type && brgy){
+    if(form_type && fuel_type &&  liters_consumption && vehicle_age && vehicle_type && brgy?.address_name){
  
       setOpenDialogBox(true);
     } else {
@@ -248,9 +251,8 @@ const submitValidation = () => {
     }
 }
 
-
-
-
+// console.log("FormData ", formData)
+console.log("SELECTED VTYPE : ", formData.vehicle_type)
 
 
   return (
@@ -283,7 +285,7 @@ const submitValidation = () => {
                 className="w-full placeholder:opacity-100 focus:!border-t-gray-900 border-t-blue-gray-200"
               />
             </div> */}
-            <BrgyMenu disabled = {params.action === "view"} municipality_code= {user_info.municipality_code} setBrgys={setBrgy}/>
+            <BrgyMenu disabled = {params.action === "view"} municipality_code= {user_info.municipality_code} setBrgys={setBrgy} deafult_brgyName={state && state.brgy_name}/>
             
             <div>
               <Typography variant="h6" color="blue-gray">
@@ -322,44 +324,31 @@ const submitValidation = () => {
             </div>
 
 
-            <div>
-             
-              {
-                vehicleOptions ?
-                  <Select 
-                  color="gray" label="Vehicle Type"
-                  name='fuel_type'
+            <div className='h-20 flex flex-col gap-3'>
+              <Typography variant="h6" color="blue-gray">Vehicle Type</Typography>
+              {vehicleOptions && 
+                <select 
+                  className='w-full h-full rounded-md border-blue-gray-100 border-2'
+                  name = "vehicle_type"
+                  onChange={(event)=> handleChange({event, setFormStateData : setFormData})}
                   value={formData.vehicle_type}
-                  onChange={(value : any) => setFormData({...formData, vehicle_type : value})}
-                  disabled = {vehicleOptions === undefined || params.action === "view"}
+               
                   
+                
                 >
+                    <option value="" key = "default">--Please choose an option--</option>
                   {
                     
-                    vehicleOptions?.map((v_type, index) => (
-                      <Option key={index} value={v_type}>
-                        {v_type}
-                      </Option>
-                    ))
-                    
+                      vehicleOptions.map((v_type, index) => (
+                          <option value={v_type} key={index}  selected>
+                            {v_type}
+                          </option>
+                        ))
+                      
                   }
-  
-                  </Select>
-                  :null
+                </select>
               
               }
-              
-              
-            
-              {/* <Input
-                name='vehicle_type'
-                value = {formData.vehicle_type}
-                onChange={(event)=> handleChange({event, setFormStateData : setFormData})}
-                type='text'
-                size="lg"
-                placeholder="Tricycle, Motor, Jeep, etc."
-                className="w-full placeholder:opacity-100 focus:!border-t-gray-900 border-t-blue-gray-200"
-              /> */}
             </div>
             <div>
               <Typography variant="h6" color="blue-gray" className="mt-2">

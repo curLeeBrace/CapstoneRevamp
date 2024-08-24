@@ -2,9 +2,6 @@ import { Request, Response } from "express";
 import FuelFormSchema from "../../db_schema/FuelFormSchema";
 
 
-
-
-
 const getMobileCombustionNotification = async (req : Request, res : Response) => {
 
     //For Response
