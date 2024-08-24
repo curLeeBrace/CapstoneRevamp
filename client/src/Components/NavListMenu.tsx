@@ -27,7 +27,7 @@ function NavListMenu(props: NavListMenuProps) {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 
   const renderItems = navListMenuItems.map(({ title, href }) => (
-    <Link to={href} state={{testValue : "yow"}} key={title}>
+    <Link to={href} key={title}>
       <MenuItem>
         <Typography className="mb-1 text-sm">
           {title}

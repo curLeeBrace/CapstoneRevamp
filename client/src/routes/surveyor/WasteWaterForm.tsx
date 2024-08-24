@@ -5,9 +5,9 @@ import {
   Input,
   Typography,
 } from "@material-tailwind/react";
-import { useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import useUserInfo from "../../custom-hooks/useUserType";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AddressReturnDataType } from "../../custom-hooks/useFilterAddrress";
 import BrgyMenu from "../../custom-hooks/BrgyMenu";
 import useHandleChange from "../../custom-hooks/useHandleChange";
@@ -32,6 +32,7 @@ type wasteWaterFormTypes = {
   openPits_latrinesCat4 : number | undefined;
   riverDischargeCat1 : number | undefined;
   riverDischargeCat2 : number | undefined;
+  brgy_name : string;
 };
 
 
@@ -72,12 +73,15 @@ type Payload = {
 
 const WasteWaterForm = () => {
   const params = useParams();
+  const [searchParams] = useSearchParams();
+
   const user_info = useUserInfo();
   const handleChange = useHandleChange;
   const axiosPrivate = useAxiosPrivate();
   const [brgy, setBrgy] = useState<AddressReturnDataType>();
   const [formData, setFormData] = useState<wasteWaterFormTypes>({
     form_type :"residential",
+    brgy_name : "Anibong"
   } as wasteWaterFormTypes);
   const [isLoading, set_isLoading] = useState<boolean>(false);
   const [openDialogBox, setOpenDialogBox] = useState(false);
@@ -85,6 +89,40 @@ const WasteWaterForm = () => {
   const [alert_msg, setAlertMsg] = useState("");
 
 
+
+  
+  
+  useEffect(()=>{
+    const {action} = params
+    
+    if(action !== "submit"){
+      axiosPrivate.get('/forms/mobile-combustion/one-surveyed-data', {params : {
+        form_id : searchParams.get("form_id")
+      }})
+      .then(res => {
+
+        // const {
+        //   form_type,
+        //   septic_tanks,
+        //   openPits_latrines,
+        //   riverDischarge,
+        // } = res.data.survey_data;
+
+        // setFormData({
+           
+        // })
+
+
+        console.log("ONE FORM DATA : ", res.data);
+      })
+      .catch((err) => console.log(err));
+    
+    }
+    
+    },[searchParams])
+
+
+    
 
   const submitValidation = () => {
     if(!formData.openPits_latrinesCat1 ||!formData.openPits_latrinesCat2 || !formData.openPits_latrinesCat3 || !formData.openPits_latrinesCat4
@@ -108,7 +146,8 @@ const WasteWaterForm = () => {
       openPits_latrinesCat4 : undefined,
       riverDischargeCat1 : undefined,
       riverDischargeCat2 : undefined,
-      septic_tanks : undefined
+      septic_tanks : undefined,
+      brgy_name : "Anibong"
     })
   }
 
@@ -209,6 +248,7 @@ const WasteWaterForm = () => {
             disabled={params.action === "view"}
             municipality_code={user_info.municipality_code}
             setBrgys={setBrgy}
+            deafult_brgyName={formData.brgy_name}
           />
         </div>
 
