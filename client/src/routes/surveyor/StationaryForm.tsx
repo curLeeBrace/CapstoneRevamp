@@ -333,9 +333,7 @@ console.log("SELECTED VTYPE : ", formData.vehicle_type)
                   onChange={(event)=> handleChange({event, setFormStateData : setFormData})}
                   value={formData.vehicle_type}
                   disabled = {params.action === "view"}
-               
-                  
-                
+
                 >
                     <option value="" key = "default">--Please choose an option--</option>
                   {

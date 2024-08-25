@@ -82,12 +82,15 @@ const updateMobileCombustionData = async (req: Request, res: Response) => {
 const acceptUpdateMobileCombustionData = async (req: Request, res: Response) => {
 
     const {form_id} = req.body;
+    const {form_category} = req.params;
 
     try {
         
-        const mc_data = await FuelFormSchema.findByIdAndUpdate(form_id, {"survey_data.status" : "2"}).exec()
+        const form_data = form_category === "mobile-combustion" ?
+            await FuelFormSchema.findByIdAndUpdate(form_id, {"survey_data.status" : "2"}).exec()
+        :   await WasteWaterFormShema.findByIdAndUpdate(form_id, {"survey_data.status" : "2"}).exec()
 
-        if(!mc_data) return res.sendStatus(204);
+        if(!form_data) return res.sendStatus(204);
     
         return res.status(200).send("Request Update Accepted!!");
     } catch (error) {
