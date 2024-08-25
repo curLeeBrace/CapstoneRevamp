@@ -10,7 +10,7 @@ router.get('/fuel/audit', authenticate_token, fetchAuditLogs);
 
 router.get('/:form_category/surveyed-data', authenticate_token, formData);
 router.get('/:form_category/one-surveyed-data', authenticate_token,  oneFormData);
-router.put('/mobile-combustion/update-surveyed-data/:form_id', authenticate_token, updateMobileCombustionData);
+router.put('/:form_category/update-surveyed-data/:form_id', authenticate_token, updateMobileCombustionData);
 router.put('/mobile-combustion/accept-update', authenticate_token,  acceptUpdateMobileCombustionData);
 
 

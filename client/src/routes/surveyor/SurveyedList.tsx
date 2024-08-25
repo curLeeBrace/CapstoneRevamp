@@ -89,7 +89,7 @@ const SurveyedList = () => {
         const dateTime = new Date(data.dateTime_created).toLocaleDateString() + " " + new Date(data.dateTime_created).toLocaleTimeString();
         const LinkComponent = (
           <Link
-            to={`/surveyor/forms/update/mobile-combustion`}
+            to={`/surveyor/forms/update/mobile-combustion?form_id=${data.form_id}`}
             state={{
               brgy_name,
               vehicle_type,
