@@ -100,7 +100,7 @@ const NotificationBell = () => {
                             />
                             </div>
                             <Link className="h-full gap-1 flex flex-col" 
-                              to = {`/surveyor/forms/view/mobile-combustion?form_id=${notiff.form_id}`}
+                              to = {`/surveyor/forms/view/waste-water?form_id=${notiff.form_id}`}
                               state={notiff.form_category === "mobile-combustion"? 
                                   {
                                     brgy_name : notiff.survey_data.brgy_name,
@@ -111,7 +111,16 @@ const NotificationBell = () => {
                                     form_type : notiff.survey_data.form_type
                                   } : 
                                   {
-                                      
+                                    brgy_name : notiff.survey_data.brgy_name,
+                                    form_type : notiff.survey_data.form_type,
+                                    septic_tanks : notiff.survey_data.septic_tanks,
+                                    openPits_latrinesCat1 : notiff.survey_data.openPits_latrines.cat1,
+                                    openPits_latrinesCat2 : notiff.survey_data.openPits_latrines.cat2,
+                                    openPits_latrinesCat3 : notiff.survey_data.openPits_latrines.cat3,
+                                    openPits_latrinesCat4 : notiff.survey_data.openPits_latrines.cat4,
+                                    riverDischargeCat1 :  notiff.survey_data.riverDischarge.cat1,
+                                    riverDischargeCat2 :  notiff.survey_data.riverDischarge.cat2,
+                                    
                                   }
                               }
                             >

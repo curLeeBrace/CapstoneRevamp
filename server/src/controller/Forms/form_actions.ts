@@ -10,7 +10,7 @@ const insertFormData = async (req: Request, res: Response) => {
     try {
         // Insert the fuel form data
         console.log("Request body:", req.body);
-        const insert = form_category === "fuel" ? await FuelFormSchema.create(req.body) :  await WasteWaterFormShema.create(req.body)
+        const insert = form_category === "mobile-combustion" ? await FuelFormSchema.create(req.body) :  await WasteWaterFormShema.create(req.body)
 
         if (insert) {
             // Create the audit log

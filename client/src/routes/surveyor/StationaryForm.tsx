@@ -1,14 +1,14 @@
 import {useEffect, useState } from 'react';
-import { Card, Input, Checkbox, Button, Typography, Select, Option} from "@material-tailwind/react";
+import { Card, Input, Checkbox, Button, Typography} from "@material-tailwind/react";
 import useHandleChange from '../../custom-hooks/useHandleChange';
 import AlertBox from '../../Components/Forms/AlertBox';
 import DialogBox from "../../Components/DialogBox";
 import {useLocation, useParams, useSearchParams } from 'react-router-dom';
 import BrgyMenu from '../../custom-hooks/BrgyMenu';
 import useUserInfo from '../../custom-hooks/useUserType';
-import { AddressReturnDataType } from '../../custom-hooks/useFilterAddrress';
+import { AddressReturnDataType} from '../../custom-hooks/useFilterAddrress';
 import useAxiosPrivate from '../../custom-hooks/auth_hooks/useAxiosPrivate';
-
+import useSurveyFormActions from '../../custom-hooks/useSurveyFormActions';
 
 type formDataTypes = {
   form_type : string,
@@ -52,6 +52,16 @@ const {state} = useLocation();
 
 
 
+const {updateForm, acceptFormUpdate, submitForm} = useSurveyFormActions();
+
+
+
+
+
+
+
+
+
 
 
 
@@ -81,17 +91,14 @@ useEffect(()=>{
 
 
 
-
-
 useEffect(()=>{
   const {action} = params
   if(action !== "submit"){
-    // const {form_type, fuel_type, liters_consumption, vehicle_age, vehicle_type, brgy_name} = state;
     setFormData(state)
+  } else {
+    clearForm()
   }
 },[searchParams])
-
-
 
 
 
@@ -112,10 +119,6 @@ useEffect(()=>{
   }
 
 },[formData?.vehicle_age, formData?.liters_consumption])
-
-
-
-
 
 
 
@@ -158,26 +161,26 @@ const clearForm = () => {
 
 
 const submitHandler = () => {
-
   const payload = preparePayLoad();
-   setOpenDialogBox(false)
-    set_isLoading(true);
-    axiosPivate.post('/forms/fuel/insert', payload)
-    .then(res => {
-        if(res.status === 201){
-          setOpenAlert(true);
-          setAlertMsg("Sucsessfully Submitted!");
-          clearForm();
-        }
-
-      set_isLoading(false);
-    })
-    .catch(err => {
-      console.log(err)
-      set_isLoading(false);
-      setOpenAlert(true);
-      setAlertMsg("Server Error!");
-    })
+  submitForm({payload, form_category : "mobile-combustion"})
+  .then(res => {
+          if(res.status === 201){
+            setOpenAlert(true);
+            setAlertMsg("Sucsessfully Submitted!");
+            clearForm();
+          }
+  
+        set_isLoading(false);
+      })
+      .catch(err => {
+        console.log(err)
+        set_isLoading(false);
+        setOpenAlert(true);
+        setAlertMsg("Server Error!");
+  })
+  .finally(()=>{
+    setOpenDialogBox(false)
+  })
 
 }
 
@@ -185,20 +188,16 @@ const submitHandler = () => {
 
 const updateHandler = () => {
   const payload = preparePayLoad();
-  payload.survey_data.status  = "1";
   const form_id = searchParams.get("form_id");
-  setOpenDialogBox(false)
-  set_isLoading(true);
-  axiosPrivate.put(`/forms/mobile-combustion/update-surveyed-data/${form_id}`, payload)
-  .then((res) => {
-
+  updateForm({payload, form_id : form_id as string, form_category : "mobile-combustion"})
+  .then(res => {
     if(res.status === 204){
-      alert("can't request update because form data not found!");
-    } else if(res.status === 200){
-      setOpenAlert(true);
-      setAlertMsg(res.data);
-    }
-   
+          alert("can't request update because form data not found!");
+        } else if(res.status === 200){
+          setOpenAlert(true);
+          setAlertMsg(res.data);
+          setOpenDialogBox(false)
+        }
   })
   .catch(err => {
     console.log(err)
@@ -206,17 +205,19 @@ const updateHandler = () => {
     setOpenAlert(true);
     setAlertMsg("Server Error!");
   })
-  .finally(()=>set_isLoading(false))
-  
+  .finally(()=>{
+    set_isLoading(false)
+    setOpenDialogBox(false)
+    
+  })
+
 }
 
 
 const acceptUpdateHandler = () => {
   const form_id = searchParams.get("form_id");
-  setOpenDialogBox(false)
-  axiosPrivate.put(`/forms/mobile-combustion/accept-update`, {form_id})
+  acceptFormUpdate({form_id : form_id as string, form_category : "mobile-combustion"})
   .then((res) => {
-
     if(res.status === 204){
       alert("can't accep request update because form data not found!");
     } else if(res.status === 200){
@@ -231,7 +232,11 @@ const acceptUpdateHandler = () => {
     setOpenAlert(true);
     setAlertMsg("Server Error!");
   })
-  .finally(()=>set_isLoading(false))
+  .finally(()=>{
+    set_isLoading(false)
+    setOpenDialogBox(false)
+  })
+
 }
 
 
@@ -275,16 +280,6 @@ console.log("SELECTED VTYPE : ", formData.vehicle_type)
         <div className="mt-8 grid grid-cols-1 gap-6">
           {/* Column 1 */}
           <div className="flex flex-col gap-6">
-            {/* <div>
-              <Typography variant="h6" color="blue-gray">
-                Data Source
-              </Typography>
-              <Input
-                size="lg"
-                placeholder="example: Rob Busto"
-                className="w-full placeholder:opacity-100 focus:!border-t-gray-900 border-t-blue-gray-200"
-              />
-            </div> */}
             <BrgyMenu disabled = {params.action === "view"} municipality_code= {user_info.municipality_code} setBrgys={setBrgy} deafult_brgyName={state && state.brgy_name}/>
             
             <div>
