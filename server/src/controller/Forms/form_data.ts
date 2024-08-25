@@ -36,7 +36,7 @@ const formData = async (req:Request, res:Response) => {
     
         return res.status(200).send(response);
     } catch (error) {
-        console.log("mc_data : ", error);
+        console.log("formData : ", error);
         return res.sendStatus(500);
     }
 }

@@ -332,6 +332,7 @@ console.log("SELECTED VTYPE : ", formData.vehicle_type)
                   name = "vehicle_type"
                   onChange={(event)=> handleChange({event, setFormStateData : setFormData})}
                   value={formData.vehicle_type}
+                  disabled = {params.action === "view"}
                
                   
                 
