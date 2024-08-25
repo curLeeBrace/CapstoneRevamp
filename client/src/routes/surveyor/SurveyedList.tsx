@@ -132,12 +132,22 @@ const SurveyedList = () => {
         const LinkComponent = (
           <Link
             to={`/surveyor/forms/update/waste-water?form_id=${form_id}`}
+            state={{
+              brgy_name,
+              form_type,
+              septic_tanks,
+              openPits_latrinesCat1 : openPits_latrines.cat1,
+              openPits_latrinesCat2 :openPits_latrines.cat2,
+              openPits_latrinesCat3 : openPits_latrines.cat3,
+              openPits_latrinesCat4 : openPits_latrines.cat4,
+              riverDischargeCat1 : riverDischarge.cat1,
+              riverDischargeCat2 : riverDischarge.cat2,
+              
+            }}
           >
             <div className="text-green-700">Update</div>
           </Link>
         );
-
-
         return [
           brgy_name,
           septic_tanks,

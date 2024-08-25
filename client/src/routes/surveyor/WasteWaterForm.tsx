@@ -5,7 +5,7 @@ import {
   Input,
   Typography,
 } from "@material-tailwind/react";
-import { useParams, useSearchParams } from "react-router-dom";
+import { useLocation, useParams, useSearchParams } from "react-router-dom";
 import useUserInfo from "../../custom-hooks/useUserType";
 import { useEffect, useState } from "react";
 import { AddressReturnDataType } from "../../custom-hooks/useFilterAddrress";
@@ -15,7 +15,7 @@ import { InformationCircleIcon } from "@heroicons/react/24/solid";
 import DialogBox from "../../Components/DialogBox";
 import AlertBox from "../../Components/Forms/AlertBox";
 import useAxiosPrivate from "../../custom-hooks/auth_hooks/useAxiosPrivate";
-
+import useSurveyFormActions from "../../custom-hooks/useSurveyFormActions";
 
 
 
@@ -32,7 +32,6 @@ type wasteWaterFormTypes = {
   openPits_latrinesCat4 : number | undefined;
   riverDischargeCat1 : number | undefined;
   riverDischargeCat2 : number | undefined;
-  brgy_name : string;
 };
 
 
@@ -74,6 +73,7 @@ type Payload = {
 const WasteWaterForm = () => {
   const params = useParams();
   const [searchParams] = useSearchParams();
+  const {state} = useLocation();
 
   const user_info = useUserInfo();
   const handleChange = useHandleChange;
@@ -81,7 +81,6 @@ const WasteWaterForm = () => {
   const [brgy, setBrgy] = useState<AddressReturnDataType>();
   const [formData, setFormData] = useState<wasteWaterFormTypes>({
     form_type :"residential",
-    brgy_name : "Anibong"
   } as wasteWaterFormTypes);
   const [isLoading, set_isLoading] = useState<boolean>(false);
   const [openDialogBox, setOpenDialogBox] = useState(false);
@@ -90,43 +89,24 @@ const WasteWaterForm = () => {
 
 
 
-  
-  
+
+  const {updateForm, acceptFormUpdate, submitForm} = useSurveyFormActions()
+
+ 
   useEffect(()=>{
     const {action} = params
-    
     if(action !== "submit"){
-      axiosPrivate.get('/forms/mobile-combustion/one-surveyed-data', {params : {
-        form_id : searchParams.get("form_id")
-      }})
-      .then(res => {
-
-        // const {
-        //   form_type,
-        //   septic_tanks,
-        //   openPits_latrines,
-        //   riverDischarge,
-        // } = res.data.survey_data;
-
-        // setFormData({
-           
-        // })
-
-
-        console.log("ONE FORM DATA : ", res.data);
-      })
-      .catch((err) => console.log(err));
-    
+      setFormData(state)
+    } else {
+      clearForm()
     }
-    
-    },[searchParams])
+  },[searchParams])
 
-
-    
 
   const submitValidation = () => {
-    if(!formData.openPits_latrinesCat1 ||!formData.openPits_latrinesCat2 || !formData.openPits_latrinesCat3 || !formData.openPits_latrinesCat4
-      ||!formData.riverDischargeCat1 || !formData.openPits_latrinesCat2 || !formData.septic_tanks
+    console.log("Submit Form Data : ", formData)
+    if(formData.openPits_latrinesCat1 === undefined ||formData.openPits_latrinesCat2 === undefined || formData.openPits_latrinesCat3 === undefined || formData.openPits_latrinesCat4 === undefined
+      ||formData.riverDischargeCat1 === undefined || formData.openPits_latrinesCat2 === undefined || formData.septic_tanks === undefined
     ){
       set_isLoading(false);
       setOpenAlert(true);
@@ -137,50 +117,106 @@ const WasteWaterForm = () => {
     }
   }
 
+
+
+  
   const clearForm = () => {
     setFormData({
       form_type : "residential",
-      openPits_latrinesCat1 : undefined,
-      openPits_latrinesCat2 : undefined,
-      openPits_latrinesCat3 : undefined,
-      openPits_latrinesCat4 : undefined,
-      riverDischargeCat1 : undefined,
-      riverDischargeCat2 : undefined,
-      septic_tanks : undefined,
-      brgy_name : "Anibong"
+      openPits_latrinesCat1 : 0,
+      openPits_latrinesCat2 : 0,
+      openPits_latrinesCat3 : 0,
+      openPits_latrinesCat4 : 0,
+      riverDischargeCat1 : 0,
+      riverDischargeCat2 : 0,
+      septic_tanks : 0,
     })
   }
 
   const submitHandler = () => {
     const payload = preparePayLoad();
-     setOpenDialogBox(false)
-      set_isLoading(true);
-      axiosPrivate  .post('/forms/waste-water/insert', payload)
-      .then(res => {
-          if(res.status === 201){
-            setOpenAlert(true);
-            setAlertMsg("Sucsessfully Submitted!");
-            clearForm();
-          }
+    submitForm({payload, form_category : "waste-water"})
+    .then(res => {
+            if(res.status === 201){
+              setOpenAlert(true);
+              setAlertMsg("Sucsessfully Submitted!");
+              clearForm();
+            }
+    
+          set_isLoading(false);
+        })
+        .catch(err => {
+          console.log(err)
+          set_isLoading(false);
+          setOpenAlert(true);
+          setAlertMsg("Server Error!");
+    })
+    .finally(()=>{
+      setOpenDialogBox(false)
+    })
   
-        set_isLoading(false);
-      })
-      .catch(err => {
-        console.log(err)
-        set_isLoading(false);
-        setOpenAlert(true);
-        setAlertMsg("Server Error!");
-      })
   }
+
+
+
+
 
 
   const updateHandler = () => {
-
-
+    const payload = preparePayLoad();
+    const form_id = searchParams.get("form_id");
+    updateForm({payload, form_id : form_id as string, form_category : "waste-water"})
+    .then(res => {
+      if(res.status === 204){
+            alert("can't request update because form data not found!");
+          } else if(res.status === 200){
+            setOpenAlert(true);
+            setAlertMsg(res.data);
+            setOpenDialogBox(false)
+          }
+    })
+    .catch(err => {
+      console.log(err)
+      set_isLoading(false);
+      setOpenAlert(true);
+      setAlertMsg("Server Error!");
+    })
+    .finally(()=>set_isLoading(false))
+  
   }
-  const acceptUpdateHandler = () => {
 
-  }
+
+// console.log("Form Data : ", formData)
+
+
+
+  
+const acceptUpdateHandler = () => {
+  const form_id = searchParams.get("form_id");
+  acceptFormUpdate({form_id : form_id as string, form_category : "waste-water"})
+  .then((res) => {
+    if(res.status === 204){
+      alert("can't accep request update because form data not found!");
+    } else if(res.status === 200){
+      setOpenAlert(true);
+      setAlertMsg(res.data);
+      
+    }
+   
+  })
+  .catch(err => {
+    console.log(err)
+    set_isLoading(false);
+    setOpenAlert(true);
+    setAlertMsg("Server Error!");
+  })
+  .finally(()=>{
+    set_isLoading(false)
+    setOpenDialogBox(false)
+
+  })
+
+}
 
 
 
@@ -248,7 +284,7 @@ const WasteWaterForm = () => {
             disabled={params.action === "view"}
             municipality_code={user_info.municipality_code}
             setBrgys={setBrgy}
-            deafult_brgyName={formData.brgy_name}
+            deafult_brgyName={state && state.brgy_name}
           />
         </div>
 
