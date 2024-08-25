@@ -77,7 +77,6 @@ const WasteWaterForm = () => {
 
   const user_info = useUserInfo();
   const handleChange = useHandleChange;
-  const axiosPrivate = useAxiosPrivate();
   const [brgy, setBrgy] = useState<AddressReturnDataType>();
   const [formData, setFormData] = useState<wasteWaterFormTypes>({
     form_type :"residential",

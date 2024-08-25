@@ -34,12 +34,11 @@ const [formData, setFormData] = useState<formDataTypes>({
   form_type : "residential",
 } as formDataTypes);
 
-const axiosPrivate = useAxiosPrivate();
+
 const [vehicleOptions, setVehicleOptions] = useState<string[]>();
 const [isLoading, set_isLoading] = useState<boolean>(false);
 const [openAlert, setOpenAlert] = useState<boolean>(false);
 const [aler_msg, setAlertMsg] = useState<string>("");
-const axiosPivate = useAxiosPrivate();
 const [openDialogBox, setOpenDialogBox] = useState(false);
 const user_info = useUserInfo();
 const [brgy, setBrgy] = useState<AddressReturnDataType>();
