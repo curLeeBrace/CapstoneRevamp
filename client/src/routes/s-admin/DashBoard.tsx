@@ -16,7 +16,8 @@ type Emission = {
   n2oe : number;
   ghge : number;
 }
-export type TableData = {
+
+export type  MobileCombustionTableData = {
   loc_name : String;
   emission : Emission;
 }
@@ -24,8 +25,11 @@ export type TableData = {
 type DashBoardData = {
   total_surveryor : number;
   total_LGU_admins : number;
+  table_data: {
+      mobileCombustionGHGe : MobileCombustionTableData[],
+      wasteWaterGHGe : number[]
+  }
   total_ghge : number;
-  table_data : TableData[]
 
 }
 
@@ -55,10 +59,18 @@ function DashBoard() {
   const chartConfig = {
     series: [
       {
-        name: "GHGe",
-        data: dashboard_data ? dashboard_data.table_data.map((tb_data) => ({
+        name: "Mobile-Combustion GHGe",
+        data: dashboard_data ? dashboard_data.table_data.mobileCombustionGHGe.map((tb_data) => ({
           x: tb_data.loc_name,
           y: tb_data.emission.ghge.toFixed(2)
+        })) : [{ x: null, y: null }],
+        
+      },
+      {
+        name: "Waste-Water GHGe",
+        data: dashboard_data ? dashboard_data.table_data.mobileCombustionGHGe.map((tb_data, index) => ({
+          x: tb_data.loc_name,
+          y: dashboard_data.table_data.wasteWaterGHGe[index].toFixed(2)
         })) : [{ x: null, y: null }],
         
       },
@@ -76,7 +88,7 @@ function DashBoard() {
         },
         foreColor: '#101010',
       },
-      colors : ["#248003"],
+      colors : ["#248003", "#2942b3"],
       plotOptions: {
         bar: {
           columnWidth: '80%',

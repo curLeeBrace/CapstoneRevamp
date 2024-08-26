@@ -4,7 +4,7 @@ import municipality_json from "../../../ph-json/city.json";
 import brgy_json from "../../../ph-json/barangay.json";
 
 import AccountSchema from "../../db_schema/AccountSchema";
-
+import getWasteWaterGHGeData from "../../../custom_funtions/wasteWaterActions";
 
 
 interface Municipality {
@@ -31,7 +31,7 @@ export type Emission = {
     ghge : number;
 }
 
-type TableData = {
+export type MobileCombustionTableData = {
     loc_name : String;
     loc_code : String;
     emission : Emission;
@@ -41,7 +41,10 @@ type TableData = {
 type DashBoardData = {
     total_surveryor : number;
     total_LGU_admins : number;
-    table_data : TableData[]
+    table_data: {
+        mobileCombustionGHGe : MobileCombustionTableData[],
+        wasteWaterGHGe : number[]
+    }
     total_ghge : number;
 
  }
@@ -52,9 +55,9 @@ type DashBoardData = {
     const {province_code, user_type, municipality_code} = req.params;
 
     try {
+
             let total_ghge = 0;
 
-          
             const accounts = user_type === "s-admin" ? await AccountSchema.find({
                 'lgu_municipality.province_code' : province_code
             }) : await AccountSchema.find({'lgu_municipality.province_code' : province_code, 'lgu_municipality.municipality_code' : municipality_code});
@@ -77,8 +80,24 @@ type DashBoardData = {
                     $or : [{"survey_data.status" : "0"}, {"survey_data.status" : "2"}]
                 }
 
-            const mobileComstion_data =  await get_mobileComstion_data(parent_code, user_type, query);  
+            
 
+
+            // to get availbale brgrys or minicipalities
+            let locations : any[];
+            if(user_type === "s-admin"){
+
+                locations = municipality_json.filter((municipality) => municipality.province_code === parent_code) 
+            } else {
+                const brgys : any[] = brgy_json as any[]
+                locations = brgys.filter((brgy : any) => brgy.city_code === parent_code)
+            }
+            
+
+
+            
+            const mobileComstion_data =  await get_mobileComstion_data(user_type, query, locations);  
+            const wasteWaterGHGe = await getWasteWaterGHGeData(user_type, query, locations);
 
 
 
@@ -89,14 +108,22 @@ type DashBoardData = {
             })
 
 
+            wasteWaterGHGe.forEach(ghge => {
+                total_ghge += ghge;
+            })
 
 
 
-    
+
+
+            
             const response : DashBoardData = {
                     total_LGU_admins : lgu_admin.length,
                     total_surveryor : surveyor.length,
-                    table_data: mobileComstion_data,
+                    table_data: {
+                        mobileCombustionGHGe : mobileComstion_data,
+                        wasteWaterGHGe : wasteWaterGHGe
+                    },
                     total_ghge,
             }
     
@@ -118,21 +145,18 @@ type DashBoardData = {
 
 
 
- const get_mobileComstion_data = async (parent_code : string, user_type:string , query : {}) : Promise<TableData[]> => {
-
-    const table_data : TableData[] = [];
-
-    let locations : any[];
 
 
 
-    if(user_type === "s-admin"){
 
-        locations = municipality_json.filter((municipality) => municipality.province_code === parent_code) 
-    } else {
-        const brgys : any[] = brgy_json as any[]
-        locations = brgys.filter((brgy : any) => brgy.city_code === parent_code)
-    }
+
+ // This is mobile combustion function
+
+ const get_mobileComstion_data = async (user_type:string , query : {}, locations : any[]) : Promise<MobileCombustionTableData[]> => {
+
+    const table_data : MobileCombustionTableData[] = [];
+
+    
     
 
 
@@ -156,10 +180,12 @@ type DashBoardData = {
         let tb_ghge = 0;
 
 
+        // iterate the form data
         form_data.forEach(data => {
 
-
+            // check use type
             if(user_type === "s-admin"){
+                //check if root_loc_code === data.surveyor_info.municipality_code
                 if(data.surveyor_info.municipality_code === root_loc_code)  {
                     //compute the municipality emmisions
                     const single_form_emmmsion = get_emission(data.survey_data.fuel_type as string, data.survey_data.liters_consumption);
@@ -217,7 +243,7 @@ type DashBoardData = {
 
 
 
-
+ // This is mobile combustion function
  const get_emission = (fuel_type : string,  liters_consumption: number) : Emission  => {
 
      /*
