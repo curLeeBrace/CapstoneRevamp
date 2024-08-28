@@ -1,22 +1,30 @@
 import Municipality from "../../custom-hooks/Municipality";
 import { useState, useEffect, Fragment } from "react";
 import { AddressReturnDataType } from "../../custom-hooks/useFilterAddrress";
-import { Avatar, Checkbox, Typography } from "@material-tailwind/react";
-import useUserInfo from "../../custom-hooks/useUserType";
+import { Avatar, Typography } from "@material-tailwind/react";
 import Skeleton from "../Skeleton";
 import useAxiosPrivate from "../../custom-hooks/auth_hooks/useAxiosPrivate";
 
 
+
+
+
+const TB_HEADER = ["Profile", "Name",  "Municipality","MobileCombustion Survey", "WasteWater Survey"]
+
 const SurveyorInfo = () => {
   const [address, setAddress] = useState<AddressReturnDataType>();
-  const [get_all, setGetAll] = useState(true);
   const [accs, setAccs] = useState<any[]>();
-  const userInfo = useUserInfo();
+
   const [isLoading, setIsLoading] = useState(false);
   const axiosPrivate = useAxiosPrivate();
   
   useEffect(() => {
-    if(address) setGetAll(false)
+    // if(address) setGetAll(false)
+    let get_all = false;
+
+    if(!address || address == null){
+      get_all = true
+    }
     
     setIsLoading(true)
     axiosPrivate
@@ -28,9 +36,9 @@ const SurveyorInfo = () => {
       .catch((err) => console.log(err))
       .finally(()=>setIsLoading(false))
 
-  }, [address, get_all]);
+  }, [address]);
 
-
+  console.log("Address : ", address);
 
  
   return (
@@ -43,34 +51,27 @@ const SurveyorInfo = () => {
       </Typography>
       <div className="flex gap-5 sticky top-0 z-10">
         <div>
-          <Municipality setAddress={setAddress} />
+          <Municipality setAddress={setAddress}/>
         </div>
-
-        {
-            userInfo.user_type === "s-admin" && 
-                <div>
-                    <Checkbox
-                        label="List All"
-                        checked={get_all}
-                        onClick={() => !address && setGetAll(!get_all)}
-                    />
-                </div>
-        }
         
       </div>
       {
         !isLoading ?
-        <div className="overflow-y-auto bg-gray-500/10 h-full px-5 rounded-md">
-            <div className={`grid grid-flow-col py-2 grid-cols-4 gap-5`}>
-                <div className="text-nowrap overflow-hidden">Profile</div>
-                <div className="text-nowrap overflow-hidden">Name</div>
-                <div className="text-nowrap overflow-hidden">Municipality</div>
-                <div className="text-nowrap overflow-hidden">Total MC Survey</div>
+        <div className="overflow-auto bg-gray-500/10 h-full px-5 rounded-md">
+            <div className={`grid grid-flow-col py-2 grid-cols-4 gap-5 min-w-96`}>
+                {
+                  TB_HEADER.map((head, index) => (
+                    <div className="text-wrap" key={index}>
+                        {head}
+                    </div>
+                  ))
+                }
+  
             </div>
             {accs ? accs.map((acc, index) => (
                     <Fragment key={index}>
-                    <div className="shadow-md bg-white rounded-md p-2 my-2">
-                        <div className={`grid grid-flow-col items-center grid-cols-4 gap-5`}>
+                    <div className="shadow-md bg-white rounded-md p-2 my-2 min-w-96">
+                        <div className={`grid grid-flow-col items-center grid-cols-5 gap-5`}>
                           <Avatar
                               variant="circular"
                               size="md"
@@ -79,7 +80,8 @@ const SurveyorInfo = () => {
                           />
                           <div className="text-black text-nowrap overflow-hidden">{acc.full_name}</div>
                           <div className="text-black text-nowrap overflow-hidden">{acc.municipality_name}</div>
-                          <div className="text-black text-nowrap overflow-hidden">{acc.survey_count}</div>
+                          <div className="text-black text-nowrap overflow-hidden text-center">{acc.mobileCombustionSurveyCount}</div>
+                          <div className="text-black text-nowrap overflow-hidden text-center">{acc.wasteWaterSurveyCount}</div>
                         </div>
                     </div>
                     </Fragment>

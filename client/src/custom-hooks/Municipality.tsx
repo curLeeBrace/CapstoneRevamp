@@ -5,14 +5,15 @@ import useUserInfo from "./useUserType";
 
 interface MunicipalityProps {
   setAddress : React.SetStateAction<any>;
+  deafult_municipalityName? : string;
   disabled? : boolean
 }
 
-const Municipality = ({setAddress, disabled}:MunicipalityProps) => {
+const Municipality = ({setAddress, disabled, deafult_municipalityName}:MunicipalityProps) => {
   const [city_opt, set_city_opt] = useState<string[]>();
   const filterADddress = useFilterAddress;
   const userInfo = useUserInfo();
-  const [selectedMunicipality, setSelectedMunicipality] = useState<string>();
+  const [selectedMunicipality, setSelectedMunicipality] = useState<string|undefined>(deafult_municipalityName);
 
   useEffect(() => {
     
@@ -22,13 +23,13 @@ const Municipality = ({setAddress, disabled}:MunicipalityProps) => {
           const address = filterADddress({
             address_type: "mucipality",
           }) as AddressReturnDataType[];
-          setSelectedMunicipality(address[0].address_name)
+          // setSelectedMunicipality(address[0].address_name)
           set_city_opt(address.map((addr) => addr.address_name));
-          setAddress({
-            address_name : address[0].address_name,
-            address_code : address[0].address_code,
-            parent_code  : address[0].parent_code
-          })
+          // setAddress({
+          //   address_name : address[0].address_name,
+          //   address_code : address[0].address_code,
+          //   parent_code  : address[0].parent_code
+          // })
       } else {
         setAddress({
           address_name : userInfo.municipality_name,
@@ -48,10 +49,11 @@ const Municipality = ({setAddress, disabled}:MunicipalityProps) => {
     <>
       {city_opt && userInfo.user_type !== "lgu_admin" ? (
         <Select
+          label="Choose Municipality"
           disabled = {disabled}
           value={selectedMunicipality}
           onChange={(value) => {
-            
+          
             value && setSelectedMunicipality(value);
             let lgu_municipality: AddressReturnDataType = {} as AddressReturnDataType;
 
