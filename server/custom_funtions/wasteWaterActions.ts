@@ -45,7 +45,7 @@ import WasteWaterFormSchema from '../src/db_schema/WasteWaterFormShema'
 
 
 
-interface PopulationUsingTheSystems {
+export interface PopulationUsingTheSystems {
     septic_tanks : number
     openPits_latrines : {
         cat1 : number;
@@ -60,6 +60,12 @@ interface PopulationUsingTheSystems {
 }
 
 
+interface WasteWaterDataPerSurvey{
+    populationUsingTheSystems : PopulationUsingTheSystems;
+    wasteWaterGHGe : number;
+    surveyor : string;
+    dateTime: Date
+}
 
 
 
@@ -68,9 +74,9 @@ interface PopulationUsingTheSystems {
 
 
 
-const getWasteWaterGHGeData= async (user_type:string , query : {}, locations : any[]) : Promise<number[]>  =>{
+const getWasteWaterGHGeSum = async (user_type:string , query : {}, locations : any[]) : Promise<number[]>  =>{
 
-    let tb_data : number[]= [];
+    let wasteWaterGHGes : number[]= [];
     const wasteWaterFormDatas = await WasteWaterFormSchema.find(query);
 
     locations.forEach((location)=> {
@@ -84,26 +90,79 @@ const getWasteWaterGHGeData= async (user_type:string , query : {}, locations : a
 
             if(user_type === "s-admin"){
                 if(wasteWaterFormData.surveyor_info.municipality_code === root_loc_code){
-                    wasteWaterGHGe = prepateWasteWaterGHGe({septic_tanks, openPits_latrines, riverDischarge}, surveyType)
+                    wasteWaterGHGe += prepateWasteWaterGHGe({septic_tanks, openPits_latrines, riverDischarge}, surveyType)
 
                 }
             } else {
                 if(wasteWaterFormData.survey_data.brgy_code === root_loc_code){
-                    wasteWaterGHGe = prepateWasteWaterGHGe({septic_tanks, openPits_latrines, riverDischarge}, surveyType)
+                    wasteWaterGHGe += prepateWasteWaterGHGe({septic_tanks, openPits_latrines, riverDischarge}, surveyType)
                 }   
             }
         })
 
-        tb_data.push(wasteWaterGHGe);
+        wasteWaterGHGes.push(wasteWaterGHGe);
 
 
     })
 
 
-    return tb_data
-    
+    return wasteWaterGHGes
 
 }
+
+
+
+export const getWasteWaterData_perSurvey = async (user_type:string , query : {}) : Promise<WasteWaterDataPerSurvey[]> => {
+
+    let wasteWaterDataPerSurvey : WasteWaterDataPerSurvey [] = []
+    const wasteWaterFormDatas = await WasteWaterFormSchema.find(query);
+
+    wasteWaterDataPerSurvey = wasteWaterFormDatas.map(data => {
+
+        const {openPits_latrines, riverDischarge, septic_tanks, form_type} = data.survey_data
+        const wasteWaterGHGe = prepateWasteWaterGHGe({septic_tanks, openPits_latrines, riverDischarge}, form_type)
+        // const wasteWaterGHGe = 
+        return {
+            populationUsingTheSystems : {
+                openPits_latrines,
+                riverDischarge,
+                septic_tanks
+            },
+            wasteWaterGHGe,
+            dateTime : data.dateTime_created,
+            surveyor : data.surveyor_info.full_name
+            
+        }
+    })
+
+
+    return wasteWaterDataPerSurvey
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -119,16 +178,6 @@ const prepateWasteWaterGHGe = (populations : PopulationUsingTheSystems, surveyTy
     
 
 }
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -244,7 +293,7 @@ return chr4Created
 
 
 
-export default getWasteWaterGHGeData
+export default getWasteWaterGHGeSum
 
 
 

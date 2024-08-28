@@ -10,7 +10,7 @@ import SimpleCard from "../../Components/Dashboard/SimpleCard";
 import { TabsDefault} from "../../Components/Tabs";
 import { Button } from '@material-tailwind/react';
 import useAxiosPrivate from "../../custom-hooks/auth_hooks/useAxiosPrivate";
-import MC_SurveyData from "../MC_SurveyData";
+import SurveyData from "../SurveyData";
 import FilterComponent from "../../Components/FilterComponent";
 import useUserInfo from "../../custom-hooks/useUserType";
 
@@ -256,7 +256,7 @@ const MobileCombustionSummary = () => {
                                     {
                                         label : 'Survey Data',
                                         value : 's-data',
-                                        tabPanelChild : <MC_SurveyData form_type={formType} muni_code={municipality?.address_code} prov_code={user_info.province_code} brgy_code={brgy?.address_code} selectAll = {selectAll} selectedYear = {yearState}/>
+                                        tabPanelChild : <SurveyData form_type={formType} muni_code={municipality?.address_code} prov_code={user_info.province_code} brgy_code={brgy?.address_code} selectAll = {selectAll} selectedYear = {yearState}/>
 
                                     
                                         
