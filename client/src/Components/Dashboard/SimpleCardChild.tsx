@@ -10,7 +10,7 @@ interface SimpleCardChildProps {
 const SimpleCardChild = ({content, open, setOpen }: SimpleCardChildProps) => {
   return (
     <>
-      <Dialog open={open} handler={() => setOpen(!open)} size="lg" className="h-4/5 bg-white/90 max-h-screen">
+      <Dialog open={open} handler={() => setOpen(!open)} size="xl" className="h-4/5 bg-white/90 max-h-screen">
         <DialogBody className="h-5/6 overflow-hidden">{content}</DialogBody>
 
         <DialogFooter className="bottom-0 absolute right-0">

@@ -1,10 +1,10 @@
 import { Request, Response, NextFunction } from "express";
 import FuelFormSchema from "../../db_schema/FuelFormSchema";
-import municipality_json from "../../../ph-json/city.json";
-import brgy_json from "../../../ph-json/barangay.json";
+
+import getAvailableLocations from "../../../custom_funtions/getAvailableLocations"
 
 import AccountSchema from "../../db_schema/AccountSchema";
-import getWasteWaterGHGeData from "../../../custom_funtions/wasteWaterActions";
+import getWasteWaterGHGeSum from "../../../custom_funtions/wasteWaterActions";
 
 
 interface Municipality {
@@ -81,23 +81,10 @@ type DashBoardData = {
                 }
 
             
-
-
-            // to get availbale brgrys or minicipalities
-            let locations : any[];
-            if(user_type === "s-admin"){
-
-                locations = municipality_json.filter((municipality) => municipality.province_code === parent_code) 
-            } else {
-                const brgys : any[] = brgy_json as any[]
-                locations = brgys.filter((brgy : any) => brgy.city_code === parent_code)
-            }
-            
-
-
+            const locations = getAvailableLocations(parent_code, user_type);
             
             const mobileComstion_data =  await get_mobileComstion_data(user_type, query, locations);  
-            const wasteWaterGHGe = await getWasteWaterGHGeData(user_type, query, locations);
+            const wasteWaterGHGe = await getWasteWaterGHGeSum(user_type, query, locations);
 
 
 

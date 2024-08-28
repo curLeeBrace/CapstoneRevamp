@@ -13,7 +13,7 @@ export type RequestQueryTypes = {
     form_type : string;
     municipality_code : string;
     brgy_code : string
-    selectedYear : string
+    selectedYear? : string
 
 }
 
@@ -27,6 +27,7 @@ const prepareQuery = (requestQuery : RequestQueryTypes) : {} => {
         //     $gte: new Date(`${year}-01-01T00:00:00.000Z`),
         //     $lte: new Date(`${year}-12-30T23:59:59.000Z`)
         // },
+
         const {
             user_type,
             selectAll,
@@ -36,6 +37,9 @@ const prepareQuery = (requestQuery : RequestQueryTypes) : {} => {
             brgy_code,
             selectedYear
         } = requestQuery
+
+        const getYearNow = new Date().getFullYear();
+        const year  = selectedYear === undefined ? getYearNow : selectedYear
 
         let query : {} = {};
         if(user_type === "s-admin"){
@@ -86,8 +90,8 @@ const prepareQuery = (requestQuery : RequestQueryTypes) : {} => {
 
         query = {...query, 
             dateTime_created : {
-                $gte: new Date(`${selectedYear}-01-01T00:00:00.000Z`),
-                $lte: new Date(`${selectedYear}-12-30T23:59:59.000Z`)
+                $gte: new Date(`${year}-01-01T00:00:00.000Z`),
+                $lte: new Date(`${year}-12-30T23:59:59.000Z`)
             },
         }
 
