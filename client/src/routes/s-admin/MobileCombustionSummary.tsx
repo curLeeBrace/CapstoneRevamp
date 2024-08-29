@@ -1,6 +1,6 @@
 
 import BarChart from "../../Components/Dashboard/BarChart"
-import {GlobeAsiaAustraliaIcon, TruckIcon, ExclamationTriangleIcon} from "@heroicons/react/24/solid";
+import {GlobeAsiaAustraliaIcon, TruckIcon} from "@heroicons/react/24/solid";
 
 import {useEffect, useState } from "react";
 import {AddressReturnDataType} from "../../custom-hooks/useFilterAddrress";
@@ -13,14 +13,15 @@ import useAxiosPrivate from "../../custom-hooks/auth_hooks/useAxiosPrivate";
 import SurveyData from "../SurveyData";
 import FilterComponent from "../../Components/FilterComponent";
 import useUserInfo from "../../custom-hooks/useUserType";
+import Skeleton from "../../Components/Skeleton";
 
 const MobileCombustionSummary = () => {
-    const user_info = useUserInfo();
+    const userInfo = useUserInfo();
     const axiosPrivate = useAxiosPrivate();
-    const [formType, setFormType] = useState<"residential" | "commercial">();
+    const [formType, setFormType] = useState<"residential" | "commercial">("residential");
     const [municipality, setMunicipality] = useState<AddressReturnDataType>();
     const [brgy, setBrgy] = useState<AddressReturnDataType>();
-    const [selectAll, setSelectAll] = useState(false);
+    const [selectAll, setSelectAll] = useState(true);
     const [yearState, setYearState] = useState<string>();
 
     const [mobileCombustionData, setMobileCombustionData] = useState<any>();
@@ -68,14 +69,14 @@ const MobileCombustionSummary = () => {
 
         
         const barColor = "#006400";
-        if(formType && municipality){
+        if(formType){
     
 
             set_isLoading(true)
             axiosPrivate.get('/summary-data/mobile-combustion', {params : {
-                user_type : user_info.user_type,
-                province_code : user_info.province_code,
-                municipality_code : municipality.address_code,
+                user_type : userInfo.user_type,
+                province_code : userInfo.province_code,
+                municipality_code : municipality?.address_code,
                 brgy_code : brgy?.address_code,
                 form_type : formType,
                 selectAll : selectAll,
@@ -256,7 +257,25 @@ const MobileCombustionSummary = () => {
                                     {
                                         label : 'Survey Data',
                                         value : 's-data',
-                                        tabPanelChild : <SurveyData form_type={formType} muni_code={municipality?.address_code} prov_code={user_info.province_code} brgy_code={brgy?.address_code} selectAll = {selectAll} selectedYear = {yearState}/>
+                                        tabPanelChild : 
+                                        <SurveyData form_type={formType} 
+                                            muni_code={
+                                                userInfo.user_type === "lgu_admin" ? userInfo.municipality_code
+                                                :   municipality ? municipality.address_code 
+                                                :   userInfo.municipality_code
+                                                
+                                            } 
+                                            prov_code={    
+                                                userInfo.user_type === "lgu_admin" ? userInfo.province_code
+                                                :   municipality ? municipality.parent_code 
+                                                :   userInfo.province_code
+                                            } 
+
+                                            brgy_code={brgy?.address_code} 
+                                            selectAll = {selectAll} 
+                                            survey_category="mobile-combustion" // this is a manual, but is supose to be automatic when it comes in passing the value
+                                            selectedYear = {yearState}
+                                        />
 
                                     
                                         
@@ -285,10 +304,8 @@ const MobileCombustionSummary = () => {
 
                             </div> :
                             <div className="flex justify-center w-full">
-                                <div className="basis-1/2">
-                                    <SimpleCard body={"No available data yet"} header="Please select some option first to filter the data" icon={<ExclamationTriangleIcon className="h-full w-full"/>} isLoading = {isLoading}/>
-
-                                </div>
+                                    <Skeleton/>
+                                    {/* <SimpleCard body={"No available data yet"} header="Please select some option first to filter the data" icon={<ExclamationTriangleIcon className="h-full w-full"/>} isLoading = {isLoading}/> */}
                             </div>
                 }
             </div>

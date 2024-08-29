@@ -1,17 +1,17 @@
-import { useState } from "react"
+import {useState } from "react"
 import FilterComponent from "../FilterComponent"
 import { AddressReturnDataType } from "../../custom-hooks/useFilterAddrress";
 import SurveyData from "../../routes/SurveyData";
 import { Select, Option} from "@material-tailwind/react";
+import useUserInfo from "../../custom-hooks/useUserType";
 
-const DashMobileCombustionSummary = () => {
+const DashboardGHGeSummary = () => {
     const [address, setAddress] = useState<AddressReturnDataType>();
-    const [formType, setFormType] = useState<"residential" | "commercial">();
+    const [formType, setFormType] = useState<"residential" | "commercial">("residential");
     const [brgy, setBrgy] = useState<AddressReturnDataType>();
-    const [selectAll, setSelectAll] = useState(false);
+    const [selectAll, setSelectAll] = useState(true);
     const [survey_category, setSurveyCategory] = useState<string>("mobile-combustion");
-    
-
+    const userInfo = useUserInfo();
 
 
     return (
@@ -66,8 +66,17 @@ const DashMobileCombustionSummary = () => {
 
                 <SurveyData 
                     form_type={formType} 
-                    muni_code={address?.address_code} 
-                    prov_code={address?.parent_code} 
+                    muni_code={
+                        userInfo.user_type === "lgu_admin" ? userInfo.municipality_code
+                        :   address ? address.address_code 
+                        :   userInfo.municipality_code
+                        
+                    } 
+                    prov_code={    
+                        userInfo.user_type === "lgu_admin" ? userInfo.province_code
+                        :   address ? address.parent_code 
+                        :   userInfo.province_code
+                    } 
                     brgy_code={brgy?.address_code} 
                     selectAll = {selectAll} 
                     survey_category = {survey_category}
@@ -88,4 +97,4 @@ const DashMobileCombustionSummary = () => {
     )
 }
 
-export default DashMobileCombustionSummary
+export default DashboardGHGeSummary

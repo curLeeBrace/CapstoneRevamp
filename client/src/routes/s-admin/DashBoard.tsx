@@ -6,7 +6,7 @@ import {UserIcon, GlobeAsiaAustraliaIcon} from "@heroicons/react/24/outline";
 
 import Chart from "react-apexcharts";
 import SurveyorInfo from '../../Components/Dashboard/SuerveyorInfo';
-import DashMobileCombustionSummary from '../../Components/Dashboard/DashMobileCombustionSummary';
+import DashboardGHGeSummary from '../../Components/Dashboard/DashboardGHGeSummary';
 import useAxiosPrivate from '../../custom-hooks/auth_hooks/useAxiosPrivate';
 import useUserInfo from '../../custom-hooks/useUserType';
 
@@ -135,7 +135,7 @@ function DashBoard() {
       <div className='flex flex-col h-full w-full'>
         <div className='flex items-center gap-3 basis-1/4 px-2 overflow-x-auto'>
           <div className='h-4/5 w-full'>
-            <SimpleCard body={`${dashboard_data?.total_ghge.toFixed(2)}`}header='Total GHGe'  icon={<GlobeAsiaAustraliaIcon className='h-6 w-6'/>} isLoading={isLoading} child_card={<DashMobileCombustionSummary/>}/>
+            <SimpleCard body={`${dashboard_data?.total_ghge.toFixed(2)}`}header='Total GHGe'  icon={<GlobeAsiaAustraliaIcon className='h-6 w-6'/>} isLoading={isLoading} child_card={<DashboardGHGeSummary/>}/>
           </div>        
           
           <div className='h-4/5 w-full'>
