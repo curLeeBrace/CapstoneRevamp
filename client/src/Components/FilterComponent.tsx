@@ -4,7 +4,6 @@ import Municipality from "../custom-hooks/Municipality"
 import {AddressReturnDataType} from "../custom-hooks/useFilterAddrress";
 import { Checkbox, Typography } from "@material-tailwind/react";
 import YearMenu from "../Components/YearMenu"
-import { useEffect } from "react";
 import useUserInfo from "../custom-hooks/useUserType";
 
 interface FilterComponentProps  {
