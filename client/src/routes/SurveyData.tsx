@@ -45,10 +45,11 @@ interface WasteWaterDataPerSurvey{
 
 const SurveyData = ({form_type, muni_code, prov_code, brgy_code, selectAll, selectedYear, survey_category} : SurveyDataProps) => {
     const axiosPrivate = useAxiosPrivate();
-    const [mc_datas, set_mcDatas] = useState<any[]>();
+    const [data, setData] = useState<any[]>();
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const userInfo = useUserInfo();
 
+    console.log("BRGY CODE : ", brgy_code);
 
     const column = survey_category === "mobile-combustion" ?
             ['Surveyor','Vehicle Type', 'Vehicle Age', 'Fuel Type', 'Fuel Consumption', 'GHGe', 'DateTime'] :
@@ -68,7 +69,7 @@ const SurveyData = ({form_type, muni_code, prov_code, brgy_code, selectAll, sele
 
     useEffect(()=>{
 
-        if(form_type && muni_code){
+        if(form_type){
             setIsLoading(true);
             axiosPrivate.get(`/summary-data/dashboard/${survey_category}`, {params : {
                 province_code : prov_code,
@@ -84,7 +85,7 @@ const SurveyData = ({form_type, muni_code, prov_code, brgy_code, selectAll, sele
                 const surveyData = res.data;
                 console.log("survey_category : ", survey_category)
                 if(survey_category === "mobile-combustion") {
-                    set_mcDatas(surveyData.map(((mc_data : any) => {
+                    setData(surveyData.map(((mc_data : any) => {
                         const  {surveyor, v_type, v_age, f_type, f_consumption, dateTime, ghge} = mc_data;
                         const date = new Date(dateTime).toLocaleDateString()
                         const time = new Date(dateTime).toLocaleTimeString()
@@ -93,7 +94,7 @@ const SurveyData = ({form_type, muni_code, prov_code, brgy_code, selectAll, sele
 
                 } else if(survey_category === "waste-water"){
 
-                    set_mcDatas(surveyData.map(((surveyData : any) => {
+                    setData(surveyData.map(((surveyData : any) => {
                         const  {populationUsingTheSystems, wasteWaterGHGe, dateTime, surveyor} = surveyData as WasteWaterDataPerSurvey;
                         const {openPits_latrines, riverDischarge, septic_tanks} = populationUsingTheSystems;
 
@@ -124,17 +125,17 @@ const SurveyData = ({form_type, muni_code, prov_code, brgy_code, selectAll, sele
         }
 
 
-    },[form_type,muni_code, brgy_code, selectAll, prov_code, selectedYear])
+    },[form_type, muni_code, brgy_code, prov_code, selectedYear, survey_category])
 
-
+    
     return (
         <div className="h-full">
             {
                 isLoading ? 
                     <Skeleton/>
-                :   mc_datas && 
-                mc_datas.length > 0 ? 
-                    <Table tb_datas={mc_datas} tb_head={column}/>
+                :   data && 
+                data.length > 0 ? 
+                    <Table tb_datas={data} tb_head={column}/>
                 :<div className="h-full flex justify-center items-center">No data found</div>
 
              
