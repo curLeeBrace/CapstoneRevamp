@@ -23,10 +23,10 @@ interface FilterComponentProps  {
         setState : React.Dispatch<React.SetStateAction<"residential" | "commercial">>
     },
 
-    selectAllState : {
-        state : boolean;
-        setState : React.Dispatch<React.SetStateAction<boolean>>;
-    }
+    // selectAllState : {
+    //     state : boolean;
+    //     setState : React.Dispatch<React.SetStateAction<boolean>>;
+    // }
 
     yearState ? : {
         state : string|undefined;
@@ -36,7 +36,7 @@ interface FilterComponentProps  {
 
 }
 
-const FilterComponent = ({municipalityState, formTypeState, brgyState, yearState, selectAllState}:FilterComponentProps) => {
+const FilterComponent = ({municipalityState, formTypeState, brgyState, yearState}:FilterComponentProps) => {
 
     const userInfo = useUserInfo();
     const handleFormType = (event : React.ChangeEvent<HTMLInputElement|HTMLSelectElement>) =>{
@@ -50,32 +50,32 @@ const FilterComponent = ({municipalityState, formTypeState, brgyState, yearState
 
 
     
-    useEffect(()=>{
+    // useEffect(()=>{
 
-        const {user_type} = userInfo;
+    //     const {user_type} = userInfo;
 
 
-        if(user_type === "s-admin")  {
+    //     if(user_type === "s-admin")  {
 
-            if(municipalityState.state == undefined || municipalityState.state == null){
-                selectAllState.setState(true)
-            } else {
-                selectAllState.setState(false)
-            }
+    //         if(municipalityState.state == undefined || municipalityState.state == null){
+    //             selectAllState.setState(true)
+    //         } else {
+    //             selectAllState.setState(false)
+    //         }
 
-        } else if (user_type === "lgu_admin") {
+    //     } else if (user_type === "lgu_admin") {
 
-            if(brgyState.state == undefined || brgyState.state == null){
-                selectAllState.setState(true)
-            } else {
-                selectAllState.setState(false)
-            }
-        }
+    //         if(brgyState.state == undefined || brgyState.state == null){
+    //             selectAllState.setState(true)
+    //         } else {
+    //             selectAllState.setState(false)
+    //         }
+    //     }
         
       
 
       
-    },[formTypeState.state, municipalityState.state, brgyState.state]) 
+    // },[formTypeState.state, municipalityState.state, brgyState.state]) 
 
     
 

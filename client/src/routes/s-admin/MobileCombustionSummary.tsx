@@ -14,6 +14,7 @@ import SurveyData from "../SurveyData";
 import FilterComponent from "../../Components/FilterComponent";
 import useUserInfo from "../../custom-hooks/useUserType";
 import Skeleton from "../../Components/Skeleton";
+import useSelectAllData from "../../custom-hooks/useSelectAllData";
 
 const MobileCombustionSummary = () => {
     const userInfo = useUserInfo();
@@ -21,7 +22,7 @@ const MobileCombustionSummary = () => {
     const [formType, setFormType] = useState<"residential" | "commercial">("residential");
     const [municipality, setMunicipality] = useState<AddressReturnDataType>();
     const [brgy, setBrgy] = useState<AddressReturnDataType>();
-    const [selectAll, setSelectAll] = useState(true);
+    // const [selectAll, setSelectAll] = useState(true);
     const [yearState, setYearState] = useState<string>();
 
     const [mobileCombustionData, setMobileCombustionData] = useState<any>();
@@ -43,6 +44,9 @@ const MobileCombustionSummary = () => {
     const [isPredicting, set_isPredicting] = useState<boolean>(false);
 
 
+    const selectAllData = useSelectAllData;
+
+
     // let muni_code = user.type === "lgu_admin" ? user.municipality_code : municipality ? municipality.address_code : undefined
     // let prov_code = user.type === "lgu_admin" ? user.province_code : municipality ? municipality.parent_code : undefined
 
@@ -61,7 +65,7 @@ const MobileCombustionSummary = () => {
     //       }
     // },[])
   
-
+    
 
 
 
@@ -70,8 +74,8 @@ const MobileCombustionSummary = () => {
         
         const barColor = "#006400";
         if(formType){
-    
-
+            
+            const selectAll = selectAllData(municipality?.address_code, brgy?.address_code);
             set_isLoading(true)
             axiosPrivate.get('/summary-data/mobile-combustion', {params : {
                 user_type : userInfo.user_type,
@@ -79,7 +83,7 @@ const MobileCombustionSummary = () => {
                 municipality_code : municipality?.address_code,
                 brgy_code : brgy?.address_code,
                 form_type : formType,
-                selectAll : selectAll,
+                selectAll,
                 selectedYear : yearState
 
 
@@ -144,7 +148,7 @@ const MobileCombustionSummary = () => {
 
         set_expected_ghgThisYear(undefined);
 
-    },[formType,municipality, selectAll, brgy, yearState])
+    },[formType, municipality?.address_code, brgy?.address_code, yearState])
 
 
 
@@ -216,12 +220,7 @@ const MobileCombustionSummary = () => {
                                 setState : setBrgy
                             }
                         }
-                        selectAllState={
-                            {
-                                setState : setSelectAll,
-                                state : selectAll
-                            }
-                        }
+                      
 
                         yearState={
                             {
@@ -272,7 +271,7 @@ const MobileCombustionSummary = () => {
                                             } 
 
                                             brgy_code={brgy?.address_code} 
-                                            selectAll = {selectAll} 
+                                            // selectAll = {selectAll} 
                                             survey_category="mobile-combustion" // this is a manual, but is supose to be automatic when it comes in passing the value
                                             selectedYear = {yearState}
                                         />

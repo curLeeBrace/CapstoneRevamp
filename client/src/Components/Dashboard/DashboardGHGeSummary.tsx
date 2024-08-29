@@ -9,7 +9,7 @@ const DashboardGHGeSummary = () => {
     const [address, setAddress] = useState<AddressReturnDataType>();
     const [formType, setFormType] = useState<"residential" | "commercial">("residential");
     const [brgy, setBrgy] = useState<AddressReturnDataType>();
-    const [selectAll, setSelectAll] = useState(true);
+
     const [survey_category, setSurveyCategory] = useState<string>("mobile-combustion");
     const userInfo = useUserInfo();
 
@@ -50,11 +50,11 @@ const DashboardGHGeSummary = () => {
 
                     }}
 
-                    selectAllState={{
-                        setState : setSelectAll,
-                        state : selectAll
+                    // selectAllState={{
+                    //     setState : setSelectAll,
+                    //     state : selectAll
 
-                    }}
+                    // }}
 
 
 
@@ -78,7 +78,6 @@ const DashboardGHGeSummary = () => {
                         :   userInfo.province_code
                     } 
                     brgy_code={brgy?.address_code} 
-                    selectAll = {selectAll} 
                     survey_category = {survey_category}
                 />
 
