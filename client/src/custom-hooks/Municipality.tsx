@@ -46,9 +46,10 @@ const Municipality = ({setAddress, disabled, deafult_municipalityName}:Municipal
 
 
   return (
-    <>
+    <div className="w-full xl:w-36">
       {city_opt && userInfo.user_type !== "lgu_admin" ? (
         <Select
+          className=" w-full"
           label="Choose Municipality"
           disabled = {disabled}
           value={selectedMunicipality}
@@ -84,14 +85,14 @@ const Municipality = ({setAddress, disabled, deafult_municipalityName}:Municipal
         
         </Select>
       ) : (
-        <div className="h-10">
-          <div className="h-full border-solid border-black/20 border-2 flex justify-center items-center rounded-md px-5">
+        <div className="h-10 ">
+          <div className="h-full border-solid border-black/20 border-2 flex justify-center items-center rounded-md px-5 w-full">
            {userInfo.municipality_name}
 
           </div>
         </div>
       )}
-    </>
+    </div>
   );
 };
 

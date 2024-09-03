@@ -82,69 +82,75 @@ const FilterComponent = ({municipalityState, formTypeState, brgyState, yearState
 
              <div>
                     <div className="flex w-full flex-wrap gap-2">
+ 
+                        <div className="flex h-full w-full xl:w-96 sm:flex-nowrap flex-wrap gap-6">
+                            
+                                <Municipality setAddress={municipalityState.setState} />
 
-                    <div className="flex items-center gap-2">
-                        <Municipality setAddress={municipalityState.setState} />
-                        {
-                            municipalityState.state && userInfo.user_type === "lgu_admin" && 
-                            <div className="self-center">
-                                <BrgyMenu setBrgys={brgyState.setState} municipality_code={municipalityState.state.address_code}/>
-                            </div>
-                        }
-
-                    </div>
-
-                    <div className="flex gap-3 flex-wrap">
-                       
-                        <Checkbox
-                            // disabled = {municipalityState.state == undefined}
-                            name='formType'
-                            value={'residential'}
-                            checked={formTypeState.state === "residential"} // Checked if this is selected
-                            onChange={(event) => handleFormType(event)} // Handler for selection
-                            label={
-                            <Typography variant="small" color="gray" className="font-normal mr-4">
-                                Residential
-                            </Typography>
+                            
+                            {
+                                municipalityState.state && userInfo.user_type === "lgu_admin" && 
+                                
+                                    <BrgyMenu setBrgys={brgyState.setState} municipality_code={municipalityState.state.address_code} />
+                           
                             }
-                            containerProps={{ className: "-ml-2.5" }}
-                        />
-                        <Checkbox
-                            // disabled = {municipalityState.state == undefined}
-                            name='formType'
-                            value={'commercial'}
-                            checked={formTypeState.state === "commercial"} // Checked if this is selected
-                            onChange={(event) => handleFormType(event)} // Handler for selection
-                            label={
-                            <Typography variant="small" color="gray" className="font-normal mr-4">
-                                Commercial
-                            </Typography>
+
+                        </div>
+                        
+                            {
+                                yearState && 
+                                <YearMenu useYearState={[yearState.state, yearState.setState]}/>
                             }
-                            containerProps={{ className: "-ml-2.5" }}
-                        />
 
-                        {/* <Checkbox
-                            disabled = {municipalityState.state == undefined || formTypeState.state === undefined}
-                            name='selectAll'
-                            value={'selectAll'}
-                            checked={selectAllState.state === true} // Checked if this is selected
-                            onChange={() => selectAllState.setState(!selectAllState.state)} // Handler for selection
-                            label={
-                            <Typography variant="small" color="gray" className="font-normal">
-                                Select all {formTypeState.state} data in {userInfo.user_type === "s-admin" ?  "Laguna" : `${userInfo.municipality_name}`}
-                            </Typography>
-                            }
-                            containerProps={{ className: "-ml-2.5" }}
-                        /> */}
-                        {
-                            yearState && 
-                            <YearMenu useYearState={[yearState.state, yearState.setState]}/>
-                        }
+                    
+                        <div className="self-center">
+                        
+                            <Checkbox
+                                // disabled = {municipalityState.state == undefined}
+                                name='formType'
+                                value={'residential'}
+                                checked={formTypeState.state === "residential"} // Checked if this is selected
+                                onChange={(event) => handleFormType(event)} // Handler for selection
+                                label={
+                                <Typography variant="small" color="gray" className="font-normal mr-4">
+                                    Residential
+                                </Typography>
+                                }
+                                containerProps={{ className: "-ml-2.5" }}
+                            />
+                            <Checkbox
+                                // disabled = {municipalityState.state == undefined}
+                                name='formType'
+                                value={'commercial'}
+                                checked={formTypeState.state === "commercial"} // Checked if this is selected
+                                onChange={(event) => handleFormType(event)} // Handler for selection
+                                label={
+                                <Typography variant="small" color="gray" className="font-normal mr-4">
+                                    Commercial
+                                </Typography>
+                                }
+                                containerProps={{ className: "-ml-2.5" }}
+                            />
 
-                      
+                            {/* <Checkbox
+                                disabled = {municipalityState.state == undefined || formTypeState.state === undefined}
+                                name='selectAll'
+                                value={'selectAll'}
+                                checked={selectAllState.state === true} // Checked if this is selected
+                                onChange={() => selectAllState.setState(!selectAllState.state)} // Handler for selection
+                                label={
+                                <Typography variant="small" color="gray" className="font-normal">
+                                    Select all {formTypeState.state} data in {userInfo.user_type === "s-admin" ?  "Laguna" : `${userInfo.municipality_name}`}
+                                </Typography>
+                                }
+                                containerProps={{ className: "-ml-2.5" }}
+                            /> */}
+                        
+
+                        
 
 
-                    </div>
+                        </div>
                         
                         
                     </div> 

@@ -4,7 +4,7 @@ import {GlobeAsiaAustraliaIcon, TruckIcon} from "@heroicons/react/24/solid";
 
 import {useEffect, useState } from "react";
 import {AddressReturnDataType} from "../../custom-hooks/useFilterAddrress";
-import { Typography} from "@material-tailwind/react";
+import { Select, Typography, Option} from "@material-tailwind/react";
 import SimpleCard from "../../Components/Dashboard/SimpleCard";
 
 import { TabsDefault} from "../../Components/Tabs";
@@ -30,42 +30,16 @@ const MobileCombustionSummary = () => {
     const [v_typeSeries, set_vTypeSeries] = useState<any[]>();
     const [v_ageSeries, set_vAgeSeries] = useState<any[]>();
     const [vehicle_ghge_rate, setVehicleGHGeRate] = useState<any[]>();
- 
-
-    // const [user, setUser] = useState({
-    //     type : "",
-    //     municipality_code: "",
-    //     province_code :"",
-    //     municipality_name : "",
-    // });
-   
 
     const [expected_ghgThisYear, set_expected_ghgThisYear] = useState<number>();
     const [isPredicting, set_isPredicting] = useState<boolean>(false);
 
+    const [survey_category, setSurveyCategory] = useState<string>("mobile-combustion");
 
     const selectAllData = useSelectAllData;
 
 
-    // let muni_code = user.type === "lgu_admin" ? user.municipality_code : municipality ? municipality.address_code : undefined
-    // let prov_code = user.type === "lgu_admin" ? user.province_code : municipality ? municipality.parent_code : undefined
 
-    // useEffect(()=>{
-    //     const user_info = Cookies.get("user_info");
-    //     if (user_info) {
-    //         const { municipality_code, user_type, municipality_name, province_code } = JSON.parse(user_info as string);
-    //         if (user_type === "lgu_admin") {
-    //           setUser({
-    //             municipality_code,
-    //             municipality_name,
-    //             province_code,
-    //             type: user_type,
-    //           });
-    //         }
-    //       }
-    // },[])
-  
-    
 
 
 
@@ -77,7 +51,7 @@ const MobileCombustionSummary = () => {
             
             const selectAll = selectAllData(municipality?.address_code, brgy?.address_code);
             set_isLoading(true)
-            axiosPrivate.get('/summary-data/mobile-combustion', {params : {
+            axiosPrivate.get(`/summary-data/${survey_category}`, {params : {
                 user_type : userInfo.user_type,
                 province_code : userInfo.province_code,
                 municipality_code : municipality?.address_code,
@@ -89,54 +63,56 @@ const MobileCombustionSummary = () => {
 
             }})
             .then(res => {
-                const {vehicle} = res.data;
-                console.log("Summary Data : ", res.data)
-                set_isLoading(false)
-                setMobileCombustionData(res.data)
-
-                set_vTypeSeries([{
-                    name: 'count',
-                    data : vehicle.vehicleTypes.map((v_type:any, index:any) => {
-                        return {
-                            x : v_type,
-                            y : vehicle.counts_ofVehicleTypes[index],
-                            fillColor: barColor
-                        }
+                if(survey_category === "mobile-combustion"){
+                    const {vehicle} = res.data;
+                    console.log("Summary Data : ", res.data)
+                    set_isLoading(false)
+                    setMobileCombustionData(res.data)
+    
+                    set_vTypeSeries([{
+                        name: 'count',
+                        data : vehicle.vehicleTypes.map((v_type:any, index:any) => {
+                            return {
+                                x : v_type,
+                                y : vehicle.counts_ofVehicleTypes[index],
+                                fillColor: barColor
+                            }
+                        }),
+                      
+                    }])
+    
+                    setVehicleGHGeRate([{
+                        name: 'ghge',
+                        data : vehicle.vehicleTypes.map((v_type:any, index:any) => {
+                            return {
+                                x : v_type,
+                                y : vehicle.vehicle_ghge_rate[index].toFixed(2),
+                                fillColor: barColor
+                            }
+                        })
+                    }])
+    
+                    set_vAgeSeries(
+    
+                        vehicle.vehicleTypes.map((v_type:any, o_index:number)=>{
+                            return {
+                                name : v_type,
+                                data : vehicle.vehicleAges.map((v_age:any, index:number) =>{
+                                        // console.log(v_age);
+                                        return {
+                                            x : v_age.toString() +" year(s)",
+                                            y : vehicle.counts_ofVehicleAge[index].ageCount_perVehicle[o_index].counts
+                                        }
+                                })
+                              
+                            }
                     }),
-                  
-                }])
+                    
+                    )
 
-                setVehicleGHGeRate([{
-                    name: 'ghge',
-                    data : vehicle.vehicleTypes.map((v_type:any, index:any) => {
-                        return {
-                            x : v_type,
-                            y : vehicle.vehicle_ghge_rate[index].toFixed(2),
-                            fillColor: barColor
-                        }
-                    })
-                }])
+                } else if (survey_category === "waste-water"){
 
-                set_vAgeSeries(
-
-                    vehicle.vehicleTypes.map((v_type:any, o_index:number)=>{
-                        return {
-                            name : v_type,
-                            data : vehicle.vehicleAges.map((v_age:any, index:number) =>{
-                                    // console.log(v_age);
-                                    return {
-                                        x : v_age.toString() +" year(s)",
-                                        y : vehicle.counts_ofVehicleAge[index].ageCount_perVehicle[o_index].counts
-                                    }
-                            })
-                          
-                        }
-                }),
-                
-                )
-
-
-
+                }
 
             })
             .catch(err => {
@@ -148,7 +124,7 @@ const MobileCombustionSummary = () => {
 
         set_expected_ghgThisYear(undefined);
 
-    },[formType, municipality?.address_code, brgy?.address_code, yearState])
+    },[formType, municipality?.address_code, brgy?.address_code, yearState, survey_category])
 
 
 
@@ -200,36 +176,52 @@ const MobileCombustionSummary = () => {
                 </div>
           
                     
-                    <FilterComponent 
-                        municipalityState={
-                            {
-                                state : municipality,
-                                setState : setMunicipality
+                <div className="flex gap-3 flex-wrap bg-gray-300">
+                    <div className="w-full 2xl:w-52">
+                        <Select  value={survey_category} label="GHGe Category" onChange={(value)=>setSurveyCategory(value as string)}>
+                            <Option value="mobile-combustion">Mobile Combustion</Option>
+                            <Option value="waste-water">Waste Water</Option>
+                        </Select>
+
+                    </div>
+
+                    <div className="w-full 2xl:w-4/5">
+                        <FilterComponent 
+                            municipalityState={
+                                {
+                                    state : municipality,
+                                    setState : setMunicipality
+                                }
+                                
+                            }
+                            formTypeState={
+                                {
+                                    state : formType,
+                                    setState : setFormType
+                                }
+                            }
+                            brgyState={
+                                {
+                                    state : brgy,
+                                    setState : setBrgy
+                                }
+                            }
+                        
+
+                            yearState={
+                                {
+                                    state : yearState,
+                                    setState : setYearState
+                                }
                             }
                             
-                        }
-                        formTypeState={
-                            {
-                                state : formType,
-                                setState : setFormType
-                            }
-                        }
-                        brgyState={
-                            {
-                                state : brgy,
-                                setState : setBrgy
-                            }
-                        }
-                      
+                            
+                        
+                        />
+                    </div>
 
-                        yearState={
-                            {
-                                state : yearState,
-                                setState : setYearState
-                            }
-                        }
+                </div>
                     
-                    />
                 
                 {
                     mobileCombustionData?
@@ -276,7 +268,6 @@ const MobileCombustionSummary = () => {
                                             selectedYear = {yearState}
                                         />
 
-                                    
                                         
                                     },
                                     {
