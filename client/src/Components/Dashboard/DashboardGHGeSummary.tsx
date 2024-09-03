@@ -23,7 +23,7 @@ const DashboardGHGeSummary = () => {
 
            <div className="flex gap-3 flex-wrap">
 
-            <div>
+            <div className="w-full 2xl:w-52">
                 <Select  value={survey_category} label="GHGe Category" onChange={(value)=>setSurveyCategory(value as string)}>
                     <Option value="mobile-combustion">Mobile Combustion</Option>
                     <Option value="waste-water">Waste Water</Option>

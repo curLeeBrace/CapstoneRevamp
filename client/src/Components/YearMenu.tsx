@@ -42,7 +42,7 @@ const YearMenu = ({useYearState} : YearProps) => {
 
 
     return (
-        <div className=" w-52">
+        <div className="w-full xl:w-52">
             {
                 yearState && 
                 <Select value={yearState}  onChange={(value) => setYearState(value as string)} label="Select year">
