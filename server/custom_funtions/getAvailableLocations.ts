@@ -1,7 +1,12 @@
 import municipality_json from "../ph-json/city.json";
 import brgy_json from "../ph-json/barangay.json";
 
-const getAvailableLocations = (parent_code:string, user_type : string) : any[] => {
+
+
+
+
+
+const getAvailableLocations = (parent_code:string, user_type : string) : any[]  => {
 
             // to get availbale brgrys or minicipalities
             let locations : any[];
