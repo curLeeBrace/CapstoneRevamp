@@ -19,24 +19,28 @@ import useSelectAllData from "../../custom-hooks/useSelectAllData";
 const MobileCombustionSummary = () => {
     const userInfo = useUserInfo();
     const axiosPrivate = useAxiosPrivate();
+    //filter
     const [formType, setFormType] = useState<"residential" | "commercial">("residential");
     const [municipality, setMunicipality] = useState<AddressReturnDataType>();
     const [brgy, setBrgy] = useState<AddressReturnDataType>();
-    // const [selectAll, setSelectAll] = useState(true);
-    const [yearState, setYearState] = useState<string>();
-
-    const [mobileCombustionData, setMobileCombustionData] = useState<any>();
+    const [survey_category, setSurveyCategory] = useState<string>("mobile-combustion");    const [yearState, setYearState] = useState<string>();
     const [isLoading, set_isLoading] = useState<boolean>(false);
+    const selectAllData = useSelectAllData;
+
+    //mobile-combustion
+    const [mobileCombustionData, setMobileCombustionData] = useState<any>();
     const [v_typeSeries, set_vTypeSeries] = useState<any[]>();
     const [v_ageSeries, set_vAgeSeries] = useState<any[]>();
     const [vehicle_ghge_rate, setVehicleGHGeRate] = useState<any[]>();
-
     const [expected_ghgThisYear, set_expected_ghgThisYear] = useState<number>();
     const [isPredicting, set_isPredicting] = useState<boolean>(false);
 
-    const [survey_category, setSurveyCategory] = useState<string>("mobile-combustion");
+    //waster-water
+    const [popultionUsingTheSystem, setPopultionUsingTheSystem] = useState<any[]>();
 
-    const selectAllData = useSelectAllData;
+
+
+  
 
 
 
@@ -69,7 +73,7 @@ const MobileCombustionSummary = () => {
                     set_isLoading(false)
                     setMobileCombustionData(res.data)
     
-                    set_vTypeSeries([{
+                    set_vTypeSeries([{  
                         name: 'count',
                         data : vehicle.vehicleTypes.map((v_type:any, index:any) => {
                             return {
@@ -111,6 +115,78 @@ const MobileCombustionSummary = () => {
                     )
 
                 } else if (survey_category === "waste-water"){
+                    const wasteWaterSummary : any[] = res.data;
+
+
+                    setPopultionUsingTheSystem([
+                        {
+                            name : "Septinc Tanks",
+                            data : wasteWaterSummary.map(summary => {
+                                return {
+                                    x : summary.location,
+                                    y : summary.septic_tanks
+                                }
+                            })
+                        },
+                        {
+                            name : "Category1 - Open Pits Latrines",
+                            data : wasteWaterSummary.map(summary => {
+                                return {
+                                    x : summary.location,
+                                    y : summary.openPits_latrines.cat1
+                                }
+                            })
+                        },
+                        {
+                            name : "Category2 - Open Pits Latrines",
+                            data : wasteWaterSummary.map(summary => {
+                                return {
+                                    x : summary.location,
+                                    y : summary.openPits_latrines.cat2
+                                }
+                            })
+                        },
+                        {
+                            name : "Category3 - Open Pits Latrines",
+                            data : wasteWaterSummary.map(summary => {
+                                return {
+                                    x : summary.location,
+                                    y : summary.openPits_latrines.cat3
+                                }
+                            })
+                        },
+                        {
+                            name : "Category4 - Open Pits Latrines",
+                            data : wasteWaterSummary.map(summary => {
+                                return {
+                                    x : summary.location,
+                                    y : summary.openPits_latrines.cat4
+                                }
+                            })
+                        },
+                        {
+                            name : "Category1 - River Discharge",
+                            data : wasteWaterSummary.map(summary => {
+                                return {
+                                    x : summary.location,
+                                    y : summary.riverDischarge.cat1
+                                }
+                            })
+                        },
+                        {
+                            name : "Category2 - River Discharge",
+                            data : wasteWaterSummary.map(summary => {
+                                return {
+                                    x : summary.location,
+                                    y : summary.riverDischarge.cat2
+                                }
+                            })
+                        },
+                    ])
+                    
+                    console.log("Waste Water : ", res.data)
+
+
 
                 }
 
@@ -264,7 +340,7 @@ const MobileCombustionSummary = () => {
 
                                             brgy_code={brgy?.address_code} 
                                             // selectAll = {selectAll} 
-                                            survey_category="mobile-combustion" // this is a manual, but is supose to be automatic when it comes in passing the value
+                                            survey_category={survey_category} // this is a manual, but is supose to be automatic when it comes in passing the value
                                             selectedYear = {yearState}
                                         />
 
@@ -275,10 +351,17 @@ const MobileCombustionSummary = () => {
                                         value : 'm-graph',
                                         tabPanelChild : 
                                             <div className="flex flex-col w-full gap-3 h-auto">
-                                            
-                                                <BarChart chart_icon={<TruckIcon className="w-6 h-6"/>} chart_label="Vehicle Type" chart_meaning="Overall surveyed vehicles." series={v_typeSeries} isLoading = {isLoading}/>
-                                                <BarChart chart_icon={<TruckIcon className="h-6 w-6"/>} chart_label="Vehicle Emission Rate" chart_meaning="Total Emission rate per vehicle." series={vehicle_ghge_rate} isLoading = {isLoading}/>
-                                                <BarChart chart_icon={<TruckIcon className="h-6 w-6"/>} chart_label="Vehicle Age" chart_meaning="Total counts of diffirent vehicle age." series={v_ageSeries} isLoading = {isLoading}/>
+                                                
+                                                {
+                                                    survey_category === "mobile-combustion" ?
+                                                    <>
+                                                        <BarChart chart_icon={<TruckIcon className="w-6 h-6"/>} chart_label="Vehicle Type" chart_meaning="Overall surveyed vehicles." series={v_typeSeries} isLoading = {isLoading}/>
+                                                        <BarChart chart_icon={<TruckIcon className="h-6 w-6"/>} chart_label="Vehicle Emission Rate" chart_meaning="Total Emission rate per vehicle." series={vehicle_ghge_rate} isLoading = {isLoading}/>
+                                                        <BarChart chart_icon={<TruckIcon className="h-6 w-6"/>} chart_label="Vehicle Age" chart_meaning="Total counts of diffirent vehicle age." series={v_ageSeries} isLoading = {isLoading}/>
+                                                    </>
+                                                    : 
+                                                    <BarChart chart_icon={<TruckIcon className="w-6 h-6"/>} chart_label="Population Using The Sytem" chart_meaning="Count of People Using the System" series={popultionUsingTheSystem} isLoading = {isLoading}/>
+                                                }
                                     
                                             </div>
                 
