@@ -139,7 +139,7 @@ const getMobileCombustionData = async (req:Request, res:Response) => {
         const mobile_combustionForm = await FuelFormSchema.find(preparedQuery).exec();
 
 
-        console.log("mobile_combustionForm : ", mobile_combustionForm);
+        // console.log("mobile_combustionForm : ", mobile_combustionForm);
 
 
     
