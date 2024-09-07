@@ -1,37 +1,38 @@
 function HomePage() {
-  
   return (
-    <div
-      id="home"
-      className="min-h-screen overflow-x-hidden bg-gray-200"
-    >
-      <div className="relative mx-16 -mt-8 lg:mt-8 lg:ml-40  mr-32">
+
+
+
+    <div id="home" className="bg-gray-200 flex flex-wrap justify-around">
+
+      <div className="flex flex-col gap-5 w-full xl:w-1/2 px-5">
         {/* Main Header */}
-        <div className="lg:text-6xl md:text-4xl text-2xl text-green-700 font-serif whitespace-nowrap pt-20">
-          Laguna Climate Change <br />
-          Adaptation and <br />
+        <div className=" text-4xl lg:text-6xl text-green-700 font-serif whitespace-nowrap pt-20 text-wrap">
+          Laguna Climate Change 
+          Adaptation and 
           Mitigation
         </div>
 
-        {/* Subtitle */}
-        <p className="mt-10 lg:text-2xl md:text-2xl font-serif mb-2 text-l font-normal text-black-500">
-          Welcome!
-        </p>
+        {/*Future Video Tutorial*/}
 
-
-      {/* Image */}
-      <div className="flex flex-col mt-20 items-center lg:flex-row lg:justify-end lg:mt-14">
-      <div className="lg:-mr-32 mt-0 lg:-mt-80 lg:ml-auto">
-    <img
-      src="/img/logo/LCCAOlogo2.png"
-      alt="Your Image Alt Text"
-      className="rounded-3xl object-contain w-full lg:w-4/5 max-w-xl mb-2 opacity-75"
-    />
-  </div>
-</div>
+        <div className="bg-black">
+          <iframe
+            src="https://www.youtube.com/embed/GSpZ4yE046E"
+            className="w-full h-96"
+            allowFullScreen
+          ></iframe>
+        </div>
 
       </div>
-   
+        {/* Image */}
+        <div className="self-center hidden xl:block">
+            <img
+              src="/img/logo/LCCAOlogo2.png"
+              alt="Your Image Alt Text"
+              className="rounded-3xl object-contain w-full lg:w-4/5 max-w-xl mb-2 opacity-75"
+            />
+       
+        </div>
     </div>
   );
 }
