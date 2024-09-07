@@ -44,7 +44,8 @@ function App() {
             
             {/*Route for Super Admin*/}
             <Route path = "/s-admin">
-              <Route index element = {<DashBoard/>}/>
+              <Route index element = {<HomePage/>}/>
+              <Route path = 'home' element = {<HomePage/>}/>
               <Route path = "dashboard" element = {<DashBoard/>}/>
               <Route path = 'change-pass' element = {<ChangePass/>}/>
               <Route path = "audit-log" element = {<AuditLogs/>}/>
@@ -60,7 +61,8 @@ function App() {
 
             {/*Route for Admin*/}
             <Route path = "/lgu_admin">
-            <Route index element = {<DashBoard/>}/>
+            <Route index element = {<HomePage/>}/>
+            <Route path = 'home' element = {<HomePage/>}/>
             <Route path = "dashboard" element = {<DashBoard/>}/>
             <Route path = "summary" element = {<SummaryData/>}/>
               <Route path = 'register'>

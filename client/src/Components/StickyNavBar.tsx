@@ -65,6 +65,10 @@ export function StickyNavbar() {
         set_uType("S-Admin");
         setNav([
           {
+            name: "Home",
+            url: `/${user_type}/home`,
+          },
+          {
             name: "Dashboard",
             url: `/${user_type}/dashboard`,
           },
@@ -89,6 +93,10 @@ export function StickyNavbar() {
       } else if (user_type === "lgu_admin") {
         set_uType("Admin");
         setNav([
+          {
+            name: "Home",
+            url: `/${user_type}/home`,
+          },
           {
             name: "Dashboard",
             url: `/${user_type}/dashboard`,
