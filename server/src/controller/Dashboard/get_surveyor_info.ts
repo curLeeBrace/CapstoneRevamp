@@ -5,11 +5,35 @@ import WasteWaterFormShema from "../../db_schema/WasteWaterFormShema";
 
 const get_surveyor_info = async (req : Request, res : Response) => {
 
-    const {municipality_code, get_all} = req.params;
+    const {municipality_code, user_type} = req.params;
     // console.log(get_all, typeof(get_all))
     
     try {
-        const query = get_all === "false" ? {'lgu_municipality.municipality_code' : municipality_code, user_type:"surveyor"} : {user_type : "surveyor"};
+        // const query = get_all === "false" ? {'lgu_municipality.municipality_code' : municipality_code, user_type:"surveyor"} : {user_type : "surveyor"};
+
+        let query = {}
+
+       
+            if(user_type === "s-admin") {
+                if(municipality_code === "undefined") {
+                    query = {user_type : "surveyor"};
+
+                } else {
+                    query = {'lgu_municipality.municipality_code' : municipality_code, user_type:"surveyor"}
+                }
+            } else {
+
+                query = {'lgu_municipality.municipality_code' : municipality_code, user_type:"surveyor"}
+            }
+
+        console.log("QUERY : ", query)
+
+      
+
+        
+
+
+        
 
         const accs =  await AccountSchema.find(query).exec();
         const mobileCombsutionData = await FuelFormSchema.find({});
