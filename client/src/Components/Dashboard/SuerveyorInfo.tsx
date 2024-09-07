@@ -4,7 +4,7 @@ import { AddressReturnDataType } from "../../custom-hooks/useFilterAddrress";
 import { Avatar, Typography } from "@material-tailwind/react";
 import Skeleton from "../Skeleton";
 import useAxiosPrivate from "../../custom-hooks/auth_hooks/useAxiosPrivate";
-
+import useUserInfo from "../../custom-hooks/useUserType";
 
 
 
@@ -17,28 +17,43 @@ const SurveyorInfo = () => {
 
   const [isLoading, setIsLoading] = useState(false);
   const axiosPrivate = useAxiosPrivate();
+  const userInfo = useUserInfo()
   
   useEffect(() => {
-    // if(address) setGetAll(false)
-    let get_all = false;
-
-    if(!address || address == null){
-      get_all = true
-    }
-    
+  const {user_type} = userInfo
+  if(user_type === "s-admin") {
     setIsLoading(true)
     axiosPrivate
-      .get(`dashboard/get-surveyor-info/${address?.address_code}/${get_all}`)
+      .get(`dashboard/get-surveyor-info/${address?.address_code}/${user_type}`)
       .then((res) => {
         setAccs(res.data);
         // console.log("Sheeesh Accounts! : ", res.data);
       })
       .catch((err) => console.log(err))
       .finally(()=>setIsLoading(false))
+  }
 
   }, [address]);
 
-  console.log("Address : ", address);
+  useEffect(() => {
+    const {user_type, municipality_code} = userInfo;
+
+    if(user_type === "lgu_admin"){
+      axiosPrivate
+      .get(`dashboard/get-surveyor-info/${municipality_code}/${user_type}`)
+      .then((res) => {
+        setAccs(res.data);
+        // console.log("Sheeesh Accounts! : ", res.data);
+      })
+      .catch((err) => console.log(err))
+      .finally(()=>setIsLoading(false))
+    }
+
+  },[])
+
+
+
+  // console.log("Accs : ", accs);
 
  
   return (
@@ -56,7 +71,7 @@ const SurveyorInfo = () => {
         
       </div>
       {
-        !isLoading ?
+        !isLoading?
         <div className="overflow-auto bg-gray-500/10 h-full px-5 rounded-md">
             <div className={`grid grid-flow-col py-2 grid-cols-4 gap-5 min-w-96`}>
                 {
