@@ -69,7 +69,7 @@ const BrgyMenu = ({setBrgys, municipality_code ,disabled = false, deafult_brgyNa
 
 
     return (
-        <div className="w-full xl:w-36"> 
+        <div className="w-full"> 
           
             {  brgy_opt ? 
             
