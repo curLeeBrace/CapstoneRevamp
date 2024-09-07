@@ -176,21 +176,25 @@ const SurveyedList = () => {
       {/* <div className="text-2xl">Title</div> */}
 
       <div className="w-4/5 flex bg-blue-gray-100 px-3 py-1 rounded-lg shadow-lg items-center flex-wrap gap-3">
-        <div className="w-full md:w-auto">
+
+        <div className="w-full lg:w-auto">
           <Select value={survey_category} label="Survey Category" onChange={(value)=>setSurveyCategory(value as string)}>
             <Option value="mobile-combustion">Mobile Combustion</Option>
             <Option value="waste-water">Waste Water</Option>
           </Select>
         </div>
-        <div className="w-full md:w-auto">
+
+        <div className="w-full lg:w-36">
           <BrgyMenu
             municipality_code={user_info.municipality_code}
             setBrgys={setBrgy}
             deafult_brgyName="Anibong"
           />
-        </div>
 
-        <div>
+        </div>
+     
+
+        <div className="lg:ml-16">
           <Typography variant="h6" color="gray">
             Survey Type
           </Typography>
