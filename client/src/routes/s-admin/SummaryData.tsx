@@ -16,7 +16,7 @@ import useUserInfo from "../../custom-hooks/useUserType";
 import Skeleton from "../../Components/Skeleton";
 import useSelectAllData from "../../custom-hooks/useSelectAllData";
 
-const MobileCombustionSummary = () => {
+const SummaryData = () => {
     const userInfo = useUserInfo();
     const axiosPrivate = useAxiosPrivate();
     //filter
@@ -38,7 +38,7 @@ const MobileCombustionSummary = () => {
     //waster-water
     const [popultionUsingTheSystem, setPopultionUsingTheSystem] = useState<any[]>();
 
-
+    const [totalGHGe, setTotalGHGe] = useState<number>(0);
 
   
 
@@ -245,14 +245,14 @@ const MobileCombustionSummary = () => {
 
     return (
         <div className="">
-            <div className="flex flex-col w-full px-20 gap-5">
+            <div className="flex flex-col w-full px-20 gap-5 mt-5">
                 {/* TITLE */}
                 <div className="text-center mt-3">
-                    <Typography className="font-bold text-2xl text-gray-800" >Summary Data of Mobile Combustion</Typography>
+                    <Typography className="font-bold text-2xl text-gray-800" >{`${survey_category === "mobile-combustion" ? "Mobile Combustion" : "Waste Water"} Summary`}</Typography>
                 </div>
           
                     
-                <div className="flex gap-3 flex-wrap bg-gray-300">
+                <div className="flex gap-3 flex-wrap bg-gray-300 ">
                     <div className="w-full 2xl:w-52">
                         <Select  value={survey_category} label="GHGe Category" onChange={(value)=>setSurveyCategory(value as string)}>
                             <Option value="mobile-combustion">Mobile Combustion</Option>
@@ -308,7 +308,7 @@ const MobileCombustionSummary = () => {
                                 <div className="w-full flex gap-5 flex-wrap lg:flex-nowrap">
                                     
                                     <div className="h-40 w-full lg:w-1/2">
-                                        <SimpleCard body={`${mobileCombustionData.emmission.tb_ghge.toFixed(2)}`} header="Total GHGe" icon={<GlobeAsiaAustraliaIcon className="h-full w-full"/>} isLoading = {isLoading}/>
+                                        <SimpleCard body={`${totalGHGe.toFixed(2)}`} header="Total GHGe" icon={<GlobeAsiaAustraliaIcon className="h-full w-full"/>} isLoading = {isLoading}/>
                                     </div>
                                     <div className="h-40 w-full lg:w-1/2">
                                         <SimpleCard body={
@@ -342,6 +342,7 @@ const MobileCombustionSummary = () => {
                                             // selectAll = {selectAll} 
                                             survey_category={survey_category} // this is a manual, but is supose to be automatic when it comes in passing the value
                                             selectedYear = {yearState}
+                                            totalGHGeSetState={setTotalGHGe}
                                         />
 
                                         
@@ -386,4 +387,4 @@ const MobileCombustionSummary = () => {
     )
 }
 
-export default MobileCombustionSummary
+export default SummaryData

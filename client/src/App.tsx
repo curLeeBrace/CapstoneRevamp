@@ -19,7 +19,7 @@ import ForgotPass from "./routes/not-auth/ForgotPass";
 import ChangePass from "./routes/not-auth/ChangePass";
 import AuditLogs from "./routes/s-admin/AuditLogs";
 import AccountsTable from "./routes/s-admin/AccountsTable";
-import MobileCombustionSummary from "./routes/s-admin/MobileCombustionSummary";
+import SummaryData from "./routes/s-admin/SummaryData";
 
 
 import SurveyedList from "./routes/surveyor/SurveyedList";
@@ -49,7 +49,7 @@ function App() {
               <Route path = 'change-pass' element = {<ChangePass/>}/>
               <Route path = "audit-log" element = {<AuditLogs/>}/>
               <Route path = "accounts" element = {<AccountsTable/>}/>
-              <Route path = "mobile-combustion" element = {<MobileCombustionSummary/>}/>
+              <Route path = "summary" element = {<SummaryData/>}/>
 
               <Route path = 'register'>
                   <Route index element = {<Registration/>}/>
@@ -62,7 +62,7 @@ function App() {
             <Route path = "/lgu_admin">
             <Route index element = {<DashBoard/>}/>
             <Route path = "dashboard" element = {<DashBoard/>}/>
-            <Route path = "mobile-combustion" element = {<MobileCombustionSummary/>}/>
+            <Route path = "summary" element = {<SummaryData/>}/>
               <Route path = 'register'>
                     <Route index element = {<Registration/>}/>
                     <Route path = 'sucsess' element = {<RegistrationCompleted/>}/>
