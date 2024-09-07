@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Table from "../Components/Table";
 import Skeleton from "../Components/Skeleton";
 import useAxiosPrivate from "../custom-hooks/auth_hooks/useAxiosPrivate";
@@ -13,6 +13,7 @@ type SurveyDataProps = {
   brgy_code: string | undefined;
   selectedYear?: string | undefined;
   survey_category?: string;
+  totalGHGeSetState? : React.Dispatch<React.SetStateAction<number>>
 };
 /////////////////////////////////////////////////////////
 interface PopulationUsingTheSystems {
@@ -43,7 +44,12 @@ const SurveyData = ({
   brgy_code,
   selectedYear,
   survey_category,
+  totalGHGeSetState,
+
 }: SurveyDataProps) => {
+
+
+
   const axiosPrivate = useAxiosPrivate();
   const [data, setData] = useState<any[]>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -94,34 +100,46 @@ const SurveyData = ({
           },
         })
         .then((res) => {
-          console.log("eyy", res.data);
+
+          // console.log("eyy", res.data);
           const surveyData = res.data;
           console.log("survey_category : ", survey_category);
           if (survey_category === "mobile-combustion") {
-            setData(
-              surveyData.map((mc_data: any) => {
-                const {
-                  surveyor,
-                  v_type,
-                  v_age,
-                  f_type,
-                  f_consumption,
-                  dateTime,
-                  ghge,
-                } = mc_data;
-                const date = new Date(dateTime).toLocaleDateString();
-                const time = new Date(dateTime).toLocaleTimeString();
-                return [
-                  surveyor,
-                  v_type,
-                  v_age,
-                  f_type,
-                  f_consumption,
-                  ghge.toFixed(3),
-                  date + " : " + time,
-                ];
-              })
-            );
+
+              setData(
+                surveyData.map((mc_data: any) => {
+                  const {
+                    surveyor,
+                    v_type,
+                    v_age,
+                    f_type,
+                    f_consumption,
+                    dateTime,
+                    ghge,
+                  } = mc_data;
+                  const date = new Date(dateTime).toLocaleDateString();
+                  const time = new Date(dateTime).toLocaleTimeString();
+                  return [
+                    surveyor,
+                    v_type,
+                    v_age,
+                    f_type,
+                    f_consumption,
+                    ghge.toFixed(3),
+                    date + " : " + time,
+                  ];
+                })
+              );
+
+
+              const mobileCombustionTotalGHGe = getTotalGHGe(surveyData.map((data:any) => data.ghge))
+              totalGHGeSetState && totalGHGeSetState(mobileCombustionTotalGHGe);
+              console.log("mobileCombustion : ", mobileCombustionTotalGHGe);
+
+
+
+
+
           } else if (survey_category === "waste-water") {
             setData(
               surveyData.map((surveyData: any) => {
@@ -151,6 +169,13 @@ const SurveyData = ({
                 ];
               })
             );
+
+
+            const wasteWaterTotalGHGe = getTotalGHGe(surveyData.map((data:any) => data.wasteWaterGHGe))
+            totalGHGeSetState && totalGHGeSetState(wasteWaterTotalGHGe);
+            console.log("wasteWater : ", wasteWaterTotalGHGe)
+
+
           }
         })
         .catch((err) => console.log(err))
@@ -179,5 +204,23 @@ const SurveyData = ({
     </div>
   );
 };
+
+
+
+
+
+const getTotalGHGe = (ghges : number[]) : number=> {
+
+  let total_ghge = 0;
+      ghges.forEach(ghge => {
+          total_ghge += ghge
+      });
+
+  return total_ghge
+
+}
+
+
+
 
 export default SurveyData;

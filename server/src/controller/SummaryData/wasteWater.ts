@@ -2,14 +2,14 @@ import { Request, Response } from 'express';
 import { RequestQueryTypes, prepareQuery} from './mobile_combustion';
 import WasteWaterFormShema from '../../db_schema/WasteWaterFormShema';
 import getAvailableLocations from '../../../custom_funtions/getAvailableLocations';
-
+import getWasteWaterGHGeSum from '../../../custom_funtions/wasteWaterActions';
 
 interface wasteWaterSummary {
     location : string;
     septic_tanks : number;
     openPits_latrines : {
         cat1 : number;
-        cat2 : number;
+        cat2 : number
         cat3 : number;
         cat4 : number;
     };
@@ -29,6 +29,9 @@ const getWasteWaterSummary = async (req : Request, res : Response) => {
     const locations = getAvailableLocations(parent_code, user_type);
     const query = prepareQuery(req.query as RequestQueryTypes);
     const wasteWaterData = await WasteWaterFormShema.find(query).exec();
+    // const wasteWaterGHGe_perLocations = await getWasteWaterGHGeSum(user_type, query, locations);
+    
+    // const totalGHGe = getGHGeSum(wasteWaterGHGe_perLocations);
 
     const location_names = locations.map(loc => {
  
@@ -96,6 +99,20 @@ const getWasteWaterSummary = async (req : Request, res : Response) => {
 
     return res.status(200).send(wasteWaterSummaries);
 
+
+}
+
+
+
+//useless
+const getGHGeSum = (ghges : number[]) : number=> {
+
+    let total_ghge = 0;
+        ghges.forEach(ghge => {
+            total_ghge += ghge
+        });
+
+    return total_ghge
 
 }
 
