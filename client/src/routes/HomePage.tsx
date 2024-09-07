@@ -1,7 +1,31 @@
+import { useEffect, useState } from "react";
+import useUserInfo from "../custom-hooks/useUserType";
+
+
+
 function HomePage() {
+
+  const [link, setLink] = useState<string>();
+  const userInfo = useUserInfo();
+
+  useEffect(()=>{
+    const {user_type} = userInfo;
+
+    if(user_type === "s-admin"){
+      setLink("https://www.youtube.com/embed/3TlMjZFS0kw")
+    } else if(user_type === "lgu_admin"){
+      setLink("https://www.youtube.com/embed/gqRvMnnc8Yk")
+    } else {
+      setLink("https://www.youtube.com/embed/DUruAJYgwP4")
+    }
+
+
+
+
+  },[])
+
+
   return (
-
-
 
     <div id="home" className="bg-gray-200 flex flex-wrap justify-around">
 
@@ -17,7 +41,7 @@ function HomePage() {
 
         <div className="bg-black">
           <iframe
-            src="https://www.youtube.com/embed/GSpZ4yE046E"
+            src={link}
             className="w-full h-96"
             allowFullScreen
           ></iframe>
