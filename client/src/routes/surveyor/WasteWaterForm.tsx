@@ -104,8 +104,9 @@ const WasteWaterForm = () => {
 
   const submitValidation = () => {
     console.log("Submit Form Data : ", formData)
+    console.log("BRGY : ", brgy)
     if(formData.openPits_latrinesCat1 === undefined ||formData.openPits_latrinesCat2 === undefined || formData.openPits_latrinesCat3 === undefined || formData.openPits_latrinesCat4 === undefined
-      ||formData.riverDischargeCat1 === undefined || formData.openPits_latrinesCat2 === undefined || formData.septic_tanks === undefined
+      ||formData.riverDischargeCat1 === undefined || formData.openPits_latrinesCat2 === undefined || formData.septic_tanks === undefined || brgy?.address_code === undefined
     ){
       set_isLoading(false);
       setOpenAlert(true);
@@ -134,6 +135,7 @@ const WasteWaterForm = () => {
 
   const submitHandler = () => {
     const payload = preparePayLoad();
+
     submitForm({payload, form_category : "waste-water"})
     .then(res => {
             if(res.status === 201){
@@ -154,6 +156,7 @@ const WasteWaterForm = () => {
       setOpenDialogBox(false)
     })
   
+
   }
 
 
@@ -185,7 +188,7 @@ const WasteWaterForm = () => {
   }
 
 
-// console.log("Form Data : ", formData)
+console.log("Form Data : ", formData)
 
 
 
@@ -291,6 +294,7 @@ const acceptUpdateHandler = () => {
           <Typography variant="h6" color="blue-gray">
             Form Type
           </Typography>
+
           <Checkbox
             disabled={params.action === "view"}
             name="form_type"
@@ -308,7 +312,7 @@ const acceptUpdateHandler = () => {
                 Residential
               </Typography>
             }
-            containerProps={{ className: "-ml-2.5" }}
+            // containerProps={{ className: "-ml-2.5" }}
           />
           <Checkbox
             disabled={params.action === "view"}
@@ -323,7 +327,7 @@ const acceptUpdateHandler = () => {
                 Commercial
               </Typography>
             }
-            containerProps={{ className: "-ml-2.5" }}
+            // containerProps={{ className: "-ml-2.5" }}
           />
         </div>
 
@@ -341,7 +345,24 @@ const acceptUpdateHandler = () => {
         </div>
 
         <div className="w-full">
+          <Checkbox
+            disabled={params.action === "view"}
+            name="septic_tanks"
+            value={formData.septic_tanks == 1 ? 0 : 1}
+            onChange={(event) =>
+              handleChange({ event, setFormStateData: setFormData })
+            } // Handler for selection
+            label={
               <Typography variant="h6" color="blue-gray">
+                Poso Negro (Septic Tank)
+              </Typography>
+            }
+            // containerProps={{ className: "-ml-2.5" }}
+          />
+
+          
+        
+              {/* <Typography variant="h6" color="blue-gray">
                 Poso Negro (Septic Tank)
               </Typography>
               <Input
@@ -356,7 +377,7 @@ const acceptUpdateHandler = () => {
                 min={0}
                 max={999}
                 maxLength={3}
-              />
+              /> */}
           </div>
 
           <div className="flex gap-2 bg-gray-600 p-2 rounded-md shadow-gray-500 shadow-md">
@@ -371,9 +392,24 @@ const acceptUpdateHandler = () => {
 
 
         <div className="flex flex-col gap-2 justify-around">
-          <div className="w-full flex gap-2 flex-wrap xl:flex-nowrap">
+          <div className="w-full flex flex-wrap xl:flex-nowrap">
             <div className="xl:w-1/2 w-full">
-              <Typography variant="h6" color="blue-gray">
+              <Checkbox
+                disabled={params.action === "view"}
+                name="openPits_latrinesCat1"
+                value={formData.openPits_latrinesCat1 == 1 ? 0 : 1}
+                onChange={(event) =>
+                  handleChange({ event, setFormStateData: setFormData })
+                } // Handler for selection
+                label={
+                  <Typography variant="h6" color="blue-gray">
+                    dry climate, ground water table lower than latrine, small family (2-5 people)	
+                  </Typography>
+                }
+                // containerProps={{ className: "-ml-2.5" }}
+                className="shrink-0"
+              />
+              {/* <Typography variant="h6" color="blue-gray">
                 dry climate, ground water table lower than latrine, small family (2-5 people)		
               </Typography>
               <Input
@@ -388,10 +424,28 @@ const acceptUpdateHandler = () => {
                 min={0}
                 max={999}
                 maxLength={3}
-              />
+              /> */}
             </div>
             <div className="xl:w-1/2 w-full">
-              <Typography variant="h6" color="blue-gray">
+
+              <Checkbox
+                disabled={params.action === "view"}
+                name="openPits_latrinesCat2"
+                value={formData.openPits_latrinesCat2 == 1 ? 0 : 1}
+                // checked = {formData.openPits_latrinesCat2 == 1}
+                onChange={(event) =>
+                  handleChange({ event, setFormStateData: setFormData })
+                } // Handler for selection
+                label={
+                  <Typography variant="h6" color="blue-gray">
+                    dry climate, ground water table lower than latrine, communal
+                  </Typography>
+                }
+                // containerProps={{ className: "-ml-2.5" }}
+                className="shrink-0"
+              />
+
+              {/* <Typography variant="h6" color="blue-gray">
               dry climate, ground water table lower than latrine, communal
               </Typography>
               <Input
@@ -406,13 +460,30 @@ const acceptUpdateHandler = () => {
                 min={0}
                 max={999}
                 maxLength={3}
-              />
+              /> */}
             </div>
           </div>
 
-          <div className="w-full flex gap-2 flex-wrap xl:flex-nowrap">
+          <div className="w-full flex  flex-wrap xl:flex-nowrap">
             <div className="xl:w-1/2 w-full">
-              <Typography variant="h6" color="blue-gray">
+
+              <Checkbox
+                disabled={params.action === "view"}
+                name="openPits_latrinesCat3"
+                value={formData.openPits_latrinesCat3 == 1 ? 0 : 1}
+                onChange={(event) =>
+                  handleChange({ event, setFormStateData: setFormData })
+                } // Handler for selection
+                label={
+                  <Typography variant="h6" color="blue-gray">
+                    wet climate/flush water use, ground water table than latrine	
+                  </Typography>
+                }
+                className="shrink-0"
+                // containerProps={{ className: "-ml-2.5" }}
+              />
+
+              {/* <Typography variant="h6" color="blue-gray">
               wet climate/flush water use, ground water table than latrine		
 
               </Typography>
@@ -428,11 +499,29 @@ const acceptUpdateHandler = () => {
                 min={0}
                 max={999}
                 maxLength={3}
-              />
+              /> */}
             </div>
 
             <div className="xl:w-1/2 w-full">
-              <Typography variant="h6" color="blue-gray">
+
+                
+              <Checkbox
+                disabled={params.action === "view"}
+                name="openPits_latrinesCat4"
+                value={formData.openPits_latrinesCat4 == 1 ? 0 : 1}
+                onChange={(event) =>
+                  handleChange({ event, setFormStateData: setFormData })
+                } // Handler for selection
+                label={
+                  <Typography variant="h6" color="blue-gray">
+                    regular sedimentremoval for fertilizer	
+                  </Typography>
+                }
+                className="shrink-0"
+                // containerProps={{ className: "-ml-2.5" }}
+              />
+
+              {/* <Typography variant="h6" color="blue-gray">
                 regular sedimentremoval for <br/> fertilizer				
               </Typography>
               <Input
@@ -447,7 +536,7 @@ const acceptUpdateHandler = () => {
                 min={0}
                 max={999}
                 maxLength={3}
-              />
+              /> */}
             </div>
           </div>
         </div>
@@ -462,9 +551,26 @@ const acceptUpdateHandler = () => {
 
 
         <div className="flex gap-2 justify-around flex-wrap xl:flex-nowrap">
-        <div className="w-full flex gap-2 flex-wrap xl:flex-nowrap">
-            <div className="xl:w-1/2 w-full">
-              <Typography variant="h6" color="blue-gray">
+        <div className="w-full flex flex-wrap xl:flex-nowrap">
+            <div className="xl:w-1/2 w-full ">
+              <Checkbox
+                disabled={params.action === "view"}
+                name="riverDischargeCat1"
+                value={formData.riverDischargeCat1 == 1 ? 0 : 1}
+                onChange={(event) =>
+                  handleChange({ event, setFormStateData: setFormData })
+                } // Handler for selection
+                label={
+                  <Typography variant="h6" color="blue-gray">
+                    Walang pagdaloy at kulang sa oxygen na ilog 
+                    (Stagnant oxygen deficient rivers and lakes)
+                  </Typography>
+                }
+                className="shrink-0"
+               
+              />
+
+              {/* <Typography variant="h6" color="blue-gray">
                 Walang pagdaloy at kulang sa oxygen na ilog <br/>
                 (Stagnant oxygen deficient rivers and lakes)
               </Typography>
@@ -480,10 +586,28 @@ const acceptUpdateHandler = () => {
                 min={0}
                 max={999}
                 maxLength={3}
-              />
+              /> */}
+              
             </div>
             <div className="xl:w-1/2 w-full">
-              <Typography variant="h6" color="blue-gray">
+
+              <Checkbox
+                disabled={params.action === "view"}
+                name="riverDischargeCat2"
+                value={formData.riverDischargeCat2 == 1 ? 0 : 1}
+                onChange={(event) =>
+                  handleChange({ event, setFormStateData: setFormData })
+                } // Handler for selection
+                label={
+                  <Typography variant="h6" color="blue-gray">
+                    ilog, lawa, at estero 
+                    (Rivers, lakes, estuaries)
+                  </Typography>
+                }
+                className="shrink-0"
+                // containerProps={{ className: "-ml-2.5" }}
+              />
+              {/* <Typography variant="h6" color="blue-gray">
                 ilog, lawa, at estero <br/>
                 (Rivers, lakes, estuaries)
               </Typography>
@@ -499,7 +623,7 @@ const acceptUpdateHandler = () => {
                 min={0}
                 max={999}
                 maxLength={3}
-              />
+              /> */}
             </div>
           </div>
         </div>
