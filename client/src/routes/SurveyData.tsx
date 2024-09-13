@@ -87,6 +87,8 @@ const SurveyData = ({
       setIsLoading(true);
     
       const selectAllData = selectAll(muni_code, brgy_code);
+
+      console.log("SELECT ALL : ", selectAllData)
       axiosPrivate
         .get(`/summary-data/dashboard/${survey_category}`, {
           params: {
