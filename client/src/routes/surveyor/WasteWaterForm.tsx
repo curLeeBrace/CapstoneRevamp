@@ -2,7 +2,6 @@ import {
   Button,
   Card,
   Checkbox,
-  Input,
   Typography,
 } from "@material-tailwind/react";
 import { useLocation, useParams, useSearchParams } from "react-router-dom";
@@ -349,6 +348,7 @@ const acceptUpdateHandler = () => {
             disabled={params.action === "view"}
             name="septic_tanks"
             value={formData.septic_tanks == 1 ? 0 : 1}
+            checked = {formData.septic_tanks == 1}
             onChange={(event) =>
               handleChange({ event, setFormStateData: setFormData })
             } // Handler for selection
@@ -398,6 +398,7 @@ const acceptUpdateHandler = () => {
                 disabled={params.action === "view"}
                 name="openPits_latrinesCat1"
                 value={formData.openPits_latrinesCat1 == 1 ? 0 : 1}
+                checked = {formData.openPits_latrinesCat1 == 1}
                 onChange={(event) =>
                   handleChange({ event, setFormStateData: setFormData })
                 } // Handler for selection
@@ -432,7 +433,7 @@ const acceptUpdateHandler = () => {
                 disabled={params.action === "view"}
                 name="openPits_latrinesCat2"
                 value={formData.openPits_latrinesCat2 == 1 ? 0 : 1}
-                // checked = {formData.openPits_latrinesCat2 == 1}
+                checked = {formData.openPits_latrinesCat2 == 1}
                 onChange={(event) =>
                   handleChange({ event, setFormStateData: setFormData })
                 } // Handler for selection
@@ -471,6 +472,7 @@ const acceptUpdateHandler = () => {
                 disabled={params.action === "view"}
                 name="openPits_latrinesCat3"
                 value={formData.openPits_latrinesCat3 == 1 ? 0 : 1}
+                checked = {formData.openPits_latrinesCat3 == 1}
                 onChange={(event) =>
                   handleChange({ event, setFormStateData: setFormData })
                 } // Handler for selection
@@ -509,6 +511,7 @@ const acceptUpdateHandler = () => {
                 disabled={params.action === "view"}
                 name="openPits_latrinesCat4"
                 value={formData.openPits_latrinesCat4 == 1 ? 0 : 1}
+                checked = {formData.openPits_latrinesCat4 == 1}
                 onChange={(event) =>
                   handleChange({ event, setFormStateData: setFormData })
                 } // Handler for selection
@@ -560,6 +563,7 @@ const acceptUpdateHandler = () => {
                 onChange={(event) =>
                   handleChange({ event, setFormStateData: setFormData })
                 } // Handler for selection
+                checked = {formData.riverDischargeCat1 == 1}
                 label={
                   <Typography variant="h6" color="blue-gray">
                     Walang pagdaloy at kulang sa oxygen na ilog 
@@ -598,6 +602,7 @@ const acceptUpdateHandler = () => {
                 onChange={(event) =>
                   handleChange({ event, setFormStateData: setFormData })
                 } // Handler for selection
+                checked = {formData.riverDischargeCat2 == 1}
                 label={
                   <Typography variant="h6" color="blue-gray">
                     ilog, lawa, at estero 
