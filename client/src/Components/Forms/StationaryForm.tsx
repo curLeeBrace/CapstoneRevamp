@@ -222,7 +222,7 @@ const acceptUpdateHandler = () => {
   .then((res) => {
 
     if(res.status === 204){
-      alert("can't accep request update because form data not found!");
+      alert("can't accept request update because form data not found!");
     } else if(res.status === 200){
       setOpenAlert(true);
       setAlertMsg(res.data);
@@ -271,7 +271,7 @@ const submitValidation = () => {
 
       <Card className="w-full h-full sm:w-96 md:w-3/4 lg:w-2/3 xl:w-1/2 px-6 py-6 -mt-10 shadow-black shadow-2xl rounded-xl relative">
             
-             <AlertBox openAlert = {openAlert}  setOpenAlert={setOpenAlert}  message={aler_msg}/>
+           
         
         <Typography variant="h4" color="blue-gray" className="text-center">
           Mobile Combustion Form
@@ -356,7 +356,7 @@ const submitValidation = () => {
               
               }
               
-              
+              <AlertBox openAlert = {openAlert}  setOpenAlert={setOpenAlert}  message={aler_msg}/>
             
               {/* <Input
                 name='vehicle_type'
