@@ -88,7 +88,8 @@ const prepareQuery = (requestQuery : RequestQueryTypes) : {} => {
 
 
 
-        query = {...query, 
+        query = {...query,
+            $or : [{"survey_data.status" : "0"}, {"survey_data.status" : "2"}],
             dateTime_created : {
                 $gte: new Date(`${year}-01-01T00:00:00.000Z`),
                 $lte: new Date(`${year}-12-30T23:59:59.000Z`)
