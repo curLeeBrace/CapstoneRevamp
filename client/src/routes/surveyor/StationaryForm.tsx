@@ -79,7 +79,7 @@ useEffect(()=>{
   :undefined
   
   setVehicleOptions(vType_options)
-  // console.log("State : ", state)
+  console.log("State : ", state)
 
   if(vType_options){
     setFormData({...formData, vehicle_type : ""})
@@ -254,8 +254,8 @@ const submitValidation = () => {
     }
 }
 
-// console.log("FormData ", formData)
-console.log("SELECTED VTYPE : ", formData.vehicle_type)
+console.log("FormData ", formData)
+// console.log("SELECTED VTYPE : ", formData.vehicle_type)
 
 
   return (

@@ -188,7 +188,7 @@ const SurveyedList = () => {
           <BrgyMenu
             municipality_code={user_info.municipality_code}
             setBrgys={setBrgy}
-            deafult_brgyName="Anibong"
+            // deafult_brgyName="Anibong"
           />
 
         </div>
