@@ -327,15 +327,18 @@ const SummaryData = () => {
                                         tabPanelChild : 
                                         <SurveyData form_type={formType} 
                                             muni_code={
-                                                userInfo.user_type === "lgu_admin" ? userInfo.municipality_code
-                                                :   municipality ? municipality.address_code 
-                                                :   userInfo.municipality_code
+
+                                                userInfo.user_type === "s-admin" ? 
+                                                municipality ? municipality.address_code : undefined 
+                                                :  userInfo.user_type === "lgu_admin" ?
+                                                municipality ? municipality.address_code : userInfo.municipality_code
+                                                :undefined
+                                                  
                                                 
                                             } 
                                             prov_code={    
-                                                userInfo.user_type === "lgu_admin" ? userInfo.province_code
-                                                :   municipality ? municipality.parent_code 
-                                                :   userInfo.province_code
+                                                userInfo.province_code
+
                                             } 
 
                                             brgy_code={brgy?.address_code} 
