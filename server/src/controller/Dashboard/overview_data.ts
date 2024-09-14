@@ -90,13 +90,14 @@ type DashBoardData = {
 
             mobileComstion_data.forEach(mb_data => {
 
-                total_ghge += mb_data.emission.ghge;
+               
+                total_ghge += Number(mb_data.emission.ghge.toFixed(2));
  
             })
 
 
             wasteWaterGHGe.forEach(ghge => {
-                total_ghge += ghge;
+                total_ghge += Number(ghge.toFixed(2));
             })
 
 
