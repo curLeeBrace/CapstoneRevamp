@@ -12,17 +12,18 @@ import AccountVerification from "./routes/not-auth/AccountVerification";
 
 
 import DashBoard from "./routes/s-admin/DashBoard"
-import { StationaryForm } from "./Components/Forms/StationaryForm";
+import { StationaryForm } from "./routes/surveyor/StationaryForm";
 import HomePage from "./routes/HomePage";
 import LogIn from "./routes/not-auth/LogIn";
 import ForgotPass from "./routes/not-auth/ForgotPass";
 import ChangePass from "./routes/not-auth/ChangePass";
 import AuditLogs from "./routes/s-admin/AuditLogs";
 import AccountsTable from "./routes/s-admin/AccountsTable";
-import MobileCombustionSummary from "./routes/s-admin/MobileCombustionSummary";
+import SummaryData from "./routes/s-admin/SummaryData";
 
 
 import SurveyedList from "./routes/surveyor/SurveyedList";
+import WasteWaterForm from "./routes/surveyor/WasteWaterForm";
 
 
 function App() {
@@ -43,12 +44,13 @@ function App() {
             
             {/*Route for Super Admin*/}
             <Route path = "/s-admin">
-              <Route index element = {<DashBoard/>}/>
+              <Route index element = {<HomePage/>}/>
+              <Route path = 'home' element = {<HomePage/>}/>
               <Route path = "dashboard" element = {<DashBoard/>}/>
               <Route path = 'change-pass' element = {<ChangePass/>}/>
               <Route path = "audit-log" element = {<AuditLogs/>}/>
               <Route path = "accounts" element = {<AccountsTable/>}/>
-              <Route path = "mobile-combustion" element = {<MobileCombustionSummary/>}/>
+              <Route path = "summary" element = {<SummaryData/>}/>
 
               <Route path = 'register'>
                   <Route index element = {<Registration/>}/>
@@ -59,9 +61,10 @@ function App() {
 
             {/*Route for Admin*/}
             <Route path = "/lgu_admin">
-            <Route index element = {<DashBoard/>}/>
+            <Route index element = {<HomePage/>}/>
+            <Route path = 'home' element = {<HomePage/>}/>
             <Route path = "dashboard" element = {<DashBoard/>}/>
-            <Route path = "mobile-combustion" element = {<MobileCombustionSummary/>}/>
+            <Route path = "summary" element = {<SummaryData/>}/>
               <Route path = 'register'>
                     <Route index element = {<Registration/>}/>
                     <Route path = 'sucsess' element = {<RegistrationCompleted/>}/>
@@ -76,6 +79,7 @@ function App() {
               <Route path = 'home' element = {<HomePage/>}/>
               <Route path = 'forms'>
                 <Route path = ':action/:form_type' element = {<StationaryForm/>}/>
+                <Route path = ':action/waste-water' element = {<WasteWaterForm/>}/>
               </Route>
               <Route path="surveyed-list" element ={<SurveyedList/>}/>
               <Route path = 'change-pass' element = {<ChangePass/>}/>

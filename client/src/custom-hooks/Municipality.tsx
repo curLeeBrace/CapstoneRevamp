@@ -5,20 +5,31 @@ import useUserInfo from "./useUserType";
 
 interface MunicipalityProps {
   setAddress : React.SetStateAction<any>;
+  deafult_municipalityName? : string;
+  disabled? : boolean
 }
 
-const Municipality = ({setAddress}:MunicipalityProps) => {
+const Municipality = ({setAddress, disabled, deafult_municipalityName}:MunicipalityProps) => {
   const [city_opt, set_city_opt] = useState<string[]>();
   const filterADddress = useFilterAddress;
   const userInfo = useUserInfo();
+  const [selectedMunicipality, setSelectedMunicipality] = useState<string|undefined>(deafult_municipalityName);
 
   useEffect(() => {
- 
+    
+
       if (userInfo.user_type === "s-admin") {
+        
           const address = filterADddress({
             address_type: "mucipality",
           }) as AddressReturnDataType[];
+          // setSelectedMunicipality(address[0].address_name)
           set_city_opt(address.map((addr) => addr.address_name));
+          // setAddress({
+          //   address_name : address[0].address_name,
+          //   address_code : address[0].address_code,
+          //   parent_code  : address[0].parent_code
+          // })
       } else {
         setAddress({
           address_name : userInfo.municipality_name,
@@ -35,10 +46,16 @@ const Municipality = ({setAddress}:MunicipalityProps) => {
 
 
   return (
-    <>
-      {userInfo.user_type !== "lgu_admin" ? (
+    <div className="w-full xl:w-36">
+      {city_opt && userInfo.user_type !== "lgu_admin" ? (
         <Select
+          className=" w-full"
+          label="Choose Municipality"
+          disabled = {disabled}
+          value={selectedMunicipality}
           onChange={(value) => {
+          
+            value && setSelectedMunicipality(value);
             let lgu_municipality: AddressReturnDataType = {} as AddressReturnDataType;
 
             const mucipality_data = filterADddress({
@@ -57,22 +74,25 @@ const Municipality = ({setAddress}:MunicipalityProps) => {
             setAddress(lgu_municipality);
           }}
         >
-          {city_opt ? (
+          {
+
             city_opt.map((city, index) => (
               <Option value={city} key={index}>
                 {city}
               </Option>
             ))
-          ) : (
-            <Option value=""> </Option>
-          )}
+          }
+        
         </Select>
       ) : (
-        <div className="w-full h-full border-solid border-black/20 border-2 flex justify-center items-center">
-          {userInfo.municipality_name}
+        <div className="h-10 ">
+          <div className="h-full border-solid border-black/20 border-2 flex justify-center items-center rounded-md px-5 w-full">
+           {userInfo.municipality_name}
+
+          </div>
         </div>
       )}
-    </>
+    </div>
   );
 };
 

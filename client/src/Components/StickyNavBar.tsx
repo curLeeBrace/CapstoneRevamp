@@ -19,9 +19,12 @@ import useUserInfo from "../custom-hooks/useUserType";
 
 const navListMenuItems = [
   {
-    title: "Stationary Fuel Combustion",
-    description: "Fill up form for Fuel Combustion Inventory",
+    title: "Mobile Combustion",
     href: `/surveyor/forms/submit/mobile-combustion`,
+  },
+  {
+    title: "Waste Water",
+    href: `/surveyor/forms/submit/waste-water`,
   },
 ];  
 
@@ -62,12 +65,16 @@ export function StickyNavbar() {
         set_uType("S-Admin");
         setNav([
           {
+            name: "Home",
+            url: `/${user_type}/home`,
+          },
+          {
             name: "Dashboard",
             url: `/${user_type}/dashboard`,
           },
           {
-            name: "Mobile-Combustion",
-            url: `/${user_type}/mobile-combustion`,
+            name: "Summary",
+            url: `/${user_type}/summary`,
           },
           {
             name: "Register",
@@ -87,12 +94,16 @@ export function StickyNavbar() {
         set_uType("Admin");
         setNav([
           {
+            name: "Home",
+            url: `/${user_type}/home`,
+          },
+          {
             name: "Dashboard",
             url: `/${user_type}/dashboard`,
           },
           {
-            name: "Mobile-Combustion",
-            url: `/${user_type}/mobile-combustion`,
+            name: "Summary",
+            url: `/${user_type}/summary`,
           },
           {
             name: "Register",

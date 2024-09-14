@@ -1,18 +1,44 @@
 import { Request, Response } from "express";
 import AccountSchema from "../../db_schema/AccountSchema";
 import FuelFormSchema from "../../db_schema/FuelFormSchema";
-
+import WasteWaterFormShema from "../../db_schema/WasteWaterFormShema";
 
 const get_surveyor_info = async (req : Request, res : Response) => {
 
-    const {municipality_code, get_all} = req.params;
+    const {municipality_code, user_type} = req.params;
     // console.log(get_all, typeof(get_all))
     
     try {
-        const query = get_all === "false" ? {'lgu_municipality.municipality_code' : municipality_code, user_type:"surveyor"} : {user_type : "surveyor"};
+        // const query = get_all === "false" ? {'lgu_municipality.municipality_code' : municipality_code, user_type:"surveyor"} : {user_type : "surveyor"};
+
+        let query = {}
+
+       
+            if(user_type === "s-admin") {
+                if(municipality_code === "undefined") {
+                    query = {user_type : "surveyor"};
+
+                } else {
+                    query = {'lgu_municipality.municipality_code' : municipality_code, user_type:"surveyor"}
+                }
+            } else {
+
+                query = {'lgu_municipality.municipality_code' : municipality_code, user_type:"surveyor"}
+            }
+
+        console.log("QUERY : ", query)
+
+      
+
+        
+
+
+        
 
         const accs =  await AccountSchema.find(query).exec();
-        const fuelFrom = await FuelFormSchema.find({});
+        const mobileCombsutionData = await FuelFormSchema.find({});
+        const wasteWaterData = await WasteWaterFormShema.find({});
+        
 
         if(!accs) return res.sendStatus(204);
         
@@ -21,21 +47,18 @@ const get_surveyor_info = async (req : Request, res : Response) => {
         let user_infos : any [] = []
 
         accs.forEach((acc)=>{
-            let survey_count = 0;
+            let mobileCombustionSurveyCount = getSurveyCount(mobileCombsutionData, acc.email);
+            let wasteWaterSurveyCount = getSurveyCount(wasteWaterData, acc.email);;
 
-            fuelFrom.forEach(fuel => {
-                if(fuel.surveyor_info.email === acc.email){
-                    survey_count++;
-                }
-            })
-
+        
 
             user_infos.push({
                 full_name : acc.f_name + " " + acc.l_name,
                 img_id : acc.img_id,
                 municipality_name : acc.lgu_municipality.municipality_name,
                 user_type : acc.user_type,
-                survey_count
+                mobileCombustionSurveyCount,
+                wasteWaterSurveyCount
             })
          
         })
@@ -51,6 +74,23 @@ const get_surveyor_info = async (req : Request, res : Response) => {
 
 
 }
+
+
+
+const getSurveyCount = (surveyData : any[], email : string) : number => {
+
+    let surveyCount = 0;
+    surveyData.forEach(survey => {
+        if(survey.surveyor_info.email === email){
+            surveyCount++;
+        }
+    })
+
+
+    return surveyCount
+}
+
+
 
 
 export {get_surveyor_info}
