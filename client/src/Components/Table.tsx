@@ -15,12 +15,12 @@ export default function Table({tb_datas, tb_head} : TableProps) {
             {tb_head.map((head) => (
               <th
                 key={head}
-                className="border-b border-blue-gray-100 bg-blue-gray-100 p-4"
+                className="border-b border-blue-gray-100 bg-blue-gray-100 p-2 max-w-40"
               >
                 <Typography
                   variant="small"
                   color="blue-gray"
-                  className="font-normal leading-none opacity-70"
+                  className="font-normal leading-none opacity-"
                 >
                   {head}
                 </Typography>
@@ -31,7 +31,7 @@ export default function Table({tb_datas, tb_head} : TableProps) {
         <tbody>
           {tb_datas.map((tb_data, row_index) => {
             const isLast = row_index === tb_data.length - 1;
-            const classes = isLast ? "p-4" : "p-4 border-b border-blue-gray-100";
+            const classes = isLast ? "p-4" : "p-4 border-b border-blue-gray-100 ";
 
             return (
               <tr key={row_index}>
@@ -42,6 +42,7 @@ export default function Table({tb_datas, tb_head} : TableProps) {
                           variant="small"
                           color="blue-gray"
                           className="font-normal"
+                        
                         >
                           {tb_data[col_index]}
                         </Typography>

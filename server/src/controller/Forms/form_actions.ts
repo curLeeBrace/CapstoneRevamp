@@ -1,14 +1,16 @@
 import { Request, Response } from 'express';
 import FuelFormSchema from "../../db_schema/FuelFormSchema";
+import WasteWaterFormShema from '../../db_schema/WasteWaterFormShema';
 import { auditLogType, saveAuditLog } from "../AuditLog/audit_log";
 
 
 
-const insertFuelFormData = async (req: Request, res: Response) => {
+const insertFormData = async (req: Request, res: Response) => {
+    const {form_category} = req.params
     try {
         // Insert the fuel form data
         console.log("Request body:", req.body);
-        const insert = await FuelFormSchema.create(req.body);
+        const insert = form_category === "mobile-combustion" ? await FuelFormSchema.create(req.body) :  await WasteWaterFormShema.create(req.body)
 
         if (insert) {
             // Create the audit log
@@ -22,7 +24,7 @@ const insertFuelFormData = async (req: Request, res: Response) => {
                 },
                 user_type: "surveyor",
                 dateTime: new Date(),
-                action: `Inserted fuel data for ${survey_data.form_type} form. (${surveyor_info.municipality_name})`,
+                action: `Inserted ${form_category} data for ${survey_data.form_type} form. (${surveyor_info.municipality_name})`,
             };
 
             // Save the audit log
@@ -37,7 +39,7 @@ const insertFuelFormData = async (req: Request, res: Response) => {
             return res.sendStatus(409); // Conflict, insertion failed
         }
     } catch (error) {
-        console.error("Error inserting fuel form data:", error);
+        console.error("Error inserting form data:", error);
         return res.sendStatus(500); // Internal server error
     }
 }
@@ -50,17 +52,21 @@ const insertFuelFormData = async (req: Request, res: Response) => {
 
 
 const updateMobileCombustionData = async (req: Request, res: Response) => {
-    const {form_id} = req.params;
+    const {form_id, form_category} = req.params;
     const {survey_data} = req.body;
-    console.log(req.body);
-    try {
 
-        const mc_data = await FuelFormSchema.findByIdAndUpdate(form_id, {
+    console.log("Form ID : ", form_id);
+    try {
+        const update =  {
             survey_data : survey_data,
             dateTime_edited : new Date()
-        }).exec()
+        }
 
-        if(!mc_data) return res.sendStatus(204);
+
+
+        const form_data = form_category === "mobile-combustion" ? await FuelFormSchema.findByIdAndUpdate(form_id, update).exec() : await WasteWaterFormShema.findByIdAndUpdate(form_id, update).exec()
+
+        if(!form_data) return res.sendStatus(204);
 
         return res.status(200).send("Success Requesting Update!");
         
@@ -76,12 +82,15 @@ const updateMobileCombustionData = async (req: Request, res: Response) => {
 const acceptUpdateMobileCombustionData = async (req: Request, res: Response) => {
 
     const {form_id} = req.body;
+    const {form_category} = req.params;
 
     try {
         
-        const mc_data = await FuelFormSchema.findByIdAndUpdate(form_id, {"survey_data.status" : "2"}).exec()
+        const form_data = form_category === "mobile-combustion" ?
+            await FuelFormSchema.findByIdAndUpdate(form_id, {"survey_data.status" : "2"}).exec()
+        :   await WasteWaterFormShema.findByIdAndUpdate(form_id, {"survey_data.status" : "2"}).exec()
 
-        if(!mc_data) return res.sendStatus(204);
+        if(!form_data) return res.sendStatus(204);
     
         return res.status(200).send("Request Update Accepted!!");
     } catch (error) {
@@ -98,7 +107,7 @@ const acceptUpdateMobileCombustionData = async (req: Request, res: Response) => 
 
 
 export {
-    insertFuelFormData,
+    insertFormData,
     updateMobileCombustionData,
     acceptUpdateMobileCombustionData
 

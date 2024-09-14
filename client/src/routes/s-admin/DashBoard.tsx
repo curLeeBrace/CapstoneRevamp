@@ -3,11 +3,12 @@ import  SimpleCard from '../../Components/Dashboard/SimpleCard'
 
 import {UserIcon, GlobeAsiaAustraliaIcon} from "@heroicons/react/24/outline";
 // import Table from '../../Components/Table';
-import Cookies from 'js-cookie';
+
 import Chart from "react-apexcharts";
 import SurveyorInfo from '../../Components/Dashboard/SuerveyorInfo';
-import DashMobileCombustionSummary from '../../Components/Dashboard/DashMobileCombustionSummary';
+import DashboardGHGeSummary from '../../Components/Dashboard/DashboardGHGeSummary';
 import useAxiosPrivate from '../../custom-hooks/auth_hooks/useAxiosPrivate';
+import useUserInfo from '../../custom-hooks/useUserType';
 
 type Emission = {
   co2e : number;
@@ -15,7 +16,8 @@ type Emission = {
   n2oe : number;
   ghge : number;
 }
-export type TableData = {
+
+export type  MobileCombustionTableData = {
   loc_name : String;
   emission : Emission;
 }
@@ -23,8 +25,11 @@ export type TableData = {
 type DashBoardData = {
   total_surveryor : number;
   total_LGU_admins : number;
+  table_data: {
+      mobileCombustionGHGe : MobileCombustionTableData[],
+      wasteWaterGHGe : number[]
+  }
   total_ghge : number;
-  table_data : TableData[]
 
 }
 
@@ -35,10 +40,10 @@ function DashBoard() {
   const [dashboard_data, setDashBoardData] = useState<DashBoardData>();
   const [isLoading, setisLoading] = useState<boolean>(true);
   const axiosPrivate = useAxiosPrivate();
-
+  const user_info = useUserInfo();
   useEffect(()=>{
 
-    const user_info = JSON.parse(Cookies.get('user_info') as string);
+
     
     axiosPrivate.get(`/dashboard/overview-data/${user_info.province_code}/${user_info.user_type}/${user_info.municipality_code}`)
     .then(res => {
@@ -54,10 +59,18 @@ function DashBoard() {
   const chartConfig = {
     series: [
       {
-        name: "GHGe",
-        data: dashboard_data ? dashboard_data.table_data.map((tb_data) => ({
+        name: "Mobile-Combustion GHGe",
+        data: dashboard_data ? dashboard_data.table_data.mobileCombustionGHGe.map((tb_data) => ({
           x: tb_data.loc_name,
           y: tb_data.emission.ghge.toFixed(2)
+        })) : [{ x: null, y: null }],
+        
+      },
+      {
+        name: "Waste-Water GHGe",
+        data: dashboard_data ? dashboard_data.table_data.mobileCombustionGHGe.map((tb_data, index) => ({
+          x: tb_data.loc_name,
+          y: dashboard_data.table_data.wasteWaterGHGe[index].toFixed(2)
         })) : [{ x: null, y: null }],
         
       },
@@ -75,7 +88,7 @@ function DashBoard() {
         },
         foreColor: '#101010',
       },
-      colors : ["#248003"],
+      colors : ["#248003", "#2942b3"],
       plotOptions: {
         bar: {
           columnWidth: '80%',
@@ -92,7 +105,7 @@ function DashBoard() {
         offsetY: -10,
       },
       title: {
-        text: 'Total GHGe per Municipality',
+        text: `Total GHGe per ${user_info.user_type === "s-admin" ? "Municipality" : "Brgy"}`,
         align: 'center' as 'center',
         style: {
           fontSize: '20px',
@@ -122,7 +135,7 @@ function DashBoard() {
       <div className='flex flex-col h-full w-full'>
         <div className='flex items-center gap-3 basis-1/4 px-2 overflow-x-auto'>
           <div className='h-4/5 w-full'>
-            <SimpleCard body={`${dashboard_data?.total_ghge.toFixed(2)}`}header='Total GHGe'  icon={<GlobeAsiaAustraliaIcon className='h-6 w-6'/>} isLoading={isLoading} child_card={<DashMobileCombustionSummary/>}/>
+            <SimpleCard body={`${dashboard_data?.total_ghge.toFixed(2)}`}header='Total GHGe'  icon={<GlobeAsiaAustraliaIcon className='h-6 w-6'/>} isLoading={isLoading} child_card={<DashboardGHGeSummary/>}/>
           </div>        
           
           <div className='h-4/5 w-full'>

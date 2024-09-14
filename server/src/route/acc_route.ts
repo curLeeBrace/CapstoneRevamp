@@ -7,7 +7,7 @@ import { changePass } from "../controller/Account/change_pass";
 import { authenticate_token } from "../controller/Token/auth_token";
 
 import {get_allAcc} from '../controller/Account/get_allAcc';
-
+ 
 
 import upload from '../middleware/handle_upload';
 import { delete_Acc } from './../controller/Account/delete_acc';
