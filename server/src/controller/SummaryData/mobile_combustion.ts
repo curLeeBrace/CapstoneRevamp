@@ -135,7 +135,31 @@ const getMobileCombustionData = async (req:Request, res:Response) => {
         const preparedQuery = prepareQuery(req.query as RequestQueryTypes);
 
         
-        const vehicleTypes = form_type === "residential" ? ['Car','SUV','Motorcycle'] : form_type === "commercial" ? ['Jeep','Tricycle','Bus','Van','Taxi','Truck'] : ['Car','SUV','Motorcycle','Jeep','Tricycle','Bus','Van','Taxi','Truck'];
+        const vehicleTypes = form_type === "residential" || "commercial" ? 
+            [ "Motorcycle",
+            "Tricycle",
+            "Sedan",
+            "Hatchback",
+            "Coupe",
+            "Sports Utility Vehicle (SUV)",
+            "Multi-Purpose Vehicle (MPV)",
+            "Asian Utility Vehicle (AUV)",
+            "Crossover",
+            "Pick-Up Truck",
+            "Bus",
+            "Boat (bangka)"] :
+            [ "Motorcycle",
+                "Tricycle",
+                "Sedan",
+                "Hatchback",
+                "Coupe",
+                "Sports Utility Vehicle (SUV)",
+                "Multi-Purpose Vehicle (MPV)",
+                "Asian Utility Vehicle (AUV)",
+                "Crossover",
+                "Pick-Up Truck",
+                "Bus",
+                "Boat (bangka)"];
 
         const mobile_combustionForm = await FuelFormSchema.find(preparedQuery).exec();
 
