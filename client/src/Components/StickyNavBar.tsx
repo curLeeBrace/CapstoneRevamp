@@ -26,6 +26,10 @@ const navListMenuItems = [
     title: "Waste Water",
     href: `/surveyor/forms/submit/waste-water`,
   },
+  {
+    title: "Industrial",
+    href: `/surveyor/forms/submit/industrial`,
+  },
 ];  
 
 //========================================================================

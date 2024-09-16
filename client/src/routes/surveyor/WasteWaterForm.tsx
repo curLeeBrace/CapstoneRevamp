@@ -267,7 +267,7 @@ const acceptUpdateHandler = () => {
       <AlertBox openAlert = {openAlert}  setOpenAlert={setOpenAlert}  message={alert_msg}/>
     
   
-    <div className="flex justify-center min-h-screen px-4 py-10 overflow-x-hidden bg-gray-200">
+    <div className="flex justify-center min-h-screen px-4 py-10 overflow-x-hidden">
        <DialogBox open = {openDialogBox} setOpen={setOpenDialogBox} message = 'Please double check the data before submitting' label='Confirmation' submit={
         params.action === "submit" ? submitHandler
         : params.action === "update" ? updateHandler
