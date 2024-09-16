@@ -261,7 +261,7 @@ const SummaryData = () => {
 
                     </div>
 
-                    <div className="w-full 2xl:w-4/5">
+                    <div className="w-full text-nowrap 2xl:w-4/5">
                         <FilterComponent 
                             municipalityState={
                                 {
