@@ -87,7 +87,7 @@ function App() {
                 <Route path = ':action/industrial' element = {<IndustrialForm/>}/>
                 <Route path = ':action/agriculture' element = {<AgricultureForm/>}/>
               </Route>
-              <Route path="surveyed-list" element ={<SurveyedList/>}/>
+              <Route path="surveyed-list/:survey_category" element ={<SurveyedList/>}/>
               <Route path = 'change-pass' element = {<ChangePass/>}/>
             </Route>
             <Route path="*"
