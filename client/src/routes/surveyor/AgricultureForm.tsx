@@ -1,11 +1,10 @@
 import {
   Card,
   Input,
-  Checkbox,
+
   Button,
   Typography,
-  Select,
-  Option,
+
 } from "@material-tailwind/react";
 import { useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
