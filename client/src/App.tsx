@@ -85,7 +85,7 @@ function App() {
                 <Route path = ':action/waste-water' element = {<WasteWaterForm/>}/>
                 <Route path = ':action/industrial' element = {<IndustrialForm/>}/>
                 <Route path = ':action/agriculture' element = {<AgricultureForm/>}/>
-                <Route path = ':action/stationary-fuel-combustion' element = {<StationaryFuelForm/>}/>
+                <Route path = ':action/stationary-fuel-consumption' element = {<StationaryFuelForm/>}/>
               </Route>
               <Route path="surveyed-list" element ={<SurveyedList/>}/>
               <Route path = 'change-pass' element = {<ChangePass/>}/>
