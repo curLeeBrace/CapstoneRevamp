@@ -52,7 +52,7 @@ function App() {
               <Route path = 'change-pass' element = {<ChangePass/>}/>
               <Route path = "audit-log" element = {<AuditLogs/>}/>
               <Route path = "accounts" element = {<AccountsTable/>}/>
-              <Route path = "summary" element = {<SummaryData/>}/>
+              <Route path = "summary/:survey_category" element = {<SummaryData/>}/>
 
               <Route path = 'register'>
                   <Route index element = {<Registration/>}/>
@@ -66,7 +66,9 @@ function App() {
             <Route index element = {<HomePage/>}/>
             <Route path = 'home' element = {<HomePage/>}/>
             <Route path = "dashboard" element = {<DashBoard/>}/>
-            <Route path = "summary" element = {<SummaryData/>}/>
+            <Route path = "summary/:survey_category" element = {<SummaryData/>}/>
+
+
               <Route path = 'register'>
                     <Route index element = {<Registration/>}/>
                     <Route path = 'sucsess' element = {<RegistrationCompleted/>}/>
