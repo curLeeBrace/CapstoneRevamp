@@ -36,7 +36,7 @@ const navListMenuItems = [
   },
   {
     title: "Stationary Fuel Consumption",
-    href: `/surveyor/forms/submit/stationary-fuel-combustion`,
+    href: `/surveyor/forms/submit/stationary-fuel-consumption`,
   },
   
 ];  
