@@ -34,6 +34,11 @@ const navListMenuItems = [
     title: "Agriculture",
     href: `/surveyor/forms/submit/agriculture`,
   },
+  {
+    title: "Stationary Fuel Consumption",
+    href: `/surveyor/forms/submit/stationary-fuel-combustion`,
+  },
+  
 ];  
 
 //========================================================================
