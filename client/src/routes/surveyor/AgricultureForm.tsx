@@ -71,7 +71,7 @@ export function AgricultureForm() {
               <Input
                 type="number"
                 placeholder="0"
-                className="w-full"
+                 className="!border-t-blue-gray-200 focus:!border-t-gray-900"
                 labelProps={{
                   className: "before:content-none after:content-none",
                 }}
@@ -82,7 +82,7 @@ export function AgricultureForm() {
               <Input
                 type="number"
                 placeholder="0"
-                className="w-full"
+                className="!border-t-blue-gray-200 focus:!border-t-gray-900"
                 labelProps={{
                   className: "before:content-none after:content-none",
                 }}
@@ -93,7 +93,7 @@ export function AgricultureForm() {
               <Input
                 type="number"
                 placeholder="0"
-                className="w-full"
+                className="!border-t-blue-gray-200 focus:!border-t-gray-900"
                 labelProps={{
                   className: "before:content-none after:content-none",
                 }}
@@ -104,7 +104,7 @@ export function AgricultureForm() {
               <Input
                 type="number"
                 placeholder="0"
-                className="w-full"
+                className="!border-t-blue-gray-200 focus:!border-t-gray-900"
                 labelProps={{
                   className: "before:content-none after:content-none",
                 }}
@@ -115,7 +115,7 @@ export function AgricultureForm() {
               <Input
                 type="number"
                 placeholder="0"
-                className="w-full"
+                className="!border-t-blue-gray-200 focus:!border-t-gray-900"
                 labelProps={{
                   className: "before:content-none after:content-none",
                 }}
@@ -126,7 +126,7 @@ export function AgricultureForm() {
               <Input
                 type="number"
                 placeholder="0"
-                className="w-full"
+                className="!border-t-blue-gray-200 focus:!border-t-gray-900"
                 labelProps={{
                   className: "before:content-none after:content-none",
                 }}
@@ -142,7 +142,7 @@ export function AgricultureForm() {
               <Input
                 type="number"
                 placeholder="0"
-                className="w-full"
+                className="!border-t-blue-gray-200 focus:!border-t-gray-900"
                 labelProps={{
                   className: "before:content-none after:content-none",
                 }}
@@ -153,7 +153,7 @@ export function AgricultureForm() {
               <Input
                 type="number"
                 placeholder="0"
-                className="w-full"
+                className="!border-t-blue-gray-200 focus:!border-t-gray-900"
                 labelProps={{
                   className: "before:content-none after:content-none",
                 }}
@@ -164,7 +164,7 @@ export function AgricultureForm() {
               <Input
                 type="number"
                 placeholder="0"
-                className="w-full"
+                className="!border-t-blue-gray-200 focus:!border-t-gray-900"
                 labelProps={{
                   className: "before:content-none after:content-none",
                 }}
@@ -175,7 +175,7 @@ export function AgricultureForm() {
               <Input
                 type="number"
                 placeholder="0"
-                className="w-full"
+                className="!border-t-blue-gray-200 focus:!border-t-gray-900"
                 labelProps={{
                   className: "before:content-none after:content-none",
                 }}
@@ -186,7 +186,7 @@ export function AgricultureForm() {
               <Input
                 type="number"
                 placeholder="0"
-                className="w-full"
+                className="!border-t-blue-gray-200 focus:!border-t-gray-900"
                 labelProps={{
                   className: "before:content-none after:content-none",
                 }}
@@ -197,7 +197,7 @@ export function AgricultureForm() {
               <Input
                 type="number"
                 placeholder="0"
-                className="w-full"
+                className="!border-t-blue-gray-200 focus:!border-t-gray-900"
                 labelProps={{
                   className: "before:content-none after:content-none",
                 }}
@@ -208,7 +208,7 @@ export function AgricultureForm() {
               <Input
                 type="number"
                 placeholder="0"
-                className="w-full"
+                className="!border-t-blue-gray-200 focus:!border-t-gray-900"
                 labelProps={{
                   className: "before:content-none after:content-none",
                 }}

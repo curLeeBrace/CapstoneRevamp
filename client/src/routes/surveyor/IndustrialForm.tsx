@@ -63,7 +63,7 @@ const submitValidation = () => {
     <div className="flex justify-center min-h-screen px-4 py-10 overflow-x-hidden bg-gray-200">
        <AlertBox openAlert = {openAlert}  setOpenAlert={setOpenAlert}  message={alert_msg}/>
 
-       <Card className="w-full h-full sm:w-96 md:w-3/4 lg:w-2/3 xl:w-2/3 px-6 py-6 -mt-10 shadow-black shadow-2xl rounded-xl relative gap-5">
+       <Card className="w-full max-w-4xl px-6 py-6 shadow-2xl shadow-black rounded-xl">
        <Typography variant="h4" color="blue-gray" className="text-center">
         Industrial Survey
       </Typography>
