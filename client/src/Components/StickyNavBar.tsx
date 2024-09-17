@@ -30,6 +30,10 @@ const navListMenuItems = [
     title: "Industrial",
     href: `/surveyor/forms/submit/industrial`,
   },
+  {
+    title: "Agriculture",
+    href: `/surveyor/forms/submit/agriculture`,
+  },
 ];  
 
 //========================================================================
