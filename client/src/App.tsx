@@ -25,6 +25,7 @@ import SummaryData from "./routes/s-admin/SummaryData";
 import SurveyedList from "./routes/surveyor/SurveyedList";
 import WasteWaterForm from "./routes/surveyor/WasteWaterForm";
 import { IndustrialForm } from "./routes/surveyor/IndustrialForm";
+import { AgricultureForm } from "./routes/surveyor/AgricultureForm";
 
 
 function App() {
@@ -82,6 +83,7 @@ function App() {
                 <Route path = ':action/:form_type' element = {<StationaryForm/>}/>
                 <Route path = ':action/waste-water' element = {<WasteWaterForm/>}/>
                 <Route path = ':action/industrial' element = {<IndustrialForm/>}/>
+                <Route path = ':action/agriculture' element = {<AgricultureForm/>}/>
               </Route>
               <Route path="surveyed-list" element ={<SurveyedList/>}/>
               <Route path = 'change-pass' element = {<ChangePass/>}/>
