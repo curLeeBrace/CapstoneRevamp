@@ -19,10 +19,13 @@ interface NavListItem {
 
 interface NavListMenuProps {
   navListMenuItems: NavListItem[];
+  navName : string;
 }
 
+
+
 function NavListMenu(props: NavListMenuProps) {
-  const { navListMenuItems } = props;
+  const { navListMenuItems, navName} = props;
 
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 
@@ -46,7 +49,7 @@ function NavListMenu(props: NavListMenuProps) {
           <Typography as="a" href="#" variant="small" className="font-normal">
             <MenuItem className="hidden items-center gap-2 font-medium lg:flex lg:rounded-full text-white">
               <Square3Stack3DIcon className="h-[18px] w-[18px]" />{" "}
-              Forms{" "}
+              {navName}
               <ChevronDownIcon
                 strokeWidth={2}
                 className={`h-3 w-3 transition-transform ${

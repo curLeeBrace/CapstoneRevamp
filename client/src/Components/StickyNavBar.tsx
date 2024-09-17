@@ -17,7 +17,7 @@ import useUserInfo from "../custom-hooks/useUserType";
 //==========================FOR OUTER COMPONENTS======================================
 
 
-const navListMenuItems = [
+const url_ofSurveyorsForm = [
   {
     title: "Mobile Combustion",
     href: `/surveyor/forms/submit/mobile-combustion`,
@@ -35,6 +35,8 @@ const navListMenuItems = [
     href: `/surveyor/forms/submit/agriculture`,
   },
 ];  
+
+
 
 //========================================================================
 
@@ -55,6 +57,32 @@ export function StickyNavbar() {
   const auth = useAuth();
   const user_info = useUserInfo();
   
+  const summaryURL = [
+    {
+      title: "Mobile Combustion",
+      href: `/${user_info.user_type}/summary/mobile-combustion`,
+    },
+    {
+      title: "Waste Water",
+      href: `/${user_info.user_type}/summary/waste-water`,
+    }
+  ]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   useEffect(() => {
     window.addEventListener(
       "resize",
@@ -80,10 +108,10 @@ export function StickyNavbar() {
             name: "Dashboard",
             url: `/${user_type}/dashboard`,
           },
-          {
-            name: "Summary",
-            url: `/${user_type}/summary`,
-          },
+          // {
+          //   name: "Summary",
+          //   url: `/${user_type}/summary`,
+          // },
           {
             name: "Register",
             url: `/${user_type}/register`,
@@ -109,10 +137,10 @@ export function StickyNavbar() {
             name: "Dashboard",
             url: `/${user_type}/dashboard`,
           },
-          {
-            name: "Summary",
-            url: `/${user_type}/summary`,
-          },
+          // {
+          //   name: "Summary",
+          //   url: `/${user_type}/summary`,
+          // },
           {
             name: "Register",
             url: `/${user_type}/register`,
@@ -162,9 +190,17 @@ export function StickyNavbar() {
         </Typography>
       </Fragment>
     ))}
+
     {u_type === "Surveyor" &&
       <Fragment>
-        <NavListMenu navListMenuItems={navListMenuItems} />
+        <NavListMenu navListMenuItems={url_ofSurveyorsForm} navName="Forms" />
+      </Fragment>
+    }
+
+    {
+      u_type !== "Surveyor" && 
+      <Fragment>
+        <NavListMenu navListMenuItems={summaryURL} navName="Summary"/>
       </Fragment>
     }
   </ul>

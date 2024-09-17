@@ -15,6 +15,7 @@ import FilterComponent from "../../Components/FilterComponent";
 import useUserInfo from "../../custom-hooks/useUserType";
 import Skeleton from "../../Components/Skeleton";
 import useSelectAllData from "../../custom-hooks/useSelectAllData";
+import { useParams } from "react-router-dom";
 
 const SummaryData = () => {
     const userInfo = useUserInfo();
@@ -23,7 +24,8 @@ const SummaryData = () => {
     const [formType, setFormType] = useState<"residential" | "commercial">("residential");
     const [municipality, setMunicipality] = useState<AddressReturnDataType>();
     const [brgy, setBrgy] = useState<AddressReturnDataType>();
-    const [survey_category, setSurveyCategory] = useState<string>("mobile-combustion");    const [yearState, setYearState] = useState<string>();
+    // const [survey_category, setSurveyCategory] = useState<string>("mobile-combustion");    
+    const [yearState, setYearState] = useState<string>();
     const [isLoading, set_isLoading] = useState<boolean>(false);
     const selectAllData = useSelectAllData;
 
@@ -40,6 +42,7 @@ const SummaryData = () => {
 
     const [totalGHGe, setTotalGHGe] = useState<number>(0);
 
+    const  {survey_category} = useParams()
   
 
 
@@ -253,13 +256,13 @@ const SummaryData = () => {
           
                     
                 <div className="flex gap-3 flex-wrap bg-gray-300 ">
-                    <div className="w-full 2xl:w-52">
+                    {/* <div className="w-full 2xl:w-52">
                         <Select  value={survey_category} label="GHGe Category" onChange={(value)=>setSurveyCategory(value as string)}>
                             <Option value="mobile-combustion">Mobile Combustion</Option>
                             <Option value="waste-water">Waste Water</Option>
                         </Select>
 
-                    </div>
+                    </div> */}
 
                     <div className="w-full text-nowrap 2xl:w-4/5">
                         <FilterComponent 
