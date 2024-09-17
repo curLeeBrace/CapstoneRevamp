@@ -2,7 +2,6 @@ import mongoose from 'mongoose'
 
 
 const WasteWaterForm = new mongoose.Schema({
-
     survey_data : { type : {
         form_type : {type : String, required : true},
 
