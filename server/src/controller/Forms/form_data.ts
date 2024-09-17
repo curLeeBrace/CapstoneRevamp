@@ -14,12 +14,16 @@ const formData = async (req:Request, res:Response) => {
     const {form_category} = req.params;
 
     try {
-        const query = 
+        const query = brgy_code !== undefined ? 
         {
             "survey_data.form_type" : surveyType,
             "survey_data.brgy_code" : brgy_code,
             "surveyor_info.municipality_code" : municipality_code
+        } : 
+        {
+            "survey_data.form_type" : surveyType
         }
+        
 
         const form_data = form_category === "waste-water" ? await WasteWaterFormShema.find(query).exec() : await FuelFormSchema.find(query).exec();
     

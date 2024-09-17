@@ -22,9 +22,10 @@ const BrgyMenu = ({setBrgys, municipality_code ,disabled = false, deafult_brgyNa
 
     
     useEffect(()=>{
-      console.log("SELECTED BRGY : ", deafult_brgyName)
+      // console.log("SELECTED BRGY : ", deafult_brgyName)
         set_brgy_opt(brgys.map(brgy => brgy.address_name));
-       
+
+        // setSelectedBrgy(brgys[0].address_name)
 
         
 

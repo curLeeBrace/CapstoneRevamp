@@ -37,6 +37,26 @@ const url_ofSurveyorsForm = [
 ];  
 
 
+const url_listOfSurveyData = [
+  {
+    title: "Mobile Combustion",
+    href: `/surveyor/surveyed-list/mobile-combustion`,
+  },
+  {
+    title: "Waste Water",
+    href: `/surveyor/surveyed-list/waste-water`,
+  },
+  // {
+  //   title: "Industrial",
+  //   href: `/surveyor/forms/submit/industrial`,
+  // },
+  // {
+  //   title: "Agriculture",
+  //   href: `/surveyor/forms/submit/agriculture`,
+  // },
+];  
+
+
 
 //========================================================================
 
@@ -158,10 +178,10 @@ export function StickyNavbar() {
             name: "Home",
             url: `/${user_type}/home`,
           },
-          {
-            name: "Surveyed List",
-            url: `/${user_type}/surveyed-list`,
-          },
+          // {
+          //   name: "Surveyed List",
+          //   url: `/${user_type}/surveyed-list`,
+          // },
         ]);
       }
     }
@@ -193,6 +213,7 @@ export function StickyNavbar() {
 
     {u_type === "Surveyor" &&
       <Fragment>
+        <NavListMenu navListMenuItems={url_listOfSurveyData} navName="SurveyData" />
         <NavListMenu navListMenuItems={url_ofSurveyorsForm} navName="Forms" />
       </Fragment>
     }

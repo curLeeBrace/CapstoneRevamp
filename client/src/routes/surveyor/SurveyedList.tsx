@@ -6,19 +6,20 @@ import BrgyMenu from "../../custom-hooks/BrgyMenu";
 import { useEffect, useState } from "react";
 import { AddressReturnDataType } from "../../custom-hooks/useFilterAddrress";
 import useAxiosPrivate from "../../custom-hooks/auth_hooks/useAxiosPrivate";
-
+import { useParams } from "react-router-dom";
 
 const SurveyedList = () => {
   const axiosPrivate = useAxiosPrivate();
   const user_info = useUserInfo();
-  const [survey_category, setSurveyCategory] = useState<string>("mobile-combustion");
+  // const [survey_category, setSurveyCategory] = useState<string>("mobile-combustion");
   const [surveyType, setSurveyType] = useState<"residential" | "commercial">(
     "residential"
   );
   const [brgy, setBrgy] = useState<AddressReturnDataType>();
   const [tb_data, setTbData] = useState<any[]>();
   const [tb_head, set_tbHead] = useState<string[]>()
-
+  const {survey_category} = useParams();
+  // console.log("survey_category : ", survey_category)
   useEffect(()=>{
       if(brgy){
           console.log("brgy.address_code" , brgy.address_code)
@@ -30,7 +31,7 @@ const SurveyedList = () => {
           .then(res => {
               const form_data = res.data;
 
-              const preparedData = prepare_tbData(survey_category, form_data);
+              const preparedData = prepare_tbData(survey_category as string, form_data);
               setTbData(preparedData);
 
           })
@@ -173,22 +174,25 @@ const SurveyedList = () => {
 
   return (
     <div className="flex flex-col items-center py-10 gap-5 max-h-screen">
-      {/* <div className="text-2xl">Title</div> */}
+      <div className="text-2xl">{
+        survey_category === "mobile-combustion" ? "Mobile Combustion Data" : 
+        survey_category === "waste-water" ? "Waste Water Data" : ""
+      }</div>
 
       <div className="w-4/5 flex bg-blue-gray-100 px-3 py-1 rounded-lg shadow-lg items-center flex-wrap gap-3">
 
-        <div className="w-full lg:w-auto">
+        {/* <div className="w-full lg:w-auto">
           <Select value={survey_category} label="Survey Category" onChange={(value)=>setSurveyCategory(value as string)}>
             <Option value="mobile-combustion">Mobile Combustion</Option>
             <Option value="waste-water">Waste Water</Option>
           </Select>
-        </div>
+        </div> */}
 
         <div className="w-full lg:w-36">
           <BrgyMenu
             municipality_code={user_info.municipality_code}
             setBrgys={setBrgy}
-            // deafult_brgyName="Anibong"
+            // deafult_brgyName={user_info.}
           />
 
         </div>
