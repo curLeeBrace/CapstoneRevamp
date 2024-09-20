@@ -83,7 +83,7 @@ import { AddressReturnDataType } from "../../../custom-hooks/useFilterAddrress";
         />
 
         <Card className="w-full max-w-4xl px-6 py-6 shadow-2xl shadow-black rounded-xl">
-          <Typography variant="h4" color="blue-gray" className="text-center">
+          <Typography variant="h4" color="blue-gray" className="text-center mb-4">
             Industrial Survey
           </Typography>
 
@@ -93,7 +93,7 @@ import { AddressReturnDataType } from "../../../custom-hooks/useFilterAddrress";
                 Select Industry Type
               </Typography>
 
-              <div className="flex justify-around">
+              <div className="md:flex md:justify-around grid grid-cols-3 gap-4">
 
                 <NavLink to={"0/mineral"}
                  style={({isActive, isTransitioning})=>navLinkStyle(isActive, isTransitioning)}
