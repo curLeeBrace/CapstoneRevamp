@@ -24,7 +24,7 @@ import SummaryData from "./routes/s-admin/SummaryData";
 
 import SurveyedList from "./routes/surveyor/SurveyedList";
 import WasteWaterForm from "./routes/surveyor/WasteWaterForm";
-import { IndustrialForm } from "./routes/surveyor/IndustrialForm";
+import { IndustrialForm, Chemical, Electronics, Metal, Mineral, Others} from "./routes/surveyor/IndustrialForm/IndustrialForm";
 import { AgricultureForm } from "./routes/surveyor/AgricultureForm";
 import { StationaryFuelForm } from "./routes/surveyor/StationaryFuelForm";
 
@@ -85,7 +85,16 @@ function App() {
               <Route path = 'forms'>
                 <Route path = ':action/:form_type' element = {<StationaryForm/>}/>
                 <Route path = ':action/waste-water' element = {<WasteWaterForm/>}/>
-                <Route path = ':action/industrial' element = {<IndustrialForm/>}/>
+
+                <Route path = ':action/industrial' element = {<IndustrialForm/>}>
+                  <Route index path="0/:industrial_type" element = {<Mineral/>}/>
+                  <Route path="1/:industrial_type" element = {<Chemical/>}/>
+                  <Route path="2/:industrial_type" element = {<Metal/>}/>
+                  <Route path="3/:industrial_type" element = {<Electronics/>}/>
+                  <Route path="4/:industrial_type" element = {<Others/>}/>
+                </Route>
+
+
                 <Route path = ':action/agriculture' element = {<AgricultureForm/>}/>
                 <Route path = ':action/stationary-fuel-consumption' element = {<StationaryFuelForm/>}/>
               </Route>
@@ -104,33 +113,6 @@ function App() {
               }
             />
 
-
-
-
-{/* 
-            <Route path = "audit-logs" element = {<AuditLogs/>}/>
-
-      
-*/}
-
-
-
-
-{/*             
-            <Route path="login" element = {<LogIn/>}></Route>
-            
-            <Route path="/" element = {<LogIn/>}/>
-
-            <Route path = 'dashboard' element = {<DashBoard/>}/>
-
-             
-              
-              <Route path = 'home' element = {<HomePage/>}/>
-              <Route path = 'sign-up' element = {<SignUp/>}/>
-              <Route path = 'change-pass' element = {<ChangePass/>}/> 
-  */}
-             
-          
 
             
         </Routes>
