@@ -252,7 +252,7 @@ import { AddressReturnDataType } from "../../../custom-hooks/useFilterAddrress";
                   <Option>Others</Option>
                 </Select>
               </div>
-              <Typography variant="h4" color="blue-gray" className="">
+              <Typography variant="h4" color="blue-gray" className="mb-5">
                 Annual Total Production
               </Typography>
 

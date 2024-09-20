@@ -28,7 +28,7 @@ const url_ofSurveyorsForm = [
   },
   {
     title: "Industrial",
-    href: `/surveyor/forms/submit/industrial`,
+    href: `/surveyor/forms/submit/industrial/0/mineral`,
   },
   {
     title: "Agriculture",

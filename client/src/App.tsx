@@ -87,7 +87,7 @@ function App() {
                 <Route path = ':action/waste-water' element = {<WasteWaterForm/>}/>
 
                 <Route path = ':action/industrial' element = {<IndustrialForm/>}>
-                  <Route index path="0/:industrial_type" element = {<Mineral/>}/>
+                  <Route path="0/:industrial_type" element = {<Mineral/>}/>
                   <Route path="1/:industrial_type" element = {<Chemical/>}/>
                   <Route path="2/:industrial_type" element = {<Metal/>}/>
                   <Route path="3/:industrial_type" element = {<Electronics/>}/>
