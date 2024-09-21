@@ -4,6 +4,8 @@ import WasteWaterFormShema from '../../db_schema/WasteWaterFormShema';
 import MineralSchema from '../../db_schema/Industrial/MineralSchema';
 import ChemicalSchema from '../../db_schema/Industrial/ChemicalSchema';
 import MetalSchema from '../../db_schema/Industrial/MetalSchema';
+import ElectronicsSchema from '../../db_schema/Industrial/ElectronicsSchema';
+import OthersSchema from '../../db_schema/Industrial/OthersSchema';
 
 import { auditLogType, saveAuditLog } from "../AuditLog/audit_log";
 
@@ -26,6 +28,10 @@ const insertFormData = async (req: Request, res: Response) => {
             insert = await ChemicalSchema.create(req.body);
         } else if (form_category === "industrial-metal"){
             insert = await MetalSchema.create(req.body);
+        } else if (form_category === "industrial-electronics"){
+            insert = await ElectronicsSchema.create(req.body);
+        } else if (form_category === "industrial-others"){
+            insert = await OthersSchema.create(req.body);
         }
 
 
