@@ -1,12 +1,176 @@
-import { Typography, Input } from "@material-tailwind/react";
+import { Typography, Input, Button } from "@material-tailwind/react";
+import useHandleChange from "../../../custom-hooks/useHandleChange";
+import { useState } from "react";
+import useSurveyFormActions from "../../../custom-hooks/useSurveyFormActions";
+import useUserInfo from "../../../custom-hooks/useUserType";
+import { useIndustrialBaseData } from "./IndustrialForm";
+import { useParams } from "react-router-dom";
+import DialogBox from "../../../Components/DialogBox";
+
+
+type ChemicalData = {
+  ap : number;
+  sap : number;
+  pcbp_M : number;
+  pcbp_E : number;
+  pcbp_EDVCM : number;
+  pcbp_EO : number;
+  pcbp_A : number;
+  pcbp_CB : number;
+
+}
+
+
+
+
+
+
+
 
 const Chemical = () => {
+  const handleChange = useHandleChange;
+  const industrialBaseData = useIndustrialBaseData();
+  const params = useParams();
+  const [isLoading, set_isLoading] = useState<boolean>(false);
+  const [openDialogBox, setOpenDialogBox] = useState(false);
+  const user_info = useUserInfo();
+  const {updateForm, acceptFormUpdate, submitForm} = useSurveyFormActions();
+
+
+
+
+  const [chemicalData, setChemicalData] = useState({
+    ap : 0,
+    sap : 0,
+    pcbp_A : 0,
+    pcbp_CB : 0,
+    pcbp_E : 0,
+    pcbp_EDVCM : 0,
+    pcbp_EO : 0,
+    pcbp_M : 0,
+
+  } as ChemicalData);
+
+
+
+
+  const clearForm = () => {
+    setChemicalData({
+      ap : 0,
+      pcbp_A : 0,
+      pcbp_CB : 0,
+      pcbp_E : 0,
+      pcbp_EDVCM : 0,
+      pcbp_EO : 0,
+      pcbp_M : 0,
+      sap : 0,
+    })
+  }
+
+  const preparePayLoad = () => {
+    const {email, full_name, municipality_name, municipality_code, province_code} = user_info;
+    const {brgy, dsi, type_ofData } = industrialBaseData
+
+    let payload = {
+      survey_data : {
+        ...chemicalData,
+        dsi,
+        type_ofData,
+        brgy_name : brgy?.address_name,
+        brgy_code : brgy?.address_code
+      },
+      surveyor_info : {
+        email,
+        full_name,
+        municipality_name,
+        municipality_code,
+        province_code,
+        img_id : user_info.img_id
+  
+      },
+      dateTime_created : new Date(),
+      dateTime_edited : null,
+    }
+
+
+    return payload
+  }
+
+     
+  const submitValidation = () => {
+
+    const {brgy, dsi, type_ofData, setAlertMsg, setOpenAlert, } = industrialBaseData
+
+    if(brgy && dsi && type_ofData){
+
+      setOpenDialogBox(true);
+    } else {
+      set_isLoading(false);
+      setOpenAlert(true)
+      setAlertMsg("Some field are empty!");
+    }
+}
+
+
+
+  const submitHandler = () =>{
+    const payload = preparePayLoad();
+    const {setAlertMsg, setOpenAlert} = industrialBaseData
+ 
+ 
+    submitForm({payload, form_category : "industrial-chemical"})
+   .then(res => {
+           if(res.status === 201){
+             setOpenAlert(true);
+             setAlertMsg("Sucsessfully Submitted!");
+             clearForm();
+           }
+   
+         set_isLoading(false);
+       })
+       .catch(err => {
+         console.log(err)
+         set_isLoading(false);
+         setOpenAlert(true);
+         setAlertMsg("Server Error!");
+   })
+   .finally(()=>{
+     setOpenDialogBox(false)
+   })
+ 
+ 
+ 
+ 
+ 
+   }
+ 
+ 
+   const updateHandler = () => {
+ 
+   }
+ 
+   const acceptUpdateHandler = ()=>{
+ 
+   }
+ 
+ 
+
+
+
   return (
     <div className="">
+      <DialogBox open = {openDialogBox} setOpen={setOpenDialogBox} message = 'Please double check the data before submitting' label='Confirmation' submit={
+        params.action === "submit" ? submitHandler
+        : params.action === "update" ? updateHandler
+        :acceptUpdateHandler
+      } />
       <div className="flex  flex-wrap justify-around">
         <div className="w-full lg:w-52">
           <Typography>Ammonia Production (tons)</Typography>
           <Input
+            name="ap"
+            value={chemicalData.ap}
+            onChange={(e) => handleChange({event:e, setFormStateData : setChemicalData})}
             size="lg"
             type="number"
             placeholder="0"
@@ -20,6 +184,9 @@ const Chemical = () => {
         <div className="w-full lg:w-52">
           <Typography>Soda Ash Production (tons)</Typography>
           <Input
+            name = "sap"
+            value={chemicalData.sap}
+            onChange={(e) => handleChange({event:e, setFormStateData : setChemicalData})}
             size="lg"
             type="number"
             placeholder="0"
@@ -33,6 +200,9 @@ const Chemical = () => {
         <div className="w-full lg:w-96">
           <Typography>Dichloride and Vinyl Chloride Monomer (tons)</Typography>
           <Input
+            name="pcbp_EDVCM"
+            value={chemicalData.pcbp_EDVCM}
+            onChange={(e) => handleChange({event:e, setFormStateData : setChemicalData})}
             size="lg"
             type="number"
             placeholder="0"
@@ -53,6 +223,9 @@ const Chemical = () => {
           Methanol (tons)
         </Typography>
         <Input
+          name="pcbp_M"
+          value={chemicalData.pcbp_M}
+          onChange={(e) => handleChange({event:e, setFormStateData : setChemicalData})}
           type="number"
           placeholder="0"
           className="!border-t-blue-gray-200 focus:!border-t-gray-900 md:w-40 md:-mt-12 mt-2 w-52"
@@ -65,6 +238,9 @@ const Chemical = () => {
           Ethylene (tons)
         </Typography>
         <Input
+          name="pcbp_E"
+          value={chemicalData.pcbp_E}
+          onChange={(e) => handleChange({event:e, setFormStateData : setChemicalData})}
           type="number"
           placeholder="0"
           className="!border-t-blue-gray-200 focus:!border-t-gray-900 md:w-40 md:-mt-12 mt-2 w-52"
@@ -77,6 +253,9 @@ const Chemical = () => {
           Ethylene oxide (tons)
         </Typography>
         <Input
+          name="pcbp_EO"
+          value={chemicalData.pcbp_EO}
+          onChange={(e) => handleChange({event:e, setFormStateData : setChemicalData})}
           type="number"
           placeholder="0"
           className="!border-t-blue-gray-200 focus:!border-t-gray-900 md:w-40 md:-mt-12 mt-2 w-52"
@@ -89,6 +268,9 @@ const Chemical = () => {
           Acrylonitrile (tons)
         </Typography>
         <Input
+          name="pcbp_A"
+          value={chemicalData.pcbp_A}
+          onChange={(e) => handleChange({event:e, setFormStateData : setChemicalData})}
           type="number"
           placeholder="0"
           className="!border-t-blue-gray-200 focus:!border-t-gray-900 md:w-40 md:-mt-12 mt-2 w-52"
@@ -101,6 +283,9 @@ const Chemical = () => {
           Carbon black (tons)
         </Typography>
         <Input
+          name = "pcbp_CB"
+          value={chemicalData.pcbp_CB}
+          onChange={(e) => handleChange({event:e, setFormStateData : setChemicalData})}
           type="number"
           placeholder="0"
           className="!border-t-blue-gray-200 focus:!border-t-gray-900 md:w-40 md:-mt-10 mt-2 w-52"
@@ -109,6 +294,24 @@ const Chemical = () => {
           }}
         />
       </div>
+
+      <div className=" flex justify-center">
+                <Button 
+                  fullWidth 
+                  className="w-full md:w-11/12"
+                  loading = {isLoading}
+                  onClick={submitValidation}
+                  >
+                    {
+                      params.action === "submit" ?
+                      "Submit"
+                      : params.action === "update" ?
+                      "Request Update"
+                      : "Accept Update"
+                    }
+                  </Button>
+  
+          </div>
     </div>
   );
 };

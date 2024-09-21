@@ -16,6 +16,8 @@ type MineralData = {
   lp : number;
   gp : number;
 }
+
+
 const Mineral = () => {
 
     const industrialBaseData = useIndustrialBaseData();
@@ -36,17 +38,11 @@ const Mineral = () => {
 
 
 
-    // for future reference only :>
-    useEffect(()=>{
-      console.log("industrialBaseData", industrialBaseData);
-
-    },[industrialBaseData])
-
-
     
   const submitValidation = () => {
 
       const {brgy, dsi, type_ofData, setAlertMsg, setOpenAlert, } = industrialBaseData
+
       if(brgy && dsi && type_ofData){
 
         setOpenDialogBox(true);
@@ -99,7 +95,6 @@ const Mineral = () => {
   }
 
 
-
   const submitHandler = () =>{
    const payload = preparePayLoad();
    const {setAlertMsg, setOpenAlert} = industrialBaseData
@@ -124,9 +119,6 @@ const Mineral = () => {
   .finally(()=>{
     setOpenDialogBox(false)
   })
-
-
-
 
 
   }
