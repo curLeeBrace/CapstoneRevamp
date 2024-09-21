@@ -28,4 +28,4 @@ const ElectronicSchema = new mongoose.Schema({
     dateTime_edited : {type : Date}
 })
 
-export = mongoose.model('(industrial) metalForm', ElectronicSchema);
+export = mongoose.model('(industrial) electronicForm', ElectronicSchema);  
