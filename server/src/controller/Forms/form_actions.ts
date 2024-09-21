@@ -1,6 +1,9 @@
 import { Request, Response } from 'express';
 import FuelFormSchema from "../../db_schema/FuelFormSchema";
 import WasteWaterFormShema from '../../db_schema/WasteWaterFormShema';
+import MineralSchema from '../../db_schema/Industrial/MineralSchema';
+
+
 import { auditLogType, saveAuditLog } from "../AuditLog/audit_log";
 
 
@@ -10,7 +13,24 @@ const insertFormData = async (req: Request, res: Response) => {
     try {
         // Insert the fuel form data
         console.log("Request body:", req.body);
-        const insert = form_category === "mobile-combustion" ? await FuelFormSchema.create(req.body) :  await WasteWaterFormShema.create(req.body)
+        let insert = undefined;
+        
+        if(form_category === "mobile-combustion"){
+            insert = await FuelFormSchema.create(req.body);
+        } else if(form_category === "waste-water"){
+            insert = await WasteWaterFormShema.create(req.body);
+        } else if (form_category === "industrial-mineral"){
+            insert = await MineralSchema.create(req.body);
+        }
+
+
+
+
+
+
+
+
+
 
         if (insert) {
             // Create the audit log

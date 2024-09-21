@@ -12,7 +12,7 @@ import AccountVerification from "./routes/not-auth/AccountVerification";
 
 
 import DashBoard from "./routes/s-admin/DashBoard"
-import { StationaryForm } from "./routes/surveyor/StationaryForm";
+import { MobileCombustionForm } from "./routes/surveyor/MobileCombustionForm";
 import HomePage from "./routes/HomePage";
 import LogIn from "./routes/not-auth/LogIn";
 import ForgotPass from "./routes/not-auth/ForgotPass";
@@ -83,7 +83,7 @@ function App() {
               <Route index element = {<HomePage/>}/>
               <Route path = 'home' element = {<HomePage/>}/>
               <Route path = 'forms'>
-                <Route path = ':action/:form_type' element = {<StationaryForm/>}/>
+                <Route path = ':action/:form_type' element = {<MobileCombustionForm/>}/>
                 <Route path = ':action/waste-water' element = {<WasteWaterForm/>}/>
 
                 <Route path = ':action/industrial' element = {<IndustrialForm/>}>

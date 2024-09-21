@@ -3,10 +3,15 @@ import mongoose from "mongoose";
 const MineralSchema = new mongoose.Schema({
 
     survey_data : {
+        dsi : {type : String},
+        type_ofData : {type : String},
+
+
         cpp : {type : Number}, //Cement Production - Portland
         cpb : {type : Number}, //Cement Production - Blended
         lp :  {type : Number}, //Lime Production
         gp :  {type : Number}, //Glass Production
+        
         brgy_name  :{type : String, required : true},
         brgy_code : {type : String, required : true},
         status : {type : String, required : true, default : "0"}
