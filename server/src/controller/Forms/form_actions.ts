@@ -2,7 +2,8 @@ import { Request, Response } from 'express';
 import FuelFormSchema from "../../db_schema/FuelFormSchema";
 import WasteWaterFormShema from '../../db_schema/WasteWaterFormShema';
 import MineralSchema from '../../db_schema/Industrial/MineralSchema';
-
+import ChemicalSchema from '../../db_schema/Industrial/ChemicalSchema';
+import MetalSchema from '../../db_schema/Industrial/MetalSchema';
 
 import { auditLogType, saveAuditLog } from "../AuditLog/audit_log";
 
@@ -21,6 +22,10 @@ const insertFormData = async (req: Request, res: Response) => {
             insert = await WasteWaterFormShema.create(req.body);
         } else if (form_category === "industrial-mineral"){
             insert = await MineralSchema.create(req.body);
+        } else if (form_category === "industrial-chemical"){
+            insert = await ChemicalSchema.create(req.body);
+        } else if (form_category === "industrial-metal"){
+            insert = await MetalSchema.create(req.body);
         }
 
 

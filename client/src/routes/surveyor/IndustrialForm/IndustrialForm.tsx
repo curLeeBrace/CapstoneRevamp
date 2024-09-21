@@ -37,8 +37,8 @@ const IndustrialBaseDataContext = createContext<IndustrialContextInterface>({} a
  function IndustrialForm() {
   const params = useParams();
   const [openAlert, setOpenAlert] = useState<boolean>(false);
-  const [openDialogBox, setOpenDialogBox] = useState(false);
-  const [isLoading, set_isLoading] = useState<boolean>(false);
+  // const [openDialogBox, setOpenDialogBox] = useState(false);
+  // const [isLoading, set_isLoading] = useState<boolean>(false);
   const [alert_msg, setAlertMsg] = useState("");
   const user_info = useUserInfo();
   const { state } = useLocation();
