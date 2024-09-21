@@ -2,6 +2,9 @@ import mongoose from "mongoose";
 
 const ElectronicSchema = new mongoose.Schema({
     survey_data : {
+        dsi : {type : String},
+        type_ofData : {type : String},
+
         ics : {type : Number}, // Integrated Circuit or Semiconductor
         tft_FPD : {type : Number}, //TFT Flat Panel Display 
         photovoltaics : {type : Number}, //Photovoltaics 

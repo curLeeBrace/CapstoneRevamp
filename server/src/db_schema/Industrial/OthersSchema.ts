@@ -2,6 +2,11 @@ import mongoose from "mongoose";
 
 const OthersSchema = new mongoose.Schema({
     survey_data : {
+        dsi : {type : String},
+        type_ofData : {type : String},
+
+
+
         ppi : {type : Number}, //Pulp and Paper Industry 
         fbi : {type : Number}, //Food and Beverages Industry 
         other : {type : Number}, //Other
