@@ -86,6 +86,8 @@ type DashBoardData = {
             const mobileComstion_data =  await get_mobileComstion_data(user_type, query, locations);  
             const wasteWaterGHGe = await getWasteWaterGHGeSum(user_type, query, locations);
 
+            
+
 
 
             mobileComstion_data.forEach(mb_data => {
