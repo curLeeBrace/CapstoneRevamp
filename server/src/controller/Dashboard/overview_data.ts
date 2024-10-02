@@ -5,6 +5,7 @@ import getAvailableLocations from "../../../custom_funtions/getAvailableLocation
 
 import AccountSchema from "../../db_schema/AccountSchema";
 import getWasteWaterGHGeSum from "../../../custom_funtions/wasteWaterActions";
+import {getIndustrialOverallGHGe} from "../../../custom_funtions/Industrial/industrialAction";
 
 
 interface Municipality {
@@ -44,6 +45,8 @@ type DashBoardData = {
     table_data: {
         mobileCombustionGHGe : MobileCombustionTableData[],
         wasteWaterGHGe : number[]
+        industrialGHGe : number[]
+
     }
     total_ghge : number;
 
@@ -85,20 +88,21 @@ type DashBoardData = {
             
             const mobileComstion_data =  await get_mobileComstion_data(user_type, query, locations);  
             const wasteWaterGHGe = await getWasteWaterGHGeSum(user_type, query, locations);
-
+            const industrialGHGe = await getIndustrialOverallGHGe(user_type, query, locations)
             
 
 
 
             mobileComstion_data.forEach(mb_data => {
-
-               
                 total_ghge += Number(mb_data.emission.ghge.toFixed(2));
  
             })
 
-
             wasteWaterGHGe.forEach(ghge => {
+                total_ghge += Number(ghge.toFixed(2));
+            })
+
+            industrialGHGe.forEach(ghge => {
                 total_ghge += Number(ghge.toFixed(2));
             })
 
@@ -112,7 +116,8 @@ type DashBoardData = {
                     total_surveryor : surveyor.length,
                     table_data: {
                         mobileCombustionGHGe : mobileComstion_data,
-                        wasteWaterGHGe : wasteWaterGHGe
+                        wasteWaterGHGe : wasteWaterGHGe,
+                        industrialGHGe,
                     },
                     total_ghge,
             }

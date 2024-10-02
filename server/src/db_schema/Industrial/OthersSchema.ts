@@ -10,6 +10,7 @@ const OthersSchema = new mongoose.Schema({
         ppi : {type : Number}, //Pulp and Paper Industry 
         fbi : {type : Number}, //Food and Beverages Industry 
         other : {type : Number}, //Other
+        
         brgy_name  :{type : String, required : true},
         brgy_code : {type : String, required : true},
         status : {type : String, required : true, default : "0"}

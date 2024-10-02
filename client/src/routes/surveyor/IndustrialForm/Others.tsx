@@ -90,7 +90,7 @@ const submitHandler = () =>{
   const {setAlertMsg, setOpenAlert} = industrialBaseData
 
 
-  submitForm({payload, form_category : "industrial-electronics"})
+  submitForm({payload, form_category : "industrial-others"})
  .then(res => {
          if(res.status === 201){
            setOpenAlert(true);

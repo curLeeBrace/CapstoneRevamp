@@ -5,31 +5,16 @@ import Electronics from "../../src/db_schema/Industrial/ElectronicsSchema";
 import Others from "../../src/db_schema/Industrial/OthersSchema";
 
 import {formulaForGettingIndstrialGHGe, IndustrialEmmisionFactor} from "./industrialAction";
+import { Schema, SchemaType } from "mongoose";
 
 
 
 
 
-// type MineralTonsData = {
-//         cpp : number;
-//         cpb : number;
-//         lp : number;
-//         gp : number;
-// }
-
-
-
-
-
-
-
-
-
-
-const getMineralGHGe_perOperation = async (user_type : string, query : {}, locations : any[], mineralEmissionFactors : IndustrialEmmisionFactor[], 
+const getGHGe_perOperation = async (user_type : string, query : {}, locations : any[], industryEmissionFactors : IndustrialEmmisionFactor[], 
     industryType : "Mineral" | "Chemical" | "Metal" | "Electronics" | "Others") : Promise<number[][]> => {
 
-    let mineralGHGe_container_perOperation : number[][] = []
+    let industryGHGe_container_perOperation : number[][] =  []
 
         
     const IndustrialData = industryType === "Mineral" ? await Mineral.find(query)
@@ -76,45 +61,98 @@ const getMineralGHGe_perOperation = async (user_type : string, query : {}, locat
 
 
         IndustrialData.forEach((industrialData)=>{
-            const {cpp, cpb, lp, gp} = industrialData.survey_data
-            const mineralTons :number[] = [cpp, cpb, lp, gp];
+
+            //setting up the length of array that will pass in getting ghge
+            let tons :number[] = [];
+            
+            
+            if(industryType === "Mineral"){
+                const {cpp, cpb, lp, gp} = industrialData.survey_data as any
+                tons = [cpp, cpb, lp, gp]
+
+            } else if (industryType === "Chemical"){
+                const {
+                    ap,
+                    sap,
+                    pcbp_M,
+                    pcbp_E,
+                    pcbp_EDVCM,
+                    pcbp_EO,
+                    pcbp_A,
+                    pcbp_CB,
+                } = industrialData.survey_data as any
+                tons = [
+                    ap,
+                    sap,
+                    pcbp_M,
+                    pcbp_E,
+                    pcbp_EDVCM,
+                    pcbp_EO,
+                    pcbp_A,
+                    pcbp_CB,
+                ]
+            } else if (industryType === "Metal") {
+                const {ispif, ispnif} = industrialData.survey_data as any
+                tons = [ispif, ispnif]
+
+            } else if (industryType === "Electronics"){
+                const {ics, tft_FPD, photovoltaics, htf} = industrialData.survey_data as any
+                tons = [ics, tft_FPD, photovoltaics, htf]
+
+            } else {
+                const {ppi, fbi, other} = industrialData.survey_data as any
+                tons  = [ppi, fbi, other];
+            }
+            
+
+
     
             if(user_type === "s-admin"){
                 if(industrialData.surveyor_info.municipality_code === root_loc_code){
 
-                    const GHGe_perOperation = formulaForGettingIndstrialGHGe(mineralEmissionFactors, mineralTons);
+                    const GHGe_perOperation = formulaForGettingIndstrialGHGe(industryEmissionFactors, tons);
 
-                    GHE_perOperation.forEach((ghge, index)=>{
+                    GHGe_perOperation.forEach((ghge, index)=>{
 
-                        ghge += GHGe_perOperation[index]
+                        GHE_perOperation[index] += ghge
                     })
+                    //example variable if miuneral is industry type
                     // mineralGHE_perOperation.cpp += mineralGHGe[0];
                     // mineralGHE_perOperation.cpb += mineralGHGe[1];
                     // mineralGHE_perOperation.lp += mineralGHGe[2];
                     // mineralGHE_perOperation.gp += mineralGHGe[3];
+                    
 
 
                 }
             } else {
-                if(industrialData.survey_data.brgy_code === root_loc_code){
-                    const GHGe_perOperation = formulaForGettingIndstrialGHGe(mineralEmissionFactors, mineralTons);
+
+                if(industrialData?.survey_data?.brgy_code  === root_loc_code){
+                    const GHGe_perOperation = formulaForGettingIndstrialGHGe(industryEmissionFactors, tons);
+
+                    //example variable if miuneral is industry type
                     // mineralGHE_perOperation.cpp += mineralGHGe[0];
                     // mineralGHE_perOperation.cpb += mineralGHGe[1];
                     // mineralGHE_perOperation.lp += mineralGHGe[2];
                     // mineralGHE_perOperation.gp += mineralGHGe[3];
 
-                    GHE_perOperation.forEach((ghge, index)=>{
+                    
+                    GHGe_perOperation.forEach((ghge, index)=>{
 
-                        ghge += GHGe_perOperation[index]
+                        GHE_perOperation[index] += ghge
                     })
+
+
+                 
                 }   
             }
+            
         })
+        
 
+        industryGHGe_container_perOperation.push(GHE_perOperation)
 
-
-
-        // mineralGHGe_container_perOperation.push();
+       
 
 
     })
@@ -123,11 +161,11 @@ const getMineralGHGe_perOperation = async (user_type : string, query : {}, locat
 
 
 
-    return mineralGHGe_container_perOperation
+    return industryGHGe_container_perOperation
 
 
 
 }
 
 
-export default getMineralGHGe_perOperation
+export default getGHGe_perOperation
