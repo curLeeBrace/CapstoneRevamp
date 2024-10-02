@@ -201,7 +201,7 @@ const submitHandler = () =>{
             Heat transfer fluid (tons)
           </Typography>
           <Input
-            name=""
+            name="htf"
             value={electronicsData.htf}
             onChange={(e) => handleChange({event : e, setFormStateData : setElectronicsData})}
             size="lg"
