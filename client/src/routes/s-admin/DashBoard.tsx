@@ -27,7 +27,8 @@ type DashBoardData = {
   total_LGU_admins : number;
   table_data: {
       mobileCombustionGHGe : MobileCombustionTableData[],
-      wasteWaterGHGe : number[]
+      wasteWaterGHGe : number[],
+      industrialGHGe : number[]
   }
   total_ghge : number;
 
@@ -74,6 +75,14 @@ function DashBoard() {
         })) : [{ x: null, y: null }],
         
       },
+      {
+        name: "Industrial GHGe",
+        data: dashboard_data ? dashboard_data.table_data.mobileCombustionGHGe.map((tb_data, index) => ({
+          x: tb_data.loc_name,
+          y: dashboard_data.table_data.industrialGHGe[index].toFixed(2)
+        })) : [{ x: null, y: null }],
+        
+      },
     ],
     options: {
       chart: {
@@ -88,7 +97,7 @@ function DashBoard() {
         },
         foreColor: '#101010',
       },
-      colors : ["#248003", "#2942b3"],
+      colors : ["#248003", "#2942b3", "#f58142"],
       plotOptions: {
         bar: {
           columnWidth: '80%',
