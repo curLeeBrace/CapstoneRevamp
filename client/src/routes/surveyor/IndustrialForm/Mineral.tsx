@@ -1,6 +1,6 @@
 import { Typography, Input, Button } from "@material-tailwind/react"
 import {useIndustrialBaseData} from './IndustrialForm';
-import { useEffect, useState } from "react";
+import {useState } from "react";
 import { useParams } from "react-router-dom";
 import DialogBox from "../../../Components/DialogBox";
 import useSurveyFormActions from "../../../custom-hooks/useSurveyFormActions";
@@ -26,7 +26,7 @@ const Mineral = () => {
     const [openDialogBox, setOpenDialogBox] = useState(false);
 
     const user_info = useUserInfo();
-    const {updateForm, acceptFormUpdate, submitForm} = useSurveyFormActions();
+    const {submitForm} = useSurveyFormActions();
     const handleChange = useHandleChange;
 
     const [mineralData, setMineralData] = useState<MineralData>({
