@@ -8,7 +8,7 @@ import {Typography} from "@material-tailwind/react";
 import SimpleCard from "../../Components/Dashboard/SimpleCard";
 
 import { TabsDefault} from "../../Components/Tabs";
-import { Button } from '@material-tailwind/react';
+// import { Button } from '@material-tailwind/react';
 import useAxiosPrivate from "../../custom-hooks/auth_hooks/useAxiosPrivate";
 import SurveyData from "../SurveyData";
 import FilterComponent from "../../Components/FilterComponent";
@@ -34,8 +34,8 @@ const SummaryData = () => {
     const [v_typeSeries, set_vTypeSeries] = useState<any[]>();
     const [v_ageSeries, set_vAgeSeries] = useState<any[]>();
     const [vehicle_ghge_rate, setVehicleGHGeRate] = useState<any[]>();
-    const [expected_ghgThisYear, set_expected_ghgThisYear] = useState<number>();
-    const [isPredicting, set_isPredicting] = useState<boolean>(false);
+    // const [expected_ghgThisYear, set_expected_ghgThisYear] = useState<number>();
+    // const [isPredicting, set_isPredicting] = useState<boolean>(false);
 
     //waster-water
     const [popultionUsingTheSystem, setPopultionUsingTheSystem] = useState<any[]>();
@@ -201,49 +201,49 @@ const SummaryData = () => {
         }
 
 
-        set_expected_ghgThisYear(undefined);
+        // set_expected_ghgThisYear(undefined);
 
     },[formType, municipality?.address_code, brgy?.address_code, yearState, survey_category])
 
 
 
 
-    const getExpected_ghgThisYear = () => {
+    // const getExpected_ghgThisYear = () => {
         
-        set_isPredicting(true);
-        axiosPrivate.get(`/forecast/e-mobile/${municipality?.address_code}/${formType}`)
-        .then(res => {
+    //     set_isPredicting(true);
+    //     axiosPrivate.get(`/forecast/e-mobile/${municipality?.address_code}/${formType}`)
+    //     .then(res => {
 
-            if(res.status == 200){
-                let totalExpetedGHG_thisYear = 0;
-                const result:{
-                    co2e : number,
-                    ch4e : number,
-                    n2oe : number,
-                    ghge : number
-                }[]= res.data;
+    //         if(res.status == 200){
+    //             let totalExpetedGHG_thisYear = 0;
+    //             const result:{
+    //                 co2e : number,
+    //                 ch4e : number,
+    //                 n2oe : number,
+    //                 ghge : number
+    //             }[]= res.data;
                 
     
     
-                result.forEach(res => {
-                    totalExpetedGHG_thisYear += res.ghge;
-                })
-                totalExpetedGHG_thisYear+=mobileCombustionData.emmission.tb_ghge
+    //             result.forEach(res => {
+    //                 totalExpetedGHG_thisYear += res.ghge;
+    //             })
+    //             totalExpetedGHG_thisYear+=mobileCombustionData.emmission.tb_ghge
     
-                set_expected_ghgThisYear(totalExpetedGHG_thisYear);
+    //             set_expected_ghgThisYear(totalExpetedGHG_thisYear);
               
-            } else {
-                alert("Insuficient Data can't forecast!!");
-            }
+    //         } else {
+    //             alert("Insuficient Data can't forecast!!");
+    //         }
 
 
 
-        })
-        .catch(err => console.log(err))
-        .finally(()=>set_isPredicting(false))
+    //     })
+    //     .catch(err => console.log(err))
+    //     .finally(()=>set_isPredicting(false))
 
 
-    }
+    // }
 
 
     return (
