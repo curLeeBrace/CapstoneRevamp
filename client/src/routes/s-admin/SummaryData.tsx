@@ -308,19 +308,19 @@ const SummaryData = () => {
                         <div className="flex h-auto flex-col gap-3">
 
                                 
-                                <div className="w-full flex gap-5 flex-wrap lg:flex-nowrap">
+                                <div className="w-full flex flex-col gap-2 flex-wrap lg:flex-nowrap">
                                     
-                                    <div className="h-40 w-full lg:w-1/2">
+                                    <div className="h-24 w-full">
                                         <SimpleCard body={`${totalGHGe.toFixed(2)}`} header="Total GHGe" icon={<GlobeAsiaAustraliaIcon className="h-full w-full"/>} isLoading = {isLoading}/>
                                     </div>
-                                    <div className="h-40 w-full lg:w-1/2">
+                                    {/* <div className="h-40 w-full lg:w-1/2">
                                         <SimpleCard body={
                                             expected_ghgThisYear ? expected_ghgThisYear.toFixed(5)
                                             :<Button onClick={()=>getExpected_ghgThisYear()} loading = {isPredicting}>{isPredicting ? "This may take a few minutes" : "Click me to predict"}</Button>
                                             
                                         } header="Expected GHGe this year" icon={<GlobeAsiaAustraliaIcon className="h-full w-full"/>} isLoading = {isLoading}/>
-                                    </div>  
-                                </div>
+                                    </div>   */}
+                               
                                 
                                
                                     <TabsDefault data={[
@@ -374,6 +374,8 @@ const SummaryData = () => {
                 
                                     }
                                     ]} />
+                                    
+                                </div>
 
 
            
