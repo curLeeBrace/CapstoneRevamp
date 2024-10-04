@@ -34,7 +34,7 @@ const Chemical = () => {
   const [isLoading, set_isLoading] = useState<boolean>(false);
   const [openDialogBox, setOpenDialogBox] = useState(false);
   const user_info = useUserInfo();
-  const {updateForm, acceptFormUpdate, submitForm} = useSurveyFormActions();
+  const {submitForm} = useSurveyFormActions();
 
 
 

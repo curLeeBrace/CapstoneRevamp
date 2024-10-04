@@ -19,7 +19,7 @@ const Metal = () => {
   const [openDialogBox, setOpenDialogBox] = useState(false);
 
   const user_info = useUserInfo();
-  const {updateForm, acceptFormUpdate, submitForm} = useSurveyFormActions();
+  const {submitForm} = useSurveyFormActions();
   const handleChange = useHandleChange;
 
   const [metalData, setMetalData] = useState<MetalData>({

@@ -6,9 +6,9 @@ import {
   Typography,
 
 } from "@material-tailwind/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
-import AlertBox from "../../Components/Forms/AlertBox";
+// import AlertBox from "../../Components/Forms/AlertBox";
 import useUserInfo from "../../custom-hooks/useUserType";
 import BrgyMenu from "../../custom-hooks/BrgyMenu";
 import { AddressReturnDataType } from "../../custom-hooks/useFilterAddrress";
@@ -31,12 +31,19 @@ import { AddressReturnDataType } from "../../custom-hooks/useFilterAddrress";
 // }
 export function AgricultureForm() {
   const params = useParams();
-  const [openAlert, setOpenAlert] = useState<boolean>(false);
-  const [isLoading, set_isLoading] = useState<boolean>(false);
-  const [alert_msg, setAlertMsg] = useState("");
+  // const [openAlert, setOpenAlert] = useState<boolean>(false);
+  // const [isLoading, set_isLoading] = useState<boolean>(false);
+  // const [alert_msg, setAlertMsg] = useState("");
   const user_info = useUserInfo();
   const [brgy, setBrgy] = useState<AddressReturnDataType>();
   const { state } = useLocation();
+
+
+
+  useEffect(()=>{
+    console.log(brgy);
+  },[])
+
 
   const submitValidation = () => {
     // validation logic here
@@ -44,7 +51,7 @@ export function AgricultureForm() {
 
   return (
     <div className="flex justify-center min-h-screen px-4 py-10 overflow-x-hidden">
-      <AlertBox openAlert={openAlert} setOpenAlert={setOpenAlert} message={alert_msg} />
+      {/* <AlertBox openAlert={openAlert} setOpenAlert={setOpenAlert} message={alert_msg} /> */}
 
       <Card className="w-full h-full sm:w-96 md:w-3/4 lg:w-2/3 xl:w-2/3 px-6 py-6 shadow-black shadow-2xl rounded-xl">
         <Typography variant="h4" color="blue-gray" className="text-center">
@@ -220,7 +227,7 @@ export function AgricultureForm() {
             <Button
               fullWidth
               className="w-64 md:w-full"
-              loading={isLoading}
+              // loading={isLoading}
               onClick={submitValidation}
             >
               {params.action === "submit" ? "Submit" : params.action === "update" ? "Request Update" : "Accept Update"}

@@ -21,7 +21,7 @@ const Others = () => {
   const [openDialogBox, setOpenDialogBox] = useState(false);
   
   const user_info = useUserInfo();
-  const {updateForm, acceptFormUpdate, submitForm} = useSurveyFormActions();
+  const {submitForm} = useSurveyFormActions();
     const handleChange = useHandleChange;
     const [othersData, setOthersData] = useState<OthersData>({
       fbi : 0,
