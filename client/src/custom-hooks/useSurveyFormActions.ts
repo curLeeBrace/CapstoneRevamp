@@ -4,7 +4,8 @@ import useAxiosPrivate from './auth_hooks/useAxiosPrivate';
 interface SurveyFormProps {
     payload? : any
     form_id? : string
-    form_category : "mobile-combustion" | "waste-water" | "industrial-mineral" | "industrial-chemical" | "industrial-metal" | "industrial-electronics"| "industrial-others"
+    form_category : "mobile-combustion" | "waste-water" | "industrial-mineral" | "industrial-chemical" | "industrial-metal" | "industrial-electronics"| "industrial-others" | 
+                    "agriculture"
 }
 
 
