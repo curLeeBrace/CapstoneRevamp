@@ -266,11 +266,11 @@ type DashBoardData = {
     const  ch4e =  (liters_consumption * emission_factors.ch4) / 1000;
     const  n2oe =  (liters_consumption * emission_factors.n2o) / 1000;
 
-    const emission : Emission = {
+    const emission : Emission = {   
         co2e,
         ch4e,
         n2oe, 
-        ghge : (co2e * 1) + (ch4e * 28) + (n2oe * 265)     
+        ghge : (co2e * 1) + (ch4e * 28) + (n2oe * 265)   
     }
 
     return emission

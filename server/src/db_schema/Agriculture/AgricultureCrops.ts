@@ -14,22 +14,7 @@ const AgricultureForm = new mongoose.Schema({
             dol_limestone : {type:Number, required : true},//Dolomite and/or Limestone Consumption
         },required : true},
 
-        live_stock :{type : {
-            buffalo  : {type : Number, required : true},//
-            cattle : {type : Number, required : true},//
-            goat : {type : Number, required : true},//
-            horse : {type : Number, required : true},//
-            poultry : {type : Number, required : true},//
-            swine : {type : Number, required : true},//
-            non_dairyCattle :{type : Number, required : true}
 
-        }, required : true},
- 
-
-
-
-
-        
         brgy_name  :{type : String, required : true},
         brgy_code : {type : String, required : true},
         status : {type : String, required : true, default : "0"}
@@ -50,4 +35,4 @@ const AgricultureForm = new mongoose.Schema({
 })
 
 
-export = mongoose.model('agricultureForm', AgricultureForm);
+export = mongoose.model('(agriculture) crops', AgricultureForm);

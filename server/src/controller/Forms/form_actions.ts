@@ -9,7 +9,8 @@ import ElectronicsSchema from '../../db_schema/Industrial/ElectronicsSchema';
 import OthersSchema from '../../db_schema/Industrial/OthersSchema';
 ///
 
-import AgricultureSchema from '../../db_schema/AgricultureSchema';
+import AgricultureCrops from '../../db_schema/Agriculture/AgricultureCrops';
+import AgricultureLiveStock from '../../db_schema/Agriculture/AgricultureLiveStock';
 
 import { auditLogType, saveAuditLog } from "../AuditLog/audit_log";
 
@@ -36,8 +37,10 @@ const insertFormData = async (req: Request, res: Response) => {
             insert = await ElectronicsSchema.create(req.body);
         } else if (form_category === "industrial-others"){
             insert = await OthersSchema.create(req.body);
-        } else if (form_category === "agriculture") {
-            insert = await AgricultureSchema.create(req.body);
+        } else if (form_category === "agriculture-crops") {
+            insert = await AgricultureCrops.create(req.body);
+        } else if (form_category === "agriculture-livestocks"){
+            insert = await AgricultureLiveStock.create(req.body);
         }
 
 

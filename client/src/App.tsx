@@ -25,7 +25,11 @@ import SummaryData from "./routes/s-admin/SummaryData";
 import SurveyedList from "./routes/surveyor/SurveyedList";
 import WasteWaterForm from "./routes/surveyor/WasteWaterForm";
 import { IndustrialForm, Chemical, Electronics, Metal, Mineral, Others} from "./routes/surveyor/IndustrialForm/IndustrialForm";
-import { AgricultureForm } from "./routes/surveyor/AgricultureForm";
+
+import { AgricultureForm, Crops, LiveStocks} from "./routes/surveyor/AgricultureForm/AgricultureForm";
+
+
+
 import { StationaryFuelForm } from "./routes/surveyor/StationaryFuelForm";
 
 
@@ -95,7 +99,11 @@ function App() {
                 </Route>
 
 
-                <Route path = ':action/agriculture' element = {<AgricultureForm/>}/>
+                <Route path = ':action/agriculture' element = {<AgricultureForm/>}>
+                  <Route path="0/:agriculture_type" element = {<Crops/>}/>
+                  <Route path="1/:agriculture_type" element = {<LiveStocks/>}/>
+                </Route>
+
                 <Route path = ':action/stationary-fuel-consumption' element = {<StationaryFuelForm/>}/>
               </Route>
               <Route path="surveyed-list/:survey_category" element ={<SurveyedList/>}/>

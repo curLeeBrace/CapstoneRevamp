@@ -1,0 +1,280 @@
+import { Button, Input, Typography } from "@material-tailwind/react";
+import {useParams } from "react-router-dom";
+import useUserInfo from "../../../custom-hooks/useUserType";
+import { useState } from "react";
+
+import useSurveyFormActions from "../../../custom-hooks/useSurveyFormActions";
+import useHandleChange from "../../../custom-hooks/useHandleChange";
+import DialogBox from "../../../Components/DialogBox";
+
+
+
+import {useAgricultureContextData} from "./AgricultureForm";
+
+type AgricultureCropsType = {
+  rdsi: number;
+  rdsr: number;
+  rwsi: number;
+  rwsr: number;
+  crop_residues: number;
+  dol_limestone: number;
+};
+
+const Crops = () => {
+  const params = useParams();
+  const user_info = useUserInfo();
+  const handlechange = useHandleChange;
+  const { submitForm } = useSurveyFormActions();
+  const agricultureData = useAgricultureContextData();
+
+ 
+  const [isLoading, set_isLoading] = useState<boolean>(false);
+  const [openDialogBox, setOpenDialogBox] = useState(false);
+  const [crops, setCrops] = useState<AgricultureCropsType>({
+    rdsi: 0,
+    rdsr: 0,
+    rwsi: 0,
+    rwsr: 0,
+    crop_residues: 0,
+    dol_limestone: 0,
+  });
+
+  const preparePayload = (): {} => {
+
+    const {brgy} = agricultureData
+    const {
+      email,
+      full_name,
+      municipality_name,
+      municipality_code,
+      province_code,
+    } = user_info;
+    let payload = {
+      survey_data: {
+        crops: crops,
+        brgy_name: brgy?.address_name,
+        brgy_code: brgy?.address_code,
+      },
+
+      surveyor_info: {
+        email,
+        full_name,
+        municipality_name,
+        municipality_code,
+        province_code,
+        img_id: user_info.img_id,
+      },
+      dateTime_created: new Date(),
+      dateTime_edited: null,
+    };
+
+    return payload;
+  };
+
+  const submitValidation = () => {
+    const {brgy, setAlertMsg, setOpenAlert} = agricultureData
+    if (brgy?.address_name) {
+      setOpenDialogBox(true);
+    } else {
+      set_isLoading(false);
+      setOpenAlert(true);
+      setAlertMsg("Some field are empty!");
+    }
+  };
+
+  const clearForm = () => {
+    setCrops({
+      crop_residues: 0,
+      dol_limestone: 0,
+      rdsi: 0,
+      rdsr: 0,
+      rwsi: 0,
+      rwsr: 0,
+    });
+  };
+
+  const submitHandler = () => {
+    const payload = preparePayload();
+    const {setAlertMsg, setOpenAlert} = agricultureData
+
+    submitForm({payload, form_category : "agriculture-crops"})
+    .then(res => {
+            if(res.status === 201){
+              setOpenAlert(true);
+              setAlertMsg("Sucsessfully Submitted!");
+              clearForm();
+            }
+
+          set_isLoading(false);
+        })
+        .catch(err => {
+          console.log(err)
+          set_isLoading(false);
+          setOpenAlert(true);
+          setAlertMsg("Server Error!");
+    })
+    .finally(()=>{
+      setOpenDialogBox(false)
+    })
+  };
+
+  const updateHandler = () => {
+    /////////////!!!!!!!!!!!!!!!!!!!!!!!!EMPTYYYY
+  };
+
+  const acceptUpdateHandler = () => {
+    /////////////!!!!!!!!!!!!!!!!!!!!!!!!EMPTYYYY
+  };
+
+
+
+
+
+  return (
+    <div>
+      <DialogBox
+        open={openDialogBox}
+        setOpen={setOpenDialogBox}
+        message="Please double check the data before submitting"
+        label="Confirmation"
+        submit={
+          params.action === "submit"
+            ? submitHandler
+            : params.action === "update"
+            ? updateHandler
+            : acceptUpdateHandler
+        }
+      />
+    
+
+      {/* Crops Section */}
+      <Typography className="text-md font-bold mb-4 text-lg">Crops</Typography>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div>
+          <Typography>Dry Season, Irrigated (Has)</Typography>
+          <Input
+            name="rdsi"
+            value={crops.rdsi}
+            onChange={(e) =>
+              handlechange({ event: e, setFormStateData: setCrops })
+            }
+            type="number"
+            placeholder="0"
+            className="!border-t-blue-gray-200 focus:!border-t-gray-900"
+            labelProps={{
+              className: "before:content-none after:content-none",
+            }}
+          />
+        </div>
+        <div>
+          <Typography>Dry Season, Rainfed (Has)</Typography>
+          <Input
+            name="rdsr"
+            value={crops.rdsr}
+            onChange={(e) =>
+              handlechange({ event: e, setFormStateData: setCrops })
+            }
+            type="number"
+            placeholder="0"
+            className="!border-t-blue-gray-200 focus:!border-t-gray-900"
+            labelProps={{
+              className: "before:content-none after:content-none",
+            }}
+          />
+        </div>
+        <div>
+          <Typography>Wet Season, Irrigated (Has)</Typography>
+          <Input
+            value={crops.rwsi}
+            name="rwsi"
+            onChange={(e) =>
+              handlechange({ event: e, setFormStateData: setCrops })
+            }
+            type="number"
+            placeholder="0"
+            className="!border-t-blue-gray-200 focus:!border-t-gray-900"
+            labelProps={{
+              className: "before:content-none after:content-none",
+            }}
+          />
+        </div>
+        <div>
+          <Typography>Wet Season, Rainfed (Has)</Typography>
+          <Input
+            name="rwsr"
+            value={crops.rwsr}
+            onChange={(e) =>
+              handlechange({ event: e, setFormStateData: setCrops })
+            }
+            type="number"
+            placeholder="0"
+            className="!border-t-blue-gray-200 focus:!border-t-gray-900"
+            labelProps={{
+              className: "before:content-none after:content-none",
+            }}
+          />
+        </div>
+        <div>
+          <Typography>Crops Residue (Tons)</Typography>
+          <Input
+            name="crop_residues"
+            value={crops.crop_residues}
+            onChange={(e) =>
+              handlechange({ event: e, setFormStateData: setCrops })
+            }
+            type="number"
+            placeholder="0"
+            className="!border-t-blue-gray-200 focus:!border-t-gray-900"
+            labelProps={{
+              className: "before:content-none after:content-none",
+            }}
+          />
+        </div>
+        <div>
+          <Typography>Dolomite and/or Limestone Consumption (Kg)</Typography>
+          <Input
+            name="dol_limestone"
+            value={crops.dol_limestone}
+            onChange={(e) =>
+              handlechange({ event: e, setFormStateData: setCrops })
+            }
+            type="number"
+            placeholder="0"
+            className="!border-t-blue-gray-200 focus:!border-t-gray-900"
+            labelProps={{
+              className: "before:content-none after:content-none",
+            }}
+          />
+        </div>
+      </div>
+
+         {/* Submit Button */}
+         <div className="flex justify-center mt-8">
+            <Button
+              fullWidth
+              className="w-64 md:w-full"
+              loading={isLoading}
+              onClick={submitValidation}
+            >
+              {params.action === "submit"
+                ? "Submit"
+                : params.action === "update"
+                ? "Request Update"
+                : "Accept Update"}
+            </Button>
+          </div>
+
+    </div>
+  );
+};
+
+
+
+
+export default Crops
+
+
+
+
+
+

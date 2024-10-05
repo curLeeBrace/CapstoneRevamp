@@ -32,7 +32,7 @@ const url_ofSurveyorsForm = [
   },
   {
     title: "Agriculture",
-    href: `/surveyor/forms/submit/agriculture`,
+    href: `/surveyor/forms/submit/agriculture/0/crops`,
   },
   {
     title: "Stationary Fuel Consumption",
