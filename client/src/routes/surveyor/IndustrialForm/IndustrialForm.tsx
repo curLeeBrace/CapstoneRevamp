@@ -32,6 +32,10 @@ interface IndustrialContextInterface {
   setOpenAlert : Dispatch<React.SetStateAction<boolean>>
   setAlertMsg : Dispatch<React.SetStateAction<string>>
 }
+
+
+
+
 const IndustrialBaseDataContext = createContext<IndustrialContextInterface>({} as IndustrialContextInterface);
 
  function IndustrialForm() {
@@ -85,7 +89,7 @@ const IndustrialBaseDataContext = createContext<IndustrialContextInterface>({} a
                 Select Industry Type
               </Typography>
 
-              <div className="flex justify-around">
+              <div className="flex justify-around overflow-x-auto">
 
                 <NavLink to={"0/mineral"}
                  style={({isActive, isTransitioning})=>navLinkStyle(isActive, isTransitioning)}
