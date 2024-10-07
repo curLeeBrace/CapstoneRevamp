@@ -4,9 +4,6 @@ import mongoose from 'mongoose'
 const AgricultureForm = new mongoose.Schema({
     survey_data : { type : {
 
-  
-       
-
         live_stock :{type : {
             buffalo  : {type : Number, required : true},//
             cattle : {type : Number, required : true},//
