@@ -28,7 +28,9 @@ type DashBoardData = {
   table_data: {
       mobileCombustionGHGe : MobileCombustionTableData[],
       wasteWaterGHGe : number[],
-      industrialGHGe : number[]
+      industrialGHGe : number[],
+      agriculture_cropsGHGe : number[],
+      agriculture_liveStocksGHGe : number[]
   }
   total_ghge : number;
 
@@ -83,6 +85,22 @@ function DashBoard() {
         })) : [{ x: null, y: null }],
         
       },
+      {
+        name: "AgricultureCrops GHGe",
+        data: dashboard_data ? dashboard_data.table_data.mobileCombustionGHGe.map((tb_data, index) => ({
+          x: tb_data.loc_name,
+          y: dashboard_data.table_data.agriculture_cropsGHGe[index].toFixed(2)
+        })) : [{ x: null, y: null }],
+        
+      },
+      {
+        name: "AgricultureLiveStocks GHGe",
+        data: dashboard_data ? dashboard_data.table_data.mobileCombustionGHGe.map((tb_data, index) => ({
+          x: tb_data.loc_name,
+          y: dashboard_data.table_data.agriculture_liveStocksGHGe[index].toFixed(2)
+        })) : [{ x: null, y: null }],
+        
+      },
     ],
     options: {
       chart: {
@@ -97,17 +115,17 @@ function DashBoard() {
         },
         foreColor: '#101010',
       },
-      colors : ["#248003", "#2942b3", "#f58142"],
+      colors : ["#248003", "#2942b3", "#f58142", "#fcba03", "#03fc20"],
       plotOptions: {
         bar: {
-          columnWidth: '80%',
+          columnWidth: '90%',
           barHeight: '100%',
         }
       },
       dataLabels: {
         enabled: true,
         style: {
-          fontSize: '8px', // Adjust the font size here
+          fontSize: '5px', // Adjust the font size here
           fontWeight: 'bold',
           colors: ['#fff']
         },

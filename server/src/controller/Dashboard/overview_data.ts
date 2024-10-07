@@ -6,7 +6,7 @@ import getAvailableLocations from "../../../custom_funtions/getAvailableLocation
 import AccountSchema from "../../db_schema/AccountSchema";
 import getWasteWaterGHGeSum from "../../../custom_funtions/wasteWaterActions";
 import {getIndustrialOverallGHGe} from "../../../custom_funtions/Industrial/industrialAction";
-
+import getAgricultureGHGe from "../../../custom_funtions/agriculture";
 
 interface Municipality {
     city_code : String;
@@ -46,6 +46,8 @@ type DashBoardData = {
         mobileCombustionGHGe : MobileCombustionTableData[],
         wasteWaterGHGe : number[]
         industrialGHGe : number[]
+        agriculture_cropsGHGe : number[]
+        agriculture_liveStocksGHGe : number[]
 
     }
     total_ghge : number;
@@ -89,22 +91,30 @@ type DashBoardData = {
             const mobileComstion_data =  await get_mobileComstion_data(user_type, query, locations);  
             const wasteWaterGHGe = await getWasteWaterGHGeSum(user_type, query, locations);
             const industrialGHGe = await getIndustrialOverallGHGe(user_type, query, locations)
+            const agriculture_cropsGHGe = await getAgricultureGHGe(user_type, query, locations, "crops")
+            const agriculture_liveStocksGHGe = await getAgricultureGHGe(user_type, query, locations, "liveStocks")
             
 
 
 
-            mobileComstion_data.forEach(mb_data => {
+            mobileComstion_data.forEach((mb_data, index) => {
                 total_ghge += Number(mb_data.emission.ghge.toFixed(2));
- 
+                total_ghge += Number(wasteWaterGHGe[index].toFixed(2));
+                total_ghge += Number(industrialGHGe[index].toFixed(2));
+                total_ghge += Number(agriculture_cropsGHGe[index].toFixed(2));
+                total_ghge += Number(agriculture_liveStocksGHGe[index].toFixed(2));
             })
 
-            wasteWaterGHGe.forEach(ghge => {
-                total_ghge += Number(ghge.toFixed(2));
-            })
+            // wasteWaterGHGe.forEach(ghge => {
+            //     total_ghge += Number(ghge.toFixed(2));
+            // })
 
-            industrialGHGe.forEach(ghge => {
-                total_ghge += Number(ghge.toFixed(2));
-            })
+            // industrialGHGe.forEach(ghge => {
+            //     total_ghge += Number(ghge.toFixed(2));
+            // })
+
+
+            agriculture_cropsGHGe
 
 
 
@@ -118,6 +128,9 @@ type DashBoardData = {
                         mobileCombustionGHGe : mobileComstion_data,
                         wasteWaterGHGe : wasteWaterGHGe,
                         industrialGHGe,
+                        agriculture_cropsGHGe,
+                        agriculture_liveStocksGHGe
+
                     },
                     total_ghge,
             }

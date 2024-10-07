@@ -33,6 +33,7 @@ const ghgeSumPerOperation = (ghgePerOperation : number[][]):number[]=> {
 
     return ghgeSumContainer
 }
+
 //final function
 const getIndustrialOverallGHGe = async (user_type : string, query : {}, locations : any[]) : Promise<number[]> => {
 
