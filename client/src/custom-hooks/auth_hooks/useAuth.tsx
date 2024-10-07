@@ -40,7 +40,7 @@ export function AuthProvider({ children }: AuthProps) {
 
 // navigate to home if token is not set and not in specific route
   useEffect(() => {
-    console.log("token:", token);
+    // console.log("token:", token);
 
     if (!recoverRoute && !verifyAcc && !forgotRoute) {
       if (token === "" || token === undefined) {

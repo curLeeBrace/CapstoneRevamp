@@ -2,8 +2,12 @@ import mongoose from "mongoose";
 
 const MetalSchema = new mongoose.Schema({
     survey_data : {
+        dsi : {type : String},
+        type_ofData : {type : String},
+
         ispif : {type: Number}, //Iron and Steel Production from Integrated Facilities
         ispnif : {type: Number}, // Iron and Steel Production from Non-integrated Facilities
+        
         brgy_name  :{type : String, required : true},
         brgy_code : {type : String, required : true},
         status : {type : String, required : true, default : "0"}

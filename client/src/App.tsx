@@ -12,7 +12,7 @@ import AccountVerification from "./routes/not-auth/AccountVerification";
 
 
 import DashBoard from "./routes/s-admin/DashBoard"
-import { StationaryForm } from "./routes/surveyor/StationaryForm";
+import { MobileCombustionForm } from "./routes/surveyor/MobileCombustionForm";
 import HomePage from "./routes/HomePage";
 import LogIn from "./routes/not-auth/LogIn";
 import ForgotPass from "./routes/not-auth/ForgotPass";
@@ -25,7 +25,11 @@ import SummaryData from "./routes/s-admin/SummaryData";
 import SurveyedList from "./routes/surveyor/SurveyedList";
 import WasteWaterForm from "./routes/surveyor/WasteWaterForm";
 import { IndustrialForm, Chemical, Electronics, Metal, Mineral, Others} from "./routes/surveyor/IndustrialForm/IndustrialForm";
-import { AgricultureForm } from "./routes/surveyor/AgricultureForm";
+
+import { AgricultureForm, Crops, LiveStocks} from "./routes/surveyor/AgricultureForm/AgricultureForm";
+
+
+
 import { StationaryFuelForm } from "./routes/surveyor/StationaryFuelForm";
 
 
@@ -83,7 +87,7 @@ function App() {
               <Route index element = {<HomePage/>}/>
               <Route path = 'home' element = {<HomePage/>}/>
               <Route path = 'forms'>
-                <Route path = ':action/:form_type' element = {<StationaryForm/>}/>
+                <Route path = ':action/:form_type' element = {<MobileCombustionForm/>}/>
                 <Route path = ':action/waste-water' element = {<WasteWaterForm/>}/>
 
                 <Route path = ':action/industrial' element = {<IndustrialForm/>}>
@@ -95,7 +99,11 @@ function App() {
                 </Route>
 
 
-                <Route path = ':action/agriculture' element = {<AgricultureForm/>}/>
+                <Route path = ':action/agriculture' element = {<AgricultureForm/>}>
+                  <Route path="0/:agriculture_type" element = {<Crops/>}/>
+                  <Route path="1/:agriculture_type" element = {<LiveStocks/>}/>
+                </Route>
+
                 <Route path = ':action/stationary-fuel-consumption' element = {<StationaryFuelForm/>}/>
               </Route>
               <Route path="surveyed-list/:survey_category" element ={<SurveyedList/>}/>
