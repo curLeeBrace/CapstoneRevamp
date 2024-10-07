@@ -47,11 +47,6 @@ const insertFormData = async (req: Request, res: Response) => {
 
 
 
-
-
-
-
-
         if (insert) {
             // Create the audit log
             const { surveyor_info, survey_data } = req.body;
@@ -64,7 +59,7 @@ const insertFormData = async (req: Request, res: Response) => {
                 },
                 user_type: "surveyor",
                 dateTime: new Date(),
-                action: `Inserted ${form_category} data for ${survey_data.form_type} form. (${surveyor_info.municipality_name})`,
+                action: `Inserted ${form_category} ${survey_data.form_type ? `data for ${survey_data.form_type}` : ""} survey (${surveyor_info.municipality_name})`,
             };
 
             // Save the audit log
