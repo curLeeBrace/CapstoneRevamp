@@ -3,8 +3,14 @@ import mongoose from "mongoose";
 const ChemicalSchema = new mongoose.Schema({
 
     survey_data : {
+        dsi : {type : String},
+        type_ofData : {type : String},
+
+
         ap : {type : Number}, //Ammonia Production
         sap : {type : Number}, //Soda Ash Production
+        
+        
         pcbp_M :  {type : Number}, // Petrochemical and Carbon Black Production - Methanol
         pcbp_E :  {type : Number}, // Petrochemical and Carbon Black Production - Ethylene
         pcbp_EDVCM :  {type : Number}, // Petrochemical and Carbon Black Production - Ethylene Dichloride and Vinyl Chloride Monomer

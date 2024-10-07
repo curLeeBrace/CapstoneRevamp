@@ -1,4 +1,4 @@
-import { Checkbox, Typography, Select, Option} from "@material-tailwind/react";
+import { Checkbox, Typography} from "@material-tailwind/react";
 import Table from "../../Components/Table";
 import { Link } from "react-router-dom";
 import useUserInfo from "../../custom-hooks/useUserType";

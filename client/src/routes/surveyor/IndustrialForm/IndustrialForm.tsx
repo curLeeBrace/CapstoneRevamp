@@ -7,9 +7,6 @@ import Others from "./Others";
 
 import {
   Card,
-  Input,
-  Checkbox,
-  Button,
   Typography,
   Select,
   Option,
@@ -20,45 +17,43 @@ import { NavLink, Outlet } from "react-router-dom";
 
 
 
-import { useState } from "react";
+import { createContext, Dispatch, useContext, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import AlertBox from "../../../Components/Forms/AlertBox";
 import useUserInfo from "../../../custom-hooks/useUserType";
 import BrgyMenu from "../../../custom-hooks/BrgyMenu";
 import { AddressReturnDataType } from "../../../custom-hooks/useFilterAddrress";
 
-// type Payload = {
-//   survey_data : any
-//   surveyor_info : any
-//   dateTime_created:Date
-//   dateTime_edited:Date|null
-// }
 
-// type formDataTypes = {
-//   form_type : string,
-//   vehicle_type : string,
-//   vehicle_age : number,
-//   fuel_type : string,
-//   liters_consumption : number,
-//   brgy_name : string
+interface IndustrialContextInterface {
+  brgy : AddressReturnDataType | undefined,
+  dsi : String | undefined,
+  type_ofData : String | undefined
+  setOpenAlert : Dispatch<React.SetStateAction<boolean>>
+  setAlertMsg : Dispatch<React.SetStateAction<string>>
+}
 
-// }
+
+
+
+const IndustrialBaseDataContext = createContext<IndustrialContextInterface>({} as IndustrialContextInterface);
 
  function IndustrialForm() {
   const params = useParams();
   const [openAlert, setOpenAlert] = useState<boolean>(false);
-  const [openDialogBox, setOpenDialogBox] = useState(false);
-  const [isLoading, set_isLoading] = useState<boolean>(false);
+  // const [openDialogBox, setOpenDialogBox] = useState(false);
+  // const [isLoading, set_isLoading] = useState<boolean>(false);
   const [alert_msg, setAlertMsg] = useState("");
   const user_info = useUserInfo();
-  const [brgy, setBrgy] = useState<AddressReturnDataType>();
   const { state } = useLocation();
 
-  const [selectedType, setSelectedType] = useState<string>("mineral");
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSelectedType(event.target.value);
-  };
+
+  const [brgy, setBrgy] = useState<AddressReturnDataType>();
+  const [dsi, setDsi] = useState<string>();
+  const [type_ofData, setTypeOfData] = useState<string>();
+
+
 
 
   const navLinkStyle = (isActive : boolean, isTransitioning : boolean ) => {
@@ -74,16 +69,17 @@ import { AddressReturnDataType } from "../../../custom-hooks/useFilterAddrress";
 
 
   return (
-    <>
-      <div className="flex justify-center min-h-screen px-4 py-10 overflow-x-hidden bg-gray-200">
-        <AlertBox
-          openAlert={openAlert}
-          setOpenAlert={setOpenAlert}
-          message={alert_msg}
-        />
 
-        <Card className="w-full max-w-4xl px-6 py-6 shadow-2xl shadow-black rounded-xl">
-          <Typography variant="h4" color="blue-gray" className="text-center mb-4">
+      <div className="flex justify-center min-h-screen px-4 pb-5 overflow-x-hidden bg-gray-200">
+         <AlertBox
+            openAlert={openAlert}
+            setOpenAlert={setOpenAlert}
+            message={alert_msg}
+          />
+        <Card className="w-full max-w-4xl px-6 py-6 shadow-2xl shadow-black rounded-xl h-auto relative">
+         
+         
+          <Typography variant="h4" color="blue-gray" className="text-center">
             Industrial Survey
           </Typography>
 
@@ -93,7 +89,7 @@ import { AddressReturnDataType } from "../../../custom-hooks/useFilterAddrress";
                 Select Industry Type
               </Typography>
 
-              <div className="md:flex md:justify-around grid grid-cols-3 gap-4">
+              <div className="flex justify-around overflow-x-auto">
 
                 <NavLink to={"0/mineral"}
                  style={({isActive, isTransitioning})=>navLinkStyle(isActive, isTransitioning)}
@@ -129,107 +125,7 @@ import { AddressReturnDataType } from "../../../custom-hooks/useFilterAddrress";
                   Others
                 </NavLink>
 
-
-
-
-
               </div>
-
-              
-              {/* <div className="md:flex md:flex-row gap-5 grid grid-cols-2">
-                <Checkbox
-                  disabled={params.action === "view"}
-                  name="form_type"
-                  value={"mineral"}
-                  checked={selectedType === "mineral"}
-                  onChange={handleChange}
-                  label={
-                    <Typography
-                      variant="small"
-                      color="gray"
-                      className="font-normal mr-4"
-                    >
-                      Mineral
-                    </Typography>
-                  }
-                  containerProps={{ className: "-ml-2.5" }}
-                />
-                <Checkbox
-                  disabled={params.action === "view"}
-                  name="form_type"
-                  value={"chemical"}
-                  checked={selectedType === "chemical"}
-                  onChange={handleChange}
-                  // onChange={(event) => handleChange({ })} // Handler for selection
-                  label={
-                    <Typography
-                      variant="small"
-                      color="gray"
-                      className="font-normal mr-4"
-                    >
-                      Chemical
-                    </Typography>
-                  }
-                  containerProps={{ className: "-ml-2.5" }}
-                />
-                <Checkbox
-                  disabled={params.action === "view"}
-                  name="form_type"
-                  value={"metal"}
-                  checked={selectedType === "metal"}
-                  onChange={handleChange}
-                  label={
-                    <Typography
-                      variant="small"
-                      color="gray"
-                      className="font-normal mr-4"
-                    >
-                      Metal
-                    </Typography>
-                  }
-                  containerProps={{ className: "-ml-2.5" }}
-                />
-                <Checkbox
-                  disabled={params.action === "view"}
-                  name="form_type"
-                  value={"electronics"}
-                  checked={selectedType === "electronics"}
-                  onChange={handleChange}
-                  // onChange={(event) => handleChange({})} // Handler for selection
-
-                  label={
-                    <Typography
-                      variant="small"
-                      color="gray"
-                      className="font-normal"
-                    >
-                      Electronics
-                    </Typography>
-                  }
-                  containerProps={{ className: "-ml-2.5" }}
-                />
-                <Checkbox
-                  disabled={params.action === "view"}
-                  name="form_type"
-                  value={"others"}
-                  checked={selectedType === "others"}
-                  onChange={handleChange}
-                  // onChange={(event) => handleChange({ })} // Handler for selection
-                  label={
-                    <Typography
-                      variant="small"
-                      color="gray"
-                      className="font-normal mr-4"
-                    >
-                      Others
-                    </Typography>
-                  }
-                  containerProps={{ className: "-ml-2.5" }}
-                />
-              </div> */}
-
-
-
 
               <div className="md:flex md:flex-row gap-5 grid grid-cols ">
                 <BrgyMenu
@@ -239,78 +135,37 @@ import { AddressReturnDataType } from "../../../custom-hooks/useFilterAddrress";
                   deafult_brgyName={state && state.brgy_name}
                 />
 
-                <Select label="Data Source Identifier">
-                  <Option>Commercial</Option>
-                  <Option>Industrial</Option>
-                  <Option>Institutional</Option>
-                  <Option>Others</Option>
+                <Select label="Data Source Identifier" onChange={(value)=> setDsi(value)}>
+                  <Option value="commercial">Commercial</Option>
+                  <Option value="industrial">Industrial</Option>
+                  <Option value="institutional">Institutional</Option>
+                  <Option value="others">Others</Option>
                 </Select>
 
-                <Select label="Type of Data">
-                  <Option>Census</Option>
-                  <Option>Individual Business Survey</Option>
-                  <Option>Others</Option>
+                <Select label="Type of Data" onChange={(value)=> setTypeOfData(value)}>
+                  <Option value="census">Census</Option>
+                  <Option value="ibs">Individual Business Survey</Option>
+                  <Option value="others">Others</Option>  
                 </Select>
               </div>
               <Typography variant="h4" color="blue-gray" className="mb-5">
                 Annual Total Production
               </Typography>
-
-         
-
-
-
-
-              {/* MINERAL FORM TYPE */}
-              {/* {selectedType === "mineral" && (
-               
-              )} */}
-
-              {/* CHEMICAL FORM TYPE */}
-              {/* {selectedType === "chemical" && (
-                
-              )} */}
-              {/* METAL FORM TYPE  */}
-              {/* {selectedType === "metal" && (
-               
-              )} */}
-
-              {/* ELECTRONICS FORM TYPE */}
-              {/* {selectedType === "electronics" && (
-               
-              )} */}
-
-              {/* OTHERS FORM TYPE */}
-              {/* {selectedType === "others" && (
-                
-              )} */}
-
-
             </div>
-{/* 
-            <div>
-              <Button
-                fullWidth
-                className="mt-8 md:w-full md:ml-44 w-64 ml-4"
-                loading={isLoading}
-                onClick={submitValidation}
-              >
-                {params.action === "submit"
-                  ? "Submit"
-                  : params.action === "update"
-                  ? "Request Update"
-                  : "Accept Update"}
-              </Button>
-            </div> */}
-          {/* </form> */}
-          <Outlet/>
+            <IndustrialBaseDataContext.Provider  value={{brgy, dsi, type_ofData, setOpenAlert, setAlertMsg}}>
+              <Outlet/>
+            </IndustrialBaseDataContext.Provider>
+
         </Card>
       </div>
       
-    </>
+
   );
 }
 
+const useIndustrialBaseData = () => {
+  return useContext(IndustrialBaseDataContext);
+};
 
 
 export {
@@ -319,5 +174,7 @@ export {
   Metal,
   Mineral,
   Others,
-  IndustrialForm
+  IndustrialForm,
+  useIndustrialBaseData
+
 }

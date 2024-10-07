@@ -26,7 +26,7 @@ type Payload = {
   dateTime_edited:Date|null
 }
 
-export function StationaryForm() {
+export function MobileCombustionForm() {
 
 const handleChange = useHandleChange; 
 const [formData, setFormData] = useState<formDataTypes>({
@@ -51,15 +51,6 @@ const {state} = useLocation();
 
 
 const {updateForm, acceptFormUpdate, submitForm} = useSurveyFormActions();
-
-
-
-
-
-
-
-
-
 
 
 
@@ -170,6 +161,7 @@ const clearForm = () => {
 
 const submitHandler = () => {
   const payload = preparePayLoad();
+  
   submitForm({payload, form_category : "mobile-combustion"})
   .then(res => {
           if(res.status === 201){

@@ -1,19 +1,25 @@
-import mongoose from "mongoose";
-
-const OthersSchema = new mongoose.Schema({
-    survey_data : {
-        dsi : {type : String},
-        type_ofData : {type : String},
+import mongoose from 'mongoose'
 
 
+const AgricultureForm = new mongoose.Schema({
+    survey_data : { type : {
 
-        ppi : {type : Number}, //Pulp and Paper Industry 
-        fbi : {type : Number}, //Food and Beverages Industry 
-        other : {type : Number}, //Other
-        
+        live_stock :{type : {
+            buffalo  : {type : Number, required : true},//
+            cattle : {type : Number, required : true},//
+            goat : {type : Number, required : true},//
+            horse : {type : Number, required : true},//
+            poultry : {type : Number, required : true},//
+            swine : {type : Number, required : true},//
+            non_dairyCattle :{type : Number, required : true}
+
+        }, required : true},
+ 
+
         brgy_name  :{type : String, required : true},
         brgy_code : {type : String, required : true},
         status : {type : String, required : true, default : "0"}
+        },required : true
     },
 
     surveyor_info : {type :  {
@@ -29,4 +35,5 @@ const OthersSchema = new mongoose.Schema({
     dateTime_edited : {type : Date}
 })
 
-export = mongoose.model('(industrial) otherForm', OthersSchema);
+
+export = mongoose.model('(agriculture) liveStocks', AgricultureForm);

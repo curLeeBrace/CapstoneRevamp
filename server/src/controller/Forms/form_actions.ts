@@ -1,6 +1,17 @@
 import { Request, Response } from 'express';
 import FuelFormSchema from "../../db_schema/FuelFormSchema";
 import WasteWaterFormShema from '../../db_schema/WasteWaterFormShema';
+//Agricultre
+import MineralSchema from '../../db_schema/Industrial/MineralSchema';
+import ChemicalSchema from '../../db_schema/Industrial/ChemicalSchema';
+import MetalSchema from '../../db_schema/Industrial/MetalSchema';
+import ElectronicsSchema from '../../db_schema/Industrial/ElectronicsSchema';
+import OthersSchema from '../../db_schema/Industrial/OthersSchema';
+///
+
+import AgricultureCrops from '../../db_schema/Agriculture/AgricultureCrops';
+import AgricultureLiveStock from '../../db_schema/Agriculture/AgricultureLiveStock';
+
 import { auditLogType, saveAuditLog } from "../AuditLog/audit_log";
 
 
@@ -10,7 +21,31 @@ const insertFormData = async (req: Request, res: Response) => {
     try {
         // Insert the fuel form data
         console.log("Request body:", req.body);
-        const insert = form_category === "mobile-combustion" ? await FuelFormSchema.create(req.body) :  await WasteWaterFormShema.create(req.body)
+        let insert = undefined;
+        
+        if(form_category === "mobile-combustion"){
+            insert = await FuelFormSchema.create(req.body);
+        } else if(form_category === "waste-water"){
+            insert = await WasteWaterFormShema.create(req.body);
+        } else if (form_category === "industrial-mineral"){
+            insert = await MineralSchema.create(req.body);
+        } else if (form_category === "industrial-chemical"){
+            insert = await ChemicalSchema.create(req.body);
+        } else if (form_category === "industrial-metal"){
+            insert = await MetalSchema.create(req.body);
+        } else if (form_category === "industrial-electronics"){
+            insert = await ElectronicsSchema.create(req.body);
+        } else if (form_category === "industrial-others"){
+            insert = await OthersSchema.create(req.body);
+        } else if (form_category === "agriculture-crops") {
+            insert = await AgricultureCrops.create(req.body);
+        } else if (form_category === "agriculture-livestocks"){
+            insert = await AgricultureLiveStock.create(req.body);
+        }
+
+
+
+
 
         if (insert) {
             // Create the audit log
@@ -24,7 +59,7 @@ const insertFormData = async (req: Request, res: Response) => {
                 },
                 user_type: "surveyor",
                 dateTime: new Date(),
-                action: `Inserted ${form_category} data for ${survey_data.form_type} form. (${surveyor_info.municipality_name})`,
+                action: `Inserted ${form_category} ${survey_data.form_type ? `data for ${survey_data.form_type}` : ""} survey (${surveyor_info.municipality_name})`,
             };
 
             // Save the audit log
