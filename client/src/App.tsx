@@ -19,7 +19,11 @@ import ForgotPass from "./routes/not-auth/ForgotPass";
 import ChangePass from "./routes/not-auth/ChangePass";
 import AuditLogs from "./routes/s-admin/AuditLogs";
 import AccountsTable from "./routes/s-admin/AccountsTable";
+
+//summaryRoute
 import SummaryData from "./routes/s-admin/SummaryData";
+import IndustrialSummary from "./routes/summary/industrial/IndustrialSummary";
+
 
 
 import SurveyedList from "./routes/surveyor/SurveyedList";
@@ -57,7 +61,9 @@ function App() {
               <Route path = 'change-pass' element = {<ChangePass/>}/>
               <Route path = "audit-log" element = {<AuditLogs/>}/>
               <Route path = "accounts" element = {<AccountsTable/>}/>
-              <Route path = "summary/:survey_category" element = {<SummaryData/>}/>
+                  {/* Summary Route */}
+            <Route path = "summary/0/:survey_category" element = {<SummaryData/>}/> {/* For Mobile Combustion and Waste Water*/}
+            <Route path = "summary/1/industrial" element = {<IndustrialSummary/>}/> {/* For industial*/}
 
               <Route path = 'register'>
                   <Route index element = {<Registration/>}/>
@@ -71,7 +77,10 @@ function App() {
             <Route index element = {<HomePage/>}/>
             <Route path = 'home' element = {<HomePage/>}/>
             <Route path = "dashboard" element = {<DashBoard/>}/>
-            <Route path = "summary/:survey_category" element = {<SummaryData/>}/>
+            {/* Summary Route */}
+            <Route path = "summary/0/:survey_category" element = {<SummaryData/>}/> {/* For Mobile Combustion and Waste Water*/}
+ 
+            <Route path = "summary/1/industrial" element = {<IndustrialSummary/>}/> {/* For industial*/}
 
 
               <Route path = 'register'>

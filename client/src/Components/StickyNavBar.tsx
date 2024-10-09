@@ -85,11 +85,15 @@ export function StickyNavbar() {
   const summaryURL = [
     {
       title: "Mobile Combustion",
-      href: `/${user_info.user_type}/summary/mobile-combustion`,
+      href: `/${user_info.user_type}/summary/0/mobile-combustion`,
     },
     {
       title: "Waste Water",
-      href: `/${user_info.user_type}/summary/waste-water`,
+      href: `/${user_info.user_type}/summary/0/waste-water`,
+    },
+    {
+      title: "Industrial",
+      href: `/${user_info.user_type}/summary/1/industrial`,
     }
   ]
 
