@@ -5,7 +5,8 @@ import { useEffect, useState } from "react";
 import DonutChart, {DonutState} from "../../../Components/Dashboard/DonutChart";
 
 import { Radio } from "@material-tailwind/react";
-
+import useUserInfo from "../../../custom-hooks/useUserType";
+import useAxiosPrivate from "../../../custom-hooks/auth_hooks/useAxiosPrivate";
 
 type BarSeriesTypes = {
 
@@ -18,31 +19,103 @@ type BarSeriesTypes = {
 
 }
 
-const navLinkStyle = (isActive: boolean, isTransitioning: boolean) => {
-  return {
-    fontWeight: isActive ? "bold" : "",
-    viewTransitionName: isTransitioning ? "slide" : "",
-    color: isActive ? "white" : "#009c39",
-    background: isActive ? "#009c39" : "white",
-  };
-};
+
+type IndustryType = {
+  industry_type : "all" | "mineral" | "chemical" | "metal" | "electronics" | "others";
+}
+
+type RequestQueryTypes = {
+  user_type : string
+  industry_type : IndustryType
+  municipality_code : string;
+  brgy_name : string;
+  prov_code : string;
+  year : string
+}
 
 const IndustrialSummary = () => {
 
 
     const [res_series, setResSeries] = useState<BarSeriesTypes[]>();
     const [dsi, setDSI] = useState<DonutState>();
+    const [typeOfData, setTypeOfData] = useState<DonutState>()
     
 
+    const [industry_type, setIndustryType] = useState<IndustryType>();
     const [year, setYear] = useState<string>();
 
-    useEffect(()=>{
-        setDSI({
-            labels : ["a","b","c","d","e"],
-            series : [44, 55, 41, 17, 15]
-        })
-    },[])
 
+    const axiosPrivate = useAxiosPrivate();
+
+    // useEffect(()=>{
+    //     console.log("YEAR : ", year);
+    // },[])
+
+  
+
+
+    useEffect(()=>{
+      const user_info = useUserInfo();
+      const {municipality_code, user_type, province_code, brgy_name} = user_info
+
+      axiosPrivate.get(`/summary-data/industrial`, {
+        params : {
+          brgy_name,
+          industry_type,
+          municipality_code,
+          prov_code : province_code,
+          user_type : user_type as string,
+          year : year ? year : new Date().getFullYear().toString()
+        } as RequestQueryTypes
+      })
+    .then(res => {
+
+      if(res.status === 200) {
+        const {responsePerLocation, dsi_analytics, tyoeOfDataAnalytics} = res.data
+        
+        setResSeries([{
+          name : "Survey Count",
+          data : responsePerLocation.map((response:any) => {
+            return {
+              x : response.location,
+              y : response.count
+            }
+          })
+        }])
+
+
+        const {commercial, industrial, institutional, others} = dsi_analytics
+        setDSI({
+          labels : ["commercial", "industrial", "institutional", "others"],
+          series : [commercial, industrial, institutional, others]
+        })
+
+
+        const {census, ibs} = tyoeOfDataAnalytics
+
+        setTypeOfData({
+          labels : ["census", "IBS", "others"],
+          series : [census, ibs, tyoeOfDataAnalytics.others]
+        })
+        
+
+
+
+
+
+
+
+        // setResSeries(responsePerLocation);
+        // setDSI(dsi_analytics);
+
+      }
+
+    })
+    .catch(err => console.log(err))
+
+
+
+    },[industry_type])
 
 
 
@@ -51,11 +124,12 @@ const IndustrialSummary = () => {
     <div className="flex flex-col gap-5 mt-10">
       <div className="flex w-full justify-center gap-5">
         <div>
-            <Radio name="indusry_type" label="Mineral" color ="green" value={"mineral"}/>
-            <Radio name="indusry_type" label="Chemical" color ="green" value={"chemical"}/>
-            <Radio name="indusry_type" label="Metal" color ="green" value={"metal"}/>
-            <Radio name="indusry_type" label="Electronics" color ="green" value={"electronics"}/>
-            <Radio name="indusry_type" label="Others" color ="green" value={"others"}/>            
+            <Radio defaultChecked name="indusry_type" label="All" color ="green" value={"all"} onChange={(e:any)=>setIndustryType(e.target.value)}/>
+            <Radio name="indusry_type" label="Mineral" color ="green" value={"mineral"} onChange={(e:any)=>setIndustryType(e.target.value)}/>
+            <Radio name="indusry_type" label="Chemical" color ="green" value={"chemical"} onChange={(e:any)=>setIndustryType(e.target.value)}/>
+            <Radio name="indusry_type" label="Metal" color ="green" value={"metal"} onChange={(e:any)=>setIndustryType(e.target.value)}/>
+            <Radio name="indusry_type" label="Electronics" color ="green" value={"electronics"} onChange={(e:any)=>setIndustryType(e.target.value)}/>
+            <Radio name="indusry_type" label="Others" color ="green" value={"others"} onChange={(e:any)=>setIndustryType(e.target.value)}/>            
         </div>
 
         <div>
@@ -80,7 +154,7 @@ const IndustrialSummary = () => {
           </div>
           {/* 2nd Donut Chart Container */}
           <div> 
-            {dsi && <DonutChart series={dsi.series} labels={dsi.labels} title="Type of Data"/>}
+            {typeOfData && <DonutChart series={typeOfData.series} labels={typeOfData.labels} title="Type of Data"/>}
 
           </div>
         </div>

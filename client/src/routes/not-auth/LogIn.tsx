@@ -24,6 +24,7 @@ export type user_info  = {
   username : string;
   full_name : string;
   img_id: string;
+  brgy_name : string;
 
 }
 
