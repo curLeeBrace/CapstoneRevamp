@@ -303,7 +303,7 @@ const SummaryData = () => {
                     
                 
                 {
-                    mobileCombustionData?
+                    !isLoading?
                         
                         <div className="flex h-auto flex-col gap-3">
 
