@@ -21,7 +21,8 @@ const formData = async (req:Request, res:Response) => {
             "surveyor_info.municipality_code" : municipality_code
         } : 
         {
-            "survey_data.form_type" : surveyType
+            "survey_data.form_type" : surveyType,
+            "surveyor_info.municipality_code" : municipality_code
         }
         
 
