@@ -1,12 +1,13 @@
 import { Typography, Input, Button } from "@material-tailwind/react"
 import {useIndustrialBaseData} from './IndustrialForm';
-import {useState } from "react";
-import { useParams } from "react-router-dom";
+import {useEffect, useState } from "react";
+
 import DialogBox from "../../../Components/DialogBox";
 import useSurveyFormActions from "../../../custom-hooks/useSurveyFormActions";
 import useUserInfo from "../../../custom-hooks/useUserType";
 import useHandleChange from "../../../custom-hooks/useHandleChange";
-
+import { useLocation, useParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 
 
 
@@ -22,6 +23,9 @@ const Mineral = () => {
 
     const industrialBaseData = useIndustrialBaseData();
     const params = useParams();
+    const {state} = useLocation();
+    const searchParams = useSearchParams();
+    
     const [isLoading, set_isLoading] = useState<boolean>(false);
     const [openDialogBox, setOpenDialogBox] = useState(false);
 
@@ -36,6 +40,16 @@ const Mineral = () => {
       lp : 0
     });
 
+
+    useEffect(()=>{
+      const {action} = params 
+      if(action !== "submit"){
+        setMineralData(state)
+        
+      } else {
+        clearForm()
+      }
+    },[searchParams])
 
 
     
@@ -167,6 +181,7 @@ const Mineral = () => {
             labelProps={{
               className: "before:content-none after:content-none",
             }}
+            min={0}
           />
           <Typography className="">
             Cement Production - Portland (blended)

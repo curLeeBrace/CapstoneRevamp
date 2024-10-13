@@ -1,11 +1,11 @@
 import { Checkbox, Typography} from "@material-tailwind/react";
-import Table from "../../Components/Table";
+import Table from "../../../Components/Table";
 import { Link } from "react-router-dom";
-import useUserInfo from "../../custom-hooks/useUserType";
-import BrgyMenu from "../../custom-hooks/BrgyMenu";
+import useUserInfo from "../../../custom-hooks/useUserType";
+import BrgyMenu from "../../../custom-hooks/BrgyMenu";
 import { useEffect, useState } from "react";
-import { AddressReturnDataType } from "../../custom-hooks/useFilterAddrress";
-import useAxiosPrivate from "../../custom-hooks/auth_hooks/useAxiosPrivate";
+import { AddressReturnDataType } from "../../../custom-hooks/useFilterAddrress";
+import useAxiosPrivate from "../../../custom-hooks/auth_hooks/useAxiosPrivate";
 import { useParams } from "react-router-dom";
 
 const SurveyedList = () => {
@@ -90,7 +90,7 @@ const SurveyedList = () => {
         const dateTime = new Date(data.dateTime_created).toLocaleDateString() + " " + new Date(data.dateTime_created).toLocaleTimeString();
         const LinkComponent = (
           <Link
-            to={`/surveyor/forms/update/mobile-combustion?form_id=${data.form_id}`}
+            to={`/surveyor/forms/update/mobile-combustion `}
             state={{
               brgy_name,
               vehicle_type,
@@ -233,13 +233,6 @@ const SurveyedList = () => {
         </div>
 
       </div>
-
-
-
-
-
-
-
 
 
       <div className="w-4/5">
