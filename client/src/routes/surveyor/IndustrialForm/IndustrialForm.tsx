@@ -11,13 +11,13 @@ import {
   Select,
   Option,
 } from "@material-tailwind/react";
-import { NavLink, Outlet } from "react-router-dom";
+import { NavLink, Outlet, useSearchParams } from "react-router-dom";
 
 
 
 
 
-import { createContext, Dispatch, useContext, useState } from "react";
+import { createContext, Dispatch, useContext, useEffect, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import AlertBox from "../../../Components/Forms/AlertBox";
 import useUserInfo from "../../../custom-hooks/useUserType";
@@ -40,6 +40,7 @@ const IndustrialBaseDataContext = createContext<IndustrialContextInterface>({} a
 
  function IndustrialForm() {
   const params = useParams();
+  const searchParams = useSearchParams();
   const [openAlert, setOpenAlert] = useState<boolean>(false);
   // const [openDialogBox, setOpenDialogBox] = useState(false);
   // const [isLoading, set_isLoading] = useState<boolean>(false);
@@ -54,9 +55,24 @@ const IndustrialBaseDataContext = createContext<IndustrialContextInterface>({} a
   const [type_ofData, setTypeOfData] = useState<string>();
 
 
+  
+
+ 
 
 
-  const navLinkStyle = (isActive : boolean, isTransitioning : boolean ) => {
+
+    useEffect(()=>{
+        const {action} = params 
+        if(action !== "submit"){
+            const {dsi, type_ofData} = state;
+            setDsi(dsi);
+            setTypeOfData(type_ofData)
+          
+        }
+      },[searchParams])
+
+
+  const navLinkStyle = (isActive : boolean, isTransitioning : boolean) => {
     
     return {
       fontWeight: isActive ? "bold" : "",
@@ -66,6 +82,9 @@ const IndustrialBaseDataContext = createContext<IndustrialContextInterface>({} a
       
     };
   }
+
+
+
 
 
   return (
@@ -91,19 +110,19 @@ const IndustrialBaseDataContext = createContext<IndustrialContextInterface>({} a
 
               <div className="flex justify-around overflow-x-auto">
 
-                <NavLink to={"0/mineral"}
+                <NavLink to={"submit/0/mineral"}
                  style={({isActive, isTransitioning})=>navLinkStyle(isActive, isTransitioning)}
                  className="p-2 rounded-lg w-24 text-center"
                 >
                   Mineral
                 </NavLink>
-                <NavLink to={"1/chemical"}
+                <NavLink to={"submit/1/chemical"}
                  style={({isActive, isTransitioning})=>navLinkStyle(isActive, isTransitioning)}
                  className="p-2 rounded-lg w-24 text-center"
                 >
                   Chemical
                 </NavLink>
-                <NavLink to={"2/metal"}
+                <NavLink to={"submit/2/metal"}
                  style={({isActive, isTransitioning})=>navLinkStyle(isActive, isTransitioning)}
                  className="p-2 rounded-lg w-24 text-center"
                 >
@@ -111,14 +130,14 @@ const IndustrialBaseDataContext = createContext<IndustrialContextInterface>({} a
                 </NavLink>
 
 
-                <NavLink to={"3/electronics"}
+                <NavLink to={"submit/3/electronics"}
                  style={({isActive, isTransitioning})=>navLinkStyle(isActive, isTransitioning)}
                  className="p-2 rounded-lg w-24 text-center"
                 >
                   Electronics
                 </NavLink>
 
-                <NavLink to={"4/others"}
+                <NavLink to={"submit/4/others"}
                  style={({isActive, isTransitioning})=>navLinkStyle(isActive, isTransitioning)}
                  className="p-2 rounded-lg w-24 text-center"
                 >
@@ -135,14 +154,14 @@ const IndustrialBaseDataContext = createContext<IndustrialContextInterface>({} a
                   deafult_brgyName={state && state.brgy_name}
                 />
 
-                <Select label="Data Source Identifier" onChange={(value)=> setDsi(value)}>
+                <Select label="Data Source Identifier" onChange={(value)=> setDsi(value)} value={state ? state.dsi : dsi}>
                   <Option value="commercial">Commercial</Option>
                   <Option value="industrial">Industrial</Option>
                   <Option value="institutional">Institutional</Option>
                   <Option value="others">Others</Option>
                 </Select>
 
-                <Select label="Type of Data" onChange={(value)=> setTypeOfData(value)}>
+                <Select label="Type of Data" onChange={(value)=> setTypeOfData(value)} value={state ? state.type_ofData : type_ofData}>
                   <Option value="census">Census</Option>
                   <Option value="ibs">Individual Business Survey</Option>
                   <Option value="others">Others</Option>  
