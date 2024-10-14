@@ -10,6 +10,7 @@ import DialogBox from "../../../Components/DialogBox";
 
 
 import {useAgricultureContextData} from "./AgricultureForm";
+import useInputValidation from "../../../custom-hooks/useInputValidation";
 
 type AgricultureCropsType = {
   rdsi: number;
@@ -38,6 +39,8 @@ const Crops = () => {
     crop_residues: 0,
     dol_limestone: 0,
   });
+
+  useInputValidation(crops, setCrops, 999);
 
   const preparePayload = (): {} => {
 
@@ -72,8 +75,16 @@ const Crops = () => {
   };
 
   const submitValidation = () => {
+    const isDataFilled = Object.values(crops).some(value => value && value.toString().trim() !== '');
     const {brgy, setAlertMsg, setOpenAlert} = agricultureData
-    if (brgy?.address_name) {
+
+    if (!isDataFilled) {
+      set_isLoading(false);
+      setAlertMsg("You haven't input anything yet. Kindly fill-up the form.");
+      setOpenAlert(true);
+      return;
+    }
+    if (brgy?.address_name ) {
       setOpenDialogBox(true);
     } else {
       set_isLoading(false);

@@ -6,13 +6,13 @@ interface useHandleChangeProps {
 
 }
 const useHandleChange = ({event, setFormStateData} : useHandleChangeProps) => {
-    const name = event.target.name;
-    const value = event.target.value;
-
+  const { name, value, type } = event.target;
+  const newValue = type === "number" ? Math.max(0, parseFloat(value)) : value;
+  
     // console.log(name , " ", value);
     setFormStateData((prev : any) => {
       return {
-        ...prev, [name]:value
+        ...prev, [name]:newValue
       }
     })
   }
