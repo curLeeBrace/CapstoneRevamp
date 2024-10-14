@@ -1,11 +1,13 @@
 import { Typography, Input, Button } from "@material-tailwind/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useHandleChange from "../../../custom-hooks/useHandleChange";
 import { useIndustrialBaseData } from "./IndustrialForm";
 import { useParams } from "react-router-dom";
 import useUserInfo from "../../../custom-hooks/useUserType";
 import useSurveyFormActions from "../../../custom-hooks/useSurveyFormActions";
 import DialogBox from "../../../Components/DialogBox";
+import { useSearchParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 type MetalData = {
   ispif: number;
@@ -15,11 +17,15 @@ type MetalData = {
 const Metal = () => {
   const industrialBaseData = useIndustrialBaseData();
   const params = useParams();
+  const {state} = useLocation()
+  const [searchParams] = useSearchParams();
+
+
   const [isLoading, set_isLoading] = useState<boolean>(false);
   const [openDialogBox, setOpenDialogBox] = useState(false);
 
   const user_info = useUserInfo();
-  const {submitForm} = useSurveyFormActions();
+  const {submitForm, updateForm} = useSurveyFormActions();
   const handleChange = useHandleChange;
 
   const [metalData, setMetalData] = useState<MetalData>({
@@ -27,6 +33,20 @@ const Metal = () => {
     ispnif :0,
   })
 
+
+
+
+  useEffect(()=>{
+    const {action} = params 
+    if(action !== "submit"){
+      setMetalData(state)
+      
+    } else {
+      clearForm()
+    }
+  },[searchParams])
+
+  
   const submitValidation = () => {
 
     const {brgy, dsi, type_ofData, setAlertMsg, setOpenAlert, } = industrialBaseData
@@ -111,7 +131,33 @@ const submitHandler = () =>{
 
  const updateHandler = () => {
 
- }
+  const payload = preparePayLoad();
+  const form_id = searchParams.get("form_id");
+  const {setAlertMsg, setOpenAlert} = industrialBaseData
+
+  updateForm({payload, form_id : form_id as string, form_category : "industrial-metal"})
+  .then(res => {
+    if(res.status === 204){
+          alert("can't request update because form data not found!");
+        } else if(res.status === 200){
+          setOpenAlert(true);
+          setAlertMsg(res.data);
+          setOpenDialogBox(false)
+        }
+  })
+  .catch(err => {
+    console.log(err)
+    set_isLoading(false);
+    setOpenAlert(true);
+    setAlertMsg("Server Error!");
+  })
+  .finally(()=>{
+    set_isLoading(false)
+    setOpenDialogBox(false)
+    
+  })
+
+}
 
  const acceptUpdateHandler = ()=>{
 

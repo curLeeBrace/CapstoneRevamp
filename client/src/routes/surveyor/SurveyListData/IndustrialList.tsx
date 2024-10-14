@@ -6,13 +6,13 @@ import Table from "../../../Components/Table";
 import useAxiosPrivate from "../../../custom-hooks/auth_hooks/useAxiosPrivate";
 import { AddressReturnDataType } from "../../../custom-hooks/useFilterAddrress";
 import { Link } from "react-router-dom";
-import { useSearchParams, useParams } from "react-router-dom";
+
 
 const IndustrialList = () => {
 
     const [brgy, setBrgy] = useState<AddressReturnDataType>();
-    const [indsutryType, setIndustryType] = useState<string>();
-    const {brgy_name, email, full_name, img_id, municipality_code, municipality_name, province_code, user_type} = useUserInfo();
+    const [indsutryType, setIndustryType] = useState<string>("mineral");
+    const { municipality_code} = useUserInfo();
 
     const [tb_head, set_tbHead] = useState<string[]>();
     const [tb_data, set_tbData] = useState<any[][]>();
@@ -27,6 +27,7 @@ const IndustrialList = () => {
 
     //Setting Table Headers
     useEffect(()=>{
+        
 
         if(indsutryType === "mineral"){
             set_tbHead([
@@ -204,7 +205,120 @@ const IndustrialList = () => {
                 ]
 
             })
-        }   
+        } else if(indsutryType === "metal"){
+            tb_data = form_data.map((data: any) => {
+                const {
+                    brgy_name, dsi, type_ofData,
+                    ispif,
+                    ispnif,
+                } = data.survey_data;
+
+                const dateTime = new Date(data.dateTime_created).toLocaleDateString() + " " + new Date(data.dateTime_created).toLocaleTimeString();
+
+                const LinkComponent = (
+                    <Link
+                      to={`/surveyor/forms/industrial/update/2/metal?form_id=${data.form_id}`}
+                      state={{
+                        brgy_name,
+                        dsi,
+                        type_ofData,
+                        ispif,
+                        ispnif,
+                      }}
+                    >
+                      <div className="text-green-700">Update</div>
+                    </Link>
+                  );
+
+
+                  return [
+                    brgy_name, dsi, type_ofData,
+                    ispif,
+                    ispnif,
+                    dateTime, LinkComponent
+                ]
+
+            })
+        } else if (indsutryType === "electronics"){
+
+            tb_data = form_data.map((data: any) => {
+                const {
+                    brgy_name, dsi, type_ofData,
+                    ics,
+                    photovoltaics,
+                    tft_FPD,
+                    htf,
+                } = data.survey_data;
+
+                const dateTime = new Date(data.dateTime_created).toLocaleDateString() + " " + new Date(data.dateTime_created).toLocaleTimeString();
+
+                const LinkComponent = (
+                    <Link
+                      to={`/surveyor/forms/industrial/update/3/electronics?form_id=${data.form_id}`}
+                      state={{
+                        brgy_name,
+                        dsi,
+                        type_ofData,
+                        ics,
+                        photovoltaics,
+                        tft_FPD,
+                        htf,
+                      }}
+                    >
+                      <div className="text-green-700">Update</div>
+                    </Link>
+                  );
+
+
+                  return [
+                    brgy_name, dsi, type_ofData,
+                    ics,
+                    photovoltaics,
+                    tft_FPD,
+                    htf,
+                    dateTime, LinkComponent
+                ]
+
+            })
+
+        } else if (indsutryType === "others"){
+            tb_data = form_data.map((data: any) => {
+                const {
+                    brgy_name, dsi, type_ofData,
+                    ppi,
+                    other,
+                    fbi,
+                } = data.survey_data;
+
+                const dateTime = new Date(data.dateTime_created).toLocaleDateString() + " " + new Date(data.dateTime_created).toLocaleTimeString();
+
+                const LinkComponent = (
+                    <Link
+                      to={`/surveyor/forms/industrial/update/4/others?form_id=${data.form_id}`}
+                      state={{
+                        brgy_name,
+                        dsi,
+                        type_ofData,
+                        ppi,
+                        other,
+                        fbi,
+                      }}
+                    >
+                      <div className="text-green-700">Update</div>
+                    </Link>
+                  );
+
+
+                  return [
+                    brgy_name, dsi, type_ofData,
+                    ppi,
+                    other,
+                    fbi,
+                    dateTime, LinkComponent
+                ]
+
+            })
+        }
 
 
 
