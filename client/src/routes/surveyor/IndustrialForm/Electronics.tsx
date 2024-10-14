@@ -55,6 +55,10 @@ const Electronics = () => {
 
   
 
+
+
+  
+
   const submitValidation = () => {
 
     const {brgy, dsi, type_ofData, setAlertMsg, setOpenAlert, } = industrialBaseData
@@ -68,6 +72,20 @@ const Electronics = () => {
       setAlertMsg("Some field are empty!");
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
