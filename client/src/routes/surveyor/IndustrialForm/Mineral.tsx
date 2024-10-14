@@ -8,6 +8,7 @@ import useUserInfo from "../../../custom-hooks/useUserType";
 import useHandleChange from "../../../custom-hooks/useHandleChange";
 import { useLocation, useParams } from "react-router-dom";
 import { useSearchParams } from "react-router-dom";
+import useInputValidation from "../../../custom-hooks/useInputValidation";
 
 
 
@@ -40,6 +41,8 @@ const Mineral = () => {
       lp : 0
     });
 
+    useInputValidation(mineralData, setMineralData, 999);
+
 
     useEffect(()=>{
       const {action} = params 
@@ -56,7 +59,14 @@ const Mineral = () => {
   const submitValidation = () => {
 
       const {brgy, dsi, type_ofData, setAlertMsg, setOpenAlert, } = industrialBaseData
+const isDataFilled = Object.values(mineralData).some(value => value && value.toString().trim() !== '');
 
+    if (!isDataFilled) {
+      set_isLoading(false);
+      setAlertMsg("You haven't input anything yet. Kindly fill-up the form.");
+      setOpenAlert(true);
+      return;
+    }
       if(brgy && dsi && type_ofData){
 
         setOpenDialogBox(true);

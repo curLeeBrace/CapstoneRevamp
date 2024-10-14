@@ -100,22 +100,31 @@ const WasteWaterForm = () => {
     }
   },[searchParams])
 
-
   const submitValidation = () => {
-    console.log("Submit Form Data : ", formData)
-    console.log("BRGY : ", brgy)
-    if(formData.openPits_latrinesCat1 === undefined ||formData.openPits_latrinesCat2 === undefined || formData.openPits_latrinesCat3 === undefined || formData.openPits_latrinesCat4 === undefined
-      ||formData.riverDischargeCat1 === undefined || formData.openPits_latrinesCat2 === undefined || formData.septic_tanks === undefined || brgy?.address_code === undefined
-    ){
+    console.log("Submit Form Data : ", formData);
+    console.log("BRGY : ", brgy);
+  
+    // Check if any form field is undefined or empty
+    const isDataFilled = Object.values({
+      openPits_latrinesCat1: formData.openPits_latrinesCat1,
+      openPits_latrinesCat2: formData.openPits_latrinesCat2,
+      openPits_latrinesCat3: formData.openPits_latrinesCat3,
+      openPits_latrinesCat4: formData.openPits_latrinesCat4,
+      riverDischargeCat1: formData.riverDischargeCat1,
+      septic_tanks: formData.septic_tanks
+    }).some(value => value && value.toString().trim() !== '') && brgy?.address_code !== undefined;
+  
+    // If validation fails
+    if (!isDataFilled) {
       set_isLoading(false);
       setOpenAlert(true);
-      setAlertMsg("Some field are undefined!");
-
+      setAlertMsg("Some fields are empty! Kindly check the form.");
     } else {
+      // If validation passes
       setOpenDialogBox(true);
     }
-  }
-
+  };
+  
 
 
   

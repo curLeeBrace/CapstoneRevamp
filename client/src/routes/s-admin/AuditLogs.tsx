@@ -144,8 +144,12 @@ export default function AuditLogs() {
                 <Option onClick={() => setSelectedAction("Created")}>Created Accounts</Option>
                 <Option onClick={() => setSelectedAction("User logged in")}>Logged-in</Option>
                 <Option onClick={() => setSelectedAction("User logged out")}>Logged-out</Option>
-                <Option onClick={() => setSelectedAction("Inserted fuel data for residential form")}>Inputted data for Residential form</Option>
-                <Option onClick={() => setSelectedAction("Inserted fuel data for commercial form")}>Inputted data for Commercial form</Option>
+                <Option onClick={() => setSelectedAction("Inserted fuel data for residential form")}>Inserted data for Residential Mobile Combustion</Option>
+                <Option onClick={() => setSelectedAction("Inserted fuel data for commercial form")}>Inserted data for Commercial Mobile Combustion</Option>
+                <Option onClick={() => setSelectedAction("Inserted waste-water")}>Inserted data for Waster Water </Option>
+                <Option onClick={() => setSelectedAction("Inserted industrial")}>Inserted data for Industrial </Option>
+                <Option onClick={() => setSelectedAction("Inserted agriculture")}>Inserted data for Agriculture </Option>
+
               </Select>
             </div>
 
