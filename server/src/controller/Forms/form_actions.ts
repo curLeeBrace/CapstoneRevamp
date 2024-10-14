@@ -99,7 +99,26 @@ const updateMobileCombustionData = async (req: Request, res: Response) => {
 
 
 
-        const form_data = form_category === "mobile-combustion" ? await FuelFormSchema.findByIdAndUpdate(form_id, update).exec() : await WasteWaterFormShema.findByIdAndUpdate(form_id, update).exec()
+        let form_data = null
+
+
+
+        
+        if(form_category === "waste-water"){
+            form_data = await WasteWaterFormShema.findByIdAndUpdate(form_id, update).exec()
+        } else if (form_category === "mobile-combustion"){
+            form_data = await FuelFormSchema.findByIdAndUpdate(form_id, update).exec()
+        } else if(form_category === "industrial-mineral"){
+            form_data = await MineralSchema.findByIdAndUpdate(form_id, update).exec()
+        } else if(form_category === "industrial-chemical"){
+            form_data = await ChemicalSchema.findByIdAndUpdate(form_id, update).exec()
+        } else if(form_category === "industrial-metal"){
+            form_data = await MetalSchema.findByIdAndUpdate(form_id, update).exec()
+        } else if(form_category === "industrial-electronics"){
+            form_data = await ElectronicsSchema.findByIdAndUpdate(form_id, update).exec()
+        } else if(form_category === "industrial-others"){
+            form_data = await OthersSchema.findByIdAndUpdate(form_id, update).exec()
+        }
 
         if(!form_data) return res.sendStatus(204);
 

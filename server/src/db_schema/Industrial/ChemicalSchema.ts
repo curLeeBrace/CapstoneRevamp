@@ -9,14 +9,12 @@ const ChemicalSchema = new mongoose.Schema({
 
         ap : {type : Number}, //Ammonia Production
         sap : {type : Number}, //Soda Ash Production
-        
-        
-        pcbp_M :  {type : Number}, // Petrochemical and Carbon Black Production - Methanol
-        pcbp_E :  {type : Number}, // Petrochemical and Carbon Black Production - Ethylene
         pcbp_EDVCM :  {type : Number}, // Petrochemical and Carbon Black Production - Ethylene Dichloride and Vinyl Chloride Monomer
+        pcbp_M :  {type : Number}, // Petrochemical and Carbon Black Production - Methanol
         pcbp_EO : {type : Number}, // Petrochemical and Carbon Black Production - Ethylene Oxide
+        pcbp_CB : {type : Number}, // Petrochemical and Carbon Black Production - Carbon Black  
+        pcbp_E :  {type : Number}, // Petrochemical and Carbon Black Production - Ethylene
         pcbp_A :  {type : Number}, // Petrochemical and Carbon Black Production - Acrylonitrile
-        pcbp_CB : {type : Number}, // Petrochemical and Carbon Black Production - Carbon Black
 
         
         brgy_name  :{type : String, required : true},

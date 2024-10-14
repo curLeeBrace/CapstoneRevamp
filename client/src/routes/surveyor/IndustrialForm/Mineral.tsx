@@ -24,13 +24,13 @@ const Mineral = () => {
     const industrialBaseData = useIndustrialBaseData();
     const params = useParams();
     const {state} = useLocation();
-    const searchParams = useSearchParams();
+    const [searchParams] = useSearchParams();
     
     const [isLoading, set_isLoading] = useState<boolean>(false);
     const [openDialogBox, setOpenDialogBox] = useState(false);
 
     const user_info = useUserInfo();
-    const {submitForm} = useSurveyFormActions();
+    const {submitForm, updateForm} = useSurveyFormActions();
     const handleChange = useHandleChange;
 
     const [mineralData, setMineralData] = useState<MineralData>({
@@ -140,7 +140,37 @@ const Mineral = () => {
 
   const updateHandler = () => {
 
+    const payload = preparePayLoad();
+    const form_id = searchParams.get("form_id");
+    const {setAlertMsg, setOpenAlert} = industrialBaseData
+
+    updateForm({payload, form_id : form_id as string, form_category : "industrial-mineral"})
+    .then(res => {
+      if(res.status === 204){
+            alert("can't request update because form data not found!");
+          } else if(res.status === 200){
+            setOpenAlert(true);
+            setAlertMsg(res.data);
+            setOpenDialogBox(false)
+          }
+    })
+    .catch(err => {
+      console.log(err)
+      set_isLoading(false);
+      setOpenAlert(true);
+      setAlertMsg("Server Error!");
+    })
+    .finally(()=>{
+      set_isLoading(false)
+      setOpenDialogBox(false)
+      
+    })
+  
   }
+
+
+
+
 
   const acceptUpdateHandler = ()=>{
 
