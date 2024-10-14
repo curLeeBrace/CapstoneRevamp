@@ -20,23 +20,23 @@ import useUserInfo from "../custom-hooks/useUserType";
 const url_ofSurveyorsForm = [
   {
     title: "Mobile Combustion",
-    href: `/surveyor/forms/submit/mobile-combustion`,
+    href: `/surveyor/forms/mobile-combustion/submit`,
   },
   {
     title: "Waste Water",
-    href: `/surveyor/forms/submit/waste-water`,
+    href: `/surveyor/forms/waste-water/submit`,
   },
   {
     title: "Industrial",
-    href: `/surveyor/forms/submit/industrial/0/mineral`,
+    href: `/surveyor/forms/industrial/submit/0/mineral/`,
   },
   {
     title: "Agriculture",
-    href: `/surveyor/forms/submit/agriculture/0/crops`,
+    href: `/surveyor/forms/agriculture/0/crops`,
   },
   {
     title: "Stationary Fuel Consumption",
-    href: `/surveyor/forms/submit/stationary-fuel-consumption`,
+    href: `/surveyor/forms/stationary-fuel-consumption`,
   },
   
 ];  
@@ -45,16 +45,16 @@ const url_ofSurveyorsForm = [
 const url_listOfSurveyData = [
   {
     title: "Mobile Combustion",
-    href: `/surveyor/surveyed-list/mobile-combustion`,
+    href: `/surveyor/surveyed-list/0/mobile-combustion`,
   },
   {
     title: "Waste Water",
-    href: `/surveyor/surveyed-list/waste-water`,
+    href: `/surveyor/surveyed-list/0/waste-water`,
   },
-  // {
-  //   title: "Industrial",
-  //   href: `/surveyor/forms/submit/industrial`,
-  // },
+  {
+    title: "Industrial",
+    href: `/surveyor/surveyed-list/1/industrial`,
+  },
   // {
   //   title: "Agriculture",
   //   href: `/surveyor/forms/submit/agriculture`,
@@ -85,11 +85,15 @@ export function StickyNavbar() {
   const summaryURL = [
     {
       title: "Mobile Combustion",
-      href: `/${user_info.user_type}/summary/mobile-combustion`,
+      href: `/${user_info.user_type}/summary/0/mobile-combustion`,
     },
     {
       title: "Waste Water",
-      href: `/${user_info.user_type}/summary/waste-water`,
+      href: `/${user_info.user_type}/summary/0/waste-water`,
+    },
+    {
+      title: "Industrial",
+      href: `/${user_info.user_type}/summary/1/industrial`,
     }
   ]
 

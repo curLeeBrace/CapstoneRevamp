@@ -246,6 +246,7 @@ const acceptUpdateHandler = () => {
 
 const submitValidation = () => {
     const {form_type, fuel_type, liters_consumption, vehicle_age, vehicle_type} = formData
+    
     if(form_type && fuel_type &&  liters_consumption && vehicle_age && vehicle_type && brgy?.address_name){
  
       setOpenDialogBox(true);

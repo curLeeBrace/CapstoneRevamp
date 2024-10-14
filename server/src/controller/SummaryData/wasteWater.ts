@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { RequestQueryTypes, prepareQuery} from './mobile_combustion';
 import WasteWaterFormShema from '../../db_schema/WasteWaterFormShema';
 import getAvailableLocations from '../../../custom_funtions/getAvailableLocations';
-import getWasteWaterGHGeSum from '../../../custom_funtions/wasteWaterActions';
+// import getWasteWaterGHGeSum from '../../../custom_funtions/wasteWaterActions';
 
 interface wasteWaterSummary {
     location : string;
@@ -104,17 +104,17 @@ const getWasteWaterSummary = async (req : Request, res : Response) => {
 
 
 
-//useless
-const getGHGeSum = (ghges : number[]) : number=> {
+//****useless*****
+// const getGHGeSum = (ghges : number[]) : number=> {
 
-    let total_ghge = 0;
-        ghges.forEach(ghge => {
-            total_ghge += ghge
-        });
+//     let total_ghge = 0;
+//         ghges.forEach(ghge => {
+//             total_ghge += ghge
+//         });
 
-    return total_ghge
+//     return total_ghge
 
-}
+// }
 
 
 export default getWasteWaterSummary

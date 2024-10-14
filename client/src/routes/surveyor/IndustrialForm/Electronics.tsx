@@ -1,11 +1,13 @@
 import { Typography, Input, Button } from "@material-tailwind/react";
 import useHandleChange from "../../../custom-hooks/useHandleChange";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useIndustrialBaseData } from "./IndustrialForm";
 import { useParams } from "react-router-dom";
 import useUserInfo from "../../../custom-hooks/useUserType";
 import useSurveyFormActions from "../../../custom-hooks/useSurveyFormActions";
 import DialogBox from "../../../Components/DialogBox";
+import { useSearchParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 type ElectronicsData = {
   ics : number;
@@ -27,8 +29,10 @@ const Electronics = () => {
   const [openDialogBox, setOpenDialogBox] = useState(false);
   
   const user_info = useUserInfo();
-  const {submitForm} = useSurveyFormActions();
+  const {submitForm, updateForm} = useSurveyFormActions();
   const handleChange = useHandleChange;
+  const [searchParams] = useSearchParams()
+  const {state} = useLocation();
 
   const [electronicsData, setElectronicsData] = useState<ElectronicsData>({
     htf : 0,
@@ -36,6 +40,20 @@ const Electronics = () => {
     photovoltaics : 0,
     tft_FPD : 0,
   })
+
+
+  useEffect(()=>{
+    const {action} = params 
+    if(action !== "submit"){
+      setElectronicsData(state)
+      
+    } else {
+      clearForm()
+    }
+  },[searchParams])
+
+
+  
 
   const submitValidation = () => {
 
@@ -125,7 +143,33 @@ const submitHandler = () =>{
 
  const updateHandler = () => {
 
- }
+  const payload = preparePayLoad();
+  const form_id = searchParams.get("form_id");
+  const {setAlertMsg, setOpenAlert} = industrialBaseData
+
+  updateForm({payload, form_id : form_id as string, form_category : "industrial-electronics"})
+  .then(res => {
+    if(res.status === 204){
+          alert("can't request update because form data not found!");
+        } else if(res.status === 200){
+          setOpenAlert(true);
+          setAlertMsg(res.data);
+          setOpenDialogBox(false)
+        }
+  })
+  .catch(err => {
+    console.log(err)
+    set_isLoading(false);
+    setOpenAlert(true);
+    setAlertMsg("Server Error!");
+  })
+  .finally(()=>{
+    set_isLoading(false)
+    setOpenDialogBox(false)
+    
+  })
+
+}
 
  const acceptUpdateHandler = ()=>{
 

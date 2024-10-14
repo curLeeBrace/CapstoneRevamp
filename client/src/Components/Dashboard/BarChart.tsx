@@ -21,7 +21,7 @@ import Skeleton from "../Skeleton";
   
    
    
-  export default function BarChart({chart_icon, chart_label, chart_meaning, series, isLoading = false}:BarChartProps) {
+  export default function   BarChart({chart_icon, chart_label, chart_meaning, series, isLoading = false}:BarChartProps) {
 
     const chartConfig = {
       series,
@@ -57,14 +57,6 @@ import Skeleton from "../Skeleton";
         dataLabels: {
           enabled: false,
         },
-
-        // xaxis: {
-        //   labels: {
-        //     style: {
-        //       fontSize: '12px',
-        //     },
-        //   }
-        // }
       },
     };
 

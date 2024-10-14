@@ -38,7 +38,7 @@ const YearMenu = ({useYearState} : YearProps) => {
 
 
 
-    console.log(yearState)
+    // console.log(yearState)
 
 
     return (
