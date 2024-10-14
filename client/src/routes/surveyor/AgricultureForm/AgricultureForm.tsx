@@ -32,17 +32,33 @@ function AgricultureForm() {
   const [openAlert, setOpenAlert] = useState<boolean>(false);
   const [alert_msg, setAlertMsg] = useState("");
 
-  const navLinkStyle = (isActive : boolean, isTransitioning : boolean ) => {
+  // const navLinkStyle = (isActive : boolean, isTransitioning : boolean ) => {
     
-    return {
-      fontWeight: isActive ? "bold" : "",
-      viewTransitionName: isTransitioning ? "slide" : "",
-      color: isActive ? "white" : "#009c39",
-      background : isActive ? "#009c39" :"white",
+  //   return {
+  //     fontWeight: isActive ? "bold" : "",
+  //     viewTransitionName: isTransitioning ? "slide" : "",
+  //     color: isActive ? "white" : "#009c39",
+  //     background : isActive ? "#009c39" :"white",
       
-    };
-  }
+  //   };
+  // }
 
+
+  const navLinkClass = (industryType : string) : string=> {
+    const {agriculture_type} = params;
+  
+    let design = "p-2 rounded-lg w-24 flex justify-center item-center ";
+  
+    if(industryType === agriculture_type){
+      design = design + "font-bold bg-green-800 text-white"
+    } else {
+      design = design + "text-green-700 bg-white text-lg"
+    }
+  
+  
+    return design
+  
+  }
 
   return (
     <div className="flex justify-center min-h-screen px-4 py-10 overflow-x-hidden">
@@ -74,15 +90,15 @@ function AgricultureForm() {
             </Typography>
 
             <div className="flex gap-7 overflow-x-auto ">
-               <NavLink to={"0/crops"}
-                 style={({isActive, isTransitioning})=>navLinkStyle(isActive, isTransitioning)}
-                 className="p-2 rounded-lg w-24 text-center"
+               <NavLink to={"submit/0/crops"}
+                //  style={({isActive, isTransitioning})=>navLinkStyle(isActive, isTransitioning)}
+                 className={navLinkClass("crops")}
                 >
                   Crops
                 </NavLink>
-                <NavLink to={"1/livestocks"}
-                 style={({isActive, isTransitioning})=>navLinkStyle(isActive, isTransitioning)}
-                 className="p-2 rounded-lg w-24 text-center"
+                <NavLink to={"submit/1/livestocks"}
+                //  style={({isActive, isTransitioning})=>navLinkStyle(isActive, isTransitioning)}
+                 className={navLinkClass("livestocks")}
                 >
                   LiveStocks
                 </NavLink>
