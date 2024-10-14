@@ -111,9 +111,9 @@ function App() {
                 </Route>
 
 
-                <Route path = ':action/agriculture' element = {<AgricultureForm/>}>
-                  <Route path="0/:agriculture_type" element = {<Crops/>}/>
-                  <Route path="1/:agriculture_type" element = {<LiveStocks/>}/>
+                <Route path = 'agriculture' element = {<AgricultureForm/>}>
+                  <Route path=":action/0/:agriculture_type" element = {<Crops/>}/>
+                  <Route path=":action/1/:agriculture_type" element = {<LiveStocks/>}/>
                 </Route>
 
                 <Route path = ':action/stationary-fuel-consumption' element = {<StationaryFuelForm/>}/>
