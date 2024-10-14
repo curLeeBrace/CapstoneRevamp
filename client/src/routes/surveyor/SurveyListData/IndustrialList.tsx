@@ -151,7 +151,60 @@ const IndustrialList = () => {
                 ]
 
             })
-        }
+        } else if(indsutryType === "chemical") {
+
+            tb_data = form_data.map((data: any) => {
+                const {
+                    brgy_name, dsi, type_ofData,
+                    ap,
+                    sap,
+                    pcbp_M,
+                    pcbp_E,
+                    pcbp_EDVCM,
+                    pcbp_EO,
+                    pcbp_A,
+                    pcbp_CB,
+                } = data.survey_data;
+
+                const dateTime = new Date(data.dateTime_created).toLocaleDateString() + " " + new Date(data.dateTime_created).toLocaleTimeString();
+
+                const LinkComponent = (
+                    <Link
+                      to={`/surveyor/forms/industrial/update/1/chemical?form_id=${data.form_id}`}
+                      state={{
+                        brgy_name,
+                        dsi,
+                        type_ofData,
+                        ap,
+                        sap,
+                        pcbp_M,
+                        pcbp_E,
+                        pcbp_EDVCM,
+                        pcbp_EO,
+                        pcbp_A,
+                        pcbp_CB,
+                      }}
+                    >
+                      <div className="text-green-700">Update</div>
+                    </Link>
+                  );
+
+
+                  return [
+                    brgy_name, dsi, type_ofData,
+                    ap,
+                    sap,
+                    pcbp_M,
+                    pcbp_E,
+                    pcbp_EDVCM,
+                    pcbp_EO,
+                    pcbp_A,
+                    pcbp_CB,
+                    dateTime, LinkComponent
+                ]
+
+            })
+        }   
 
 
 

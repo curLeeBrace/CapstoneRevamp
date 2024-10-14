@@ -1,11 +1,12 @@
 import { Typography, Input, Button } from "@material-tailwind/react";
 import useHandleChange from "../../../custom-hooks/useHandleChange";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useSurveyFormActions from "../../../custom-hooks/useSurveyFormActions";
 import useUserInfo from "../../../custom-hooks/useUserType";
 import { useIndustrialBaseData } from "./IndustrialForm";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import DialogBox from "../../../Components/DialogBox";
+import { useSearchParams } from "react-router-dom";
 
 
 type ChemicalData = {
@@ -34,7 +35,9 @@ const Chemical = () => {
   const [isLoading, set_isLoading] = useState<boolean>(false);
   const [openDialogBox, setOpenDialogBox] = useState(false);
   const user_info = useUserInfo();
-  const {submitForm} = useSurveyFormActions();
+  const {submitForm, updateForm} = useSurveyFormActions();
+  const {state} = useLocation();
+  const [searchParams] = useSearchParams();
 
 
 
@@ -53,6 +56,24 @@ const Chemical = () => {
 
 
 
+
+  useEffect(()=>{
+    const {action} = params 
+    if(action !== "submit"){
+      setChemicalData(state)
+      
+    } else {
+      clearForm()
+    }
+  },[searchParams])
+
+
+
+
+
+
+
+  
 
   const clearForm = () => {
     setChemicalData({
@@ -146,15 +167,44 @@ const Chemical = () => {
  
  
    const updateHandler = () => {
- 
-   }
+
+    const payload = preparePayLoad();
+    const form_id = searchParams.get("form_id");
+    const {setAlertMsg, setOpenAlert} = industrialBaseData
+
+    updateForm({payload, form_id : form_id as string, form_category : "industrial-chemical"})
+    .then(res => {
+      if(res.status === 204){
+            alert("can't request update because form data not found!");
+          } else if(res.status === 200){
+            setOpenAlert(true);
+            setAlertMsg(res.data);
+            setOpenDialogBox(false)
+          }
+    })
+    .catch(err => {
+      console.log(err)
+      set_isLoading(false);
+      setOpenAlert(true);
+      setAlertMsg("Server Error!");
+    })
+    .finally(()=>{
+      set_isLoading(false)
+      setOpenDialogBox(false)
+      
+    })
+  
+  }
+
+
+  
  
    const acceptUpdateHandler = ()=>{
  
    }
  
  
-
+   
 
 
   return (
