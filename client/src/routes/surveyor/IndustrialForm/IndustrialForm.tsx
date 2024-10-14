@@ -11,13 +11,13 @@ import {
   Select,
   Option,
 } from "@material-tailwind/react";
-import { NavLink, Outlet } from "react-router-dom";
+import { NavLink, Outlet, useSearchParams } from "react-router-dom";
 
 
 
 
 
-import { createContext, Dispatch, useContext, useState } from "react";
+import { createContext, Dispatch, useContext, useEffect, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import AlertBox from "../../../Components/Forms/AlertBox";
 import useUserInfo from "../../../custom-hooks/useUserType";
@@ -40,6 +40,7 @@ const IndustrialBaseDataContext = createContext<IndustrialContextInterface>({} a
 
  function IndustrialForm() {
   const params = useParams();
+  const searchParams = useSearchParams();
   const [openAlert, setOpenAlert] = useState<boolean>(false);
   // const [openDialogBox, setOpenDialogBox] = useState(false);
   // const [isLoading, set_isLoading] = useState<boolean>(false);
@@ -54,18 +55,52 @@ const IndustrialBaseDataContext = createContext<IndustrialContextInterface>({} a
   const [type_ofData, setTypeOfData] = useState<string>();
 
 
+  
+
+ 
 
 
-  const navLinkStyle = (isActive : boolean, isTransitioning : boolean ) => {
+
+    useEffect(()=>{
+        const {action} = params 
+        if(action !== "submit"){
+            const {dsi, type_ofData} = state;
+            setDsi(dsi);
+            setTypeOfData(type_ofData)
+          
+        }
+      },[searchParams])
+
+
+  // const navLinkStyle = (isActive : boolean, isTransitioning : boolean) => {
     
-    return {
-      fontWeight: isActive ? "bold" : "",
-      viewTransitionName: isTransitioning ? "slide" : "",
-      color: isActive ? "white" : "#009c39",
-      background : isActive ? "#009c39" :"white",
+    
+
+  //   return {
+  //     fontWeight: isActive ? "bold" : "",
+  //     color: isActive ? "white" : "#009c39",
+  //     viewTransitionName: isTransitioning ? "slide" : "",
+  //     background : isActive ? "#009c39" :"white",
       
-    };
+  //   };
+  // }
+
+
+const navLinkClass = (industryType : string) : string=> {
+  const {industrial_type} = params;
+
+  let design = "p-2 rounded-lg w-24 flex justify-center item-center ";
+
+  if(industryType === industrial_type){
+    design = design + "font-bold bg-green-800 text-white"
+  } else {
+    design = design + "text-green-700 bg-white text-lg"
   }
+
+
+  return design
+
+}
 
 
   return (
@@ -91,36 +126,37 @@ const IndustrialBaseDataContext = createContext<IndustrialContextInterface>({} a
 
               <div className="flex justify-around overflow-x-auto">
 
-                <NavLink to={"0/mineral"}
-                 style={({isActive, isTransitioning})=>navLinkStyle(isActive, isTransitioning)}
-                 className="p-2 rounded-lg w-24 text-center"
+                <NavLink to={`submit/0/mineral`}
+                
+                 className={navLinkClass("mineral")}
                 >
                   Mineral
                 </NavLink>
-                <NavLink to={"1/chemical"}
-                 style={({isActive, isTransitioning})=>navLinkStyle(isActive, isTransitioning)}
-                 className="p-2 rounded-lg w-24 text-center"
+                <NavLink to={"submit/1/chemical"}
+                 
+                 className={navLinkClass("chemical")}
                 >
                   Chemical
                 </NavLink>
-                <NavLink to={"2/metal"}
-                 style={({isActive, isTransitioning})=>navLinkStyle(isActive, isTransitioning)}
-                 className="p-2 rounded-lg w-24 text-center"
+                <NavLink to={"submit/2/metal"}
+                 
+                 className={navLinkClass("metal")}
+
                 >
                   Metal
                 </NavLink>
 
 
-                <NavLink to={"3/electronics"}
-                 style={({isActive, isTransitioning})=>navLinkStyle(isActive, isTransitioning)}
-                 className="p-2 rounded-lg w-24 text-center"
+                <NavLink to={"submit/3/electronics"}
+                
+                 className={navLinkClass("electronics")}
                 >
                   Electronics
                 </NavLink>
 
-                <NavLink to={"4/others"}
-                 style={({isActive, isTransitioning})=>navLinkStyle(isActive, isTransitioning)}
-                 className="p-2 rounded-lg w-24 text-center"
+                <NavLink to={"submit/4/others"}
+             
+                 className={navLinkClass("others")}
                 >
                   Others
                 </NavLink>
@@ -135,14 +171,14 @@ const IndustrialBaseDataContext = createContext<IndustrialContextInterface>({} a
                   deafult_brgyName={state && state.brgy_name}
                 />
 
-                <Select label="Data Source Identifier" onChange={(value)=> setDsi(value)}>
+                <Select label="Data Source Identifier" onChange={(value)=> setDsi(value)} value={state ? state.dsi : dsi}>
                   <Option value="commercial">Commercial</Option>
                   <Option value="industrial">Industrial</Option>
                   <Option value="institutional">Institutional</Option>
                   <Option value="others">Others</Option>
                 </Select>
 
-                <Select label="Type of Data" onChange={(value)=> setTypeOfData(value)}>
+                <Select label="Type of Data" onChange={(value)=> setTypeOfData(value)} value={state ? state.type_ofData : type_ofData}>
                   <Option value="census">Census</Option>
                   <Option value="ibs">Individual Business Survey</Option>
                   <Option value="others">Others</Option>  

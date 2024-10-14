@@ -30,7 +30,7 @@ const SummaryData = () => {
     const selectAllData = useSelectAllData;
 
     //mobile-combustion
-    const [mobileCombustionData, setMobileCombustionData] = useState<any>();
+    // const [mobileCombustionData, setMobileCombustionData] = useState<any>();
     const [v_typeSeries, set_vTypeSeries] = useState<any[]>();
     const [v_ageSeries, set_vAgeSeries] = useState<any[]>();
     const [vehicle_ghge_rate, setVehicleGHGeRate] = useState<any[]>();
@@ -74,7 +74,7 @@ const SummaryData = () => {
                     const {vehicle} = res.data;
                     console.log("Summary Data : ", res.data)
                     set_isLoading(false)
-                    setMobileCombustionData(res.data)
+                    // setMobileCombustionData(res.data)
     
                     set_vTypeSeries([{  
                         name: 'count',
@@ -303,7 +303,7 @@ const SummaryData = () => {
                     
                 
                 {
-                    mobileCombustionData?
+                    !isLoading?
                         
                         <div className="flex h-auto flex-col gap-3">
 

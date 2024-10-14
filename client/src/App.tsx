@@ -19,10 +19,17 @@ import ForgotPass from "./routes/not-auth/ForgotPass";
 import ChangePass from "./routes/not-auth/ChangePass";
 import AuditLogs from "./routes/s-admin/AuditLogs";
 import AccountsTable from "./routes/s-admin/AccountsTable";
+
+//summaryRoute
 import SummaryData from "./routes/s-admin/SummaryData";
+import IndustrialSummary from "./routes/summary/industrial/IndustrialSummary";
 
 
-import SurveyedList from "./routes/surveyor/SurveyedList";
+//survey List Data
+import SurveyedList from "./routes/surveyor/SurveyListData/SurveyedList";
+import IndustrialList from "./routes/surveyor/SurveyListData/IndustrialList";
+
+
 import WasteWaterForm from "./routes/surveyor/WasteWaterForm";
 import { IndustrialForm, Chemical, Electronics, Metal, Mineral, Others} from "./routes/surveyor/IndustrialForm/IndustrialForm";
 
@@ -57,7 +64,9 @@ function App() {
               <Route path = 'change-pass' element = {<ChangePass/>}/>
               <Route path = "audit-log" element = {<AuditLogs/>}/>
               <Route path = "accounts" element = {<AccountsTable/>}/>
-              <Route path = "summary/:survey_category" element = {<SummaryData/>}/>
+                  {/* Summary Route */}
+            <Route path = "summary/0/:survey_category" element = {<SummaryData/>}/> {/* For Mobile Combustion and Waste Water*/}
+            <Route path = "summary/1/industrial" element = {<IndustrialSummary/>}/> {/* For industial*/}
 
               <Route path = 'register'>
                   <Route index element = {<Registration/>}/>
@@ -71,7 +80,10 @@ function App() {
             <Route index element = {<HomePage/>}/>
             <Route path = 'home' element = {<HomePage/>}/>
             <Route path = "dashboard" element = {<DashBoard/>}/>
-            <Route path = "summary/:survey_category" element = {<SummaryData/>}/>
+            {/* Summary Route */}
+            <Route path = "summary/0/:survey_category" element = {<SummaryData/>}/> {/* For Mobile Combustion and Waste Water*/}
+ 
+            <Route path = "summary/1/industrial" element = {<IndustrialSummary/>}/> {/* For industial*/}
 
 
               <Route path = 'register'>
@@ -87,15 +99,15 @@ function App() {
               <Route index element = {<HomePage/>}/>
               <Route path = 'home' element = {<HomePage/>}/>
               <Route path = 'forms'>
-                <Route path = ':action/:form_type' element = {<MobileCombustionForm/>}/>
-                <Route path = ':action/waste-water' element = {<WasteWaterForm/>}/>
+                <Route path = ':form_type/:action' element = {<MobileCombustionForm/>}/>
+                <Route path = 'waste-water/:action' element = {<WasteWaterForm/>}/>
 
-                <Route path = ':action/industrial' element = {<IndustrialForm/>}>
-                  <Route path="0/:industrial_type" element = {<Mineral/>}/>
-                  <Route path="1/:industrial_type" element = {<Chemical/>}/>
-                  <Route path="2/:industrial_type" element = {<Metal/>}/>
-                  <Route path="3/:industrial_type" element = {<Electronics/>}/>
-                  <Route path="4/:industrial_type" element = {<Others/>}/>
+                <Route path = 'industrial' element = {<IndustrialForm/>}>
+                  <Route path=":action/0/:industrial_type" element = {<Mineral/>}/>
+                  <Route path=":action/1/:industrial_type" element = {<Chemical/>}/>
+                  <Route path=":action/2/:industrial_type" element = {<Metal/>}/>
+                  <Route path=":action/3/:industrial_type" element = {<Electronics/>}/>
+                  <Route path=":action/4/:industrial_type" element = {<Others/>}/>
                 </Route>
 
 
@@ -106,7 +118,14 @@ function App() {
 
                 <Route path = ':action/stationary-fuel-consumption' element = {<StationaryFuelForm/>}/>
               </Route>
-              <Route path="surveyed-list/:survey_category" element ={<SurveyedList/>}/>
+              
+              <Route path="surveyed-list">
+
+                <Route path="0/:survey_category" element = {<SurveyedList/>} />
+                <Route path="1/industrial" element = {<IndustrialList/>}/>
+              
+              </Route>
+
               <Route path = 'change-pass' element = {<ChangePass/>}/>
             </Route>
             <Route path="*"

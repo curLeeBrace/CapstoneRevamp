@@ -2,6 +2,12 @@ import { Request, Response } from 'express';
 import FuelFormSchema from "../../db_schema/FuelFormSchema";
 import WasteWaterFormShema from '../../db_schema/WasteWaterFormShema';
 
+import MineralSchema from '../../db_schema/Industrial/MineralSchema';
+import ChemicalSchema from '../../db_schema/Industrial/ChemicalSchema';
+import MetalSchema from '../../db_schema/Industrial/MetalSchema';
+import ElectronicsSchema from '../../db_schema/Industrial/ElectronicsSchema';
+import OthersSchema from '../../db_schema/Industrial/OthersSchema';
+
 
 
 const formData = async (req:Request, res:Response) => {
@@ -14,18 +20,71 @@ const formData = async (req:Request, res:Response) => {
     const {form_category} = req.params;
 
     try {
-        const query = brgy_code !== undefined ? 
-        {
-            "survey_data.form_type" : surveyType,
-            "survey_data.brgy_code" : brgy_code,
-            "surveyor_info.municipality_code" : municipality_code
-        } : 
-        {
-            "survey_data.form_type" : surveyType
+
+        let query = {}
+
+
+        if(form_category === "waste-water" || form_category === "mobile-combustion"){
+
+            query = brgy_code !== undefined ? 
+                {
+                    "survey_data.form_type" : surveyType,
+                    "survey_data.brgy_code" : brgy_code,
+                    "surveyor_info.municipality_code" : municipality_code
+                } : 
+                {
+                    "survey_data.form_type" : surveyType,
+                    "surveyor_info.municipality_code" : municipality_code
+                }
+        } else {
+            query = brgy_code !== undefined ? 
+                {
+                    // "survey_data.form_type" : surveyType,
+                    "survey_data.brgy_code" : brgy_code,
+                    "surveyor_info.municipality_code" : municipality_code
+                } : 
+                {
+                    // "survey_data.form_type" : surveyType,
+                    "surveyor_info.municipality_code" : municipality_code
+                }
         }
+
+
+
+
+
+
+
+
         
 
-        const form_data = form_category === "waste-water" ? await WasteWaterFormShema.find(query).exec() : await FuelFormSchema.find(query).exec();
+        let form_data :any[] = [];
+
+        if(form_category === "waste-water"){
+            form_data = await WasteWaterFormShema.find(query).exec()
+        } else if (form_category === "mobile-combustion"){
+            form_data = await FuelFormSchema.find(query).exec();
+        } else if(form_category === "industrial-mineral"){
+            form_data = await MineralSchema.find(query).exec();
+        } else if(form_category === "industrial-chemical"){
+            form_data = await ChemicalSchema.find(query).exec();
+        } else if(form_category === "industrial-metal"){
+            form_data = await MetalSchema.find(query).exec();
+        } else if(form_category === "industrial-electronics"){
+            form_data = await ElectronicsSchema.find(query).exec();
+        } else if(form_category === "industrial-others"){
+            form_data = await OthersSchema.find(query).exec();
+        }
+
+
+
+
+
+
+
+        
+
+        
     
         if(!form_data) return res.sendStatus(204);
     
