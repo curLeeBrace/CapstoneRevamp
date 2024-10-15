@@ -94,6 +94,10 @@ export function StickyNavbar() {
     {
       title: "Industrial",
       href: `/${user_info.user_type}/summary/1/industrial`,
+    },
+    {
+      title: "Agriculture",
+      href: `/${user_info.user_type}/summary/2/agriculture`,
     }
   ]
 

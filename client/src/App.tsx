@@ -23,6 +23,7 @@ import AccountsTable from "./routes/s-admin/AccountsTable";
 //summaryRoute
 import SummaryData from "./routes/s-admin/SummaryData";
 import IndustrialSummary from "./routes/summary/industrial/IndustrialSummary";
+import AgricultureSummary from "./routes/summary/AgricultureSummary";
 
 
 //survey List Data
@@ -67,6 +68,7 @@ function App() {
                   {/* Summary Route */}
             <Route path = "summary/0/:survey_category" element = {<SummaryData/>}/> {/* For Mobile Combustion and Waste Water*/}
             <Route path = "summary/1/industrial" element = {<IndustrialSummary/>}/> {/* For industial*/}
+            <Route path = "summary/2/agriculture" element = {<AgricultureSummary/>}/>
 
               <Route path = 'register'>
                   <Route index element = {<Registration/>}/>
@@ -82,8 +84,8 @@ function App() {
             <Route path = "dashboard" element = {<DashBoard/>}/>
             {/* Summary Route */}
             <Route path = "summary/0/:survey_category" element = {<SummaryData/>}/> {/* For Mobile Combustion and Waste Water*/}
- 
             <Route path = "summary/1/industrial" element = {<IndustrialSummary/>}/> {/* For industial*/}
+            <Route path = "summary/2/agriculture" element = {<AgricultureSummary/>}/>
 
 
               <Route path = 'register'>
