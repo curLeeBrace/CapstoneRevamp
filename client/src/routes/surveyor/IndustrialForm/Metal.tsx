@@ -8,6 +8,7 @@ import useSurveyFormActions from "../../../custom-hooks/useSurveyFormActions";
 import DialogBox from "../../../Components/DialogBox";
 import { useSearchParams } from "react-router-dom";
 import { useLocation } from "react-router-dom";
+import useInputValidation from "../../../custom-hooks/useInputValidation";
 
 type MetalData = {
   ispif: number;
@@ -33,8 +34,7 @@ const Metal = () => {
     ispnif :0,
   })
 
-
-
+  useInputValidation(metalData, setMetalData, 999);
 
   useEffect(()=>{
     const {action} = params 
@@ -50,8 +50,15 @@ const Metal = () => {
   const submitValidation = () => {
 
     const {brgy, dsi, type_ofData, setAlertMsg, setOpenAlert, } = industrialBaseData
+    const isDataFilled = Object.values(metalData).some(value => value && value.toString().trim() !== '');
 
-    if(brgy && dsi && type_ofData){
+    if (!isDataFilled) {
+      set_isLoading(false);
+      setAlertMsg("You haven't input anything yet. Kindly fill-up the form.");
+      setOpenAlert(true);
+      return;
+    }
+    if(brgy && dsi && type_ofData && isDataFilled){
 
       setOpenDialogBox(true);
     } else {

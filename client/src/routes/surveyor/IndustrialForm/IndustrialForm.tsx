@@ -124,7 +124,7 @@ const navLinkClass = (industryType : string) : string=> {
                 Select Industry Type
               </Typography>
 
-              <div className="flex justify-around overflow-x-auto">
+              <div className="md:flex md:justify-around grid grid-cols-2">
 
                 <NavLink to={`submit/0/mineral`}
                 

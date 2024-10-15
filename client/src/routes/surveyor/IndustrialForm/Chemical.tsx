@@ -7,6 +7,7 @@ import { useIndustrialBaseData } from "./IndustrialForm";
 import { useLocation, useParams } from "react-router-dom";
 import DialogBox from "../../../Components/DialogBox";
 import { useSearchParams } from "react-router-dom";
+import useInputValidation from "../../../custom-hooks/useInputValidation";
 
 
 type ChemicalData = {
@@ -54,10 +55,10 @@ const Chemical = () => {
 
   } as ChemicalData);
 
-
-
+  useInputValidation(chemicalData, setChemicalData, 999);
 
   useEffect(()=>{
+
     const {action} = params 
     if(action !== "submit"){
       setChemicalData(state)
@@ -119,18 +120,24 @@ const Chemical = () => {
 
      
   const submitValidation = () => {
+    const { brgy, dsi, type_ofData, setAlertMsg, setOpenAlert } = industrialBaseData;
+    const isDataFilled = Object.values(chemicalData).some(value => value && value.toString().trim() !== '');
 
-    const {brgy, dsi, type_ofData, setAlertMsg, setOpenAlert, } = industrialBaseData
-
-    if(brgy && dsi && type_ofData){
-
+  
+    if (brgy && dsi && type_ofData && isDataFilled) {
       setOpenDialogBox(true);
     } else {
       set_isLoading(false);
-      setOpenAlert(true)
       setAlertMsg("Some field are empty!");
+      setOpenAlert(true);
     }
-}
+    if (!isDataFilled) {
+      set_isLoading(false);
+      setAlertMsg("You haven't input anything yet. Kindly fill-up the form.");
+      setOpenAlert(true);
+      return;
+    }
+  };
 
 
 

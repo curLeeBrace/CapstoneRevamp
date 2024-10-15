@@ -161,7 +161,6 @@ const clearForm = () => {
 
 const submitHandler = () => {
   const payload = preparePayLoad();
-  
   submitForm({payload, form_category : "mobile-combustion"})
   .then(res => {
           if(res.status === 201){
@@ -246,7 +245,7 @@ const acceptUpdateHandler = () => {
 
 const submitValidation = () => {
     const {form_type, fuel_type, liters_consumption, vehicle_age, vehicle_type} = formData
-    
+   
     if(form_type && fuel_type &&  liters_consumption && vehicle_age && vehicle_type && brgy?.address_name){
  
       setOpenDialogBox(true);
