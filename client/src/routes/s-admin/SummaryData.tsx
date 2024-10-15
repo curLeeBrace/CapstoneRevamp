@@ -1,11 +1,11 @@
 
 import BarChart from "../../Components/Dashboard/BarChart"
-import {GlobeAsiaAustraliaIcon, TruckIcon} from "@heroicons/react/24/solid";
+import {TruckIcon} from "@heroicons/react/24/solid";
 
 import {useEffect, useState } from "react";
 import {AddressReturnDataType} from "../../custom-hooks/useFilterAddrress";
 import {Typography} from "@material-tailwind/react";
-import SimpleCard from "../../Components/Dashboard/SimpleCard";
+// import SimpleCard from "../../Components/Dashboard/SimpleCard";
 
 import { TabsDefault} from "../../Components/Tabs";
 // import { Button } from '@material-tailwind/react';
@@ -40,7 +40,7 @@ const SummaryData = () => {
     //waster-water
     const [popultionUsingTheSystem, setPopultionUsingTheSystem] = useState<any[]>();
 
-    const [totalGHGe, setTotalGHGe] = useState<number>(0);
+    // const [totalGHGe, setTotalGHGe] = useState<number>(0);
 
     const  {survey_category} = useParams()
   
@@ -309,10 +309,10 @@ const SummaryData = () => {
 
                                 
                                 <div className="w-full flex flex-col gap-2 flex-wrap lg:flex-nowrap">
-                                    
+{/*                                     
                                     <div className="h-24 w-full">
                                         <SimpleCard body={`${totalGHGe.toFixed(2)}`} header="Total GHGe" icon={<GlobeAsiaAustraliaIcon className="h-full w-full"/>} isLoading = {isLoading}/>
-                                    </div>
+                                    </div> */}
                                     {/* <div className="h-40 w-full lg:w-1/2">
                                         <SimpleCard body={
                                             expected_ghgThisYear ? expected_ghgThisYear.toFixed(5)
@@ -348,7 +348,7 @@ const SummaryData = () => {
                                             // selectAll = {selectAll} 
                                             survey_category={survey_category} // this is a manual, but is supose to be automatic when it comes in passing the value
                                             selectedYear = {yearState}
-                                            totalGHGeSetState={setTotalGHGe}
+                                            // totalGHGeSetState={setTotalGHGe}
                                         />
 
                                         
