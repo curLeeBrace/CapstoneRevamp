@@ -18,7 +18,6 @@ type RequestQueryTypes = {
     user_type : "s-admin" | "lgu_admin"
     industry_type : "all" | "mineral" | "chemical" | "metal" | "electronics" | "others";
     municipality_code : string;
-    brgy_name : string;
     prov_code : string;
     year : string;
 }
@@ -27,7 +26,7 @@ type RequestQueryTypes = {
 const getIndustrialSummary = async (req: Request, res:Response) => {
 
 
-    const {brgy_name, industry_type, municipality_code, user_type, prov_code, year} = req.query as RequestQueryTypes
+    const {industry_type, municipality_code, user_type, prov_code, year} = req.query as RequestQueryTypes
 
     const query = user_type === "s-admin" ? 
     {
@@ -86,6 +85,7 @@ const getIndustrialSummary = async (req: Request, res:Response) => {
 // get locations
     const parent_code = user_type === "s-admin" ? prov_code : municipality_code
     const locations = getAvailableLocations(parent_code, user_type);
+
     let filter_locations : any[] = []
 
     //clean data/filterdata
@@ -103,6 +103,7 @@ const getIndustrialSummary = async (req: Request, res:Response) => {
 
         }
     }) 
+    
     let responsePerLocation :{
         location: string; 
         count: number;

@@ -367,7 +367,7 @@ const SummaryData = () => {
                                                         <BarChart chart_icon={<TruckIcon className="h-6 w-6"/>} chart_label="Vehicle Age" chart_meaning="Total counts of diffirent vehicle age." series={v_ageSeries} isLoading = {isLoading}/>
                                                     </>
                                                     : 
-                                                    <BarChart chart_icon={<TruckIcon className="w-6 h-6"/>} chart_label="Population Using The Sytem" chart_meaning="Count of People Using the System" series={popultionUsingTheSystem} isLoading = {isLoading}/>
+                                                    <BarChart chart_icon={<TruckIcon className="w-6 h-6"/>} chart_label="Population Using The Sytem" chart_meaning="Count of People Using the System" series={popultionUsingTheSystem} isLoading = {isLoading} stacked/>
                                                 }
                                     
                                             </div>

@@ -10,24 +10,41 @@ import { ExclamationTriangleIcon } from "@heroicons/react/16/solid";
 import Skeleton from "../Skeleton";
   
    
+
+export type BarSeriesTypes = {
+
+  name : string,
+  data : {
+      x : string
+      y : number
+  }[],
+  fillColor? : string,
+
+}
+
   interface BarChartProps {
     chart_label : string;
     chart_meaning : string;
     chart_icon : React.ReactElement;
-    series : any[] | undefined;
+    series : BarSeriesTypes[] | undefined;
     isLoading? : boolean;
+    stacked? : boolean
   }
+
+
+  
+
 
   
    
    
-  export default function   BarChart({chart_icon, chart_label, chart_meaning, series, isLoading = false}:BarChartProps) {
+  export default function BarChart({chart_icon, chart_label, chart_meaning, series, isLoading = false, stacked}:BarChartProps) {
 
     const chartConfig = {
       series,
       options: {
         chart: {
-          stacked: true,
+          stacked: stacked ? stacked : false,
           background: 'white',
           toolbar: {
             show: true,
@@ -41,7 +58,7 @@ import Skeleton from "../Skeleton";
         },
         plotOptions: {
           bar: {
-            columnWidth: '20%',
+            columnWidth: '80%',
             barHeight: '100%',
             dataLabels: {
               total: {
@@ -72,7 +89,7 @@ import Skeleton from "../Skeleton";
           floated={false}
           shadow={false}
           color="transparent"
-          className="flex flex-col gap-4 rounded-none md:flex-row md:items-center"
+          className="flex flex-col gap-4 rounded-none md:flex-row md:items-center h-12"
         >
           <div className="w-10 h-10 flex justify-center items-center rounded-lg bg-gray-900 text-white">
             {chart_icon}
