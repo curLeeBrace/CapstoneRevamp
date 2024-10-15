@@ -1,5 +1,5 @@
 import YearMenu from "../../../Components/YearMenu";
-import BarChart from "../../../Components/Dashboard/BarChart";
+import BarChart, {BarSeriesTypes} from "../../../Components/Dashboard/BarChart";
 import {UserIcon} from "@heroicons/react/24/solid";
 import { useEffect, useState } from "react";
 import DonutChart, {DonutState} from "../../../Components/Dashboard/DonutChart";
@@ -8,16 +8,16 @@ import { Radio } from "@material-tailwind/react";
 import useUserInfo from "../../../custom-hooks/useUserType";
 import useAxiosPrivate from "../../../custom-hooks/auth_hooks/useAxiosPrivate";
 
-type BarSeriesTypes = {
+// type BarSeriesTypes = {
 
-    name : string,
-    data : {
-        x : string
-        y : number
-    }[],
-    fillColor? : string,
+//     name : string,
+//     data : {
+//         x : string
+//         y : number
+//     }[],
+//     fillColor? : string,
 
-}
+// }
 
 
 type IndustryType = {
