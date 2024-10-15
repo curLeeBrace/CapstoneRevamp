@@ -8,7 +8,7 @@ interface TableProps  {
  
 export default function Table({tb_datas, tb_head} : TableProps) {
   return (
-    <Card className="w-full overflow-scroll custom-scrollbar h-full">
+    <Card className="w-full overflow-scroll custom-scrollbar h-full max-h-96">
       <table className="w-full h-full min-w-max table-auto text-left">
         <thead className="sticky top-0">
           <tr>

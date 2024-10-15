@@ -71,7 +71,7 @@ function NavListMenu(props: NavListMenuProps) {
       </Menu>
       <MenuItem className="flex items-center gap-2 font-medium text-white lg:hidden">
         <Square3Stack3DIcon className="h-[18px]" />{" "}
-        Forms{" "}
+        {navName} {" "}
       </MenuItem>
       <ul className="ml-6 flex w-full flex-col gap-1 text-white lg:hidden">
         {renderItems} {/* Ensure correct links are rendered */}

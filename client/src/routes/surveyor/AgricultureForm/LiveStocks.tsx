@@ -6,6 +6,7 @@ import useUserInfo from "../../../custom-hooks/useUserType";
 import useSurveyFormActions from "../../../custom-hooks/useSurveyFormActions";
 import { useAgricultureContextData } from "./AgricultureForm";
 import DialogBox from "../../../Components/DialogBox";
+import useInputValidation from "../../../custom-hooks/useInputValidation";
 
 type AgricultureLiveStockType = {
   buffalo: number;
@@ -36,6 +37,8 @@ const LiveStocks = () => {
     poultry: 0,
     swine: 0,
   });
+
+  useInputValidation(liveStock, setLiveStock, 999);
 
   const preparePayload = (): {} => {
     const { brgy } = agricultureData;
@@ -69,7 +72,15 @@ const LiveStocks = () => {
   };
 
   const submitValidation = () => {
-    const { brgy, setAlertMsg, setOpenAlert } = agricultureData;
+    const isDataFilled = Object.values(liveStock).some(value => value && value.toString().trim() !== '');
+    const {brgy, setAlertMsg, setOpenAlert} = agricultureData
+
+    if (!isDataFilled) {
+      set_isLoading(false);
+      setAlertMsg("You haven't input anything yet. Kindly fill-up the form.");
+      setOpenAlert(true);
+      return;
+    }
     if (brgy?.address_name) {
       setOpenDialogBox(true);
     } else {
