@@ -101,8 +101,8 @@ function App() {
               <Route index element = {<HomePage/>}/>
               <Route path = 'home' element = {<HomePage/>}/>
               <Route path = 'forms'>
-                <Route path = ':form_type/:action' element = {<MobileCombustionForm/>}/>
-                <Route path = 'waste-water/:action' element = {<WasteWaterForm/>}/>
+                <Route path = ':action/mobile-combustion' element = {<MobileCombustionForm/>}/>
+                <Route path = ':action/waste-water' element = {<WasteWaterForm/>}/>
 
                 <Route path = 'industrial' element = {<IndustrialForm/>}>
                   <Route path=":action/0/:industrial_type" element = {<Mineral/>}/>

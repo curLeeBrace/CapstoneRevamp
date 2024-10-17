@@ -1,6 +1,11 @@
 import { Request, Response } from "express";
 import FuelFormSchema from "../../db_schema/FuelFormSchema";
 import WasteWaterFormShema from "../../db_schema/WasteWaterFormShema";
+import MineralSchema from "../../db_schema/Industrial/MineralSchema"
+import ChemicalSchema from "../../db_schema/Industrial/ChemicalSchema"
+import MetalSchema from "../../db_schema/Industrial/MetalSchema"
+import ElectronicsSchema = require("../../db_schema/Industrial/ElectronicsSchema");
+import OthersSchema = require("../../db_schema/Industrial/OthersSchema");
 
 
 
@@ -29,6 +34,12 @@ const getNotification = async (req : Request, res : Response) => {
         const mobileCombustion_formData = await FuelFormSchema.find(query).exec();
         const wasteWater_formData = await WasteWaterFormShema.find(query).exec();
 
+        const mineral_formData = await MineralSchema.find(query).exec();
+        const chemical_formData = await ChemicalSchema.find(query).exec();
+        const metal_formData =  await MetalSchema.find(query).exec();
+        const electronics_formData = await ElectronicsSchema.find(query).exec();
+        const others_formData = await OthersSchema.find(query).exec();
+
    
 
 
@@ -36,7 +47,21 @@ const getNotification = async (req : Request, res : Response) => {
 
         const mobileCombustionResponse = prepareResponse(mobileCombustion_formData, "mobile-combustion");
         const wasteWaterResponse = prepareResponse(wasteWater_formData, "waste-water");
-        const response = [...mobileCombustionResponse, ...wasteWaterResponse]
+        const mineralResponse = prepareResponse(mineral_formData, "industrial-mineral");
+        const chemicalResponse = prepareResponse(chemical_formData, "industrial-chemical");
+        const metalResponse = prepareResponse(metal_formData, "industrial-metal");
+        const electronicsResponse = prepareResponse(electronics_formData, "industrial-electronics");
+        const othersResponse = prepareResponse(others_formData, "industrial-others");
+
+        const response = [
+            ...mobileCombustionResponse, 
+            ...wasteWaterResponse, 
+            ...mineralResponse, 
+            ...chemicalResponse,
+            ...metalResponse,
+            ...electronicsResponse,
+            ...othersResponse,
+        ]
 
 
         return res.status(200).send(response);
