@@ -14,49 +14,32 @@ import Skeleton from "./Skeleton";
 import { Link } from "react-router-dom";
 import useAxiosPrivate from "../custom-hooks/auth_hooks/useAxiosPrivate";
 
-
 const NotificationBell = () => {
   const axiosPrivate = useAxiosPrivate();
   const userInfo = useUserInfo();
   const [notificationList, setNotificationList] = useState<any[]>();
   const [isLoading, set_isLoading] = useState(false);
-  const [openNotiff, setOpenNotiff] = useState(false)
+  const [openNotiff, setOpenNotiff] = useState(false);
   const [notiffCount, setNotiffCount] = useState(0);
 
+  useEffect(() => {
+    getNotiffication().then((lenth) => setNotiffCount(lenth));
 
-    
-
-  useEffect(()=>{
-    getNotiffication()
-    .then((lenth)=> setNotiffCount(lenth));
-
-    const intervalId = setInterval(()=>{
-      getNotiffication()
-    .then((lenth)=> setNotiffCount(lenth));
+    const intervalId = setInterval(() => {
+      getNotiffication().then((lenth) => setNotiffCount(lenth));
     }, 120000);
 
-
-    
     return () => clearInterval(intervalId);
-
-  },[])
-
-
-
-
+  }, []);
 
   useEffect(() => {
-      if(openNotiff){
-        setNotiffCount(0)
-        getNotiffication();
-      }
-
+    if (openNotiff) {
+      setNotiffCount(0);
+      getNotiffication();
+    }
   }, [openNotiff]);
 
-
-
-  const getNotiffication = async () : Promise<number> =>{
-
+  const getNotiffication = async (): Promise<number> => {
     let notiffLength = 0;
     set_isLoading(true);
     const nottiff_data = await axiosPrivate.get("/notiff/get-notification", {
@@ -68,17 +51,30 @@ const NotificationBell = () => {
     setNotificationList(nottiff_data.data);
     set_isLoading(false);
 
-    return notiffLength
-   
-  }
+    return notiffLength;
+  };
 
-
-
+  const notiffLink = (state : {}, url : string, surveyorName : string) => {
+    return (
+      <Link
+        className="h-full gap-1 flex flex-col"
+        to={url}
+        state={state}
+      >
+        <div className="font-bold tex-black">{surveyorName}</div>
+        <div className="text-sm text-nowrap">Request an Survey Update!</div>
+      </Link>
+    );
+  };
 
   return (
     <div>
-      <Menu open = {openNotiff} handler={setOpenNotiff}>
-        <Badge content={notiffCount} overlap="circular" invisible = {notiffCount == 0}>
+      <Menu open={openNotiff} handler={setOpenNotiff}>
+        <Badge
+          content={notiffCount}
+          overlap="circular"
+          invisible={notiffCount == 0}
+        >
           <MenuHandler>
             <IconButton className="bg-transparent shadow-none">
               <BellIcon className="h-full w-full" />
@@ -86,58 +82,120 @@ const NotificationBell = () => {
           </MenuHandler>
         </Badge>
         <MenuList className="h-auto max-h-64 w-72">
-            {
-                !isLoading ? 
-                    notificationList ? (
-                        notificationList.map((notiff) => (
-                        <MenuItem className="h-16 flex">
-                            <div className="h-full w-3/12">
-                            <Avatar
-                                variant="circular"
-                                size="sm"
-                                className="border border-gray-900 w-11 h-11"
-                                src={`https://drive.google.com/thumbnail?id=${notiff.img_id}&sz=w1000`}
-                            />
-                            </div>
-                            <Link className="h-full gap-1 flex flex-col" 
-                              to = {`/surveyor/forms/view/${notiff.form_category}?form_id=${notiff.form_id}`}
-                              state={notiff.form_category === "mobile-combustion"? 
-                                  {
-                                    brgy_name : notiff.survey_data.brgy_name,
-                                    vehicle_type : notiff.survey_data.vehicle_type,
-                                    vehicle_age : notiff.survey_data.vehicle_age,
-                                    fuel_type : notiff.survey_data.fuel_type,
-                                    liters_consumption : notiff.survey_data.liters_consumption,
-                                    form_type : notiff.survey_data.form_type
-                                  } : 
-                                  {
-                                    brgy_name : notiff.survey_data.brgy_name,
-                                    form_type : notiff.survey_data.form_type,
-                                    septic_tanks : notiff.survey_data.septic_tanks,
-                                    openPits_latrinesCat1 : notiff.survey_data.openPits_latrines.cat1,
-                                    openPits_latrinesCat2 : notiff.survey_data.openPits_latrines.cat2,
-                                    openPits_latrinesCat3 : notiff.survey_data.openPits_latrines.cat3,
-                                    openPits_latrinesCat4 : notiff.survey_data.openPits_latrines.cat4,
-                                    riverDischargeCat1 :  notiff.survey_data.riverDischarge.cat1,
-                                    riverDischargeCat2 :  notiff.survey_data.riverDischarge.cat2,
-                                    
-                                  }
-                              }
-                            >
-                                <div className="font-bold tex-black">{notiff.surveyor_name}</div>
-                                    <div className="text-sm text-nowrap">
-                                        Request an Survey Update!
-                                </div>
-                            </Link>
-                      
-                        </MenuItem>
-                        ))
-                    ) : (
-                        <MenuItem> No Available Notification</MenuItem>
-                    )
-                :<Skeleton/>
-            }
-          
+          {!isLoading ? (
+            notificationList ? (
+              notificationList.map(({
+                form_category,
+                surveyor_name,
+                img_id,
+                form_id,
+                survey_data,}) => (
+                <MenuItem className="h-16 flex">
+                  <div className="h-full w-3/12">
+                    <Avatar
+                      variant="circular"
+                      size="sm"
+                      className="border border-gray-900 w-11 h-11"
+                      src={`https://drive.google.com/thumbnail?id=${img_id}&sz=w1000`}
+                    />
+                  </div>
+                  {
+                    form_category === "mobile-combustion" ? 
+                    notiffLink(
+                      {
+                        brgy_name: survey_data.brgy_name,
+                        vehicle_type: survey_data.vehicle_type,
+                        vehicle_age: survey_data.vehicle_age,
+                        fuel_type: survey_data.fuel_type,
+                        liters_consumption: survey_data.liters_consumption,
+                        form_type: survey_data.form_type,
+                      }, 
+                      `/surveyor/forms/view/${form_category}?form_id=${form_id}`,
+                        surveyor_name
+                    ) : form_category === "waste-water" ?
+                    notiffLink(
+                      {
+                        brgy_name: survey_data.brgy_name,
+                        form_type: survey_data.form_type,
+                        septic_tanks: survey_data.septic_tanks,
+                        openPits_latrinesCat1:
+                          survey_data.openPits_latrines.cat1,
+                        openPits_latrinesCat2:
+                          survey_data.openPits_latrines.cat2,
+                        openPits_latrinesCat3:
+                          survey_data.openPits_latrines.cat3,
+                        openPits_latrinesCat4:
+                          survey_data.openPits_latrines.cat4,
+                        riverDischargeCat1: survey_data.riverDischarge.cat1,
+                        riverDischargeCat2: survey_data.riverDischarge.cat2,
+                      },
+                      `/surveyor/forms/view/${form_category}?form_id=${form_id}`,
+                    surveyor_name
+                  ) 
+                  :form_category === "industrial-mineral" ?
+                    notiffLink({
+                      brgy_name : survey_data.brgy_name,
+                      dsi : survey_data.dsi,
+                      type_ofData : survey_data.type_ofData,
+                      cpp : survey_data.cpp,
+                      lp : survey_data.lp,
+                      cpb : survey_data.cpb,
+                      gp : survey_data.gp,
+                    },`/surveyor/forms/industrial/accept/0/mineral?form_id=${form_id}`,surveyor_name)
+                  
+                  :form_category === "industrial-chemical" ?
+                    notiffLink({
+                      brgy_name : survey_data.brgy_name, 
+                      dsi : survey_data.dsi, 
+                      type_ofData : survey_data.type_ofData,
+                      ap : survey_data.ap,
+                      sap : survey_data.sap,
+                      pcbp_M : survey_data.pcbp_M,
+                      pcbp_E : survey_data.pcbp_E,
+                      pcbp_EDVCM : survey_data.pcbp_EDVCM,
+                      pcbp_EO : survey_data.pcbp_EO,
+                      pcbp_A : survey_data.pcbp_A,
+                      pcbp_CB : survey_data.pcbp_CB,
+                    },`/surveyor/forms/industrial/accept/1/chemical?form_id=${form_id}`,surveyor_name)
+                  :form_category === "industrial-metal" ?
+                    notiffLink({
+                      brgy_name : survey_data.brgy_name,
+                      dsi : survey_data.dsi,
+                      type_ofData : survey_data.type_ofData,
+                      ispif : survey_data.ispif,
+                      ispnif : survey_data.ispnif,
+                    },`/surveyor/forms/industrial/accept/2/metal?form_id=${form_id}`,surveyor_name)
+                    
+                  :form_category === "industrial-electronics" ?
+                    notiffLink({
+                    brgy_name : survey_data.brgy_name, 
+                    dsi : survey_data.dsi, 
+                    type_ofData : survey_data.type_ofData,
+                    ics : survey_data.ics,
+                    photovoltaics : survey_data.photovoltaics,
+                    tft_FPD : survey_data.tft_FPD,
+                    htf : survey_data.htf,
+                    },`/surveyor/forms/industrial/accept/3/electronics?form_id=${form_id}`,surveyor_name)
+                  :form_category === "industrial-others" ?
+                    notiffLink({
+                      brgy_name : survey_data.brgy_name,
+                      dsi : survey_data.dsi,
+                      type_ofData : survey_data.type_ofData,
+                      ppi : survey_data.ppi,
+                      other : survey_data.other,
+                      fbi : survey_data.fbi,
+                    },`/surveyor/forms/industrial/accept/4/others?form_id=${form_id}`,surveyor_name)
+                  :null
+                
+                }
+                </MenuItem>
+              ))
+            ) : (
+              <MenuItem> No Available Notification</MenuItem>
+            )
+          ) : (
+            <Skeleton />
+          )}
         </MenuList>
       </Menu>
     </div>

@@ -12,9 +12,9 @@ export default function Table({tb_datas, tb_head} : TableProps) {
       <table className="w-full h-full min-w-max table-auto text-left">
         <thead className="sticky top-0">
           <tr>
-            {tb_head.map((head) => (
+            {tb_head.map((head, index) => (
               <th
-                key={head}
+                key={head + index}
                 className="border-b border-blue-gray-100 bg-blue-gray-100 p-2 max-w-40"
               >
                 <Typography
@@ -37,7 +37,7 @@ export default function Table({tb_datas, tb_head} : TableProps) {
               <tr key={row_index}>
                  {
                     tb_head.map((_, col_index) => (
-                      <td className={classes}>
+                      <td className={classes} key={`${row_index} ${col_index}`}>
                         <Typography
                           variant="small"
                           color="blue-gray"

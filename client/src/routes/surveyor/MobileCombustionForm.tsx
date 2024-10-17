@@ -188,6 +188,8 @@ const submitHandler = () => {
 const updateHandler = () => {
   const payload = preparePayLoad();
   const form_id = searchParams.get("form_id");
+
+  // alert(`FORM ID ${form_id}`)
   updateForm({payload, form_id : form_id as string, form_category : "mobile-combustion"})
   .then(res => {
     if(res.status === 204){
