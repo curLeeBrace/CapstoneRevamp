@@ -86,7 +86,7 @@ const insertFormData = async (req: Request, res: Response) => {
 
 
 
-const updateMobileCombustionData = async (req: Request, res: Response) => {
+const updateData = async (req: Request, res: Response) => {
     const {form_id, form_category} = req.params;
     const {survey_data} = req.body;
 
@@ -133,17 +133,35 @@ const updateMobileCombustionData = async (req: Request, res: Response) => {
 
 
 
-const acceptUpdateMobileCombustionData = async (req: Request, res: Response) => {
+const acceptUpdate = async (req: Request, res: Response) => {
 
     const {form_id} = req.body;
     const {form_category} = req.params;
 
     try {
         
-        const form_data = form_category === "mobile-combustion" ?
-            await FuelFormSchema.findByIdAndUpdate(form_id, {"survey_data.status" : "2"}).exec()
-        :   await WasteWaterFormShema.findByIdAndUpdate(form_id, {"survey_data.status" : "2"}).exec()
+        // const query = {
+           
+        // }
+        let form_data = undefined
 
+
+
+        if(form_category === "waste-water"){
+            form_data = await WasteWaterFormShema.findByIdAndUpdate(form_id, {"survey_data.status" : "2"}).exec()
+        } else if (form_category === "mobile-combustion"){
+            form_data = await FuelFormSchema.findByIdAndUpdate(form_id, {"survey_data.status" : "2"}).exec()
+        } else if(form_category === "industrial-mineral"){
+            form_data = await MineralSchema.findByIdAndUpdate(form_id, {"survey_data.status" : "2"}).exec()
+        } else if(form_category === "industrial-chemical"){
+            form_data = await ChemicalSchema.findByIdAndUpdate(form_id, {"survey_data.status" : "2"}).exec()
+        } else if(form_category === "industrial-metal"){
+            form_data = await MetalSchema.findByIdAndUpdate(form_id, {"survey_data.status" : "2"}).exec()
+        } else if(form_category === "industrial-electronics"){
+            form_data = await ElectronicsSchema.findByIdAndUpdate(form_id, {"survey_data.status" : "2"}).exec()
+        } else if(form_category === "industrial-others"){
+            form_data = await OthersSchema.findByIdAndUpdate(form_id, {"survey_data.status" : "2"}).exec()
+        }
         if(!form_data) return res.sendStatus(204);
     
         return res.status(200).send("Request Update Accepted!!");
@@ -162,7 +180,7 @@ const acceptUpdateMobileCombustionData = async (req: Request, res: Response) => 
 
 export {
     insertFormData,
-    updateMobileCombustionData,
-    acceptUpdateMobileCombustionData
+    updateData,
+    acceptUpdate
 
 }

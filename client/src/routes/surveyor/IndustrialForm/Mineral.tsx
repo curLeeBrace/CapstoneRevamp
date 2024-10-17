@@ -31,7 +31,7 @@ const Mineral = () => {
     const [openDialogBox, setOpenDialogBox] = useState(false);
 
     const user_info = useUserInfo();
-    const {submitForm, updateForm} = useSurveyFormActions();
+    const {submitForm, updateForm, acceptFormUpdate} = useSurveyFormActions();
     const handleChange = useHandleChange;
 
     const [mineralData, setMineralData] = useState<MineralData>({
@@ -182,9 +182,32 @@ const isDataFilled = Object.values(mineralData).some(value => value && value.toS
 
 
 
-  const acceptUpdateHandler = ()=>{
-
+  const acceptUpdateHandler = () => {
+    const form_id = searchParams.get("form_id");
+    const {setAlertMsg, setOpenAlert} = industrialBaseData
+    acceptFormUpdate({form_id : form_id as string, form_category : "industrial-mineral"})
+    .then((res) => {
+      if(res.status === 204){
+        alert("can't accep request update because form data not found!");
+      } else if(res.status === 200){
+        setOpenAlert(true);
+        setAlertMsg(res.data);
+      }
+     
+    })
+    .catch(err => {
+      console.log(err)
+      set_isLoading(false);
+      setOpenAlert(true);
+      setAlertMsg("Server Error!");
+    })
+    .finally(()=>{
+      set_isLoading(false)
+      setOpenDialogBox(false)
+    })
+  
   }
+  
 
 
 
@@ -210,7 +233,8 @@ const isDataFilled = Object.values(mineralData).some(value => value && value.toS
           <Typography className="">
             Cement Production - Portland (tons)
           </Typography>
-          <Input
+          <Input 
+            disabled = {params.action === "view"}
             name = "cpp"
             onChange={(e)=>{handleChange({event : e, setFormStateData  : setMineralData})}}
             value={mineralData.cpp}
@@ -227,6 +251,7 @@ const isDataFilled = Object.values(mineralData).some(value => value && value.toS
             Cement Production - Portland (blended)
           </Typography>
           <Input
+            disabled = {params.action === "view"}
             name="cpb"
             onChange={(e)=>{handleChange({event : e, setFormStateData  : setMineralData})}}
             value={mineralData.cpb}
@@ -245,6 +270,7 @@ const isDataFilled = Object.values(mineralData).some(value => value && value.toS
             Lime Production (tons)
           </Typography>
           <Input
+            disabled = {params.action === "view"}
             name="lp"
             onChange={(e)=>{handleChange({event : e, setFormStateData  : setMineralData})}}
             value={mineralData.lp}
@@ -261,6 +287,7 @@ const isDataFilled = Object.values(mineralData).some(value => value && value.toS
             Glass Production (tons)
           </Typography>
           <Input
+            disabled = {params.action === "view"}
             name = "gp"
             onChange={(e)=>{handleChange({event : e, setFormStateData  : setMineralData})}}
             value={mineralData.gp}
