@@ -171,14 +171,14 @@ const navLinkClass = (industryType : string) : string=> {
                   deafult_brgyName={state && state.brgy_name}
                 />
 
-                <Select label="Data Source Identifier" onChange={(value)=> setDsi(value)} value={state ? state.dsi : dsi}>
-                  <Option value="commercial">Commercial</Option>
+                <Select label="Data Source Identifier" onChange={(value)=> setDsi(value)} value={state ? state.dsi : dsi} disabled = {params.action === "view"}>
+                  <Option value="commercial" >Commercial</Option>
                   <Option value="industrial">Industrial</Option>
                   <Option value="institutional">Institutional</Option>
                   <Option value="others">Others</Option>
                 </Select>
 
-                <Select label="Type of Data" onChange={(value)=> setTypeOfData(value)} value={state ? state.type_ofData : type_ofData}>
+                <Select label="Type of Data" onChange={(value)=> setTypeOfData(value)} value={state ? state.type_ofData : type_ofData} disabled = {params.action === "view"} >
                   <Option value="census">Census</Option>
                   <Option value="ibs">Individual Business Survey</Option>
                   <Option value="others">Others</Option>  

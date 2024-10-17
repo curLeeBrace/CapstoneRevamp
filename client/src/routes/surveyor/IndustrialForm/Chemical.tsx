@@ -36,7 +36,7 @@ const Chemical = () => {
   const [isLoading, set_isLoading] = useState<boolean>(false);
   const [openDialogBox, setOpenDialogBox] = useState(false);
   const user_info = useUserInfo();
-  const {submitForm, updateForm} = useSurveyFormActions();
+  const {submitForm, updateForm, acceptFormUpdate} = useSurveyFormActions();
   const {state} = useLocation();
   const [searchParams] = useSearchParams();
 
@@ -206,9 +206,32 @@ const Chemical = () => {
 
   
  
-   const acceptUpdateHandler = ()=>{
- 
-   }
+  const acceptUpdateHandler = () => {
+    const form_id = searchParams.get("form_id");
+    const {setAlertMsg, setOpenAlert} = industrialBaseData
+    acceptFormUpdate({form_id : form_id as string, form_category : "industrial-chemical"})
+    .then((res) => {
+      if(res.status === 204){
+        alert("can't accep request update because form data not found!");
+      } else if(res.status === 200){
+        setOpenAlert(true);
+        setAlertMsg(res.data);
+      }
+     
+    })
+    .catch(err => {
+      console.log(err)
+      set_isLoading(false);
+      setOpenAlert(true);
+      setAlertMsg("Server Error!");
+    })
+    .finally(()=>{
+      set_isLoading(false)
+      setOpenDialogBox(false)
+    })
+  
+  }
+  
  
  
    
@@ -225,6 +248,7 @@ const Chemical = () => {
         <div className="w-full lg:w-52">
           <Typography>Ammonia Production (tons)</Typography>
           <Input
+            disabled = {params.action === "view"}
             name="ap"
             value={chemicalData.ap}
             onChange={(e) => handleChange({event:e, setFormStateData : setChemicalData})}
@@ -241,6 +265,7 @@ const Chemical = () => {
         <div className="w-full lg:w-52">
           <Typography>Soda Ash Production (tons)</Typography>
           <Input
+            disabled = {params.action === "view"}
             name = "sap"
             value={chemicalData.sap}
             onChange={(e) => handleChange({event:e, setFormStateData : setChemicalData})}
@@ -257,6 +282,7 @@ const Chemical = () => {
         <div className="w-full lg:w-96">
           <Typography>Dichloride and Vinyl Chloride Monomer (tons)</Typography>
           <Input
+            disabled = {params.action === "view"}
             name="pcbp_EDVCM"
             value={chemicalData.pcbp_EDVCM}
             onChange={(e) => handleChange({event:e, setFormStateData : setChemicalData})}
@@ -280,6 +306,7 @@ const Chemical = () => {
           Methanol (tons)
         </Typography>
         <Input
+          disabled = {params.action === "view"}
           name="pcbp_M"
           value={chemicalData.pcbp_M}
           onChange={(e) => handleChange({event:e, setFormStateData : setChemicalData})}
@@ -295,6 +322,7 @@ const Chemical = () => {
           Ethylene (tons)
         </Typography>
         <Input
+          disabled = {params.action === "view"}
           name="pcbp_E"
           value={chemicalData.pcbp_E}
           onChange={(e) => handleChange({event:e, setFormStateData : setChemicalData})}
@@ -310,6 +338,7 @@ const Chemical = () => {
           Ethylene oxide (tons)
         </Typography>
         <Input
+          disabled = {params.action === "view"}
           name="pcbp_EO"
           value={chemicalData.pcbp_EO}
           onChange={(e) => handleChange({event:e, setFormStateData : setChemicalData})}
@@ -325,6 +354,7 @@ const Chemical = () => {
           Acrylonitrile (tons)
         </Typography>
         <Input
+          disabled = {params.action === "view"}
           name="pcbp_A"
           value={chemicalData.pcbp_A}
           onChange={(e) => handleChange({event:e, setFormStateData : setChemicalData})}
@@ -340,6 +370,7 @@ const Chemical = () => {
           Carbon black (tons)
         </Typography>
         <Input
+          disabled = {params.action === "view"}
           name = "pcbp_CB"
           value={chemicalData.pcbp_CB}
           onChange={(e) => handleChange({event:e, setFormStateData : setChemicalData})}

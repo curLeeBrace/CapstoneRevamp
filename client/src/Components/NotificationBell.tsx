@@ -141,7 +141,7 @@ const NotificationBell = () => {
                       lp : survey_data.lp,
                       cpb : survey_data.cpb,
                       gp : survey_data.gp,
-                    },`/surveyor/forms/industrial/accept/0/mineral?form_id=${form_id}`,surveyor_name)
+                    },`/surveyor/forms/industrial/view/0/mineral?form_id=${form_id}`,surveyor_name)
                   
                   :form_category === "industrial-chemical" ?
                     notiffLink({
@@ -156,7 +156,7 @@ const NotificationBell = () => {
                       pcbp_EO : survey_data.pcbp_EO,
                       pcbp_A : survey_data.pcbp_A,
                       pcbp_CB : survey_data.pcbp_CB,
-                    },`/surveyor/forms/industrial/accept/1/chemical?form_id=${form_id}`,surveyor_name)
+                    },`/surveyor/forms/industrial/view/1/chemical?form_id=${form_id}`,surveyor_name)
                   :form_category === "industrial-metal" ?
                     notiffLink({
                       brgy_name : survey_data.brgy_name,
@@ -164,7 +164,7 @@ const NotificationBell = () => {
                       type_ofData : survey_data.type_ofData,
                       ispif : survey_data.ispif,
                       ispnif : survey_data.ispnif,
-                    },`/surveyor/forms/industrial/accept/2/metal?form_id=${form_id}`,surveyor_name)
+                    },`/surveyor/forms/industrial/view/2/metal?form_id=${form_id}`,surveyor_name)
                     
                   :form_category === "industrial-electronics" ?
                     notiffLink({
@@ -175,7 +175,7 @@ const NotificationBell = () => {
                     photovoltaics : survey_data.photovoltaics,
                     tft_FPD : survey_data.tft_FPD,
                     htf : survey_data.htf,
-                    },`/surveyor/forms/industrial/accept/3/electronics?form_id=${form_id}`,surveyor_name)
+                    },`/surveyor/forms/industrial/view/3/electronics?form_id=${form_id}`,surveyor_name)
                   :form_category === "industrial-others" ?
                     notiffLink({
                       brgy_name : survey_data.brgy_name,
@@ -184,7 +184,7 @@ const NotificationBell = () => {
                       ppi : survey_data.ppi,
                       other : survey_data.other,
                       fbi : survey_data.fbi,
-                    },`/surveyor/forms/industrial/accept/4/others?form_id=${form_id}`,surveyor_name)
+                    },`/surveyor/forms/industrial/view/4/others?form_id=${form_id}`,surveyor_name)
                   :null
                 
                 }

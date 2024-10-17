@@ -26,7 +26,7 @@ const Metal = () => {
   const [openDialogBox, setOpenDialogBox] = useState(false);
 
   const user_info = useUserInfo();
-  const {submitForm, updateForm} = useSurveyFormActions();
+  const {submitForm, updateForm, acceptFormUpdate} = useSurveyFormActions();
   const handleChange = useHandleChange;
 
   const [metalData, setMetalData] = useState<MetalData>({
@@ -166,9 +166,32 @@ const submitHandler = () =>{
 
 }
 
- const acceptUpdateHandler = ()=>{
+const acceptUpdateHandler = () => {
+  const form_id = searchParams.get("form_id");
+  const {setAlertMsg, setOpenAlert} = industrialBaseData
+  acceptFormUpdate({form_id : form_id as string, form_category : "industrial-metal"})
+  .then((res) => {
+    if(res.status === 204){
+      alert("can't accep request update because form data not found!");
+    } else if(res.status === 200){
+      setOpenAlert(true);
+      setAlertMsg(res.data);
+    }
+   
+  })
+  .catch(err => {
+    console.log(err)
+    set_isLoading(false);
+    setOpenAlert(true);
+    setAlertMsg("Server Error!");
+  })
+  .finally(()=>{
+    set_isLoading(false)
+    setOpenDialogBox(false)
+  })
 
- }
+}
+
 
 
 
@@ -184,6 +207,7 @@ const submitHandler = () =>{
           Iron and Steel Production from Integrated Facilities (tons)
         </Typography>
         <Input
+          disabled = {params.action === "view"}
           name="ispif"
           value = {metalData.ispif}
           onChange={(e) => handleChange({event : e, setFormStateData : setMetalData})}
@@ -205,6 +229,7 @@ const submitHandler = () =>{
         Iron and Steel Production from Non-integrated Facilities (tons)
       </Typography>
       <Input
+        disabled = {params.action === "view"}
         name="ispnif"
         value={metalData.ispnif}
         onChange={(e) => handleChange({event : e, setFormStateData : setMetalData})}

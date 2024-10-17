@@ -1,7 +1,7 @@
 import express from "express";
 const router = express.Router();
 import {authenticate_token} from "../controller/Token/auth_token";
-import {insertFormData, updateMobileCombustionData, acceptUpdateMobileCombustionData} from "../controller/Forms/form_actions"
+import {insertFormData, updateData, acceptUpdate} from "../controller/Forms/form_actions"
 import { fetchAuditLogs } from "../controller/AuditLog/get_logs";
 import { formData, oneFormData} from "../controller/Forms/form_data";
 
@@ -10,8 +10,8 @@ router.get('/fuel/audit', authenticate_token, fetchAuditLogs);
 
 router.get('/:form_category/surveyed-data', authenticate_token, formData);
 router.get('/:form_category/one-surveyed-data', authenticate_token,  oneFormData);
-router.put('/:form_category/update-surveyed-data/:form_id', authenticate_token, updateMobileCombustionData);
-router.put('/:form_category/accept-update', authenticate_token,  acceptUpdateMobileCombustionData);
+router.put('/:form_category/update-surveyed-data/:form_id', authenticate_token, updateData);
+router.put('/:form_category/accept-update', authenticate_token,  acceptUpdate);
 
 
 //waste water

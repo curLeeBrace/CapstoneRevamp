@@ -30,7 +30,7 @@ const Electronics = () => {
   const [openDialogBox, setOpenDialogBox] = useState(false);
   
   const user_info = useUserInfo();
-  const {submitForm, updateForm} = useSurveyFormActions();
+  const {submitForm, updateForm, acceptFormUpdate} = useSurveyFormActions();
   const handleChange = useHandleChange;
   const [searchParams] = useSearchParams()
   const {state} = useLocation();
@@ -198,9 +198,32 @@ const submitHandler = () =>{
 
 }
 
- const acceptUpdateHandler = ()=>{
+const acceptUpdateHandler = () => {
+  const form_id = searchParams.get("form_id");
+  const {setAlertMsg, setOpenAlert} = industrialBaseData
+  acceptFormUpdate({form_id : form_id as string, form_category : "industrial-electronics"})
+  .then((res) => {
+    if(res.status === 204){
+      alert("can't accep request update because form data not found!");
+    } else if(res.status === 200){
+      setOpenAlert(true);
+      setAlertMsg(res.data);
+    }
+   
+  })
+  .catch(err => {
+    console.log(err)
+    set_isLoading(false);
+    setOpenAlert(true);
+    setAlertMsg("Server Error!");
+  })
+  .finally(()=>{
+    set_isLoading(false)
+    setOpenDialogBox(false)
+  })
 
- }
+}
+
 
 
 
@@ -221,6 +244,7 @@ const submitHandler = () =>{
             Integrated circuit of semiconductor (tons)
           </Typography>
           <Input
+            disabled = {params.action === "view"}
             name = "ics"
             value={electronicsData.ics}
             onChange={(e) => handleChange({event : e, setFormStateData : setElectronicsData})}
@@ -237,6 +261,7 @@ const submitHandler = () =>{
             TFT Flat Panel Display (tons)
           </Typography>
           <Input
+            disabled = {params.action === "view"}
             name = "tft_FPD"
             value={electronicsData.tft_FPD}
             onChange={(e) => handleChange({event : e, setFormStateData : setElectronicsData})}
@@ -255,6 +280,7 @@ const submitHandler = () =>{
         <div className="w-full lg:w-2/5 flex flex-col gap-3">
           <Typography className="">Photovoltaics (tons)</Typography>
           <Input
+            disabled = {params.action === "view"}
             name="photovoltaics"
             value={electronicsData.photovoltaics}
             onChange={(e) => handleChange({event : e, setFormStateData : setElectronicsData})}
@@ -272,6 +298,7 @@ const submitHandler = () =>{
             Heat transfer fluid (tons)
           </Typography>
           <Input
+            disabled = {params.action === "view"}
             name="htf"
             value={electronicsData.htf}
             onChange={(e) => handleChange({event : e, setFormStateData : setElectronicsData})}
