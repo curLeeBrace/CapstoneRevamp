@@ -20,11 +20,11 @@ import useUserInfo from "../custom-hooks/useUserType";
 const url_ofSurveyorsForm = [
   {
     title: "Mobile Combustion",
-    href: `/surveyor/forms/mobile-combustion/submit`,
+    href: `/surveyor/forms/submit/mobile-combustion`,
   },
   {
     title: "Waste Water",
-    href: `/surveyor/forms/waste-water/submit`,
+    href: `/surveyor/forms/submit/waste-water`,
   },
   {
     title: "Industrial",
