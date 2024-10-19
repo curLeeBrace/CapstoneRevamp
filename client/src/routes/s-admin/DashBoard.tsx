@@ -9,6 +9,8 @@ import SurveyorInfo from '../../Components/Dashboard/SuerveyorInfo';
 // import DashboardGHGeSummary from '../../Components/Dashboard/DashboardGHGeSummary';
 import useAxiosPrivate from '../../custom-hooks/auth_hooks/useAxiosPrivate';
 import useUserInfo from '../../custom-hooks/useUserType';
+import { Typography } from '@material-tailwind/react';
+import GhgChartModal from './GhgChartModal';
 
 type Emission = {
   co2e : number;
@@ -143,7 +145,7 @@ function DashBoard() {
       xaxis: {
         labels: {
           style: {
-            fontSize: '15px',
+            fontSize: '13px',
           },
           padding: {
             left: 20,
@@ -153,14 +155,39 @@ function DashBoard() {
         }
       }
     },
-  };
+  }
+  
+  // const TABLE_HEAD = [
+  //   "Emission Source",
+  //   "GHG Emissions (tonnes CO2e)",
+  //   "Proportion of Total Emissions"
+  // ];
+  
+  // const TABLE_ROWS = [
+  //   { name: "Scope 1 Emissions (Net of Forestry and Land Use)", ghge: "", proportion: "", isCategory: true },
+  //   { name: "GHG Emissions from Community-Level Residential Stationary Fuel Use", ghge: "0.00", proportion: "0.00%" },
+  //   { name: "GHG Emissions from Community-Level Commercial Stationary Fuel Use", ghge: "0.00", proportion: "0.00%" },
+  //   { name: "GHG Emissions from Community Mobile Combustion", ghge: "0.01", proportion: "0.03%" },
+  //   { name: "GHG Emissions from Solid Waste Disposal - IPCC FOD Method", ghge: "0.00", proportion: "0.00%" },
+  //   { name: "GHG Emissions from Other Solid Waste Treatment (ICLEI)", ghge: "0.00", proportion: "0.00%" },
+  //   { name: "GHG Emissions from Solid Waste Open Burning (ICLEI)", ghge: "0.00", proportion: "0.00%" },
+  //   { name: "GHG Emissions from Wastewater Treatment and Discharge", ghge: "0.00", proportion: "0.00%" },
+  //   { name: "GHG Emissions from Community-Level Agriculture (Crops)", ghge: "0.00", proportion: "0.00%" },
+  //   { name: "GHG Emissions from Community-Level Agriculture (Livestock)", ghge: "0.00", proportion: "0.00%" },
+  //   { name: "GHG Emissions from Solid Waste Disposal - Inside LGU Geopolitical Boundaries (ICLEI)", ghge: "0.00", proportion: "0.00%" },
+  //   { name: "Scope 1 Emissions/Removal (Forestry and Land Use)", ghge: "", proportion: "", isCategory: true },
+  //   { name: "GHG Emissions from Forestry and Land Use", ghge: "0.00", proportion: "0.00%" },
+  //   { name: "GHG Removal from Sink", ghge: "0.00", proportion: "0.00%" },
+  // ];
+
+
  
 
   return (
-    <div className='h-full w-full fixed overflow-y-auto bg-gray-200 '>
+    <div className='h-full w-full bg-gray-200 '>
 
       <div className='flex flex-col h-full w-full'>
-        <div className='flex items-center gap-3 basis-1/4 px-2 overflow-x-auto'>
+        <div className='flex items-center gap-3 basis-1/4 px-2 overflow-x-auto mx-6 my-4 pb-2'>
           <div className='h-4/5 w-full'>
             <SimpleCard body={`${dashboard_data?.total_ghge.toFixed(2)}`}header='Total GHGe'  icon={<GlobeAsiaAustraliaIcon className='h-6 w-6'/>} isLoading={isLoading} /> {/*child_card={<DashboardGHGeSummary/>} */}
           </div>        
@@ -175,6 +202,67 @@ function DashBoard() {
           </div>
         </div>
 
+       <div className='md:my-2 md:mx-8 md:flex'>
+
+          {/* ETO YUNG GINAWA KONG SUMMARY TABLE */}
+
+          {/* <TableWithFooter
+            tableHead={TABLE_HEAD}
+            tableRows={TABLE_ROWS}
+            totalGHGEmissions={"0"}
+            totalProportion={"100.00%"}
+          /> */}
+                    
+         
+         
+          <div className='text-xs bg-white mr-2 pt-2 rounded-lg'>
+
+          <Typography className='bg-darkgreen font-bold text-base mb-4 rounded-lg py-2 -mt-2 text-center' color='white'>
+            Green House Gas Emission (Charts)
+            </Typography>
+
+          <div className='mb-7 px-4 h-20 text-xs'>
+          <SimpleCard
+            body="IKAW NA BAHALA DITO"
+            header='Mobile Combustion' icon={<GlobeAsiaAustraliaIcon className='h-6 w-6'/>} child_card={<GhgChartModal ChartTitle="Mobile Combustion"/>} isLoading={isLoading}/>
+          </div>
+          
+          <div className='mb-7 px-4 h-20'>
+          <SimpleCard body=""
+           header='Waste Water' icon={<GlobeAsiaAustraliaIcon className='h-6 w-6'/>} child_card={<GhgChartModal ChartTitle="Waste Water"/>} isLoading={isLoading}/>
+          </div>
+          
+          <div className='mb-7 px-4 h-20'>
+          <SimpleCard body=""header='Industrial' icon={<GlobeAsiaAustraliaIcon className='h-6 w-6'/>} child_card={<GhgChartModal ChartTitle="Industrial"/>} isLoading={isLoading}/>
+          </div>
+
+          <div className='mb-7 px-4 h-20'>
+          <SimpleCard body={`${dashboard_data?.total_ghge.toFixed(2)}`} header='Agriculture Crops' icon={<GlobeAsiaAustraliaIcon className='h-6 w-6'/>} child_card={<GhgChartModal ChartTitle="Agriculture Crops"/>} isLoading={isLoading}/>
+          </div>
+
+          <div className='mb-4 px-4 h-20'>
+          <SimpleCard body={`${dashboard_data?.total_ghge.toFixed(2)}`} header='Agriculure Live Stocks' icon={<GlobeAsiaAustraliaIcon className='h-6 w-6'/>} child_card={<GhgChartModal ChartTitle="Agriculture Live Stocks"/>} isLoading={isLoading}/>
+          </div>
+
+
+        </div>
+
+        <div className='basis-full border border-gray-400 bg-white shadow-gray-500 rounded-lg px-4 '>
+
+        {
+        chartConfig? 
+        <Chart
+          width={'100%'}
+          height={'100%'}
+          type={'bar'}
+          series={chartConfig.series}
+          options={chartConfig.options}
+        /> : null
+        }
+
+        </div>
+        </div>
+
         <div className='flex flex-wrap md:flex-nowrap px-5 basis-3/4 gap-3 h-1/3 w-full'>
 
           {/* <div className='hidden lg:block lg:basis-2/6 h-5/6 border border-gray-400 rounded-2xl overflow-hidden'>
@@ -183,19 +271,6 @@ function DashBoard() {
           </div> */}
 
           {/* lg:basis-8/12 */}
-          <div className='basis-full  h-5/6  border border-gray-400 bg-white shadow-gray-500 shadow-2xl rounded-lg p-1'>
-            {
-            chartConfig? 
-            <Chart
-              width={'100%'}
-              height={'100%'}
-              type={'bar'}
-              series={chartConfig.series}
-              options={chartConfig.options}
-            /> : null
-            }
-            
-          </div>
           
         </div>
           
