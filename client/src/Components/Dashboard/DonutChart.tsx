@@ -85,7 +85,7 @@ const DonutChart = ({series, labels, title} : DonutChartProps) => {
       
 
     return(
-        <div className="">
+        <div>
             <div className="text-xl ml-10">{title}</div>
                 <Chart
                     options={chartConfig.options}

@@ -121,14 +121,14 @@ const getIndustrialRawSummary = async (req : Request, res : Response) => {
 
 
             })
-        } else if (industrial_type === "Metal"){
+        } else if (industrial_type === "metal"){
             const metalData = await MetalSchema.find(query).exec();
             if(metalData.length <= 0) return res.sendStatus(204);
              
                 response = metalData.map((data:any)=>{
                     const {email, municipality_name} = data.surveyor_info
                     const {ispif, ispnif,brgy_name} = data.survey_data
-                    const totalGHGe = getGHGe_perRow(chemical_eFactors, [ispif, ispnif])
+                    const totalGHGe = getGHGe_perRow(metal_eFactors, [ispif, ispnif])
 
                     return {
                         form_id : data._id,

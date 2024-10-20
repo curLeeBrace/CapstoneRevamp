@@ -9,6 +9,9 @@ import useUserInfo from "../../../custom-hooks/useUserType";
 import useAxiosPrivate from "../../../custom-hooks/auth_hooks/useAxiosPrivate";
 import MineralSummary from "./MineralSummary";
 import ChemicalSummary from "./ChemicalSummary";
+import MetalSummary from "./MetalSummary";
+import ElectronicsSummary from "./ElectronicsSummary";
+import OthersSummary from "./OthersSummary";
 
 // type BarSeriesTypes = {
 
@@ -172,7 +175,43 @@ const IndustrialSummary = () => {
             <div>
               <ChemicalSummary year = {year ? year : new Date().getFullYear().toString()}/>
             </div>
-          :null
+          : industry_type == "metal" ?
+          <div>
+            <MetalSummary year = {year ? year : new Date().getFullYear().toString()}/>
+          </div>
+          
+          :industry_type == "electronics"?
+            <div>
+              <ElectronicsSummary year = {year ? year : new Date().getFullYear().toString()}/>
+
+            </div>
+          
+          : industry_type == "others" ?
+            <div>
+              <OthersSummary year = {year ? year : new Date().getFullYear().toString()}/>
+            </div>
+          : <div className="flex flex-col gap-10">
+              <div>
+                <MetalSummary year = {year ? year : new Date().getFullYear().toString()}/>
+              </div>
+              <div>
+                <ChemicalSummary year = {year ? year : new Date().getFullYear().toString()}/>
+              </div>
+              <div>
+                <MineralSummary year = {year ? year : new Date().getFullYear().toString()}/>
+              </div>
+              <div>
+                <ElectronicsSummary year = {year ? year : new Date().getFullYear().toString()}/>
+              </div>
+              <div>
+                <OthersSummary year = {year ? year : new Date().getFullYear().toString()}/>
+              </div>
+              
+              
+              
+              
+              
+          </div>
         }
     </div>
   );
