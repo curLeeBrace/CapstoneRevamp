@@ -1,61 +1,63 @@
 import { Card, Typography } from "@material-tailwind/react";
+import Skeleton from "./Skeleton";
 
-
-interface TableProps  {
-  tb_head : string[]
-  tb_datas : any[][]
+interface TableProps {
+  tb_head: string[];
+  tb_datas: any[][];
+  isLoading?: boolean;
 }
- 
-export default function Table({tb_datas, tb_head} : TableProps) {
+
+export default function Table({ tb_datas, tb_head, isLoading }: TableProps) {
   return (
     <Card className="w-full overflow-scroll custom-scrollbar h-full max-h-96">
-      <table className="w-full h-full min-w-max table-auto text-left">
-        <thead className="sticky top-0">
-          <tr>
-            {tb_head.map((head, index) => (
-              <th
-                key={head + index}
-                className="border-b border-blue-gray-100 bg-blue-gray-100 p-2 max-w-40"
-              >
-                <Typography
-                  variant="small"
-                  color="blue-gray"
-                  className="font-normal leading-none opacity-"
+      {isLoading ? (
+        <Skeleton />
+      ) : (
+        <table className="w-full h-full min-w-max table-auto text-left">
+          <thead className="sticky top-0">
+            <tr>
+              {tb_head.map((head, index) => (
+                <th
+                  key={head + index}
+                  className="border-b border-blue-gray-100 bg-blue-gray-100 p-2 max-w-40"
                 >
-                  {head}
-                </Typography>
-              </th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {tb_datas.map((tb_data, row_index) => {
-            const isLast = row_index === tb_data.length - 1;
-            const classes = isLast ? "p-4" : "p-4 border-b border-blue-gray-100 ";
+                  <Typography
+                    variant="small"
+                    color="blue-gray"
+                    className="font-normal leading-none opacity-"
+                  >
+                    {head}
+                  </Typography>
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {tb_datas.map((tb_data, row_index) => {
+              const isLast = row_index === tb_data.length - 1;
+              const classes = isLast
+                ? "p-4"
+                : "p-4 border-b border-blue-gray-100 ";
 
-            return (
-              <tr key={row_index}>
-                 {
-                    tb_head.map((_, col_index) => (
-                      <td className={classes} key={`${row_index} ${col_index}`}>
-                        <Typography
-                          variant="small"
-                          color="blue-gray"
-                          className="font-normal"
-                        
-                        >
-                          {tb_data[col_index]}
-                        </Typography>
-                      </td>
-                    ))
-                 }
-              </tr>
-            );
-
-            
-          })}
-        </tbody>
-      </table>
+              return (
+                <tr key={row_index}>
+                  {tb_head.map((_, col_index) => (
+                    <td className={classes} key={`${row_index} ${col_index}`}>
+                      <Typography
+                        variant="small"
+                        color="blue-gray"
+                        className="font-normal"
+                      >
+                        {tb_data[col_index]}
+                      </Typography>
+                    </td>
+                  ))}
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      )}
     </Card>
   );
 }

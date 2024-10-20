@@ -1,0 +1,197 @@
+import Table from "../../../Components/Table"
+import DonutChart, {DonutState} from "../../../Components/Dashboard/DonutChart"
+import { useEffect, useState } from "react"
+import useAxiosPrivate from "../../../custom-hooks/auth_hooks/useAxiosPrivate"
+import useUserInfo from "../../../custom-hooks/useUserType"
+
+
+
+interface ChemicalSummaryProps {
+    year : string
+}
+
+
+type MineralDataTypes = {
+    form_id : string;
+    email : string,
+    municipality_name : string,
+    brgy_name : string;
+    ap : number,
+    sap : number,
+    pcbp_EDVCM : number,
+    pcbp_M : number,
+    pcbp_EO : number,
+    pcbp_CB : number,
+    pcbp_E : number,
+    pcbp_A : number,
+   
+
+    totalGHGe : number
+}
+
+
+const ChemicalSummary = ({year} : ChemicalSummaryProps) => {
+
+    const [tb_head, set_tbHead] = useState<string[]>();
+    const [chemicalData, setChemicalData] = useState<any[]>();
+    const [donutState, setDonutState] = useState<DonutState>();
+
+
+    const [isLoading, setIsLoading] = useState<boolean>(false);
+    const axiosPrivate = useAxiosPrivate();
+    const user_info = useUserInfo();
+
+
+    useEffect(()=>{
+        setIsLoading(true);
+        set_tbHead(['ID', 'Email', 'Municipality,', 'Brgy', 'Ammonia Production (tons)', 'Soda Ash Production (tons)', 'Dichloride and Vinyl Chloride Monomer (tons)', 'Methanol (tons)', 'Ethylene oxide (tons)', 'Carbon black (tons)', 'Ethylene (tons)', 'Acrylonitrile (tons)', 'GHGe'])
+        const {municipality_code, user_type, province_code} = user_info
+        
+        axiosPrivate.get('/summary-data/industrial/chemical', {
+            params : {
+                municipality_code,
+                user_type,
+                prov_code : province_code,
+                year,
+            }
+        })
+        .then(res => {
+            const mineralData :MineralDataTypes[] = res.data as MineralDataTypes[]
+
+            //For Table 
+            setChemicalData(
+                    mineralData.map((data : MineralDataTypes)=>{
+                    const {
+                        form_id,
+                        email,
+                        municipality_name,
+                        brgy_name,
+                        ap,
+                        sap,
+                        pcbp_EDVCM,
+                        pcbp_M,
+                        pcbp_EO,
+                        pcbp_CB,
+                        pcbp_E,
+                        pcbp_A,
+                        totalGHGe,
+                    } = data;
+                    return [
+                        form_id,email,municipality_name, brgy_name, 
+                        ap,
+                        sap,
+                        pcbp_EDVCM,
+                        pcbp_M,
+                        pcbp_EO,
+                        pcbp_CB,
+                        pcbp_E,
+                        pcbp_A,
+                        totalGHGe]
+                })
+            )
+            //For Donut Chart
+            let chemicalTonsContainer = {
+                ap : 0,
+                sap : 0,
+                pcbp_EDVCM : 0,
+                pcbp_M : 0,
+                pcbp_EO : 0,
+                pcbp_CB : 0,
+                pcbp_E : 0,
+                pcbp_A : 0,
+            }
+
+            mineralData.forEach((data : MineralDataTypes) => {
+                const {
+                    ap,
+                    sap,
+                    pcbp_EDVCM,
+                    pcbp_M,
+                    pcbp_EO,
+                    pcbp_CB,
+                    pcbp_E,
+                    pcbp_A,
+                } = data;
+                chemicalTonsContainer.ap += ap;
+                chemicalTonsContainer.sap += sap;
+                chemicalTonsContainer.pcbp_EDVCM += pcbp_EDVCM;
+                chemicalTonsContainer.pcbp_M += pcbp_M;
+                chemicalTonsContainer.pcbp_EO += pcbp_EO
+                chemicalTonsContainer.pcbp_CB += pcbp_CB
+                chemicalTonsContainer.pcbp_E += pcbp_E
+                chemicalTonsContainer.pcbp_A += pcbp_A
+            })
+
+
+            const {
+                ap,
+                sap,
+                pcbp_EDVCM,
+                pcbp_M,
+                pcbp_EO,
+                pcbp_CB,
+                pcbp_E,
+                pcbp_A,
+            } = chemicalTonsContainer;
+            setDonutState({
+                labels : [
+                    "Ammonia Production (tons)",
+                    "Soda Ash Production (tons)",
+                    "Dichloride and Vinyl Chloride Monomer (tons)",
+                    "Methanol (tons)",
+                    "Ethylene oxide (tons)",
+                    "Carbon black (tons)",
+                    "Ethylene (tons)",
+                    "Acrylonitrile (tons)"
+                ],
+
+                series : [
+                    ap,
+                    sap,
+                    pcbp_EDVCM,
+                    pcbp_M,
+                    pcbp_EO,
+                    pcbp_CB,
+                    pcbp_E,
+                    pcbp_A,
+                ]
+            })
+
+
+        })
+        .catch(err => console.log(err))
+        .finally(()=>setIsLoading(false))
+
+    },[year])
+
+
+    return(
+        <div className="flex flex-col gap-5">
+
+            <div className="mx-24 text-3xl">Chemical Summary</div>
+        
+            <div className="w-full flex justify-center mx-8">
+
+                <div className="w-3/5">
+                    {
+                        chemicalData && tb_head ? <Table tb_datas={chemicalData} tb_head={tb_head} isLoading = {isLoading}/>
+                        :<div>No Data!</div>
+                    }
+                        
+                </div>
+                <div className="w-4/12 flex flex-col justify-center">
+                
+                        {
+                            donutState ?
+                                <DonutChart labels={donutState.labels} series={donutState.series} title="Chemical Donut Chart"/>
+                            :<div>No Data!</div>
+                        }
+
+                </div>
+            </div>
+        </div>
+    )
+}
+
+
+export default ChemicalSummary
