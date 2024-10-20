@@ -1,38 +1,151 @@
-import { useState } from "react";
-import { Typography } from "@material-tailwind/react";
-import Skeleton from "../../Components/Skeleton";
+import { useEffect, useState } from 'react'
+
+import Chart from "react-apexcharts";
+import useAxiosPrivate from '../../custom-hooks/auth_hooks/useAxiosPrivate';
+import useUserInfo from '../../custom-hooks/useUserType';
+import { Typography } from '@material-tailwind/react';
+import Skeleton from '../../Components/Skeleton';
+
+
+type Emission = {
+  co2e : number;
+  ch4e : number;
+  n2oe : number;
+  ghge : number;
+}
+
+export type  MobileCombustionTableData = {
+  loc_name : String;
+  emission : Emission;
+}
+
+type DashBoardData = {
+  total_surveryor : number;
+  total_LGU_admins : number;
+  table_data: {
+      mobileCombustionGHGe : MobileCombustionTableData[],
+      wasteWaterGHGe : number[],
+      industrialGHGe : number[],
+      agriculture_cropsGHGe : number[],
+      agriculture_liveStocksGHGe : number[]
+  }
+  total_ghge : number;
+
+}
 
 // Define the props interface
 interface GhgChartModalProps {
-  ChartTitle: string; // Define the title prop type
+  ChartTitle: string;
+  chartDataKey: 'mobileCombustionGHGe' | 'wasteWaterGHGe' | 'industrialGHGe' | 'agriculture_cropsGHGe' | 'agriculture_liveStocksGHGe';  // Define the title prop type
 }
 
-// Destructure the props in the component function
-const GhgChartModal = ({ ChartTitle }: GhgChartModalProps) => {
-  const [isLoading, setIsLoading] = useState(false);
+
+const GhgChartModal = ({ ChartTitle, chartDataKey }: GhgChartModalProps) => {
+  const [dashboard_data, setDashBoardData] = useState<DashBoardData>();
+  const axiosPrivate = useAxiosPrivate();
+  const user_info = useUserInfo();
+
+  useEffect(() => {
+    axiosPrivate
+      .get(`/dashboard/overview-data/${user_info.province_code}/${user_info.user_type}/${user_info.municipality_code}`)
+      .then(res => {
+        setDashBoardData(res.data);
+      })
+      .catch(err => console.error(err));
+  }, []);
+
+  // Dynamically choose the dataset based on chartDataKey
+  const selectedData = dashboard_data?.table_data[chartDataKey];
+
+  const chartConfig = {
+    series: [
+      {
+        name: ChartTitle,
+        data: selectedData
+          ? selectedData.map((item: MobileCombustionTableData | number, index: number) => ({
+              x: typeof item === 'number'
+                ? dashboard_data?.table_data.mobileCombustionGHGe[index]?.loc_name || ''
+                : item.loc_name,
+              y: typeof item === 'number'
+                ? parseFloat(item.toFixed(2))
+                : parseFloat(item.emission.ghge.toFixed(2)),
+              fillColor: (() => {
+                switch (chartDataKey) {
+                  case 'mobileCombustionGHGe':
+                    return '#248003'; 
+                  case 'wasteWaterGHGe':
+                    return '#2942b3'; 
+                  case 'industrialGHGe':
+                    return '#f58142'; 
+                  case 'agriculture_cropsGHGe':
+                    return '#fcba03'; 
+                  case 'agriculture_liveStocksGHGe':
+                    return '#03fc20'; 
+                  default:
+                    return '#248003'; 
+                }
+              })(),
+            }))
+          : [],
+      },
+    ],
+    options: {
+      chart: {
+        background: 'white',
+        toolbar: {
+          show: true,
+        },
+        foreColor: '#101010',
+      },
+     
+      plotOptions: {
+        bar: {
+          columnWidth: '90%',
+        },
+      },
+      dataLabels: {
+        enabled: true,
+        style: {
+          fontSize: '10px',
+          fontWeight: 'bold',
+          colors: ['#fff'],
+        },
+        offsetY: -10,
+      },
+      title: {
+        text: `Total ${ChartTitle} GHGe per ${user_info.user_type === "s-admin" ? "Municipality" : "Brgy"}`,
+        align: 'center' as 'center',
+        style: {
+          fontSize: '20px',
+          fontWeight: 'bold',
+          color: '#333',
+        },
+      },
+      xaxis: {
+        labels: {
+          style: {
+            fontSize: '13px',
+          },
+        },
+      },
+      
+    },
+  };
 
   return (
     <div className="h-full flex flex-col gap-5 w-full px-2">
-      <Typography
-        className="self-center text-2xl font-semibold text-gray-800"
-        color="black"
-      >
+      <Typography className="self-center text-2xl font-semibold text-gray-800" color="black">
         {ChartTitle}
       </Typography>
-      <div className="flex gap-5 sticky top-0 z-10 text-nowrap">
-        <div></div>
+
+      <div className="basis-full h-full border border-gray-400 bg-white shadow-gray-500 rounded-lg px-4">
+        {dashboard_data ? (
+          <Chart width={'100%'} height={'100%'} type={'bar'} series={chartConfig.series} options={chartConfig.options} />
+        ) : (
+          <Skeleton />
+        )}
       </div>
-      {!isLoading ? (
-        <div className="overflow-auto bg-gray-500/10 h-full px-5 rounded-md">
-          <div className={`grid grid-flow-col py-2 grid-cols-4 gap-8 min-w-96 font-bold text-sm`}>
-            
-          </div>
-        </div>
-      ) : (
-        <Skeleton />
-      )}
     </div>
   );
 };
-
 export default GhgChartModal;

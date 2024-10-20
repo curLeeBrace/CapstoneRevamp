@@ -127,7 +127,7 @@ function DashBoard() {
       dataLabels: {
         enabled: true,
         style: {
-          fontSize: '5px', // Adjust the font size here
+          fontSize: '10px', // Adjust the font size here
           fontWeight: 'bold',
           colors: ['#fff']
         },
@@ -157,6 +157,11 @@ function DashBoard() {
     },
   }
   
+  const [, setSelectedChart] = useState<string>('mobileCombustionGHGe'); // Default to mobile combustion
+
+  const handleCardClick = (chartKey: string) => {
+    setSelectedChart(chartKey);
+  };
   // const TABLE_HEAD = [
   //   "Emission Source",
   //   "GHG Emissions (tonnes CO2e)",
@@ -220,29 +225,55 @@ function DashBoard() {
           <Typography className='bg-darkgreen font-bold text-base mb-4 rounded-lg py-2 -mt-2 text-center' color='white'>
             Green House Gas Emission (Charts)
             </Typography>
+            <div className="mb-7 px-4 h-20 text-xs" onClick={() => handleCardClick('mobileCombustionGHGe')}>
+              <SimpleCard
+              body={`${dashboard_data?.table_data.mobileCombustionGHGe.reduce((acc, val) => acc + val.emission.ghge, 0).toFixed(2)}`} // Make sure this accesses the correct properties
+              header="Mobile Combustion"
+              icon={<GlobeAsiaAustraliaIcon className="h-6 w-6" />}
+              child_card={<GhgChartModal ChartTitle="Mobile Combustion" chartDataKey="mobileCombustionGHGe" />}
+              isLoading={isLoading}
+              />
+            </div>
 
-          <div className='mb-7 px-4 h-20 text-xs'>
-          <SimpleCard
-            body="IKAW NA BAHALA DITO"
-            header='Mobile Combustion' icon={<GlobeAsiaAustraliaIcon className='h-6 w-6'/>} child_card={<GhgChartModal ChartTitle="Mobile Combustion"/>} isLoading={isLoading}/>
-          </div>
-          
-          <div className='mb-7 px-4 h-20'>
-          <SimpleCard body=""
-           header='Waste Water' icon={<GlobeAsiaAustraliaIcon className='h-6 w-6'/>} child_card={<GhgChartModal ChartTitle="Waste Water"/>} isLoading={isLoading}/>
-          </div>
-          
-          <div className='mb-7 px-4 h-20'>
-          <SimpleCard body=""header='Industrial' icon={<GlobeAsiaAustraliaIcon className='h-6 w-6'/>} child_card={<GhgChartModal ChartTitle="Industrial"/>} isLoading={isLoading}/>
-          </div>
+            <div className="mb-7 px-4 h-20" onClick={() => handleCardClick('wasteWaterGHGe')}>
+              <SimpleCard
+                body={`${dashboard_data?.table_data.wasteWaterGHGe.reduce((acc, val) => acc + val, 0).toFixed(2)}`}
+                header="Waste Water"
+                icon={<GlobeAsiaAustraliaIcon className="h-6 w-6" />}
+                child_card={<GhgChartModal ChartTitle="Waste Water" chartDataKey="wasteWaterGHGe" />}
+                isLoading={isLoading}
+              />
+            </div>
 
-          <div className='mb-7 px-4 h-20'>
-          <SimpleCard body={`${dashboard_data?.total_ghge.toFixed(2)}`} header='Agriculture Crops' icon={<GlobeAsiaAustraliaIcon className='h-6 w-6'/>} child_card={<GhgChartModal ChartTitle="Agriculture Crops"/>} isLoading={isLoading}/>
-          </div>
+            <div className="mb-7 px-4 h-20" onClick={() => handleCardClick('industrialGHGe')}>
+              <SimpleCard
+              body={`${dashboard_data?.table_data.industrialGHGe.reduce((acc, val) => acc + val, 0).toFixed(2)}`}
+              header="Industrial"
+                icon={<GlobeAsiaAustraliaIcon className="h-6 w-6" />}
+                child_card={<GhgChartModal ChartTitle="Industrial" chartDataKey="industrialGHGe" />}
+                isLoading={isLoading}
+              />
+            </div>
 
-          <div className='mb-4 px-4 h-20'>
-          <SimpleCard body={`${dashboard_data?.total_ghge.toFixed(2)}`} header='Agriculure Live Stocks' icon={<GlobeAsiaAustraliaIcon className='h-6 w-6'/>} child_card={<GhgChartModal ChartTitle="Agriculture Live Stocks"/>} isLoading={isLoading}/>
-          </div>
+            <div className="mb-7 px-4 h-20" onClick={() => handleCardClick('agriculture_cropsGHGe')}>
+              <SimpleCard
+              body={`${dashboard_data?.table_data.agriculture_cropsGHGe.reduce((acc, val) => acc + val, 0).toFixed(2)}`}
+              header="Agriculture Crops"
+                icon={<GlobeAsiaAustraliaIcon className="h-6 w-6" />}
+                child_card={<GhgChartModal ChartTitle="Agriculture Crops" chartDataKey="agriculture_cropsGHGe" />}
+                isLoading={isLoading}
+              />
+            </div>
+
+            <div className="mb-4 px-4 h-20" onClick={() => handleCardClick('agriculture_liveStocksGHGe')}>
+              <SimpleCard
+                body={`${dashboard_data?.table_data.agriculture_liveStocksGHGe.reduce((acc, val) => acc + val, 0).toFixed(2)}`}
+                header="Agriculture Live Stocks"
+                icon={<GlobeAsiaAustraliaIcon className="h-6 w-6" />}
+                child_card={<GhgChartModal ChartTitle="Agriculture Live Stocks" chartDataKey="agriculture_liveStocksGHGe" />}
+                isLoading={isLoading}
+              />
+            </div>
 
 
         </div>
