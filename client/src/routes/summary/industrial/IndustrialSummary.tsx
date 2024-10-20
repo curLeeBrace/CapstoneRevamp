@@ -7,6 +7,8 @@ import DonutChart, {DonutState} from "../../../Components/Dashboard/DonutChart";
 import { Radio } from "@material-tailwind/react";
 import useUserInfo from "../../../custom-hooks/useUserType";
 import useAxiosPrivate from "../../../custom-hooks/auth_hooks/useAxiosPrivate";
+import MineralSummary from "./MineralSummary";
+import ChemicalSummary from "./ChemicalSummary";
 
 // type BarSeriesTypes = {
 
@@ -20,13 +22,13 @@ import useAxiosPrivate from "../../../custom-hooks/auth_hooks/useAxiosPrivate";
 // }
 
 
-type IndustryType = {
-  industry_type : "all" | "mineral" | "chemical" | "metal" | "electronics" | "others";
-}
+// type IndustryType = {
+//   industry_type : 
+// }
 
 type RequestQueryTypes = {
   user_type : string
-  industry_type : IndustryType
+  industry_type : "all" | "mineral" | "chemical" | "metal" | "electronics" | "others";
   municipality_code : string;
   brgy_name : string;
   prov_code : string;
@@ -41,7 +43,7 @@ const IndustrialSummary = () => {
     const [typeOfData, setTypeOfData] = useState<DonutState>()
     
 
-    const [industry_type, setIndustryType] = useState<IndustryType>();
+    const [industry_type, setIndustryType] = useState<"all" | "mineral" | "chemical" | "metal" | "electronics" | "others">();
     const [year, setYear] = useState<string>();
 
 
@@ -158,8 +160,20 @@ const IndustrialSummary = () => {
 
           </div>
         </div>
-
       </div>
+      
+        {
+          industry_type == "mineral"? 
+            <div>
+              <MineralSummary year = {year ? year : new Date().getFullYear().toString()}/>
+          
+            </div> 
+          : industry_type == "chemical" ?
+            <div>
+              <ChemicalSummary year = {year ? year : new Date().getFullYear().toString()}/>
+            </div>
+          :null
+        }
     </div>
   );
 };

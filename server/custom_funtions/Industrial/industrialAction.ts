@@ -16,6 +16,124 @@ interface IndustrialEmmisionFactor {
 
 
 
+
+
+const mineral_eFactor : IndustrialEmmisionFactor = {
+    CO2 : 2,
+    CH4 : 0,
+    CF4 : 0,
+    C2F6_1st : 0,
+    CHF3 : 0,
+    C3F8 : 0,
+    C2F6_2nd : 0,
+    NF3 : 0,
+    SF6 : 0,
+    C6F14 : 0,
+}
+
+
+const chemical_eFactor: IndustrialEmmisionFactor = 
+{
+    CO2 : 3,
+    CH4 : 3,
+    CF4 : 0,
+    C2F6_1st : 0,
+    CHF3 : 0,
+    C3F8 : 0,
+    C2F6_2nd : 0,
+    NF3 : 0,
+    SF6 : 0,
+    C6F14 : 0, 
+}
+
+
+const metal_eFactor:IndustrialEmmisionFactor = {
+    CO2 : 4,
+    CH4 : 4,
+    CF4 : 0,
+    C2F6_1st : 0,
+    CHF3 : 0,
+    C3F8 : 0,
+    C2F6_2nd : 0,
+    NF3 : 0,
+    SF6 : 0,
+    C6F14 : 0, 
+} 
+
+const electronicsEfactors : IndustrialEmmisionFactor[]  = [
+    {
+        CO2 : 0,
+        CH4 : 0,
+        CF4 : 2,
+        C2F6_1st : 0,
+        CHF3 : 2,
+        C3F8 : 2,
+        C2F6_2nd : 2,
+        NF3 : 2,
+        SF6 : 2,
+        C6F14 : 0,  
+    },
+    {
+        CO2 : 0,
+        CH4 : 0,
+        CF4 : 2,
+        C2F6_1st : 0,
+        CHF3 : 0,
+        C3F8 : 0,
+        C2F6_2nd : 0,
+        NF3 : 0,
+        SF6 : 2,
+        C6F14 : 2,  
+    },
+    {
+        CO2 : 0,
+        CH4 : 0,
+        CF4 : 2,
+        C2F6_1st : 0,
+        CHF3 : 0,
+        C3F8 : 0,
+        C2F6_2nd : 0,
+        NF3 : 0,
+        SF6 : 0,
+        C6F14 : 0,  
+    },
+    {
+        CO2 : 0,
+        CH4 : 0,
+        CF4 : 0,
+        C2F6_1st : 0,
+        CHF3 : 0,
+        C3F8 : 0,
+        C2F6_2nd : 0,
+        NF3 : 0,
+        SF6 : 0,
+        C6F14 : 2,  
+    }
+]
+const othersEfactor : IndustrialEmmisionFactor = {
+    CO2 : 6,
+    CH4 : 0,
+    CF4 : 0,
+    C2F6_1st : 0,
+    CHF3 : 0,
+    C3F8 : 0,
+    C2F6_2nd : 0,
+    NF3 : 0,
+    SF6 : 0,
+    C6F14 : 0,
+}
+
+
+const mineral_eFactors: IndustrialEmmisionFactor[] = [mineral_eFactor, mineral_eFactor, mineral_eFactor,mineral_eFactor] 
+const chemical_eFactors : IndustrialEmmisionFactor[]= [chemical_eFactor, chemical_eFactor, chemical_eFactor,  chemical_eFactor, chemical_eFactor, chemical_eFactor, chemical_eFactor, chemical_eFactor];
+const metal_eFactors : IndustrialEmmisionFactor[] = [metal_eFactor, metal_eFactor];
+const othersEfactors : IndustrialEmmisionFactor[] = [othersEfactor, othersEfactor, othersEfactor]
+
+
+
+
+
+
 const ghgeSumPerOperation = (ghgePerOperation : number[][]):number[]=> {
     let ghgeSumContainer:number[] = [];
 
@@ -40,149 +158,40 @@ const getIndustrialOverallGHGe = async (user_type : string, query : {}, location
     let industrialGHGeContainer:number[] = []
 
     //GETTING MINERAL GHGE
-    const mineral_eFactor : IndustrialEmmisionFactor = {
-        CO2 : 2,
-        CH4 : 0,
-        CF4 : 0,
-        C2F6_1st : 0,
-        CHF3 : 0,
-        C3F8 : 0,
-        C2F6_2nd : 0,
-        NF3 : 0,
-        SF6 : 0,
-        C6F14 : 0,
-    }
-    const mineral_eFactors: IndustrialEmmisionFactor[] = [mineral_eFactor, mineral_eFactor, mineral_eFactor,mineral_eFactor] 
     const mineralGHGe = await getGHGe_perOperation(user_type, query, locations, mineral_eFactors, "Mineral");
     const mineralGHGeSum = ghgeSumPerOperation(mineralGHGe);
 
 
 
     ///GETTING CHEMICAL GHGE
-    const chemical_eFactor: IndustrialEmmisionFactor = 
-        {
-            CO2 : 3,
-            CH4 : 3,
-            CF4 : 0,
-            C2F6_1st : 0,
-            CHF3 : 0,
-            C3F8 : 0,
-            C2F6_2nd : 0,
-            NF3 : 0,
-            SF6 : 0,
-            C6F14 : 0, 
-        }
-    
-    const chemical_eFactors : IndustrialEmmisionFactor[]= [chemical_eFactor, chemical_eFactor, chemical_eFactor,  chemical_eFactor, chemical_eFactor, chemical_eFactor, chemical_eFactor, chemical_eFactor];
+
     const checmicalGHGe =   await getGHGe_perOperation(user_type, query, locations, chemical_eFactors, "Chemical");
     const chemicalGHGeSum = ghgeSumPerOperation(checmicalGHGe);
 
 
 
     //GETTING METAL GHGE
-    const metal_eFactor:IndustrialEmmisionFactor = {
-        CO2 : 4,
-        CH4 : 4,
-        CF4 : 0,
-        C2F6_1st : 0,
-        CHF3 : 0,
-        C3F8 : 0,
-        C2F6_2nd : 0,
-        NF3 : 0,
-        SF6 : 0,
-        C6F14 : 0, 
-    } 
 
-
-    const metal_eFactors : IndustrialEmmisionFactor[] = [metal_eFactor, metal_eFactor];
     const metalGHGe = await getGHGe_perOperation(user_type, query, locations, metal_eFactors, "Metal");
     const metalGHGeSum = ghgeSumPerOperation(metalGHGe);
 
 
 
     //GETTING ELECTRONICS GHGE
-        const electronicsEfactors : IndustrialEmmisionFactor[]  = [
-            {
-                CO2 : 0,
-                CH4 : 0,
-                CF4 : 2,
-                C2F6_1st : 0,
-                CHF3 : 2,
-                C3F8 : 2,
-                C2F6_2nd : 2,
-                NF3 : 2,
-                SF6 : 2,
-                C6F14 : 0,  
-            },
-            {
-                CO2 : 0,
-                CH4 : 0,
-                CF4 : 2,
-                C2F6_1st : 0,
-                CHF3 : 0,
-                C3F8 : 0,
-                C2F6_2nd : 0,
-                NF3 : 0,
-                SF6 : 2,
-                C6F14 : 2,  
-            },
-            {
-                CO2 : 0,
-                CH4 : 0,
-                CF4 : 2,
-                C2F6_1st : 0,
-                CHF3 : 0,
-                C3F8 : 0,
-                C2F6_2nd : 0,
-                NF3 : 0,
-                SF6 : 0,
-                C6F14 : 0,  
-            },
-            {
-                CO2 : 0,
-                CH4 : 0,
-                CF4 : 0,
-                C2F6_1st : 0,
-                CHF3 : 0,
-                C3F8 : 0,
-                C2F6_2nd : 0,
-                NF3 : 0,
-                SF6 : 0,
-                C6F14 : 2,  
-            }
-        ]
+       
 
 
 
-        const electronicsGHGe = await getGHGe_perOperation(user_type, query, locations, electronicsEfactors, "Electronics");
-        const electronicsGHGeSum = ghgeSumPerOperation(electronicsGHGe);
+    const electronicsGHGe = await getGHGe_perOperation(user_type, query, locations, electronicsEfactors, "Electronics");
+    const electronicsGHGeSum = ghgeSumPerOperation(electronicsGHGe);
 
 
-        //GETTING OTHERS GHGE
+    //GETTING OTHERS GHGE
 
-        const othersEfactor : IndustrialEmmisionFactor = {
-                CO2 : 6,
-                CH4 : 0,
-                CF4 : 0,
-                C2F6_1st : 0,
-                CHF3 : 0,
-                C3F8 : 0,
-                C2F6_2nd : 0,
-                NF3 : 0,
-                SF6 : 0,
-                C6F14 : 0,
-        }
+    const othersGHGe = await getGHGe_perOperation(user_type, query, locations, othersEfactors, "Others");
+    const othersGHGeSum = ghgeSumPerOperation(othersGHGe);
 
-        const othersEfactors : IndustrialEmmisionFactor[] = [othersEfactor, othersEfactor, othersEfactor]
-        const othersGHGe = await getGHGe_perOperation(user_type, query, locations, othersEfactors, "Others");
-        const othersGHGeSum = ghgeSumPerOperation(othersGHGe);
-
-
-
-
-
-
-        ///GETTING THE INDUSTRIAL OVERALL GHGE
+    ///GETTING THE INDUSTRIAL OVERALL GHGE
         locations.forEach((_, index)=>{
             let totalGHGe = 0;
 
@@ -202,21 +211,7 @@ const getIndustrialOverallGHGe = async (user_type : string, query : {}, location
         return industrialGHGeContainer
 
 
-
-
-
-
 }
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -270,7 +265,12 @@ const formulaForGettingIndstrialGHGe = (emmisionFactor : IndustrialEmmisionFacto
 export {
     getIndustrialOverallGHGe,
     formulaForGettingIndstrialGHGe,
-    IndustrialEmmisionFactor
+    IndustrialEmmisionFactor,
+    mineral_eFactors,
+    chemical_eFactors,
+    metal_eFactors,
+    othersEfactors,
+    electronicsEfactors
 }
 
 

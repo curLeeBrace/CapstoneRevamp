@@ -5,7 +5,7 @@ import Electronics from "../../src/db_schema/Industrial/ElectronicsSchema";
 import Others from "../../src/db_schema/Industrial/OthersSchema";
 
 import {formulaForGettingIndstrialGHGe, IndustrialEmmisionFactor} from "./industrialAction";
-import { Schema, SchemaType } from "mongoose";
+
 
 
 

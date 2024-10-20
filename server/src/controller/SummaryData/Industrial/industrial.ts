@@ -1,15 +1,15 @@
 import { Request, Response } from 'express';
 
-import getAvailableLocations from '../../../custom_funtions/getAvailableLocations';
+import getAvailableLocations from '../../../../custom_funtions/getAvailableLocations';
 
 
 
-import ChemicalSchema from '../../db_schema/Industrial/ChemicalSchema';
-import MineralSchema  from '../../db_schema/Industrial/MineralSchema';
+import ChemicalSchema from '../../../db_schema/Industrial/ChemicalSchema';
+import MineralSchema  from '../../../db_schema/Industrial/MineralSchema';
 
-import MetalSchema  from '../../db_schema/Industrial/MetalSchema';
-import ElectronicsSchema  from '../../db_schema/Industrial/ElectronicsSchema';
-import OthersSchema = require('../../db_schema/Industrial/OthersSchema');
+import MetalSchema  from '../../../db_schema/Industrial/MetalSchema';
+import ElectronicsSchema  from '../../../db_schema/Industrial/ElectronicsSchema';
+import OthersSchema = require('../../../db_schema/Industrial/OthersSchema');
 
 
 
@@ -155,6 +155,14 @@ const getIndustrialSummary = async (req: Request, res:Response) => {
 
 
 
+
+    const mineral_data = await MineralSchema.find(query).exec();
+    const chemical_data = await ChemicalSchema.find(query).exec();
+    const metal_data = await MetalSchema.find(query).exec();
+    const electronics_data = await ElectronicsSchema.find(query).exec();
+    const others_data = await OthersSchema.find(query).exec();
+
+
    
 //make some response
     return res.status(200).send({
@@ -262,8 +270,7 @@ const getTypeOfDataAnalytics = (survey_typeofDatas : string[]) : {census:number,
     const TypeofDataContainer = {
         census : typeOfDatasCountContainer[0],
         ibs : typeOfDatasCountContainer[1],
-        others : typeOfDatasCountContainer[2]
-
+        others : typeOfDatasCountContainer[2],
     }
 
 
@@ -272,6 +279,8 @@ const getTypeOfDataAnalytics = (survey_typeofDatas : string[]) : {census:number,
 
     
 }
+
+
 
 
 
