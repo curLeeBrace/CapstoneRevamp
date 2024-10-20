@@ -32,14 +32,14 @@ function SimpleCard({header, body, icon, child_card, isLoading} : SimpleCardProp
     
 
     <Card className={`w-full h-full flex ${child_card && "hover:bg-blue-gray-50 cursor-pointer"}`}onClick={()=>setOpen(true)}>
-        <CardBody className="flex items-center justify-between px-16 border border-gray-300 h-full shadow-md rounded-lg">
+        <CardBody className="flex items-center justify-between border border-gray-300 h-full shadow-md rounded-lg">
           <div className="overflow-hidden">
             <Typography  className="mb-2 text-sm md:text-lg font-semibold text-nowrap ">
               {header}
             </Typography>
 
 
-            <Typography color="blue-gray" className=" md:text-2xl font-bold ">
+            <Typography color="blue-gray" className=" md:text-sm font-extrabold">
               {
                 isLoading ? <Skeleton/> : body
               }

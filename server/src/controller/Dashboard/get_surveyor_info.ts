@@ -2,6 +2,13 @@ import { Request, Response } from "express";
 import AccountSchema from "../../db_schema/AccountSchema";
 import FuelFormSchema from "../../db_schema/FuelFormSchema";
 import WasteWaterFormShema from "../../db_schema/WasteWaterFormShema";
+import ChemicalSchema from "../../db_schema/Industrial/ChemicalSchema";
+import ElectronicsSchema from "../../db_schema/Industrial/ElectronicsSchema";
+import MetalSchema from "../../db_schema/Industrial/MetalSchema";
+import MineralSchema from "../../db_schema/Industrial/MineralSchema";
+import OthersSchema from "../../db_schema/Industrial/OthersSchema";
+import AgricultureCrops from "../../db_schema/Agriculture/AgricultureCrops";
+import AgricultureLiveStock from "../../db_schema/Agriculture/AgricultureLiveStock";
 
 const get_surveyor_info = async (req : Request, res : Response) => {
 
@@ -38,6 +45,31 @@ const get_surveyor_info = async (req : Request, res : Response) => {
         const accs =  await AccountSchema.find(query).exec();
         const mobileCombsutionData = await FuelFormSchema.find({});
         const wasteWaterData = await WasteWaterFormShema.find({});
+        const [chemicalData, electronicsData, metalData, mineralData, othersData] = await Promise.all([
+            ChemicalSchema.find({}),
+            ElectronicsSchema.find({}),
+            MetalSchema.find({}),
+            MineralSchema.find({}),
+            OthersSchema.find({})
+        ]);
+
+        const industrialData = {
+            chemicalData,
+            electronicsData,
+            metalData,
+            mineralData,
+            othersData
+        };
+
+        const [cropsData, liveStocksData] = await Promise.all([
+            AgricultureCrops.find({}),
+            AgricultureLiveStock.find({}),
+        ]);
+        
+        const agricultureData = {
+            cropsData,
+            liveStocksData,
+        };
         
 
         if(!accs) return res.sendStatus(204);
@@ -48,9 +80,9 @@ const get_surveyor_info = async (req : Request, res : Response) => {
 
         accs.forEach((acc)=>{
             let mobileCombustionSurveyCount = getSurveyCount(mobileCombsutionData, acc.email);
-            let wasteWaterSurveyCount = getSurveyCount(wasteWaterData, acc.email);;
-
-        
+            let wasteWaterSurveyCount = getSurveyCount(wasteWaterData, acc.email);
+            let industrialSurveyCount = getIndustrialSurveyCount(industrialData, acc.email);;
+            let agricultureSurveyCount = getAgricultureSurveyCount(agricultureData, acc.email);;
 
             user_infos.push({
                 full_name : acc.f_name + " " + acc.l_name,
@@ -58,7 +90,9 @@ const get_surveyor_info = async (req : Request, res : Response) => {
                 municipality_name : acc.lgu_municipality.municipality_name,
                 user_type : acc.user_type,
                 mobileCombustionSurveyCount,
-                wasteWaterSurveyCount
+                wasteWaterSurveyCount,
+                industrialSurveyCount,
+                agricultureSurveyCount
             })
          
         })
@@ -92,5 +126,25 @@ const getSurveyCount = (surveyData : any[], email : string) : number => {
 
 
 
+const getIndustrialSurveyCount = (industrialData: any, email: string): number => {
+    // Count surveys 
+    const chemicalCount = getSurveyCount(industrialData.chemicalData, email);
+    const electronicsCount = getSurveyCount(industrialData.electronicsData, email);
+    const metalCount = getSurveyCount(industrialData.metalData, email);
+    const mineralCount = getSurveyCount(industrialData.mineralData, email);
+    const othersCount = getSurveyCount(industrialData.othersData, email);
 
-export {get_surveyor_info}
+
+    return chemicalCount + electronicsCount + metalCount + mineralCount + othersCount;
+};
+
+const getAgricultureSurveyCount = (agricultureData: any, email: string): number => {
+    // Count surveys 
+    const cropsCount = getSurveyCount(agricultureData.cropsData, email);
+    const liveStocksCount = getSurveyCount(agricultureData.liveStocksData, email);
+
+
+    return cropsCount + liveStocksCount;
+};
+
+export { get_surveyor_info };
