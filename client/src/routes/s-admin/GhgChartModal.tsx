@@ -44,6 +44,13 @@ const GhgChartModal = ({ ChartTitle, chartDataKey }: GhgChartModalProps) => {
   const [dashboard_data, setDashBoardData] = useState<DashBoardData>();
   const axiosPrivate = useAxiosPrivate();
   const user_info = useUserInfo();
+  const [fontSize, setFontSize] = useState(13); 
+  const increaseFontSize = () => setFontSize((prev) => prev + 1);
+  const decreaseFontSize = () => setFontSize((prev) => (prev > 1 ? prev - 1 : 1));
+
+
+
+  
 
   useEffect(() => {
     axiosPrivate
@@ -94,6 +101,36 @@ const GhgChartModal = ({ ChartTitle, chartDataKey }: GhgChartModalProps) => {
         background: 'white',
         toolbar: {
           show: true,
+          tools: {
+            // Disable some built-in icons if you don't need them
+            download: true, 
+            zoom: false,
+            zoomin: false,
+            zoomout: false,
+            pan: false,
+            reset: true,
+            // Custom icon for increasing font size
+            customIcons: [
+              {
+                icon: `<div style="font-size: 16px; margin-left: 15px; cursor: pointer;">A+</div>`, // HTML for the button
+                index: 0,
+                title: 'Increase Font Size',
+                class: 'custom-icon',
+                click: function () {
+                  increaseFontSize();
+                },
+              },
+              {
+                icon: `<div style="font-size: 16px; margin-left: 10px; cursor: pointer;">A-</div>`,
+                index: 1,
+                title: 'Decrease Font Size',
+                class: 'custom-icon',
+                click: function () {
+                  decreaseFontSize(); 
+                },
+              },
+            ],
+          },
         },
         foreColor: '#101010',
       },
@@ -110,10 +147,10 @@ const GhgChartModal = ({ ChartTitle, chartDataKey }: GhgChartModalProps) => {
           fontWeight: 'bold',
           colors: ['#fff'],
         },
-        offsetY: -10,
+        offsetY: 0,
       },
       title: {
-        text: `Total ${ChartTitle} GHGe per ${user_info.user_type === "s-admin" ? "Municipality" : "Brgy"}`,
+        text: `Total ${ChartTitle} GHGe per ${user_info.user_type === "s-admin" ? "Municipality (Laguna Province)" : user_info.user_type === "lgu_admin" ? `Brgy (${user_info.municipality_name})` : "Brgy."}`,
         align: 'center' as 'center',
         style: {
           fontSize: '20px',
@@ -124,7 +161,7 @@ const GhgChartModal = ({ ChartTitle, chartDataKey }: GhgChartModalProps) => {
       xaxis: {
         labels: {
           style: {
-            fontSize: '13px',
+            fontSize: `${fontSize}px`,
           },
         },
       },

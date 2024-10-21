@@ -8,6 +8,7 @@ import {
 import  SimpleCard from "./SimpleCard";
 import { ExclamationTriangleIcon } from "@heroicons/react/16/solid";
 import Skeleton from "../Skeleton";
+import { useState } from "react";
   
    
 
@@ -39,6 +40,10 @@ export type BarSeriesTypes = {
    
    
   export default function BarChart({chart_icon, chart_label, chart_meaning, series, isLoading = false, stacked}:BarChartProps) {
+    const [fontSize, setFontSize] = useState(11); // Default font size is 12px
+
+    const increaseFontSize = () => setFontSize((prev) => prev + 1);
+    const decreaseFontSize = () => setFontSize((prev) => (prev > 1 ? prev - 1 : 1));
 
     const chartConfig = {
       series,
@@ -51,28 +56,64 @@ export type BarSeriesTypes = {
             offsetX: 0,
             offsetY: 0,
             tools: {
-              download: true
-            }
+              // Disable some built-in icons if you don't need them
+              download: true, 
+              // Custom icon for increasing font size
+              customIcons: [
+                {
+                  icon: `<div style="font-size: 16px; margin-left: 15px; cursor: pointer;">A+</div>`, // HTML for the button
+                  index: 0,
+                  title: 'Increase Font Size',
+                  class: 'custom-icon',
+                  click: function () {
+                    increaseFontSize();
+                  },
+                },
+                {
+                  icon: `<div style="font-size: 16px; margin-left: 10px; cursor: pointer;">A-</div>`,
+                  index: 1,
+                  title: 'Decrease Font Size',
+                  class: 'custom-icon',
+                  click: function () {
+                    decreaseFontSize(); 
+                  },
+                },
+              ],
+            },
           },
           foreColor: '#101010',
         },
         plotOptions: {
           bar: {
-            columnWidth: '80%',
-            barHeight: '100%',
+            columnWidth: "80%",
+            barHeight: "100%",
             dataLabels: {
               total: {
                 enabled: true,
                 style: {
-                  fontSize: '13px',
+                  fontSize: "13px",
                   fontWeight: 900,
-                }
-              }
-            }
+                },
+              },
+            },
           },
         },
         dataLabels: {
           enabled: false,
+        },
+        xaxis: {
+          labels: {
+            style: {
+              fontSize: `${fontSize}px`, // Dynamically update font size for labels
+            },
+          },
+        },
+        yaxis: {
+          labels: {
+            style: {
+              fontSize: `${fontSize}px`, // Dynamically update font size for labels
+            },
+          },
         },
       },
     };
@@ -82,9 +123,8 @@ export type BarSeriesTypes = {
 
 
 
-
     return (
-      <Card className="h-96 border-y-2 border-gray-300 shadow-none">
+      <Card className="h-96 border-2 border-gray-300 shadow-none">
         <CardHeader
           floated={false}
           shadow={false}
