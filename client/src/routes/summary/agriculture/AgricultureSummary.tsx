@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react"
-import useAxiosPrivate from "../../custom-hooks/auth_hooks/useAxiosPrivate"
-import useUserInfo from "../../custom-hooks/useUserType";
-import YearMenu from "../../Components/YearMenu";
+import useAxiosPrivate from "../../../custom-hooks/auth_hooks/useAxiosPrivate"
+import useUserInfo from "../../../custom-hooks/useUserType";
+import YearMenu from "../../../Components/YearMenu";
 import { Radio } from "@material-tailwind/react";
-import BarChart, {BarSeriesTypes} from "../../Components/Dashboard/BarChart";
+import BarChart, {BarSeriesTypes} from "../../../Components/Dashboard/BarChart";
 import { ChartBarIcon } from "@heroicons/react/24/solid";
+import { TabsDefault } from "../../../Components/Tabs";
+import AgricultureRawData from "./AgricultureRawData";
 const AgricultureSummary = () => {
     const axiosPrivate = useAxiosPrivate();
     const [agricultureType, setAgricultureType] = useState<string>("crops");
@@ -196,7 +198,24 @@ const AgricultureSummary = () => {
                 <div><YearMenu useYearState={[year, setYear]}/></div>
            </div>
            <div>
-                <BarChart chart_icon={<ChartBarIcon className="w-6 h-6"/>} chart_label={`Agriculture Summary`} chart_meaning={`overall collected data`} series={agricultureSeries} isLoading = {isLoading}/>
+                <TabsDefault
+                    data={[
+                        {
+                            label : "Survey Data",
+                            value : "s-data",
+                            tabPanelChild : <AgricultureRawData agricultureType = {agricultureType} year={year ? year : new Date().getFullYear().toString()}/>
+                        },
+                        {
+                            label : "Bar Chart",
+                            value : "barChart",
+                            tabPanelChild : <BarChart chart_icon={<ChartBarIcon className="w-6 h-6"/>} chart_label={`Agriculture Summary`} chart_meaning={`overall collected data`} series={agricultureSeries} isLoading = {isLoading}/>
+                            
+                        },
+
+                    ]}
+                
+                />
+                
            </div>
         </div>
     )
