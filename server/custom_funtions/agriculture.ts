@@ -310,3 +310,7 @@ type LiveStocksDataTypes = {
 
 
 export default getAgricultureGHGe
+
+export {
+    agricultureTotalGHGe
+}

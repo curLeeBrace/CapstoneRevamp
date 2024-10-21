@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
-import AgricultureCropsSchema from "../../db_schema/Agriculture/AgricultureCrops";
-import AgricultureLiveStocksSchema from "../../db_schema/Agriculture/AgricultureLiveStock";
-import getAvailableLocations from '../../../custom_funtions/getAvailableLocations';
+import AgricultureCropsSchema from "../../../db_schema/Agriculture/AgricultureCrops";
+import AgricultureLiveStocksSchema from "../../../db_schema/Agriculture/AgricultureLiveStock";
+import getAvailableLocations from '../../../../custom_funtions/getAvailableLocations';
 
 
 type RequestQueryTypes = {

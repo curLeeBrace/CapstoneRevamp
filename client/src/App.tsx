@@ -23,7 +23,7 @@ import AccountsTable from "./routes/s-admin/AccountsTable";
 //summaryRoute
 import SummaryData from "./routes/s-admin/SummaryData";
 import IndustrialSummary from "./routes/summary/industrial/IndustrialSummary";
-import AgricultureSummary from "./routes/summary/AgricultureSummary";
+import AgricultureSummary from "./routes/summary/agriculture/AgricultureSummary";
 
 
 //survey List Data
