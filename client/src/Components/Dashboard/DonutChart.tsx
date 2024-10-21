@@ -1,3 +1,4 @@
+import { Typography } from "@material-tailwind/react";
 import Chart from "react-apexcharts";
 
 
@@ -17,6 +18,7 @@ type DonutChartProps = {
     series : number[]
     labels : string[]
     title : string
+    chart_meaning: string
 }
 
 
@@ -28,7 +30,7 @@ export type DonutState = {
 
 
 
-const DonutChart = ({series, labels, title} : DonutChartProps) => {
+const DonutChart = ({series, labels, title, chart_meaning} : DonutChartProps) => {
 
     const chartConfig = {
         series,
@@ -85,12 +87,19 @@ const DonutChart = ({series, labels, title} : DonutChartProps) => {
       
 
     return(
-        <div>
-            <div className="text-xl ml-10">{title}</div>
+        <div >
+            <div className="text-base font-bold ml-4">{title}</div>
+            <Typography
+              variant="small"
+              color="gray"
+              className="max-w-sm font-normal ml-4"
+            >
+              {chart_meaning}
+            </Typography>
                 <Chart
                     options={chartConfig.options}
                     series={chartConfig.series}
-                    height={"100%"}
+                    height={"110%"}
                     width={"100%"}
                     type="donut"
                 />

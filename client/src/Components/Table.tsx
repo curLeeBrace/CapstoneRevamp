@@ -9,7 +9,7 @@ interface TableProps {
 
 export default function Table({ tb_datas, tb_head, isLoading }: TableProps) {
   return (
-    <Card className="w-full overflow-scroll custom-scrollbar h-full max-h-96">
+    <Card className="w-full overflow-scroll custom-scrollbar h-full max-h-96 border-2 rounded-lg border-gray-300">
       {isLoading ? (
         <Skeleton />
       ) : (
@@ -46,7 +46,7 @@ export default function Table({ tb_datas, tb_head, isLoading }: TableProps) {
                       <Typography
                         variant="small"
                         color="blue-gray"
-                        className="font-normal"
+                        className="text-xs"
                       >
                         {tb_data[col_index]}
                       </Typography>

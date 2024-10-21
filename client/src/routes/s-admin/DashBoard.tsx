@@ -46,10 +46,11 @@ function DashBoard() {
   const [isLoading, setisLoading] = useState<boolean>(true);
   const axiosPrivate = useAxiosPrivate();
   const user_info = useUserInfo();
+  const [fontSize, setFontSize] = useState(13); 
+  const increaseFontSize = () => setFontSize((prev) => prev + 1);
+  const decreaseFontSize = () => setFontSize((prev) => (prev > 1 ? prev - 1 : 1));
+
   useEffect(()=>{
-
-
-    
     axiosPrivate.get(`/dashboard/overview-data/${user_info.province_code}/${user_info.user_type}/${user_info.municipality_code}`)
     .then(res => {
       setDashBoardData(res.data)
@@ -109,11 +110,36 @@ function DashBoard() {
         background: 'white',
         toolbar: {
           show: true,
-          offsetX: 0,
-          offsetY: 0,
           tools: {
-            download: true
-          }
+            // Disable some built-in icons if you don't need them
+            download: true, 
+            zoom: false,
+            zoomin: false,
+            zoomout: false,
+            pan: false,
+            reset: true,
+            // Custom icon for increasing font size
+            customIcons: [
+              {
+                icon: `<div style="font-size: 16px; margin-left: 15px; cursor: pointer;">A+</div>`, // HTML for the button
+                index: 0,
+                title: 'Increase Font Size',
+                class: 'custom-icon',
+                click: function () {
+                  increaseFontSize(); // Action on click
+                },
+              },
+              {
+                icon: `<div style="font-size: 16px; margin-left: 10px; cursor: pointer;">A-</div>`, // HTML for the button
+                index: 1,
+                title: 'Decrease Font Size',
+                class: 'custom-icon',
+                click: function () {
+                  decreaseFontSize(); // Action on click
+                },
+              },
+            ],
+          },
         },
         foreColor: '#101010',
       },
@@ -133,8 +159,9 @@ function DashBoard() {
         },
         offsetY: -10,
       },
+
       title: {
-        text: `Total GHGe per ${user_info.user_type === "s-admin" ? "Municipality" : "Brgy"}`,
+        text: `Total GHGe per ${user_info.user_type === "s-admin" ? "Municipality (Laguna Province)" : user_info.user_type === "lgu_admin" ? `Brgy. (${user_info.municipality_name})` : "Brgy."}`,
         align: 'center' as 'center',
         style: {
           fontSize: '20px',
@@ -145,7 +172,7 @@ function DashBoard() {
       xaxis: {
         labels: {
           style: {
-            fontSize: '13px',
+            fontSize: `${fontSize}px`,
           },
           padding: {
             left: 20,
