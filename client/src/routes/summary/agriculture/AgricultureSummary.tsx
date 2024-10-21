@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import useAxiosPrivate from "../../../custom-hooks/auth_hooks/useAxiosPrivate"
 import useUserInfo from "../../../custom-hooks/useUserType";
 import YearMenu from "../../../Components/YearMenu";
-import { Radio } from "@material-tailwind/react";
+import { Radio, Typography } from "@material-tailwind/react";
 import BarChart, {BarSeriesTypes} from "../../../Components/Dashboard/BarChart";
 import { ChartBarIcon } from "@heroicons/react/24/solid";
 import { TabsDefault } from "../../../Components/Tabs";
@@ -14,7 +14,7 @@ const AgricultureSummary = () => {
     const [year, setYear] = useState<string>();
     const [agricultureSeries, setAgricultureSeries] = useState<BarSeriesTypes[]>();
     const [isLoading, setIsLoading] = useState<boolean>(true);
-
+    const user_info = useUserInfo()
 
 
 
@@ -190,10 +190,13 @@ const AgricultureSummary = () => {
     },[agricultureType, year])
     return (
         <div className="flex flex-col p-10">
+            <Typography color="white" className="font-bold text-2xl flex self-center text-center -mt-6 mb-4 bg-darkgreen py-2 px-10 rounded-lg">
+                                    Agriculture Summary
+                                </Typography>
            <div className="flex gap-5">
-                <div>
-                    <Radio defaultChecked name="agricultureType" label="crops" color ="green" value={"crops"} onChange={(e:any)=>setAgricultureType(e.target.value)}/>
-                    <Radio name="agricultureType" label="lives-stocks" color ="green" value={"livestocks"} onChange={(e:any)=>setAgricultureType(e.target.value)}/>
+                <div className="bg-darkgreen border-2 rounded-xl px-20 mb-2">
+                    <Radio defaultChecked name="agricultureType" label={<span className="font-bold text-white">Crops</span>} color ="green" value={"crops"} onChange={(e:any)=>setAgricultureType(e.target.value)}/>
+                    <Radio name="agricultureType" label={<span className="font-bold text-white">Live-Stocks</span>} color ="green" value={"livestocks"} onChange={(e:any)=>setAgricultureType(e.target.value)}/>
                 </div>
                 <div><YearMenu useYearState={[year, setYear]}/></div>
            </div>
@@ -208,7 +211,7 @@ const AgricultureSummary = () => {
                         {
                             label : "Bar Chart",
                             value : "barChart",
-                            tabPanelChild : <BarChart chart_icon={<ChartBarIcon className="w-6 h-6"/>} chart_label={`Agriculture Summary`} chart_meaning={`overall collected data`} series={agricultureSeries} isLoading = {isLoading}/>
+                            tabPanelChild : <BarChart chart_icon={<ChartBarIcon className="w-6 h-6"/>} chart_label={`Agriculture ${agricultureType}`} chart_meaning={`Overall collected data ${user_info.user_type === "s-admin" ? "per Municipality (Laguna Province)" : user_info.user_type === "lgu_admin" ? `per Brgy. (${user_info.municipality_name})` : "Brgy."}`} series={agricultureSeries} isLoading = {isLoading}/>
                             
                         },
 

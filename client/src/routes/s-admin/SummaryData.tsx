@@ -44,7 +44,7 @@ const SummaryData = () => {
 
     const  {survey_category} = useParams()
   
-
+    const user_info = useUserInfo();
 
 
 
@@ -250,8 +250,8 @@ const SummaryData = () => {
         <div className="">
             <div className="flex flex-col w-full px-20 gap-5 mt-5">
                 {/* TITLE */}
-                <div className="text-center mt-3">
-                    <Typography className="font-bold text-2xl text-gray-800" >{`${survey_category === "mobile-combustion" ? "Mobile Combustion" : "Waste Water"} Summary`}</Typography>
+                <div className="flex self-center mt-3">
+                    <Typography className="font-bold text-white text-2xl text-center mb-4 bg-darkgreen py-2 px-10 rounded-lg" >{`${survey_category === "mobile-combustion" ? "Mobile Combustion" : "Waste Water"} Summary`}</Typography>
                 </div>
           
                     
@@ -363,12 +363,48 @@ const SummaryData = () => {
                                                 {
                                                     survey_category === "mobile-combustion" ?
                                                     <>
-                                                        <BarChart chart_icon={<TruckIcon className="w-6 h-6"/>} chart_label="Vehicle Type" chart_meaning="Overall surveyed vehicles." series={v_typeSeries} isLoading = {isLoading}/>
-                                                        <BarChart chart_icon={<TruckIcon className="h-6 w-6"/>} chart_label="Vehicle Emission Rate" chart_meaning="Total Emission rate per vehicle." series={vehicle_ghge_rate} isLoading = {isLoading}/>
-                                                        <BarChart chart_icon={<TruckIcon className="h-6 w-6"/>} chart_label="Vehicle Age" chart_meaning="Total counts of diffirent vehicle age." series={v_ageSeries} isLoading = {isLoading}/>
+                                                        <BarChart chart_icon={<TruckIcon className="w-6 h-6"/>} chart_label={`Vehicle Type (${formType})`}  
+                                                        chart_meaning={`Overall surveyed vehicles in
+                                                        ${user_info.user_type === "s-admin"
+                                                            ? municipality?.address_name || "Laguna Province" 
+                                                            : user_info.user_type === "lgu_admin"
+                                                            ? `${brgy?.address_name || user_info.municipality_name}` 
+                                                            : "Selected Area"
+                                                        }.`}
+                                                        series={v_typeSeries} isLoading = {isLoading}/>
+
+
+                                                        <BarChart chart_icon={<TruckIcon className="h-6 w-6"/>} chart_label={`Vehicle Emission Rate (${formType})`}
+                                                          chart_meaning={`Total Emission rate per vehicle in
+                                                            ${user_info.user_type === "s-admin"
+                                                                ? municipality?.address_name || "Laguna Province" 
+                                                                : user_info.user_type === "lgu_admin"
+                                                                ? `${brgy?.address_name || user_info.municipality_name}` 
+                                                                : "Selected Area"
+                                                            }.`}
+                                                        series={vehicle_ghge_rate} isLoading = {isLoading}/>
+
+                                                        
+                                                        <BarChart chart_icon={<TruckIcon className="h-6 w-6"/>} chart_label={`Vehicle Age (${formType})`} 
+                                                         chart_meaning={`Total counts of diffirent vehicle age in
+                                                            ${user_info.user_type === "s-admin"
+                                                                ? municipality?.address_name || "Laguna Province" 
+                                                                : user_info.user_type === "lgu_admin"
+                                                                ? `${brgy?.address_name || user_info.municipality_name}` 
+                                                                : "Selected Area"
+                                                            }.`}
+                                                        series={v_ageSeries} isLoading = {isLoading}/>
                                                     </>
                                                     : 
-                                                    <BarChart chart_icon={<TruckIcon className="w-6 h-6"/>} chart_label="Population Using The Sytem" chart_meaning="Count of People Using the System" series={popultionUsingTheSystem} isLoading = {isLoading} stacked/>
+                                                    
+                                                    <BarChart chart_icon={<TruckIcon className="w-6 h-6"/>} chart_label={`Waste Water (${formType}) Population Using The Sytem`} 
+                                                     chart_meaning={`Count Of People Using The Sytem in
+                                                        ${user_info.user_type === "s-admin" 
+                                                            ? municipality?.address_name || "Laguna Province"
+                                                            : user_info.user_type || "lgu_admin"
+                                                            ? `${brgy?.address_name || user_info.municipality_name}`: "Selected Area"}
+                                                        .`} 
+                                                     series={popultionUsingTheSystem} isLoading = {isLoading} stacked/>
                                                 }
                                     
                                             </div>

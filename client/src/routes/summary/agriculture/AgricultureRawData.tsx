@@ -159,7 +159,7 @@ const AgricultureRawData = ({agricultureType, year}:AgricultureRawDataProps) => 
     },[agricultureType, year, loc.address_name])
     
     return(
-        <div className="flex flex-col w-ful h-full">
+        <div className="flex flex-col w-full h-full">
             <div>
                 {
                     user_type === "s-admin" ?   
@@ -167,7 +167,7 @@ const AgricultureRawData = ({agricultureType, year}:AgricultureRawDataProps) => 
                     :   <BrgyMenu municipality_code={municipality_code} setBrgys={setLoc}/>
                 }
             </div>
-            <div>
+            <div className="py-4">
                 {
                     tb_data && tb_head && tb_data.length > 0 ?    <Table tb_datas={tb_data} tb_head={tb_head}/>
                     :<>No Data Found!</>

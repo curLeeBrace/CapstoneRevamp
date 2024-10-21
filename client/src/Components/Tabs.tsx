@@ -22,9 +22,9 @@ import {
  
     return (
       <Tabs value="s-data">
-        <TabsHeader className="w-96 shadow-md mb-2 shadow-gray-400">
+        <TabsHeader className="w-96 shadow-md mb-4 shadow-gray-400">
           {data.map(({ label, value }) => (
-            <Tab key={value} value={value} className="z-0">
+            <Tab key={value} value={value} className="z-0 font-bold py-2">
               {label}
             </Tab>
           ))}
