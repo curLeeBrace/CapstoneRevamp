@@ -40,7 +40,9 @@ const SurveyedList = () => {
       }
 
       if(survey_category === "mobile-combustion"){
-        set_tbHead([ "Brgy",
+        set_tbHead([ 
+          "ID",
+          "Brgy",
           "Vehicle Type",
           "Vehicle Age",
           "Fuel Type",
@@ -51,6 +53,7 @@ const SurveyedList = () => {
           "Action",])
       } else if(survey_category === "waste-water"){
         set_tbHead([ 
+          "ID",
           "Brgy",
           
           "Septik Tank (Poso Negro)",
@@ -79,6 +82,7 @@ const SurveyedList = () => {
     if (survey_category === "mobile-combustion") {
       tb_data = form_data.map((data: any) => {
         const {
+          
           brgy_name,
           vehicle_type,
           vehicle_age,
@@ -105,6 +109,7 @@ const SurveyedList = () => {
         );
 
         return [
+          data.form_id,
           brgy_name,
           vehicle_type,
           vehicle_age,
@@ -150,6 +155,7 @@ const SurveyedList = () => {
           </Link>
         );
         return [
+          data.form_id,
           brgy_name,
           septic_tanks,
           openPits_latrines.cat1,
