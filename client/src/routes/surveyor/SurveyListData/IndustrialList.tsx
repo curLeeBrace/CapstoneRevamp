@@ -1,11 +1,14 @@
 import { useEffect, useState } from "react"
 import BrgyMenu from "../../../custom-hooks/BrgyMenu"
 import useUserInfo from "../../../custom-hooks/useUserType";
-import { Radio } from "@material-tailwind/react";
+import { Input, Radio } from "@material-tailwind/react";
 import Table from "../../../Components/Table";
 import useAxiosPrivate from "../../../custom-hooks/auth_hooks/useAxiosPrivate";
 import { AddressReturnDataType } from "../../../custom-hooks/useFilterAddrress";
 import { Link } from "react-router-dom";
+import useSearchFilter from "../../../custom-hooks/useSearchFilter";
+import SimpleCard from "../../../Components/Dashboard/SimpleCard";
+import { ExclamationTriangleIcon } from "@heroicons/react/24/solid";
 
 
 const IndustrialList = () => {
@@ -20,6 +23,10 @@ const IndustrialList = () => {
 
     const axiosPrivate = useAxiosPrivate();
 
+    const [searchQuery, setSearchQuery] = useState<string>(""); 
+    const filteredData = useSearchFilter(tb_data, searchQuery); 
+
+  
     
 
 
@@ -330,21 +337,29 @@ const IndustrialList = () => {
 
         return tb_data
     }
-
-
-
-
-
+    
 
     return (
-        <div className="flex flex-col mt-10 gap-5 px-5 lg:px-24">
-            <div className="text-2xl self-center">Industrial Surveyed List</div>
+        <div className="flex flex-col mt-10 gap-5 px-5 lg:px-24 ">
+            <div className="text-2xl self-center rounded-lg bg-darkgreen text-white py-2 px-2">Industrial Surveyed List</div>
 
             <div className="flex bg-blue-gray-100 flex-wrap justify-center p-3 rounded-md shadow-md">
-                <div className=" w-full lg:w-52">
+                <div className=" w-full lg:w-52 mx-20">
                     <BrgyMenu setBrgys={setBrgy} municipality_code={municipality_code}/>
+                <div className="my-2">  
+                <Input
+                    type="search"
+                    label="Search ID"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className=' bg-none'
+                />
+               
+          </div> 
+        
                 </div>
                 <div className="flex  w-full gap-4 lg:w-1/2 flex-wrap">
+               
                 {/* <Radio defaultChecked name="indusry_type" label="All" color ="green" value={"all"} onChange={(e:any)=>setIndustryType(e.target.value)}/> */}
                     <Radio defaultChecked name="indusry_type" label="Mineral" color ="green" value={"mineral"} onChange={(e:any)=>setIndustryType(e.target.value)}/>
                     <Radio name="indusry_type" label="Chemical" color ="green" value={"chemical"} onChange={(e:any)=>setIndustryType(e.target.value)}/>
@@ -355,9 +370,13 @@ const IndustrialList = () => {
             </div>
             <div>
                 {
-                    tb_head && tb_data ? <Table tb_datas={tb_data} tb_head={tb_head}/>
-                    :<>No Available Data</>
-                
+
+                tb_head && filteredData.length ? (
+                <Table tb_datas={filteredData} tb_head={tb_head} />
+                ) : (
+                    <SimpleCard body={"No Available Data"} header="" icon={<ExclamationTriangleIcon className="h-full w-full"/>}/>
+                )
+
                 }
 
                 
