@@ -77,7 +77,7 @@ function AgricultureForm() {
           {/* Barangay Menu */}
           <div className="">
             <BrgyMenu
-              disabled={params.action === "view"}
+              disabled = {params.action === "view" || params.action === "finish"}
               municipality_code={user_info.municipality_code}
               setBrgys={setBrgy}
               deafult_brgyName={state && state.brgy_name}

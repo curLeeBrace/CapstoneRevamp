@@ -31,7 +31,7 @@ const Mineral = () => {
     const [openDialogBox, setOpenDialogBox] = useState(false);
 
     const user_info = useUserInfo();
-    const {submitForm, updateForm, acceptFormUpdate} = useSurveyFormActions();
+    const {submitForm, updateForm, acceptFormUpdate, finishForm} = useSurveyFormActions();
     const handleChange = useHandleChange;
 
     const [mineralData, setMineralData] = useState<MineralData>({
@@ -209,6 +209,32 @@ const isDataFilled = Object.values(mineralData).some(value => value && value.toS
   }
   
 
+  
+const finishHandler = () => {
+  const form_id = searchParams.get("form_id");
+  const {setAlertMsg, setOpenAlert} = industrialBaseData
+  finishForm({form_id : form_id as string, form_category : "industrial-mineral"})
+  .then((res) => {
+    if(res.status === 204){
+      alert("can't accep request update because form data not found!");
+    } else if(res.status === 200){
+      setOpenAlert(true);
+      setAlertMsg(res.data);
+    }
+   
+  })
+  .catch(err => {
+    console.log(err)
+    set_isLoading(false);
+    setOpenAlert(true);
+    setAlertMsg("Server Error!");
+  })
+  .finally(()=>{
+    set_isLoading(false)
+    setOpenDialogBox(false)
+  })
+
+}
 
 
 
@@ -223,7 +249,8 @@ const isDataFilled = Object.values(mineralData).some(value => value && value.toS
       <DialogBox open = {openDialogBox} setOpen={setOpenDialogBox} message = 'Please double check the data before submitting' label='Confirmation' submit={
         params.action === "submit" ? submitHandler
         : params.action === "update" ? updateHandler
-        :acceptUpdateHandler
+        :params.action === "view" ? acceptUpdateHandler
+        : finishHandler
       } />
 
       <div className="flex flex-col h-full justify-around gap-5">
@@ -234,7 +261,7 @@ const isDataFilled = Object.values(mineralData).some(value => value && value.toS
             Cement Production - Portland (tons)
           </Typography>
           <Input 
-            disabled = {params.action === "view"}
+            disabled = {params.action === "view" || params.action === "finish"}
             name = "cpp"
             onChange={(e)=>{handleChange({event : e, setFormStateData  : setMineralData})}}
             value={mineralData.cpp}
@@ -251,7 +278,7 @@ const isDataFilled = Object.values(mineralData).some(value => value && value.toS
             Cement Production - Portland (blended)
           </Typography>
           <Input
-            disabled = {params.action === "view"}
+            disabled = {params.action === "view" || params.action === "finish"}
             name="cpb"
             onChange={(e)=>{handleChange({event : e, setFormStateData  : setMineralData})}}
             value={mineralData.cpb}
@@ -270,7 +297,7 @@ const isDataFilled = Object.values(mineralData).some(value => value && value.toS
             Lime Production (tons)
           </Typography>
           <Input
-            disabled = {params.action === "view"}
+            disabled = {params.action === "view" || params.action === "finish"}
             name="lp"
             onChange={(e)=>{handleChange({event : e, setFormStateData  : setMineralData})}}
             value={mineralData.lp}
@@ -287,7 +314,7 @@ const isDataFilled = Object.values(mineralData).some(value => value && value.toS
             Glass Production (tons)
           </Typography>
           <Input
-            disabled = {params.action === "view"}
+            disabled = {params.action === "view" || params.action === "finish"}
             name = "gp"
             onChange={(e)=>{handleChange({event : e, setFormStateData  : setMineralData})}}
             value={mineralData.gp}
@@ -310,11 +337,13 @@ const isDataFilled = Object.values(mineralData).some(value => value && value.toS
                   onClick={submitValidation}
                   >
                     {
-                      params.action === "submit" ?
-                      "Submit"
-                      : params.action === "update" ?
-                      "Request Update"
-                      : "Accept Update"
+                        params.action === "submit" ?
+                        "Submit"
+                        : params.action === "update" ?
+                        "Request Update"
+                        : params.action === "update" ?
+                          "Accept Update"
+                        : "Okay"
                     }
                   </Button>
   
