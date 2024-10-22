@@ -16,20 +16,21 @@ import useAxiosPrivate from "../custom-hooks/auth_hooks/useAxiosPrivate";
 
 const NotificationBell = () => {
   const axiosPrivate = useAxiosPrivate();
-  const userInfo = useUserInfo();
+  const {user_type, municipality_code} = useUserInfo();
   const [notificationList, setNotificationList] = useState<any[]>();
   const [isLoading, set_isLoading] = useState(false);
   const [openNotiff, setOpenNotiff] = useState(false);
   const [notiffCount, setNotiffCount] = useState(0);
+  const action = user_type === "lgu_admin" ? "view" : "finish"
 
   useEffect(() => {
     getNotiffication().then((lenth) => setNotiffCount(lenth));
 
-    const intervalId = setInterval(() => {
-      getNotiffication().then((lenth) => setNotiffCount(lenth));
-    }, 120000);
+    // const intervalId = setInterval(() => {
+    //   getNotiffication().then((lenth) => setNotiffCount(lenth));
+    // }, 120000);
 
-    return () => clearInterval(intervalId);
+    // return () => clearInterval(intervalId);
   }, []);
 
   useEffect(() => {
@@ -39,12 +40,16 @@ const NotificationBell = () => {
     }
   }, [openNotiff]);
 
+
+
+
   const getNotiffication = async (): Promise<number> => {
     let notiffLength = 0;
     set_isLoading(true);
     const nottiff_data = await axiosPrivate.get("/notiff/get-notification", {
       params: {
-        municipality_code: userInfo.municipality_code,
+        municipality_code : municipality_code,
+        user_type
       },
     });
     notiffLength = nottiff_data.data.length;
@@ -54,6 +59,9 @@ const NotificationBell = () => {
     return notiffLength;
   };
 
+
+
+
   const notiffLink = (state : {}, url : string, surveyorName : string) => {
     return (
       <Link
@@ -62,7 +70,9 @@ const NotificationBell = () => {
         state={state}
       >
         <div className="font-bold tex-black">{surveyorName}</div>
-        <div className="text-sm text-nowrap">Request an Survey Update!</div>
+        <div className="text-sm text-nowrap">
+          {user_type === "lgu_admin" ? "Request an Survey Update!" : "Update Accepted!"}
+        </div>
       </Link>
     );
   };
@@ -110,7 +120,7 @@ const NotificationBell = () => {
                         liters_consumption: survey_data.liters_consumption,
                         form_type: survey_data.form_type,
                       }, 
-                      `/surveyor/forms/view/${form_category}?form_id=${form_id}`,
+                      `/surveyor/forms/${action}/${form_category}?form_id=${form_id}`,
                         surveyor_name
                     ) : form_category === "waste-water" ?
                     notiffLink(
@@ -129,7 +139,7 @@ const NotificationBell = () => {
                         riverDischargeCat1: survey_data.riverDischarge.cat1,
                         riverDischargeCat2: survey_data.riverDischarge.cat2,
                       },
-                      `/surveyor/forms/view/${form_category}?form_id=${form_id}`,
+                      `/surveyor/forms/${action}/${form_category}?form_id=${form_id}`,
                     surveyor_name
                   ) 
                   :form_category === "industrial-mineral" ?
@@ -141,7 +151,7 @@ const NotificationBell = () => {
                       lp : survey_data.lp,
                       cpb : survey_data.cpb,
                       gp : survey_data.gp,
-                    },`/surveyor/forms/industrial/view/0/mineral?form_id=${form_id}`,surveyor_name)
+                    },`/surveyor/forms/industrial/${action}/0/mineral?form_id=${form_id}`,surveyor_name)
                   
                   :form_category === "industrial-chemical" ?
                     notiffLink({
@@ -156,7 +166,7 @@ const NotificationBell = () => {
                       pcbp_EO : survey_data.pcbp_EO,
                       pcbp_A : survey_data.pcbp_A,
                       pcbp_CB : survey_data.pcbp_CB,
-                    },`/surveyor/forms/industrial/view/1/chemical?form_id=${form_id}`,surveyor_name)
+                    },`/surveyor/forms/industrial/${action}/1/chemical?form_id=${form_id}`,surveyor_name)
                   :form_category === "industrial-metal" ?
                     notiffLink({
                       brgy_name : survey_data.brgy_name,
@@ -164,7 +174,7 @@ const NotificationBell = () => {
                       type_ofData : survey_data.type_ofData,
                       ispif : survey_data.ispif,
                       ispnif : survey_data.ispnif,
-                    },`/surveyor/forms/industrial/view/2/metal?form_id=${form_id}`,surveyor_name)
+                    },`/surveyor/forms/industrial/${action}/2/metal?form_id=${form_id}`,surveyor_name)
                     
                   :form_category === "industrial-electronics" ?
                     notiffLink({
@@ -175,7 +185,7 @@ const NotificationBell = () => {
                     photovoltaics : survey_data.photovoltaics,
                     tft_FPD : survey_data.tft_FPD,
                     htf : survey_data.htf,
-                    },`/surveyor/forms/industrial/view/3/electronics?form_id=${form_id}`,surveyor_name)
+                    },`/surveyor/forms/industrial/${action}/3/electronics?form_id=${form_id}`,surveyor_name)
                   :form_category === "industrial-others" ?
                     notiffLink({
                       brgy_name : survey_data.brgy_name,
@@ -184,7 +194,7 @@ const NotificationBell = () => {
                       ppi : survey_data.ppi,
                       other : survey_data.other,
                       fbi : survey_data.fbi,
-                    },`/surveyor/forms/industrial/view/4/others?form_id=${form_id}`,surveyor_name)
+                    },`/surveyor/forms/industrial/${action}/4/others?form_id=${form_id}`,surveyor_name)
                   :null
                 
                 }

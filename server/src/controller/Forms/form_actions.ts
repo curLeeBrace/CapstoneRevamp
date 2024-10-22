@@ -135,45 +135,60 @@ const updateData = async (req: Request, res: Response) => {
 
 const acceptUpdate = async (req: Request, res: Response) => {
 
-    const {form_id} = req.body;
+    const {form_id, action} = req.body;
     const {form_category} = req.params;
+
+
+
 
     try {
         
-        // const query = {
-           
-        // }
+        
         let form_data = undefined
+        let status = undefined
+        let message = ""
+
+        if(action === "accept"){
+            status = 2
+            message = "Request Update Accepted!!"
+
+        } else if(action === "finish"){
+            status = 0
+            message = ""
+        }
+
+    
 
 
 
         if(form_category === "waste-water"){
-            form_data = await WasteWaterFormShema.findByIdAndUpdate(form_id, {"survey_data.status" : "2"}).exec()
+            form_data = await WasteWaterFormShema.findByIdAndUpdate(form_id, {"survey_data.status" : `${status}`}).exec()
         } else if (form_category === "mobile-combustion"){
-            form_data = await FuelFormSchema.findByIdAndUpdate(form_id, {"survey_data.status" : "2"}).exec()
+            form_data = await FuelFormSchema.findByIdAndUpdate(form_id, {"survey_data.status" : `${status}`}).exec()
         } else if(form_category === "industrial-mineral"){
-            form_data = await MineralSchema.findByIdAndUpdate(form_id, {"survey_data.status" : "2"}).exec()
+            form_data = await MineralSchema.findByIdAndUpdate(form_id, {"survey_data.status" : `${status}`}).exec()
         } else if(form_category === "industrial-chemical"){
-            form_data = await ChemicalSchema.findByIdAndUpdate(form_id, {"survey_data.status" : "2"}).exec()
+            form_data = await ChemicalSchema.findByIdAndUpdate(form_id, {"survey_data.status" : `${status}`}).exec()
         } else if(form_category === "industrial-metal"){
-            form_data = await MetalSchema.findByIdAndUpdate(form_id, {"survey_data.status" : "2"}).exec()
+            form_data = await MetalSchema.findByIdAndUpdate(form_id, {"survey_data.status" : `${status}`}).exec()
         } else if(form_category === "industrial-electronics"){
-            form_data = await ElectronicsSchema.findByIdAndUpdate(form_id, {"survey_data.status" : "2"}).exec()
+            form_data = await ElectronicsSchema.findByIdAndUpdate(form_id, {"survey_data.status" : `${status}`}).exec()
         } else if(form_category === "industrial-others"){
-            form_data = await OthersSchema.findByIdAndUpdate(form_id, {"survey_data.status" : "2"}).exec()
+            form_data = await OthersSchema.findByIdAndUpdate(form_id, {"survey_data.status" : `${status}`}).exec()
         }
         if(!form_data) return res.sendStatus(204);
     
-        return res.status(200).send("Request Update Accepted!!");
+        return res.status(200).send(message);
     } catch (error) {
         console.log("acceptUpdateMobileCombustionData : ", error)
         return res.sendStatus(500);
     }
 
-
-
-
 }
+
+
+
+
 
 
 
