@@ -1,4 +1,4 @@
-import { Checkbox, Typography} from "@material-tailwind/react";
+import { Checkbox, Input, Typography} from "@material-tailwind/react";
 import Table from "../../../Components/Table";
 import { Link } from "react-router-dom";
 import useUserInfo from "../../../custom-hooks/useUserType";
@@ -7,6 +7,9 @@ import { useEffect, useState } from "react";
 import { AddressReturnDataType } from "../../../custom-hooks/useFilterAddrress";
 import useAxiosPrivate from "../../../custom-hooks/auth_hooks/useAxiosPrivate";
 import { useParams } from "react-router-dom";
+import useSearchFilter from "../../../custom-hooks/useSearchFilter";
+import SimpleCard from "../../../Components/Dashboard/SimpleCard";
+import { ExclamationTriangleIcon } from "@heroicons/react/24/solid";
 
 const SurveyedList = () => {
   const axiosPrivate = useAxiosPrivate();
@@ -19,6 +22,10 @@ const SurveyedList = () => {
   const [tb_data, setTbData] = useState<any[]>();
   const [tb_head, set_tbHead] = useState<string[]>()
   const {survey_category} = useParams();
+
+  const [searchQuery, setSearchQuery] = useState<string>(""); 
+  const filteredData = useSearchFilter(tb_data, searchQuery); 
+
   // console.log("survey_category : ", survey_category)
   useEffect(()=>{
       if(brgy){
@@ -180,7 +187,7 @@ const SurveyedList = () => {
 
   return (
     <div className="flex flex-col items-center py-10 gap-5 max-h-screen">
-      <div className="text-2xl">{
+      <div className="text-2xl self-center rounded-lg bg-darkgreen text-white px-2 py-2">{
         survey_category === "mobile-combustion" ? "Mobile Combustion Data" : 
         survey_category === "waste-water" ? "Waste Water Data" : ""
       }</div>
@@ -194,13 +201,21 @@ const SurveyedList = () => {
           </Select>
         </div> */}
 
-        <div className="w-full lg:w-36">
+        <div className="w-full lg:w-36 my-4">
           <BrgyMenu
             municipality_code={user_info.municipality_code}
             setBrgys={setBrgy}
             // deafult_brgyName={user_info.}
           />
-
+          <div className="my-2">  
+         <Input
+                    type="search"
+                    label="Search ID"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className=' bg-none'
+                />
+                </div>
         </div>
      
 
@@ -242,7 +257,11 @@ const SurveyedList = () => {
 
 
       <div className="w-4/5">
-        {tb_data && tb_head ? <Table tb_head={tb_head} tb_datas={tb_data} /> : null}
+        {
+        tb_head && filteredData.length ? 
+        <Table tb_datas={filteredData} tb_head={tb_head} /> :
+        <SimpleCard body={"No Available Data"} header="" icon={<ExclamationTriangleIcon className="h-full w-full"/>}/>
+        }
       </div>
     </div>
   );
