@@ -154,7 +154,7 @@ const acceptUpdate = async (req: Request, res: Response) => {
 
         } else if(action === "finish"){
             status = 0
-            message = ""
+            message = "Succsess Updating Form Status!"
         }
 
     

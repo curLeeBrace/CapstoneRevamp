@@ -88,7 +88,7 @@ const WasteWaterForm = () => {
 
 
 
-  const {updateForm, acceptFormUpdate, submitForm} = useSurveyFormActions()
+  const {updateForm, acceptFormUpdate, submitForm, finishForm} = useSurveyFormActions()
 
  
   useEffect(()=>{
@@ -229,6 +229,34 @@ const acceptUpdateHandler = () => {
 }
 
 
+const finishHandler = () => {
+
+  const form_id = searchParams.get("form_id");
+  finishForm({form_id : form_id as string, form_category : "waste-water"})
+  .then((res) => {
+    if(res.status === 204){
+      alert("Error Occured! because form data not found!!");
+    } else if(res.status === 200){
+      setOpenAlert(true);
+      setAlertMsg(res.data);
+    }
+   
+  })
+  .catch(err => {
+    console.log(err)
+    set_isLoading(false);
+    setOpenAlert(true);
+    setAlertMsg("Server Error!");
+  })
+  .finally(()=>{
+    set_isLoading(false)
+    setOpenDialogBox(false)
+  })
+
+
+}
+
+
 
   const preparePayLoad = () : Payload => {
     const {email, full_name, municipality_name, municipality_code, province_code} = user_info;
@@ -280,7 +308,8 @@ const acceptUpdateHandler = () => {
        <DialogBox open = {openDialogBox} setOpen={setOpenDialogBox} message = 'Please double check the data before submitting' label='Confirmation' submit={
         params.action === "submit" ? submitHandler
         : params.action === "update" ? updateHandler
-        :acceptUpdateHandler
+        :params.action === "view" ? acceptUpdateHandler
+        :finishHandler
       } />
       
       <Card className="w-full h-full sm:w-96 md:w-3/4 lg:w-2/3 xl:w-2/3 px-6 py-6 -mt-10 shadow-black shadow-2xl rounded-xl relative gap-5">
@@ -291,7 +320,7 @@ const acceptUpdateHandler = () => {
 
         <div>
           <BrgyMenu
-            disabled={params.action === "view"}
+            disabled = {params.action === "view" || params.action === "finish"}
             municipality_code={user_info.municipality_code}
             setBrgys={setBrgy}
             deafult_brgyName={state && state.brgy_name}
@@ -304,7 +333,7 @@ const acceptUpdateHandler = () => {
           </Typography>
 
           <Checkbox
-            disabled={params.action === "view"}
+            disabled = {params.action === "view" || params.action === "finish"}
             name="form_type"
             value={"residential"}
             checked={formData.form_type === "residential"} // Checked if this is selected
@@ -323,7 +352,7 @@ const acceptUpdateHandler = () => {
             // containerProps={{ className: "-ml-2.5" }}
           />
           <Checkbox
-            disabled={params.action === "view"}
+            disabled = {params.action === "view" || params.action === "finish"}
             name="form_type"
             value={"commercial"}
             checked={formData.form_type === "commercial"} // Checked if this is selected
@@ -354,7 +383,7 @@ const acceptUpdateHandler = () => {
 
         <div className="w-full">
           <Checkbox
-            disabled={params.action === "view"}
+            disabled = {params.action === "view" || params.action === "finish"}
             name="septic_tanks"
             value={formData.septic_tanks == 1 ? 0 : 1}
             checked = {formData.septic_tanks == 1}
@@ -404,7 +433,7 @@ const acceptUpdateHandler = () => {
           <div className="w-full flex flex-wrap xl:flex-nowrap">
             <div className="xl:w-1/2 w-full">
               <Checkbox
-                disabled={params.action === "view"}
+                disabled = {params.action === "view" || params.action === "finish"}
                 name="openPits_latrinesCat1"
                 value={formData.openPits_latrinesCat1 == 1 ? 0 : 1}
                 checked = {formData.openPits_latrinesCat1 == 1}
@@ -439,7 +468,7 @@ const acceptUpdateHandler = () => {
             <div className="xl:w-1/2 w-full">
 
               <Checkbox
-                disabled={params.action === "view"}
+                disabled = {params.action === "view" || params.action === "finish"}
                 name="openPits_latrinesCat2"
                 value={formData.openPits_latrinesCat2 == 1 ? 0 : 1}
                 checked = {formData.openPits_latrinesCat2 == 1}
@@ -478,7 +507,7 @@ const acceptUpdateHandler = () => {
             <div className="xl:w-1/2 w-full">
 
               <Checkbox
-                disabled={params.action === "view"}
+                disabled = {params.action === "view" || params.action === "finish"}
                 name="openPits_latrinesCat3"
                 value={formData.openPits_latrinesCat3 == 1 ? 0 : 1}
                 checked = {formData.openPits_latrinesCat3 == 1}
@@ -517,7 +546,7 @@ const acceptUpdateHandler = () => {
 
                 
               <Checkbox
-                disabled={params.action === "view"}
+                disabled = {params.action === "view" || params.action === "finish"}
                 name="openPits_latrinesCat4"
                 value={formData.openPits_latrinesCat4 == 1 ? 0 : 1}
                 checked = {formData.openPits_latrinesCat4 == 1}
@@ -566,7 +595,7 @@ const acceptUpdateHandler = () => {
         <div className="w-full flex flex-wrap xl:flex-nowrap">
             <div className="xl:w-1/2 w-full ">
               <Checkbox
-                disabled={params.action === "view"}
+                disabled = {params.action === "view" || params.action === "finish"}
                 name="riverDischargeCat1"
                 value={formData.riverDischargeCat1 == 1 ? 0 : 1}
                 onChange={(event) =>
@@ -605,7 +634,7 @@ const acceptUpdateHandler = () => {
             <div className="xl:w-1/2 w-full">
 
               <Checkbox
-                disabled={params.action === "view"}
+                disabled = {params.action === "view" || params.action === "finish"}
                 name="riverDischargeCat2"
                 value={formData.riverDischargeCat2 == 1 ? 0 : 1}
                 onChange={(event) =>
@@ -651,11 +680,13 @@ const acceptUpdateHandler = () => {
                
                   >
                     {
-                      params.action === "submit" ?
-                      "Submit"
-                      : params.action === "update" ?
-                      "Request Update"
-                      : "Accept Update"
+                             params.action === "submit" ?
+                             "Submit"
+                             : params.action === "update" ?
+                             "Request Update"
+                             : params.action === "update" ?
+                               "Accept Update"
+                             : "Okay"
                     }
               </Button>
   

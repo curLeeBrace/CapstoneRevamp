@@ -50,7 +50,7 @@ const {state} = useLocation();
 
 
 
-const {updateForm, acceptFormUpdate, submitForm} = useSurveyFormActions();
+const {updateForm, acceptFormUpdate, submitForm, finishForm} = useSurveyFormActions();
 
 
 
@@ -220,7 +220,7 @@ const acceptUpdateHandler = () => {
   acceptFormUpdate({form_id : form_id as string, form_category : "mobile-combustion"})
   .then((res) => {
     if(res.status === 204){
-      alert("can't accep request update because form data not found!");
+      alert("can't accept request update because form data not found!");
     } else if(res.status === 200){
       setOpenAlert(true);
       setAlertMsg(res.data);
@@ -237,6 +237,35 @@ const acceptUpdateHandler = () => {
     set_isLoading(false)
     setOpenDialogBox(false)
   })
+
+}
+
+
+
+const finishHandler = () => {
+
+  const form_id = searchParams.get("form_id");
+  finishForm({form_id : form_id as string, form_category : "mobile-combustion"})
+  .then((res) => {
+    if(res.status === 204){
+      alert("Error Occured! because form data not found!!");
+    } else if(res.status === 200){
+      setOpenAlert(true);
+      setAlertMsg(res.data);
+    }
+   
+  })
+  .catch(err => {
+    console.log(err)
+    set_isLoading(false);
+    setOpenAlert(true);
+    setAlertMsg("Server Error!");
+  })
+  .finally(()=>{
+    set_isLoading(false)
+    setOpenDialogBox(false)
+  })
+
 
 }
 
@@ -268,7 +297,8 @@ console.log("FormData ", formData)
       <DialogBox open = {openDialogBox} setOpen={setOpenDialogBox} message = 'Please double check the data before submitting' label='Confirmation' submit={
         params.action === "submit" ? submitHandler
         : params.action === "update" ? updateHandler
-        :acceptUpdateHandler
+        : params.action === "view" ? acceptUpdateHandler
+        :finishHandler
       } />
 
       <Card className="w-full h-full sm:w-96 md:w-3/4 lg:w-2/3 xl:w-1/2 px-6 py-6 -mt-10 shadow-black shadow-2xl rounded-xl relative">
@@ -282,14 +312,14 @@ console.log("FormData ", formData)
         <div className="mt-8 grid grid-cols-1 gap-6">
           {/* Column 1 */}
           <div className="flex flex-col gap-6">
-            <BrgyMenu disabled = {params.action === "view"} municipality_code= {user_info.municipality_code} setBrgys={setBrgy} deafult_brgyName={state && state.brgy_name}/>
+            <BrgyMenu disabled = {params.action === "view" || params.action === "finish"} municipality_code= {user_info.municipality_code} setBrgys={setBrgy} deafult_brgyName={state && state.brgy_name}/>
             
             <div>
               <Typography variant="h6" color="blue-gray">
                 Form Type
               </Typography>
               <Checkbox
-                disabled = {params.action === "view"}
+                disabled = {params.action === "view" || params.action === "finish"}
                 name='form_type'
                 value={'residential'}
                 checked={formData.form_type === "residential"} // Checked if this is selected
@@ -304,7 +334,7 @@ console.log("FormData ", formData)
               />
               <Checkbox
                 
-                disabled = {params.action === "view"}
+                disabled = {params.action === "view" || params.action === "finish"}
                 name='form_type'
                 value={'commercial'}
                 checked={formData.form_type === "commercial"} // Checked if this is selected
@@ -329,7 +359,7 @@ console.log("FormData ", formData)
                   name = "vehicle_type"
                   onChange={(event)=> handleChange({event, setFormStateData : setFormData})}
                   value={formData.vehicle_type}
-                  disabled = {params.action === "view"}
+                  disabled = {params.action === "view" || params.action === "finish"}
 
                 >
                     <option value="" key = "default">Select Vehicle Type</option>
@@ -351,7 +381,7 @@ console.log("FormData ", formData)
                 Vehicle Year Model
               </Typography>
               <Input
-              disabled = {params.action === "view"}
+              disabled = {params.action === "view" || params.action === "finish"}
                name='vehicle_age'
                value = {formData.vehicle_age}
                onChange={(event)=> handleChange({event, setFormStateData : setFormData})}
@@ -375,7 +405,7 @@ console.log("FormData ", formData)
                 Fuel Type
               </Typography>
               <Checkbox
-                disabled={params.action === "view"}
+                disabled = {params.action === "view" || params.action === "finish"}
                 name='fuel_type'
                 value={'diesel'}
                 checked={formData?.fuel_type === "diesel"} // Checked if this is selected
@@ -389,7 +419,7 @@ console.log("FormData ", formData)
                 containerProps={{ className: "-ml-2.5" }}
               />
               <Checkbox
-              disabled ={params.action === "view"}
+              disabled = {params.action === "view" || params.action === "finish"}
               name='fuel_type'
               value={'gasoline'}
               checked={formData?.fuel_type === "gasoline"} // Checked if this is selected
@@ -408,7 +438,7 @@ console.log("FormData ", formData)
                 Fuel Consumption in a whole day - (liters)
               </Typography>
               <Input
-                disabled= {params.action === "view"}
+                disabled = {params.action === "view" || params.action === "finish"}
                  name='liters_consumption'
                  value = {formData.liters_consumption}
                  onChange={(event)=> handleChange({event, setFormStateData : setFormData})}
@@ -442,7 +472,9 @@ console.log("FormData ", formData)
                       "Submit"
                       : params.action === "update" ?
                       "Request Update"
-                      : "Accept Update"
+                      : params.action === "update" ?
+                        "Accept Update"
+                      : "Okay"
                     }
                   </Button>
   

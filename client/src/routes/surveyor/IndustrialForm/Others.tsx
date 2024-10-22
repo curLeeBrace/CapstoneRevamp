@@ -24,7 +24,7 @@ const Others = () => {
   const [openDialogBox, setOpenDialogBox] = useState(false);
   
   const user_info = useUserInfo();
-  const {submitForm, updateForm, acceptFormUpdate} = useSurveyFormActions();
+  const {submitForm, updateForm, acceptFormUpdate, finishForm} = useSurveyFormActions();
   const handleChange = useHandleChange;
   const [searchParams] = useSearchParams();
   const {state} = useLocation();
@@ -205,6 +205,32 @@ const acceptUpdateHandler = () => {
 }
 
 
+const finishHandler = () => {
+  const form_id = searchParams.get("form_id");
+  const {setAlertMsg, setOpenAlert} = industrialBaseData
+  finishForm({form_id : form_id as string, form_category : "industrial-others"})
+  .then((res) => {
+    if(res.status === 204){
+      alert("can't accep request update because form data not found!");
+    } else if(res.status === 200){
+      setOpenAlert(true);
+      setAlertMsg(res.data);
+    }
+   
+  })
+  .catch(err => {
+    console.log(err)
+    set_isLoading(false);
+    setOpenAlert(true);
+    setAlertMsg("Server Error!");
+  })
+  .finally(()=>{
+    set_isLoading(false)
+    setOpenDialogBox(false)
+  })
+
+}
+
 
 
 
@@ -220,7 +246,8 @@ const acceptUpdateHandler = () => {
             <DialogBox open = {openDialogBox} setOpen={setOpenDialogBox} message = 'Please double check the data before submitting' label='Confirmation' submit={
               params.action === "submit" ? submitHandler
               : params.action === "update" ? updateHandler
-              :acceptUpdateHandler
+              :params.action === "view" ? acceptUpdateHandler
+              : finishHandler
             } />
           
                   <div className="w-full lg:w-2/5 flex flex-col gap-3">
@@ -228,7 +255,7 @@ const acceptUpdateHandler = () => {
                       Pulp and paper industry (tons)
                     </Typography>
                     <Input
-                      disabled = {params.action === "view"}
+                      disabled = {params.action === "view" || params.action === "finish"}
                       name = "ppi"
                       value = {othersData.ppi}
                       onChange={(e) => handleChange({event : e , setFormStateData : setOthersData})}
@@ -244,7 +271,7 @@ const acceptUpdateHandler = () => {
                       Food and beverages industry (tons)
                     </Typography>
                     <Input
-                      disabled = {params.action === "view"}
+                      disabled = {params.action === "view" || params.action === "finish"}
                       name="fbi"
                       value={othersData.fbi}
                       onChange={(e) => handleChange({event : e , setFormStateData : setOthersData})}
@@ -265,7 +292,7 @@ const acceptUpdateHandler = () => {
                       Other carbon in pulp (tons)
                     </Typography>
                     <Input
-                      disabled = {params.action === "view"}
+                      disabled = {params.action === "view" || params.action === "finish"}
                       name="other"
                       value={othersData.other}
                       onChange={(e) => handleChange({event : e , setFormStateData : setOthersData})}
@@ -290,11 +317,13 @@ const acceptUpdateHandler = () => {
                   onClick={submitValidation}
                   >
                     {
-                      params.action === "submit" ?
-                      "Submit"
-                      : params.action === "update" ?
-                      "Request Update"
-                      : "Accept Update"
+                        params.action === "submit" ?
+                        "Submit"
+                        : params.action === "update" ?
+                        "Request Update"
+                        : params.action === "update" ?
+                          "Accept Update"
+                        : "Okay"
                     }
                   </Button>
   

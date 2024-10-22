@@ -10,6 +10,9 @@ import { useSearchParams } from "react-router-dom";
 import useInputValidation from "../../../custom-hooks/useInputValidation";
 
 
+
+
+
 type ChemicalData = {
   ap : number;
   sap : number;
@@ -36,7 +39,7 @@ const Chemical = () => {
   const [isLoading, set_isLoading] = useState<boolean>(false);
   const [openDialogBox, setOpenDialogBox] = useState(false);
   const user_info = useUserInfo();
-  const {submitForm, updateForm, acceptFormUpdate} = useSurveyFormActions();
+  const {submitForm, updateForm, acceptFormUpdate, finishForm} = useSurveyFormActions();
   const {state} = useLocation();
   const [searchParams] = useSearchParams();
 
@@ -203,6 +206,8 @@ const Chemical = () => {
   
   }
 
+  
+
 
   
  
@@ -210,6 +215,33 @@ const Chemical = () => {
     const form_id = searchParams.get("form_id");
     const {setAlertMsg, setOpenAlert} = industrialBaseData
     acceptFormUpdate({form_id : form_id as string, form_category : "industrial-chemical"})
+    .then((res) => {
+      if(res.status === 204){
+        alert("can't accep request update because form data not found!");
+      } else if(res.status === 200){
+        setOpenAlert(true);
+        setAlertMsg(res.data);
+      }
+     
+    })
+    .catch(err => {
+      console.log(err)
+      set_isLoading(false);
+      setOpenAlert(true);
+      setAlertMsg("Server Error!");
+    })
+    .finally(()=>{
+      set_isLoading(false)
+      setOpenDialogBox(false)
+    })
+  
+  }
+
+
+  const finishHandler = () => {
+    const form_id = searchParams.get("form_id");
+    const {setAlertMsg, setOpenAlert} = industrialBaseData
+    finishForm({form_id : form_id as string, form_category : "industrial-chemical"})
     .then((res) => {
       if(res.status === 204){
         alert("can't accep request update because form data not found!");
@@ -242,13 +274,14 @@ const Chemical = () => {
       <DialogBox open = {openDialogBox} setOpen={setOpenDialogBox} message = 'Please double check the data before submitting' label='Confirmation' submit={
         params.action === "submit" ? submitHandler
         : params.action === "update" ? updateHandler
-        :acceptUpdateHandler
+        : params.action === "view" ? acceptUpdateHandler
+        : finishHandler
       } />
       <div className="flex  flex-wrap justify-around">
         <div className="w-full lg:w-52">
           <Typography>Ammonia Production (tons)</Typography>
           <Input
-            disabled = {params.action === "view"}
+            disabled = {params.action === "view" || params.action === "finish"}
             name="ap"
             value={chemicalData.ap}
             onChange={(e) => handleChange({event:e, setFormStateData : setChemicalData})}
@@ -265,7 +298,7 @@ const Chemical = () => {
         <div className="w-full lg:w-52">
           <Typography>Soda Ash Production (tons)</Typography>
           <Input
-            disabled = {params.action === "view"}
+            disabled = {params.action === "view" || params.action === "finish"}
             name = "sap"
             value={chemicalData.sap}
             onChange={(e) => handleChange({event:e, setFormStateData : setChemicalData})}
@@ -282,7 +315,7 @@ const Chemical = () => {
         <div className="w-full lg:w-96">
           <Typography>Dichloride and Vinyl Chloride Monomer (tons)</Typography>
           <Input
-            disabled = {params.action === "view"}
+            disabled = {params.action === "view" || params.action === "finish"}
             name="pcbp_EDVCM"
             value={chemicalData.pcbp_EDVCM}
             onChange={(e) => handleChange({event:e, setFormStateData : setChemicalData})}
@@ -306,7 +339,7 @@ const Chemical = () => {
           Methanol (tons)
         </Typography>
         <Input
-          disabled = {params.action === "view"}
+          disabled = {params.action === "view" || params.action === "finish"}
           name="pcbp_M"
           value={chemicalData.pcbp_M}
           onChange={(e) => handleChange({event:e, setFormStateData : setChemicalData})}
@@ -322,7 +355,7 @@ const Chemical = () => {
           Ethylene (tons)
         </Typography>
         <Input
-          disabled = {params.action === "view"}
+          disabled = {params.action === "view" || params.action === "finish"}
           name="pcbp_E"
           value={chemicalData.pcbp_E}
           onChange={(e) => handleChange({event:e, setFormStateData : setChemicalData})}
@@ -338,7 +371,7 @@ const Chemical = () => {
           Ethylene oxide (tons)
         </Typography>
         <Input
-          disabled = {params.action === "view"}
+          disabled = {params.action === "view" || params.action === "finish"}
           name="pcbp_EO"
           value={chemicalData.pcbp_EO}
           onChange={(e) => handleChange({event:e, setFormStateData : setChemicalData})}
@@ -354,7 +387,7 @@ const Chemical = () => {
           Acrylonitrile (tons)
         </Typography>
         <Input
-          disabled = {params.action === "view"}
+          disabled = {params.action === "view" || params.action === "finish"}
           name="pcbp_A"
           value={chemicalData.pcbp_A}
           onChange={(e) => handleChange({event:e, setFormStateData : setChemicalData})}
@@ -370,7 +403,7 @@ const Chemical = () => {
           Carbon black (tons)
         </Typography>
         <Input
-          disabled = {params.action === "view"}
+          disabled = {params.action === "view" || params.action === "finish"}
           name = "pcbp_CB"
           value={chemicalData.pcbp_CB}
           onChange={(e) => handleChange({event:e, setFormStateData : setChemicalData})}
@@ -391,11 +424,13 @@ const Chemical = () => {
                   onClick={submitValidation}
                   >
                     {
-                      params.action === "submit" ?
-                      "Submit"
-                      : params.action === "update" ?
-                      "Request Update"
-                      : "Accept Update"
+                     params.action === "submit" ?
+                     "Submit"
+                     : params.action === "update" ?
+                     "Request Update"
+                     : params.action === "update" ?
+                       "Accept Update"
+                     : "Okay"
                     }
                   </Button>
   
