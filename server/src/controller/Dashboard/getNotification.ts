@@ -24,11 +24,20 @@ const getNotification = async (req : Request, res : Response) => {
     //For Response
     //surveyor name
     //img_id
-    const {municipality_code} = req.query;
+    const {municipality_code, user_type} = req.query;
 
     try {
+
+        const status = user_type == "lgu_admin" ? "1" : "2"
+
+
+    
+
+
+
+
         const query = {
-            "survey_data.status" : "1",
+            "survey_data.status" : status,
             "surveyor_info.municipality_code" : municipality_code
         }
         const mobileCombustion_formData = await FuelFormSchema.find(query).exec();
@@ -43,7 +52,7 @@ const getNotification = async (req : Request, res : Response) => {
    
 
 
-        if(mobileCombustion_formData.length <= 0 && wasteWater_formData.length <= 0) return res.sendStatus(204);
+        // if(mobileCombustion_formData.length <= 0 && wasteWater_formData.length <= 0 &&) return res.sendStatus(204);
 
         const mobileCombustionResponse = prepareResponse(mobileCombustion_formData, "mobile-combustion");
         const wasteWaterResponse = prepareResponse(wasteWater_formData, "waste-water");

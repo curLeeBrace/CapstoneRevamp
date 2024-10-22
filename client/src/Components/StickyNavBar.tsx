@@ -258,7 +258,7 @@ export function StickyNavbar() {
               <div className="mr-4 hidden lg:block ">{navList}</div>
             
             {
-              user_info.user_type === "lgu_admin" ? <NotificationBell/> : null
+              user_info.user_type === "lgu_admin" || "surveyor" ? <NotificationBell/> : null
             }
               
 

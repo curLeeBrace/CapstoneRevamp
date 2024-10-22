@@ -30,12 +30,17 @@ const useSurveyFormActions = () => {
 
 
     const acceptFormUpdate = async ({form_id, form_category} :SurveyFormProps): Promise<{status : number, data : any}> =>{
-        const accpetUpdate = await axiosPrivate.put(`/forms/${form_category}/accept-update`, {form_id})
+        const accpetUpdate = await axiosPrivate.put(`/forms/${form_category}/accept-update`, {form_id, action : "accept"})
+        return {status : accpetUpdate.status, data : accpetUpdate.data}
+    }
+
+    const finishForm = async ({form_id, form_category} :SurveyFormProps): Promise<{status : number, data : any}> =>{
+        const accpetUpdate = await axiosPrivate.put(`/forms/${form_category}/accept-update`, {form_id, action : "finish"})
         return {status : accpetUpdate.status, data : accpetUpdate.data}
     }
 
 
-    return {updateForm, acceptFormUpdate, submitForm}
+    return {updateForm, acceptFormUpdate, submitForm, finishForm}
     
 }
 
