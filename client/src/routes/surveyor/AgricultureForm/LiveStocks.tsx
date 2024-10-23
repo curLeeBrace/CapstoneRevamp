@@ -1,7 +1,7 @@
 import { Button, Input, Typography } from "@material-tailwind/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useHandleChange from "../../../custom-hooks/useHandleChange";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams, useSearchParams } from "react-router-dom";
 import useUserInfo from "../../../custom-hooks/useUserType";
 import useSurveyFormActions from "../../../custom-hooks/useSurveyFormActions";
 import { useAgricultureContextData } from "./AgricultureForm";
@@ -22,7 +22,7 @@ const LiveStocks = () => {
   const params = useParams();
   const user_info = useUserInfo();
   const handlechange = useHandleChange;
-  const { submitForm } = useSurveyFormActions();
+  const { submitForm, acceptFormUpdate, finishForm, updateForm} = useSurveyFormActions();
   const agricultureData = useAgricultureContextData();
 
   const [isLoading, set_isLoading] = useState<boolean>(false);
@@ -37,8 +37,20 @@ const LiveStocks = () => {
     poultry: 0,
     swine: 0,
   });
+  const [searchParams] = useSearchParams();
+  const { state } = useLocation();
 
   useInputValidation(liveStock, setLiveStock, 999);
+
+
+  useEffect(() => {
+    const { action } = params;
+    if (action !== "submit") {
+      setLiveStock(state);
+    } else {
+      clearForm();
+    }
+  }, [searchParams]);
 
   const preparePayload = (): {} => {
     const { brgy } = agricultureData;
@@ -128,13 +140,90 @@ const LiveStocks = () => {
   };
 
   const updateHandler = () => {
-    /////////////!!!!!!!!!!!!!!!!!!!!!!!!EMPTYYYY
+    const payload = preparePayload();
+    const form_id = searchParams.get("form_id");
+    const { setAlertMsg, setOpenAlert } = agricultureData;
+
+    updateForm({
+      payload,
+      form_id: form_id as string,
+      form_category: "agriculture-livestocks",
+    })
+      .then((res) => {
+        if (res.status === 204) {
+          alert("can't request update because form data not found!");
+        } else if (res.status === 200) {
+          setOpenAlert(true);
+          setAlertMsg(res.data);
+          setOpenDialogBox(false);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        set_isLoading(false);
+        setOpenAlert(true);
+        setAlertMsg("Server Error!");
+      })
+      .finally(() => {
+        set_isLoading(false);
+        setOpenDialogBox(false);
+      });
   };
 
   const acceptUpdateHandler = () => {
-    /////////////!!!!!!!!!!!!!!!!!!!!!!!!EMPTYYYY
+    const form_id = searchParams.get("form_id");
+    const { setAlertMsg, setOpenAlert } = agricultureData;
+    acceptFormUpdate({
+      form_id: form_id as string,
+      form_category: "agriculture-livestocks",
+    })
+      .then((res) => {
+        if (res.status === 204) {
+          alert("can't accep request update because form data not found!");
+        } else if (res.status === 200) {
+          setOpenAlert(true);
+          setAlertMsg(res.data);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        set_isLoading(false);
+        setOpenAlert(true);
+        setAlertMsg("Server Error!");
+      })
+      .finally(() => {
+        set_isLoading(false);
+        setOpenDialogBox(false);
+      });
   };
 
+
+  const finishHandler = () => {
+    const form_id = searchParams.get("form_id");
+    const { setAlertMsg, setOpenAlert } = agricultureData;
+    finishForm({
+      form_id: form_id as string,
+      form_category: "agriculture-livestocks",
+    })
+      .then((res) => {
+        if (res.status === 204) {
+          alert("can't accep request update because form data not found!");
+        } else if (res.status === 200) {
+          setOpenAlert(true);
+          setAlertMsg(res.data);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        set_isLoading(false);
+        setOpenAlert(true);
+        setAlertMsg("Server Error!");
+      })
+      .finally(() => {
+        set_isLoading(false);
+        setOpenDialogBox(false);
+      });
+  };
 
 
   
@@ -146,11 +235,13 @@ const LiveStocks = () => {
             message="Please double check the data before submitting"
             label="Confirmation"
             submit={
-            params.action === "submit"
-                ? submitHandler
-                : params.action === "update"
-                ? updateHandler
-                : acceptUpdateHandler
+              params.action === "submit"
+              ? submitHandler
+              : params.action === "update"
+              ? updateHandler
+              : params.action === "view"
+              ? acceptUpdateHandler
+              : finishHandler
             }
         />
       {/* Livestock Section */}
@@ -161,6 +252,7 @@ const LiveStocks = () => {
         <div>
           <Typography>Buffalo (Heads)</Typography>
           <Input
+            disabled={params.action === "view" || params.action === "finish"}
             name="buffalo"
             value={liveStock.buffalo}
             onChange={(e) =>
@@ -178,6 +270,7 @@ const LiveStocks = () => {
         <div>
           <Typography>Dairy Cattle (Heads)</Typography>
           <Input
+            disabled={params.action === "view" || params.action === "finish"}
             name="cattle"
             value={liveStock.cattle}
             onChange={(e) =>
@@ -195,6 +288,7 @@ const LiveStocks = () => {
         <div>
           <Typography>Goat (Heads)</Typography>
           <Input
+            disabled={params.action === "view" || params.action === "finish"}
             name="goat"
             value={liveStock.goat}
             onChange={(e) =>
@@ -212,6 +306,7 @@ const LiveStocks = () => {
         <div>
           <Typography>Horse (Heads)</Typography>
           <Input
+            disabled={params.action === "view" || params.action === "finish"}
             name="horse"
             value={liveStock.horse}
             onChange={(e) =>
@@ -229,6 +324,7 @@ const LiveStocks = () => {
         <div>
           <Typography>Non-Dairy Cattle (Heads)</Typography>
           <Input
+            disabled={params.action === "view" || params.action === "finish"}
             name="non_dairyCattle"
             value={liveStock.non_dairyCattle}
             onChange={(e) =>
@@ -246,6 +342,7 @@ const LiveStocks = () => {
         <div>
           <Typography>Poultry (Heads)</Typography>
           <Input
+            disabled={params.action === "view" || params.action === "finish"}
             name="poultry"
             value={liveStock.poultry}
             onChange={(e) =>
@@ -262,6 +359,7 @@ const LiveStocks = () => {
         <div>
           <Typography>Swine (Heads)</Typography>
           <Input
+            disabled={params.action === "view" || params.action === "finish"}
             name="swine"
             value={liveStock.swine}
             onChange={(e) =>
@@ -285,11 +383,15 @@ const LiveStocks = () => {
               loading={isLoading}
               onClick={submitValidation}
             >
-              {params.action === "submit"
-                ? "Submit"
-                : params.action === "update"
-                ? "Request Update"
-                : "Accept Update"}
+              {
+                params.action === "submit" ?
+                "Submit"
+                : params.action === "update" ?
+                "Request Update"
+                : params.action === "update" ?
+                  "Accept Update"
+                : "Okay"
+              }
             </Button>
           </div>
     </div>
