@@ -3,6 +3,8 @@ import DonutChart, {DonutState} from "../../../Components/Dashboard/DonutChart"
 import { useEffect, useState } from "react"
 import useAxiosPrivate from "../../../custom-hooks/auth_hooks/useAxiosPrivate"
 import useUserInfo from "../../../custom-hooks/useUserType"
+import SimpleCard from "../../../Components/Dashboard/SimpleCard"
+import { ExclamationTriangleIcon } from "@heroicons/react/24/solid"
 
 
 
@@ -170,22 +172,25 @@ const ChemicalSummary = ({year} : ChemicalSummaryProps) => {
 
             <div className="px-10 rounded-lg text-xl py-2 bg-darkgreen text-white">Chemical Summary</div>
         
-            <div className="w-full flex justify-center mx-8">
+            <div className="w-full flex justify-center mx-8 mb-4">
 
-                <div className="w-2/4 mb-10 pr-10 ">
+            <div className="w-2/4 mr-2 mb-2">
                     {
                         chemicalData && tb_head ? <Table tb_datas={chemicalData} tb_head={tb_head} isLoading = {isLoading}/>
-                        :<div>No Data!</div>
+                        : 
+                        <SimpleCard body={"No Available Data"} header="" icon={<ExclamationTriangleIcon className="h-full w-full"/>}/>
                     }
                         
                 </div>
                 <div className="basis-full border-2 rounded-lg border-gray-300 grid grid-cols-1 justify-center max-h-96 overflow-y-auto mr-10 pb-10 mb-2">
 
-                    <div className="my-2">
+                <div className="my-2 px-2">
                         {
                             donutState ?
                                 <DonutChart labels={donutState.labels} series={donutState.series} title="Chemical Donut Chart" chart_meaning={`${user_info.user_type === "s-admin" ? "Laguna Province" : user_info.user_type === "lgu_admin" ? `${user_info.municipality_name}` : "Brgy."}`}/>
-                            :<div>No Data!</div>
+                                :
+                                   <SimpleCard body={"No Available Data"} header="" icon={<ExclamationTriangleIcon className="h-full w-full"/>}/>
+
                         }
                     </div>
 

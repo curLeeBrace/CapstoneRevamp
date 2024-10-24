@@ -401,9 +401,8 @@ const SummaryData = () => {
                                                      chart_meaning={`Count Of People Using The Sytem in
                                                         ${user_info.user_type === "s-admin" 
                                                             ? municipality?.address_name || "Laguna Province"
-                                                            : user_info.user_type || "lgu_admin"
-                                                            ? `${brgy?.address_name || user_info.municipality_name}`: "Selected Area"}
-                                                        .`} 
+                                                            : user_info.user_type|| "lgu_admin"
+                                                            ? `${brgy?.address_name|| user_info.municipality_name}`: "Selected Area"}.`} 
                                                      series={popultionUsingTheSystem} isLoading = {isLoading} stacked/>
                                                 }
                                     

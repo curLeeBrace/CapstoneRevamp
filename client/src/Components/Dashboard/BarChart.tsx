@@ -147,7 +147,7 @@ export type BarSeriesTypes = {
             </Typography>
           </div>
         </CardHeader>
-        <CardBody className="px-2 pb-0 h-full">
+        <CardBody className="px-2 pb-4 h-full">
           {
             series && chartConfig ? 
               !isLoading ?

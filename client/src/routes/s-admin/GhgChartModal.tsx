@@ -175,12 +175,14 @@ const GhgChartModal = ({ ChartTitle, chartDataKey }: GhgChartModalProps) => {
         {ChartTitle}
       </Typography>
 
-      <div className="basis-full h-full border border-gray-400 bg-white shadow-gray-500 rounded-lg px-4">
+      <div className="basis-full h-full border flex flex-col border-gray-400 bg-white shadow-gray-500 rounded-lg px-4 overflow-y-auto">
         {dashboard_data ? (
           <Chart width={'100%'} height={'100%'} type={'bar'} series={chartConfig.series} options={chartConfig.options} />
+          
         ) : (
           <Skeleton />
         )}
+        
       </div>
     </div>
   );

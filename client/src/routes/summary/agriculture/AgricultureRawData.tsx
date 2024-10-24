@@ -5,6 +5,8 @@ import Table from "../../../Components/Table";
 import useAxiosPrivate from "../../../custom-hooks/auth_hooks/useAxiosPrivate";
 import { AddressReturnDataType } from "../../../custom-hooks/useFilterAddrress";
 import { useEffect, useState } from "react";
+import SimpleCard from "../../../Components/Dashboard/SimpleCard";
+import { ExclamationTriangleIcon } from "@heroicons/react/24/solid";
 
 
 
@@ -169,8 +171,8 @@ const AgricultureRawData = ({agricultureType, year}:AgricultureRawDataProps) => 
             </div>
             <div className="py-4">
                 {
-                    tb_data && tb_head && tb_data.length > 0 ?    <Table tb_datas={tb_data} tb_head={tb_head}/>
-                    :<>No Data Found!</>
+                    tb_data && tb_head && tb_data.length > 0 ?    <Table tb_datas={tb_data} tb_head={tb_head}/>:
+                    <SimpleCard body={"No Available Data"} header="" icon={<ExclamationTriangleIcon className="h-full w-full"/>}/>
                 }
                 
             </div>
