@@ -178,6 +178,8 @@ const submitHandler = () =>{
   })
 
 }
+
+
 const acceptUpdateHandler = () => {
   const form_id = searchParams.get("form_id");
   const {setAlertMsg, setOpenAlert} = industrialBaseData

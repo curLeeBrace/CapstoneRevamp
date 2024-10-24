@@ -21,7 +21,7 @@ import AuditLogs from "./routes/s-admin/AuditLogs";
 import AccountsTable from "./routes/s-admin/AccountsTable";
 
 //summaryRoute
-import SummaryData from "./routes/s-admin/SummaryData";
+import SummaryData from "./routes/summary/SummaryData";
 import IndustrialSummary from "./routes/summary/industrial/IndustrialSummary";
 import AgricultureSummary from "./routes/summary/agriculture/AgricultureSummary";
 
@@ -29,6 +29,7 @@ import AgricultureSummary from "./routes/summary/agriculture/AgricultureSummary"
 //survey List Data
 import SurveyedList from "./routes/surveyor/SurveyListData/SurveyedList";
 import IndustrialList from "./routes/surveyor/SurveyListData/IndustrialList";
+import AgricultureList from "./routes/surveyor/SurveyListData/AgricultureList";
 
 
 import WasteWaterForm from "./routes/surveyor/WasteWaterForm";
@@ -125,6 +126,7 @@ function App() {
 
                 <Route path="0/:survey_category" element = {<SurveyedList/>} />
                 <Route path="1/industrial" element = {<IndustrialList/>}/>
+                <Route path ="2/agriculture" element ={<AgricultureList/>}/>
               
               </Route>
 

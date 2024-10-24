@@ -195,6 +195,27 @@ const NotificationBell = () => {
                       other : survey_data.other,
                       fbi : survey_data.fbi,
                     },`/surveyor/forms/industrial/${action}/4/others?form_id=${form_id}`,surveyor_name)
+                  :form_category === "agriculture-crops" ?
+                    notiffLink({
+                      brgy_name : survey_data.brgy_name,
+                      rdsi : survey_data.crops.rdsi,
+                      rdsr : survey_data.crops.rdsr,
+                      rwsi : survey_data.crops.rwsi,
+                      rwsr : survey_data.crops.rwsr,
+                      crop_residues : survey_data.crops.crop_residues,
+                      dol_limestone : survey_data.crops.dol_limestone,
+                    },`/surveyor/forms/agriculture/${action}/0/crops?form_id=${form_id}`,surveyor_name)
+                  :form_category === "agriculture-livestocks" ?
+                    notiffLink({
+                      brgy_name : survey_data.brgy_name,
+                      buffalo : survey_data.live_stock.buffalo,
+                      cattle : survey_data.live_stock.cattle,
+                      goat : survey_data.live_stock.goat,
+                      horse : survey_data.live_stock.horse,
+                      poultry : survey_data.live_stock.poultry,
+                      swine : survey_data.live_stock.swine,
+                      non_dairyCattle : survey_data.live_stock.non_dairyCattle,
+                    },`/surveyor/forms/agriculture/${action}/1/livestocks?form_id=${form_id}`,surveyor_name)
                   :null
                 
                 }
