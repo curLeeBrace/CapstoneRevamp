@@ -55,10 +55,11 @@ const url_listOfSurveyData = [
     title: "Industrial",
     href: `/surveyor/surveyed-list/1/industrial`,
   },
-  // {
-  //   title: "Agriculture",
-  //   href: `/surveyor/forms/submit/agriculture`,
-  // },
+  {
+    title: "Agriculture",
+    href: `/surveyor/surveyed-list/2/agriculture`,
+  },
+  
 ];  
 
 

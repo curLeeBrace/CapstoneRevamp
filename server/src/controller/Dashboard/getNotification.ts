@@ -7,6 +7,8 @@ import MetalSchema from "../../db_schema/Industrial/MetalSchema"
 import ElectronicsSchema = require("../../db_schema/Industrial/ElectronicsSchema");
 import OthersSchema = require("../../db_schema/Industrial/OthersSchema");
 
+import AgricultureCrops = require("../../db_schema/Agriculture/AgricultureCrops");
+import AgricultureLiveStock = require("../../db_schema/Agriculture/AgricultureLiveStock");
 
 
 type ResponseTypes = {
@@ -48,6 +50,8 @@ const getNotification = async (req : Request, res : Response) => {
         const metal_formData =  await MetalSchema.find(query).exec();
         const electronics_formData = await ElectronicsSchema.find(query).exec();
         const others_formData = await OthersSchema.find(query).exec();
+        const cropsFormData = await AgricultureCrops.find(query).exec();
+        const livestocksData = await AgricultureLiveStock.find(query).exec();
 
    
 
@@ -56,11 +60,15 @@ const getNotification = async (req : Request, res : Response) => {
 
         const mobileCombustionResponse = prepareResponse(mobileCombustion_formData, "mobile-combustion");
         const wasteWaterResponse = prepareResponse(wasteWater_formData, "waste-water");
+
         const mineralResponse = prepareResponse(mineral_formData, "industrial-mineral");
         const chemicalResponse = prepareResponse(chemical_formData, "industrial-chemical");
         const metalResponse = prepareResponse(metal_formData, "industrial-metal");
         const electronicsResponse = prepareResponse(electronics_formData, "industrial-electronics");
         const othersResponse = prepareResponse(others_formData, "industrial-others");
+
+        const cropsResponse = prepareResponse(cropsFormData, "agriculture-crops");
+        const livestocksResponse = prepareResponse(livestocksData, "agriculture-livestocks");
 
         const response = [
             ...mobileCombustionResponse, 
@@ -70,6 +78,8 @@ const getNotification = async (req : Request, res : Response) => {
             ...metalResponse,
             ...electronicsResponse,
             ...othersResponse,
+            ...cropsResponse,
+            ...livestocksResponse
         ]
 
 

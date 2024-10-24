@@ -9,6 +9,9 @@ import ElectronicsSchema from '../../db_schema/Industrial/ElectronicsSchema';
 import OthersSchema from '../../db_schema/Industrial/OthersSchema';
 
 
+import AgricultureCrops from '../../db_schema/Agriculture/AgricultureCrops';
+import AgricultureLiveStock from '../../db_schema/Agriculture/AgricultureLiveStock';
+
 
 const formData = async (req:Request, res:Response) => {
 
@@ -37,6 +40,7 @@ const formData = async (req:Request, res:Response) => {
                     "surveyor_info.municipality_code" : municipality_code
                 }
         } else {
+            
             query = brgy_code !== undefined ? 
                 {
                     // "survey_data.form_type" : surveyType,
@@ -74,6 +78,10 @@ const formData = async (req:Request, res:Response) => {
             form_data = await ElectronicsSchema.find(query).exec();
         } else if(form_category === "industrial-others"){
             form_data = await OthersSchema.find(query).exec();
+        } else if(form_category === "agriculture-crops"){
+            form_data = await AgricultureCrops.find(query).exec()
+        } else if(form_category === "agriculture-livestocks"){
+            form_data = await AgricultureLiveStock.find(query).exec()
         }
 
 

@@ -1,15 +1,13 @@
 import { Button, Input, Typography } from "@material-tailwind/react";
-import {useParams } from "react-router-dom";
+import { useLocation, useParams, useSearchParams } from "react-router-dom";
 import useUserInfo from "../../../custom-hooks/useUserType";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import useSurveyFormActions from "../../../custom-hooks/useSurveyFormActions";
 import useHandleChange from "../../../custom-hooks/useHandleChange";
 import DialogBox from "../../../Components/DialogBox";
 
-
-
-import {useAgricultureContextData} from "./AgricultureForm";
+import { useAgricultureContextData } from "./AgricultureForm";
 import useInputValidation from "../../../custom-hooks/useInputValidation";
 
 type AgricultureCropsType = {
@@ -25,10 +23,10 @@ const Crops = () => {
   const params = useParams();
   const user_info = useUserInfo();
   const handlechange = useHandleChange;
-  const { submitForm } = useSurveyFormActions();
+  const { submitForm, acceptFormUpdate, finishForm, updateForm } =
+    useSurveyFormActions();
   const agricultureData = useAgricultureContextData();
 
- 
   const [isLoading, set_isLoading] = useState<boolean>(false);
   const [openDialogBox, setOpenDialogBox] = useState(false);
   const [crops, setCrops] = useState<AgricultureCropsType>({
@@ -40,11 +38,22 @@ const Crops = () => {
     dol_limestone: 0,
   });
 
+  const [searchParams] = useSearchParams();
+  const { state } = useLocation();
+
   useInputValidation(crops, setCrops, 999);
 
-  const preparePayload = (): {} => {
+  useEffect(() => {
+    const { action } = params;
+    if (action !== "submit") {
+      setCrops(state);
+    } else {
+      clearForm();
+    }
+  }, [searchParams]);
 
-    const {brgy} = agricultureData
+  const preparePayload = (): {} => {
+    const { brgy } = agricultureData;
     const {
       email,
       full_name,
@@ -75,8 +84,10 @@ const Crops = () => {
   };
 
   const submitValidation = () => {
-    const isDataFilled = Object.values(crops).some(value => value && value.toString().trim() !== '');
-    const {brgy, setAlertMsg, setOpenAlert} = agricultureData
+    const isDataFilled = Object.values(crops).some(
+      (value) => value && value.toString().trim() !== ""
+    );
+    const { brgy, setAlertMsg, setOpenAlert } = agricultureData;
 
     if (!isDataFilled) {
       set_isLoading(false);
@@ -84,7 +95,7 @@ const Crops = () => {
       setOpenAlert(true);
       return;
     }
-    if (brgy?.address_name ) {
+    if (brgy?.address_name) {
       setOpenDialogBox(true);
     } else {
       set_isLoading(false);
@@ -92,6 +103,9 @@ const Crops = () => {
       setAlertMsg("Some field are empty!");
     }
   };
+
+
+  
 
   const clearForm = () => {
     setCrops({
@@ -106,40 +120,113 @@ const Crops = () => {
 
   const submitHandler = () => {
     const payload = preparePayload();
-    const {setAlertMsg, setOpenAlert} = agricultureData
+    const { setAlertMsg, setOpenAlert } = agricultureData;
 
-    submitForm({payload, form_category : "agriculture-crops"})
-    .then(res => {
-            if(res.status === 201){
-              setOpenAlert(true);
-              setAlertMsg("Sucsessfully Submitted!");
-              clearForm();
-            }
-
-          set_isLoading(false);
-        })
-        .catch(err => {
-          console.log(err)
-          set_isLoading(false);
+    submitForm({ payload, form_category: "agriculture-crops" })
+      .then((res) => {
+        if (res.status === 201) {
           setOpenAlert(true);
-          setAlertMsg("Server Error!");
-    })
-    .finally(()=>{
-      setOpenDialogBox(false)
-    })
+          setAlertMsg("Sucsessfully Submitted!");
+          clearForm();
+        }
+
+        set_isLoading(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        set_isLoading(false);
+        setOpenAlert(true);
+        setAlertMsg("Server Error!");
+      })
+      .finally(() => {
+        setOpenDialogBox(false);
+      });
   };
 
   const updateHandler = () => {
-    /////////////!!!!!!!!!!!!!!!!!!!!!!!!EMPTYYYY
+    const payload = preparePayload();
+    const form_id = searchParams.get("form_id");
+    const { setAlertMsg, setOpenAlert } = agricultureData;
+
+    updateForm({
+      payload,
+      form_id: form_id as string,
+      form_category: "agriculture-crops",
+    })
+      .then((res) => {
+        if (res.status === 204) {
+          alert("can't request update because form data not found!");
+        } else if (res.status === 200) {
+          setOpenAlert(true);
+          setAlertMsg(res.data);
+          setOpenDialogBox(false);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        set_isLoading(false);
+        setOpenAlert(true);
+        setAlertMsg("Server Error!");
+      })
+      .finally(() => {
+        set_isLoading(false);
+        setOpenDialogBox(false);
+      });
   };
 
   const acceptUpdateHandler = () => {
-    /////////////!!!!!!!!!!!!!!!!!!!!!!!!EMPTYYYY
+    const form_id = searchParams.get("form_id");
+    const { setAlertMsg, setOpenAlert } = agricultureData;
+    acceptFormUpdate({
+      form_id: form_id as string,
+      form_category: "agriculture-crops",
+    })
+      .then((res) => {
+        if (res.status === 204) {
+          alert("can't accep request update because form data not found!");
+        } else if (res.status === 200) {
+          setOpenAlert(true);
+          setAlertMsg(res.data);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        set_isLoading(false);
+        setOpenAlert(true);
+        setAlertMsg("Server Error!");
+      })
+      .finally(() => {
+        set_isLoading(false);
+        setOpenDialogBox(false);
+      });
   };
 
-
-
-
+  const finishHandler = () => {
+    const form_id = searchParams.get("form_id");
+    const { setAlertMsg, setOpenAlert } = agricultureData;
+    finishForm({
+      form_id: form_id as string,
+      form_category: "agriculture-crops",
+    })
+      .then((res) => {
+        if (res.status === 204) {
+          alert("can't accep request update because form data not found!");
+        } else if (res.status === 200) {
+          setOpenAlert(true);
+          setAlertMsg(res.data);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        set_isLoading(false);
+        setOpenAlert(true);
+        setAlertMsg("Server Error!");
+      })
+      .finally(() => {
+        set_isLoading(false);
+        setOpenDialogBox(false);
+      });
+  };
 
   return (
     <div>
@@ -153,10 +240,11 @@ const Crops = () => {
             ? submitHandler
             : params.action === "update"
             ? updateHandler
-            : acceptUpdateHandler
+            : params.action === "view"
+            ? acceptUpdateHandler
+            : finishHandler
         }
       />
-    
 
       {/* Crops Section */}
       <Typography className="text-md font-bold mb-4 text-lg">Crops</Typography>
@@ -164,6 +252,7 @@ const Crops = () => {
         <div>
           <Typography>Dry Season, Irrigated (Has)</Typography>
           <Input
+            disabled={params.action === "view" || params.action === "finish"}
             name="rdsi"
             value={crops.rdsi}
             onChange={(e) =>
@@ -180,6 +269,7 @@ const Crops = () => {
         <div>
           <Typography>Dry Season, Rainfed (Has)</Typography>
           <Input
+            disabled={params.action === "view" || params.action === "finish"}
             name="rdsr"
             value={crops.rdsr}
             onChange={(e) =>
@@ -196,6 +286,7 @@ const Crops = () => {
         <div>
           <Typography>Wet Season, Irrigated (Has)</Typography>
           <Input
+            disabled={params.action === "view" || params.action === "finish"}
             value={crops.rwsi}
             name="rwsi"
             onChange={(e) =>
@@ -212,6 +303,7 @@ const Crops = () => {
         <div>
           <Typography>Wet Season, Rainfed (Has)</Typography>
           <Input
+            disabled={params.action === "view" || params.action === "finish"}
             name="rwsr"
             value={crops.rwsr}
             onChange={(e) =>
@@ -228,6 +320,7 @@ const Crops = () => {
         <div>
           <Typography>Crops Residue (Tons)</Typography>
           <Input
+            disabled={params.action === "view" || params.action === "finish"}
             name="crop_residues"
             value={crops.crop_residues}
             onChange={(e) =>
@@ -244,6 +337,7 @@ const Crops = () => {
         <div>
           <Typography>Dolomite and/or Limestone Consumption (Kg)</Typography>
           <Input
+            disabled={params.action === "view" || params.action === "finish"}
             name="dol_limestone"
             value={crops.dol_limestone}
             onChange={(e) =>
@@ -259,33 +353,25 @@ const Crops = () => {
         </div>
       </div>
 
-         {/* Submit Button */}
-         <div className="flex justify-center mt-8">
-            <Button
-              fullWidth
-              className="w-64 md:w-full"
-              loading={isLoading}
-              onClick={submitValidation}
-            >
-              {params.action === "submit"
-                ? "Submit"
-                : params.action === "update"
-                ? "Request Update"
-                : "Accept Update"}
-            </Button>
-          </div>
-
+      {/* Submit Button */}
+      <div className="flex justify-center mt-8">
+        <Button
+          fullWidth
+          className="w-64 md:w-full"
+          loading={isLoading}
+          onClick={submitValidation}
+        >
+          {params.action === "submit"
+            ? "Submit"
+            : params.action === "update"
+            ? "Request Update"
+            : params.action === "update"
+            ? "Accept Update"
+            : "Okay"}
+        </Button>
+      </div>
     </div>
   );
 };
 
-
-
-
-export default Crops
-
-
-
-
-
-
+export default Crops;
