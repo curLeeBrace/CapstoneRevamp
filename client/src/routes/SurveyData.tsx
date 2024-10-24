@@ -4,6 +4,8 @@ import Skeleton from "../Components/Skeleton";
 import useAxiosPrivate from "../custom-hooks/auth_hooks/useAxiosPrivate";
 import useUserInfo from "../custom-hooks/useUserType";
 import useSelectAllData from "../custom-hooks/useSelectAllData";
+import SimpleCard from "../Components/Dashboard/SimpleCard";
+import { ExclamationTriangleIcon } from "@heroicons/react/24/solid";
 
 
 type SurveyDataProps = {
@@ -200,7 +202,7 @@ const SurveyData = ({
         <Table tb_datas={data} tb_head={column} />
       ) : (
         <div className="h-full flex justify-center items-center">
-          No data found
+        <SimpleCard body={"No Available Data"} header="" icon={<ExclamationTriangleIcon className="h-full w-full"/>}/>
         </div>
       )}
     </div>
