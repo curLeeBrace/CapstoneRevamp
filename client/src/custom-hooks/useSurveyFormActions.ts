@@ -1,5 +1,6 @@
 
 import useAxiosPrivate from './auth_hooks/useAxiosPrivate';
+import useUserInfo from './useUserType';
 
 interface SurveyFormProps {
     payload? : any
@@ -12,9 +13,7 @@ interface SurveyFormProps {
 
 const useSurveyFormActions = () => {
     const axiosPrivate = useAxiosPrivate();
-
-
-
+    const {full_name, img_id} = useUserInfo()
     const submitForm = async ({payload, form_category}:SurveyFormProps) : Promise<{status : number, data : any}> => {
         const requsetUpdate = await axiosPrivate.post(`/forms/${form_category}/insert`, payload)
         return {status : requsetUpdate.status, data : requsetUpdate.data}  
@@ -30,12 +29,16 @@ const useSurveyFormActions = () => {
 
 
     const acceptFormUpdate = async ({form_id, form_category} :SurveyFormProps): Promise<{status : number, data : any}> =>{
-        const accpetUpdate = await axiosPrivate.put(`/forms/${form_category}/accept-update`, {form_id, action : "accept"})
+        const accpetUpdate = await axiosPrivate.put(`/forms/${form_category}/accept-update`, {
+            form_id,
+            admin_name : full_name,
+            img_id
+        })
         return {status : accpetUpdate.status, data : accpetUpdate.data}
     }
 
     const finishForm = async ({form_id, form_category} :SurveyFormProps): Promise<{status : number, data : any}> =>{
-        const accpetUpdate = await axiosPrivate.put(`/forms/${form_category}/accept-update`, {form_id, action : "finish"})
+        const accpetUpdate = await axiosPrivate.put(`/forms/${form_category}/finish-update`, {form_id})
         return {status : accpetUpdate.status, data : accpetUpdate.data}
     }
 

@@ -96,7 +96,7 @@ const NotificationBell = () => {
             notificationList ? (
               notificationList.map(({
                 form_category,
-                surveyor_name,
+                full_name,
                 img_id,
                 form_id,
                 survey_data,}) => (
@@ -121,7 +121,7 @@ const NotificationBell = () => {
                         form_type: survey_data.form_type,
                       }, 
                       `/surveyor/forms/${action}/${form_category}?form_id=${form_id}`,
-                        surveyor_name
+                        full_name
                     ) : form_category === "waste-water" ?
                     notiffLink(
                       {
@@ -140,7 +140,7 @@ const NotificationBell = () => {
                         riverDischargeCat2: survey_data.riverDischarge.cat2,
                       },
                       `/surveyor/forms/${action}/${form_category}?form_id=${form_id}`,
-                    surveyor_name
+                    full_name
                   ) 
                   :form_category === "industrial-mineral" ?
                     notiffLink({
@@ -151,7 +151,7 @@ const NotificationBell = () => {
                       lp : survey_data.lp,
                       cpb : survey_data.cpb,
                       gp : survey_data.gp,
-                    },`/surveyor/forms/industrial/${action}/0/mineral?form_id=${form_id}`,surveyor_name)
+                    },`/surveyor/forms/industrial/${action}/0/mineral?form_id=${form_id}`,full_name)
                   
                   :form_category === "industrial-chemical" ?
                     notiffLink({
@@ -166,7 +166,7 @@ const NotificationBell = () => {
                       pcbp_EO : survey_data.pcbp_EO,
                       pcbp_A : survey_data.pcbp_A,
                       pcbp_CB : survey_data.pcbp_CB,
-                    },`/surveyor/forms/industrial/${action}/1/chemical?form_id=${form_id}`,surveyor_name)
+                    },`/surveyor/forms/industrial/${action}/1/chemical?form_id=${form_id}`,full_name)
                   :form_category === "industrial-metal" ?
                     notiffLink({
                       brgy_name : survey_data.brgy_name,
@@ -174,7 +174,7 @@ const NotificationBell = () => {
                       type_ofData : survey_data.type_ofData,
                       ispif : survey_data.ispif,
                       ispnif : survey_data.ispnif,
-                    },`/surveyor/forms/industrial/${action}/2/metal?form_id=${form_id}`,surveyor_name)
+                    },`/surveyor/forms/industrial/${action}/2/metal?form_id=${form_id}`,full_name)
                     
                   :form_category === "industrial-electronics" ?
                     notiffLink({
@@ -185,7 +185,7 @@ const NotificationBell = () => {
                     photovoltaics : survey_data.photovoltaics,
                     tft_FPD : survey_data.tft_FPD,
                     htf : survey_data.htf,
-                    },`/surveyor/forms/industrial/${action}/3/electronics?form_id=${form_id}`,surveyor_name)
+                    },`/surveyor/forms/industrial/${action}/3/electronics?form_id=${form_id}`,full_name)
                   :form_category === "industrial-others" ?
                     notiffLink({
                       brgy_name : survey_data.brgy_name,
@@ -194,7 +194,7 @@ const NotificationBell = () => {
                       ppi : survey_data.ppi,
                       other : survey_data.other,
                       fbi : survey_data.fbi,
-                    },`/surveyor/forms/industrial/${action}/4/others?form_id=${form_id}`,surveyor_name)
+                    },`/surveyor/forms/industrial/${action}/4/others?form_id=${form_id}`,full_name)
                   :form_category === "agriculture-crops" ?
                     notiffLink({
                       brgy_name : survey_data.brgy_name,
@@ -204,7 +204,7 @@ const NotificationBell = () => {
                       rwsr : survey_data.crops.rwsr,
                       crop_residues : survey_data.crops.crop_residues,
                       dol_limestone : survey_data.crops.dol_limestone,
-                    },`/surveyor/forms/agriculture/${action}/0/crops?form_id=${form_id}`,surveyor_name)
+                    },`/surveyor/forms/agriculture/${action}/0/crops?form_id=${form_id}`,full_name)
                   :form_category === "agriculture-livestocks" ?
                     notiffLink({
                       brgy_name : survey_data.brgy_name,
@@ -215,7 +215,7 @@ const NotificationBell = () => {
                       poultry : survey_data.live_stock.poultry,
                       swine : survey_data.live_stock.swine,
                       non_dairyCattle : survey_data.live_stock.non_dairyCattle,
-                    },`/surveyor/forms/agriculture/${action}/1/livestocks?form_id=${form_id}`,surveyor_name)
+                    },`/surveyor/forms/agriculture/${action}/1/livestocks?form_id=${form_id}`,full_name)
                   :null
                 
                 }
