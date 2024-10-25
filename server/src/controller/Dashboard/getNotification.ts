@@ -12,7 +12,7 @@ import AgricultureLiveStock = require("../../db_schema/Agriculture/AgricultureLi
 
 
 type ResponseTypes = {
-    surveyor_name : string
+    full_name : string
     img_id : string
     form_id : string
     survey_data : any
@@ -58,17 +58,17 @@ const getNotification = async (req : Request, res : Response) => {
 
         // if(mobileCombustion_formData.length <= 0 && wasteWater_formData.length <= 0 &&) return res.sendStatus(204);
 
-        const mobileCombustionResponse = prepareResponse(mobileCombustion_formData, "mobile-combustion");
-        const wasteWaterResponse = prepareResponse(wasteWater_formData, "waste-water");
+        const mobileCombustionResponse = prepareResponse(mobileCombustion_formData, "mobile-combustion", user_type as string);
+        const wasteWaterResponse = prepareResponse(wasteWater_formData, "waste-water", user_type as string);
 
-        const mineralResponse = prepareResponse(mineral_formData, "industrial-mineral");
-        const chemicalResponse = prepareResponse(chemical_formData, "industrial-chemical");
-        const metalResponse = prepareResponse(metal_formData, "industrial-metal");
-        const electronicsResponse = prepareResponse(electronics_formData, "industrial-electronics");
-        const othersResponse = prepareResponse(others_formData, "industrial-others");
+        const mineralResponse = prepareResponse(mineral_formData, "industrial-mineral", user_type as string);
+        const chemicalResponse = prepareResponse(chemical_formData, "industrial-chemical", user_type as string);
+        const metalResponse = prepareResponse(metal_formData, "industrial-metal", user_type as string);
+        const electronicsResponse = prepareResponse(electronics_formData, "industrial-electronics", user_type as string);
+        const othersResponse = prepareResponse(others_formData, "industrial-others", user_type as string);
 
-        const cropsResponse = prepareResponse(cropsFormData, "agriculture-crops");
-        const livestocksResponse = prepareResponse(livestocksData, "agriculture-livestocks");
+        const cropsResponse = prepareResponse(cropsFormData, "agriculture-crops", user_type as string);
+        const livestocksResponse = prepareResponse(livestocksData, "agriculture-livestocks", user_type as string);
 
         const response = [
             ...mobileCombustionResponse, 
@@ -95,13 +95,13 @@ const getNotification = async (req : Request, res : Response) => {
 
 
 
-const prepareResponse = (form_data : any[], form_category : string) : ResponseTypes[]  => {
+const prepareResponse = (form_data : any[], form_category : string, user_type : string) : ResponseTypes[]  => {
     
         const response = form_data.map(data => {
             return {
                 form_category,
-                surveyor_name : data.surveyor_info.full_name,
-                img_id :  data.surveyor_info.img_id,
+                full_name : user_type === "lgu_admin" ? data.surveyor_info.full_name : data.acceptedBy.admin_name,
+                img_id :  user_type === "lgu_admin" ? data.surveyor_info.img_id : data.acceptedBy.img_id,
                 form_id : data._id,
                 survey_data : data.survey_data
             }
