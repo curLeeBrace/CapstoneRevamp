@@ -56,11 +56,6 @@ const {updateForm, acceptFormUpdate, submitForm, finishForm} = useSurveyFormActi
 
 
 
-
-
-
-
-
 useEffect(() => {
   const vType_options = formData.form_type === "residential" || formData.form_type === "commercial" ? 
     [
