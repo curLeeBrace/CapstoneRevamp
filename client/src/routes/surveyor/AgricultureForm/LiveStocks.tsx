@@ -86,7 +86,7 @@ const LiveStocks = () => {
   const submitValidation = () => {
     const isDataFilled = Object.values(liveStock).some(value => value && value.toString().trim() !== '');
     const {brgy, setAlertMsg, setOpenAlert} = agricultureData
-
+    
     if (!isDataFilled) {
       set_isLoading(false);
       setAlertMsg("You haven't input anything yet. Kindly fill-up the form.");
@@ -117,7 +117,7 @@ const LiveStocks = () => {
   const submitHandler = () => {
     const payload = preparePayload();
     const { setAlertMsg, setOpenAlert } = agricultureData;
-
+    set_isLoading(true);
     submitForm({ payload, form_category: "agriculture-livestocks" })
       .then((res) => {
         if (res.status === 201) {
@@ -136,6 +136,7 @@ const LiveStocks = () => {
       })
       .finally(() => {
         setOpenDialogBox(false);
+        set_isLoading(false);
       });
   };
 
@@ -143,7 +144,7 @@ const LiveStocks = () => {
     const payload = preparePayload();
     const form_id = searchParams.get("form_id");
     const { setAlertMsg, setOpenAlert } = agricultureData;
-
+    set_isLoading(true);
     updateForm({
       payload,
       form_id: form_id as string,
@@ -173,6 +174,7 @@ const LiveStocks = () => {
   const acceptUpdateHandler = () => {
     const form_id = searchParams.get("form_id");
     const { setAlertMsg, setOpenAlert } = agricultureData;
+    set_isLoading(true);
     acceptFormUpdate({
       form_id: form_id as string,
       form_category: "agriculture-livestocks",
@@ -201,6 +203,7 @@ const LiveStocks = () => {
   const finishHandler = () => {
     const form_id = searchParams.get("form_id");
     const { setAlertMsg, setOpenAlert } = agricultureData;
+    set_isLoading(true);
     finishForm({
       form_id: form_id as string,
       form_category: "agriculture-livestocks",
@@ -230,6 +233,7 @@ const LiveStocks = () => {
   return (
     <div>
         <DialogBox
+            isLoading = {isLoading}
             open={openDialogBox}
             setOpen={setOpenDialogBox}
             message="Please double check the data before submitting"

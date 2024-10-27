@@ -119,7 +119,7 @@ function App() {
                   <Route path=":action/1/:agriculture_type" element = {<LiveStocks/>}/>
                 </Route>
 
-                <Route path = ':action/stationary-fuel-consumption' element = {<StationaryFuelForm/>}/>
+                <Route path = ':action/stationary' element = {<StationaryFuelForm/>}/>
               </Route>
               
               <Route path="surveyed-list">
