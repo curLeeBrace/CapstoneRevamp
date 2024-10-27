@@ -23,7 +23,11 @@ const MetalSchema = new mongoose.Schema({
     }, required : true},
 
     dateTime_created : {type : Date, required : true},
-    dateTime_edited : {type : Date}
+    dateTime_edited : {type : Date},
+    acceptedBy : {type : {
+        admin_name : {type : String, required : true},
+        img_id : {type : String, required : true}
+    }}
 })
 
 export = mongoose.model('(industrial) metalForm', MetalSchema);
