@@ -102,7 +102,7 @@ export function StationaryFuelForm() {
   const { state } = useLocation();
   const handleChange = useHandleChange;
 
-  const {updateForm, acceptFormUpdate, submitForm, finishForm} = useSurveyFormActions();
+  const {submitForm} = useSurveyFormActions();
 
   useEffect(() => {
     console.log(brgy);

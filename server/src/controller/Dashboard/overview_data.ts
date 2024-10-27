@@ -7,6 +7,7 @@ import AccountSchema from "../../db_schema/AccountSchema";
 import getWasteWaterGHGeSum from "../../../custom_funtions/wasteWaterActions";
 import {getIndustrialOverallGHGe} from "../../../custom_funtions/Industrial/industrialAction";
 import getAgricultureGHGe from "../../../custom_funtions/agriculture";
+import {getStationaryGHGe} from "../../../custom_funtions/stationary"
 
 interface Municipality {
     city_code : String;
@@ -48,6 +49,7 @@ type DashBoardData = {
         industrialGHGe : number[]
         agriculture_cropsGHGe : number[]
         agriculture_liveStocksGHGe : number[]
+        stationaryGHGe : number[]
 
     }
     total_ghge : number;
@@ -93,7 +95,7 @@ type DashBoardData = {
             const industrialGHGe = await getIndustrialOverallGHGe(user_type, query, locations)
             const agriculture_cropsGHGe = await getAgricultureGHGe(user_type, query, locations, "crops")
             const agriculture_liveStocksGHGe = await getAgricultureGHGe(user_type, query, locations, "liveStocks")
-            
+            const stationaryGHGe = await getStationaryGHGe(user_type, query, locations);
 
 
 
@@ -103,6 +105,7 @@ type DashBoardData = {
                 total_ghge += Number(industrialGHGe[index].toFixed(2));
                 total_ghge += Number(agriculture_cropsGHGe[index].toFixed(2));
                 total_ghge += Number(agriculture_liveStocksGHGe[index].toFixed(2));
+                total_ghge += Number(stationaryGHGe[index].toFixed(2))
             })
 
             // wasteWaterGHGe.forEach(ghge => {
@@ -129,7 +132,8 @@ type DashBoardData = {
                         wasteWaterGHGe : wasteWaterGHGe,
                         industrialGHGe,
                         agriculture_cropsGHGe,
-                        agriculture_liveStocksGHGe
+                        agriculture_liveStocksGHGe,
+                        stationaryGHGe
 
                     },
                     total_ghge,
