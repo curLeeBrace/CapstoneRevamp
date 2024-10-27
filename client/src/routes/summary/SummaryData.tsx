@@ -358,21 +358,24 @@ const SummaryData = () => {
                                         label : 'Graph',
                                         value : 'm-graph',
                                         tabPanelChild : 
-                                            <div className="flex flex-col w-full gap-3 h-auto">
+                                            <div className="flex flex-col w-full gap-3 h-full">
                                                 
                                                 {
                                                     survey_category === "mobile-combustion" ?
                                                     <>
-                                                        <BarChart chart_icon={<TruckIcon className="w-6 h-6"/>} chart_label={`Vehicle Type (${formType})`}  
-                                                        chart_meaning={`Overall surveyed vehicles in
-                                                        ${user_info.user_type === "s-admin"
-                                                            ? municipality?.address_name || "Laguna Province" 
-                                                            : user_info.user_type === "lgu_admin"
-                                                            ? `${brgy?.address_name || user_info.municipality_name}` 
-                                                            : "Selected Area"
-                                                        }.`}
-                                                        series={v_typeSeries} isLoading = {isLoading}/>
+                                                        <div className="h-full shrink-0">
+                                                            <BarChart chart_icon={<TruckIcon className="w-6 h-6"/>} chart_label={`Vehicle Type (${formType})`}  
+                                                            chart_meaning={`Overall surveyed vehicles in
+                                                            ${user_info.user_type === "s-admin"
+                                                                ? municipality?.address_name || "Laguna Province" 
+                                                                : user_info.user_type === "lgu_admin"
+                                                                ? `${brgy?.address_name || user_info.municipality_name}` 
+                                                                : "Selected Area"
+                                                            }.`}
+                                                            series={v_typeSeries} isLoading = {isLoading}/>
+                                                        </div>
 
+                                                        <div className="h-full shrink-0">
 
                                                         <BarChart chart_icon={<TruckIcon className="h-6 w-6"/>} chart_label={`Vehicle Emission Rate (${formType})`}
                                                           chart_meaning={`Total Emission rate per vehicle in
@@ -383,17 +386,20 @@ const SummaryData = () => {
                                                                 : "Selected Area"
                                                             }.`}
                                                         series={vehicle_ghge_rate} isLoading = {isLoading}/>
+                                                        </div>
 
-                                                        
-                                                        <BarChart chart_icon={<TruckIcon className="h-6 w-6"/>} chart_label={`Vehicle Age (${formType})`} 
-                                                         chart_meaning={`Total counts of diffirent vehicle age in
-                                                            ${user_info.user_type === "s-admin"
-                                                                ? municipality?.address_name || "Laguna Province" 
-                                                                : user_info.user_type === "lgu_admin"
-                                                                ? `${brgy?.address_name || user_info.municipality_name}` 
-                                                                : "Selected Area"
-                                                            }.`}
-                                                        series={v_ageSeries} isLoading = {isLoading}/>
+                                                        <div className="h-full shrink-0">
+
+                                                            <BarChart chart_icon={<TruckIcon className="h-6 w-6"/>} chart_label={`Vehicle Age (${formType})`} 
+                                                            chart_meaning={`Total counts of diffirent vehicle age in
+                                                                ${user_info.user_type === "s-admin"
+                                                                    ? municipality?.address_name || "Laguna Province" 
+                                                                    : user_info.user_type === "lgu_admin"
+                                                                    ? `${brgy?.address_name || user_info.municipality_name}` 
+                                                                    : "Selected Area"
+                                                                }.`}
+                                                            series={v_ageSeries} isLoading = {isLoading}/>
+                                                        </div>
                                                     </>
                                                     : 
                                                     

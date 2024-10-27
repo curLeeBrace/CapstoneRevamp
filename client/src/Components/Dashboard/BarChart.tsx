@@ -124,7 +124,7 @@ export type BarSeriesTypes = {
 
 
     return (
-      <Card className="h-96 border-2 border-gray-300 shadow-none">
+      <Card className="h-full border-2 border-gray-300 shadow-none">
         <CardHeader
           floated={false}
           shadow={false}
