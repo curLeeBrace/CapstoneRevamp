@@ -122,7 +122,7 @@ const isDataFilled = Object.values(mineralData).some(value => value && value.toS
   const submitHandler = () =>{
    const payload = preparePayLoad();
    const {setAlertMsg, setOpenAlert} = industrialBaseData
-
+   set_isLoading(true);
 
    submitForm({payload, form_category : "industrial-mineral"})
   .then(res => {
@@ -142,6 +142,8 @@ const isDataFilled = Object.values(mineralData).some(value => value && value.toS
   })
   .finally(()=>{
     setOpenDialogBox(false)
+   set_isLoading(false);
+
   })
 
 
@@ -153,6 +155,7 @@ const isDataFilled = Object.values(mineralData).some(value => value && value.toS
     const payload = preparePayLoad();
     const form_id = searchParams.get("form_id");
     const {setAlertMsg, setOpenAlert} = industrialBaseData
+    set_isLoading(true);
 
     updateForm({payload, form_id : form_id as string, form_category : "industrial-mineral"})
     .then(res => {
@@ -185,6 +188,8 @@ const isDataFilled = Object.values(mineralData).some(value => value && value.toS
   const acceptUpdateHandler = () => {
     const form_id = searchParams.get("form_id");
     const {setAlertMsg, setOpenAlert} = industrialBaseData
+   set_isLoading(true);
+
     acceptFormUpdate({form_id : form_id as string, form_category : "industrial-mineral"})
     .then((res) => {
       if(res.status === 204){
@@ -213,6 +218,8 @@ const isDataFilled = Object.values(mineralData).some(value => value && value.toS
 const finishHandler = () => {
   const form_id = searchParams.get("form_id");
   const {setAlertMsg, setOpenAlert} = industrialBaseData
+  set_isLoading(true);
+
   finishForm({form_id : form_id as string, form_category : "industrial-mineral"})
   .then((res) => {
     if(res.status === 204){
@@ -246,7 +253,7 @@ const finishHandler = () => {
     return(
       <>
         
-      <DialogBox open = {openDialogBox} setOpen={setOpenDialogBox} message = 'Please double check the data before submitting' label='Confirmation' submit={
+      <DialogBox isLoading = {isLoading} open = {openDialogBox} setOpen={setOpenDialogBox} message = 'Please double check the data before submitting' label='Confirmation' submit={
         params.action === "submit" ? submitHandler
         : params.action === "update" ? updateHandler
         :params.action === "view" ? acceptUpdateHandler

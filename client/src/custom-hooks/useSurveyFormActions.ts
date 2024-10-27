@@ -6,7 +6,7 @@ interface SurveyFormProps {
     payload? : any
     form_id? : string
     form_category : "mobile-combustion" | "waste-water" | "industrial-mineral" | "industrial-chemical" | "industrial-metal" | "industrial-electronics"| "industrial-others" | 
-                    "agriculture-crops" | "agriculture-livestocks"
+                    "agriculture-crops" | "agriculture-livestocks" | "stationary"
 }
 
 
@@ -14,7 +14,9 @@ interface SurveyFormProps {
 const useSurveyFormActions = () => {
     const axiosPrivate = useAxiosPrivate();
     const {full_name, img_id} = useUserInfo()
+
     const submitForm = async ({payload, form_category}:SurveyFormProps) : Promise<{status : number, data : any}> => {
+        
         const requsetUpdate = await axiosPrivate.post(`/forms/${form_category}/insert`, payload)
         return {status : requsetUpdate.status, data : requsetUpdate.data}  
     }

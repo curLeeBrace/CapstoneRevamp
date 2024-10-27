@@ -36,7 +36,7 @@ type DashBoardData = {
 // Define the props interface
 interface GhgChartModalProps {
   ChartTitle: string;
-  chartDataKey: 'mobileCombustionGHGe' | 'wasteWaterGHGe' | 'industrialGHGe' | 'agriculture_cropsGHGe' | 'agriculture_liveStocksGHGe';  // Define the title prop type
+  chartDataKey: 'mobileCombustionGHGe' | 'wasteWaterGHGe' | 'industrialGHGe' | 'agriculture_cropsGHGe' | 'agriculture_liveStocksGHGe' ;  // Define the title prop type
 }
 
 
