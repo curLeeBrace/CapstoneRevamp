@@ -147,7 +147,7 @@ export type BarSeriesTypes = {
             </Typography>
           </div>
         </CardHeader>
-        <CardBody className="px-2 pb-4 h-full">
+        <CardBody className="px-2 pb-4 h-96">
           {
             series && chartConfig ? 
               !isLoading ?
@@ -157,8 +157,8 @@ export type BarSeriesTypes = {
                   height={"100%"}
                   width={"100%"}
                   type="bar"
-                /> : <Skeleton/>
-            :<SimpleCard body={"No Available Data"} header="" icon={<ExclamationTriangleIcon className="h-full w-full"/>}/>
+                /> : <Skeleton/>:
+                <SimpleCard body={"No Available Data"} header="" icon={<ExclamationTriangleIcon className="h-full w-full"/>}/>
           }
           
 

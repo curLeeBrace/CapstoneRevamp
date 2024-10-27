@@ -9,7 +9,7 @@ import useUserInfo from "../../custom-hooks/useUserType";
 
 
 
-const TB_HEADER = ["Profile", "Name",  "Municipality","Mobile Combustion", "Waste Water", "Industrial", "Agriculture", "Stationary Fuel"]
+const TB_HEADER = ["Profile", "Name",  "Municipality","Mobile Combustion", "Waste Water", "Industrial", "Agriculture", "Stationary"]
 
 const SurveyorInfo = () => {
   const [address, setAddress] = useState<AddressReturnDataType>();
@@ -95,10 +95,10 @@ const SurveyorInfo = () => {
                           />
                           <div className="text-black text-wrap overflow-hidden mr-10">{acc.full_name}</div>
                           <div className="text-black text-wrap overflow-hidden ml-2">{acc.municipality_name}</div>
-                          <div className="text-black text-wrap overflow-hidden ">{acc.mobileCombustionSurveyCount}</div>
-                          <div className="text-black text-wrap overflow-hidden ml-10 ">{acc.wasteWaterSurveyCount}</div>
-                          <div className="text-black text-wrap overflow-hidden ml-6">{acc.industrialSurveyCount}</div>
-                          <div className="text-black text-wrap overflow-hidden ">{acc.agricultureSurveyCount}</div>
+                          <div className="text-black text-wrap overflow-hidden ml-10 ">{acc.mobileCombustionSurveyCount}</div>
+                          <div className="text-black text-wrap overflow-hidden ml-24 ">{acc.wasteWaterSurveyCount}</div>
+                          <div className="text-black text-wrap overflow-hidden ml-20">{acc.industrialSurveyCount}</div>
+                          <div className="text-black text-wrap overflow-hidden ml-10">{acc.agricultureSurveyCount}</div>
                           <div className="text-black text-wrap overflow-hidden ">{acc.stationarySurveyCount}</div>
 
                           

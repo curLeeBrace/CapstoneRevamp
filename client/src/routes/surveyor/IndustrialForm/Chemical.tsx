@@ -126,7 +126,6 @@ const Chemical = () => {
     const { brgy, dsi, type_ofData, setAlertMsg, setOpenAlert } = industrialBaseData;
     const isDataFilled = Object.values(chemicalData).some(value => value && value.toString().trim() !== '');
 
-    set_isLoading(true);
     if (brgy && dsi && type_ofData && isDataFilled) {
       setOpenDialogBox(true);
     } else {

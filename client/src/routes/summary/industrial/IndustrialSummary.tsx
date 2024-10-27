@@ -146,12 +146,12 @@ const IndustrialSummary = () => {
      
       </div>
 
-      <div className="flex mx-10 gap-5 justify-center">
+      <div className="flex mx-4 gap-5 justify-center">
         {/* Column/Bar Chart Container */}   
 
-        <div className="w-3/5">
-            <BarChart chart_icon={<UserIcon className="w-6 h-6"/>} chart_label={`Reponse per ${user_info.user_type === "s-admin" ? "Municipality" : user_info.user_type === "lgu_admin" ? `Brgy. (${user_info.municipality_name})` : "Brgy."}`} 
-            chart_meaning={`Overall Response for ${industryLabel} ${user_info.user_type === "s-admin" ? "(Laguna Province)" : user_info.user_type === "lgu_admin" ? `(${user_info.municipality_name})` : "Brgy."}`} series={res_series} />
+        <div className="w-3/5 h-[400px]">
+            <BarChart chart_icon={<UserIcon className="w-6 h-6"/>} chart_label={`Reponse per ${user_info.user_type === "s-admin" ? "Municipality" : `Brgy.`}`} 
+            chart_meaning={`Overall Response for ${industryLabel} ${user_info.user_type === "s-admin" ? "(Laguna Province)." : user_info.user_type === "lgu_admin" ? `(${user_info.municipality_name}).` : "Brgy."}`} series={res_series} />
         </div>
 
         {/* Donut Chart Container */}
