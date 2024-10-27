@@ -15,11 +15,12 @@ interface DialogBoxProps{
     message : string;
     submit : ()=>any;
     label : string;
+    isLoading : boolean
 }
 
 
 
-function DialogBox({message, submit, open, setOpen, label}:DialogBoxProps) {
+function DialogBox({message, submit, open, setOpen, label, isLoading}:DialogBoxProps) {
 
 
   return (
@@ -38,7 +39,11 @@ function DialogBox({message, submit, open, setOpen, label}:DialogBoxProps) {
           >
             <span>Cancel</span>
           </Button>
-          <Button variant="gradient" color="green" onClick={()=>submit()}>
+          <Button 
+            loading = {isLoading}
+            variant="gradient" 
+            color="green" 
+            onClick={()=>submit()}>
             <span>Confirm</span>
           </Button>
         </DialogFooter>

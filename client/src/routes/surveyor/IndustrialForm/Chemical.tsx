@@ -126,7 +126,7 @@ const Chemical = () => {
     const { brgy, dsi, type_ofData, setAlertMsg, setOpenAlert } = industrialBaseData;
     const isDataFilled = Object.values(chemicalData).some(value => value && value.toString().trim() !== '');
 
-  
+    set_isLoading(true);
     if (brgy && dsi && type_ofData && isDataFilled) {
       setOpenDialogBox(true);
     } else {
@@ -148,7 +148,7 @@ const Chemical = () => {
     const payload = preparePayLoad();
     const {setAlertMsg, setOpenAlert} = industrialBaseData
  
- 
+    set_isLoading(true);
     submitForm({payload, form_category : "industrial-chemical"})
    .then(res => {
            if(res.status === 201){
@@ -181,7 +181,7 @@ const Chemical = () => {
     const payload = preparePayLoad();
     const form_id = searchParams.get("form_id");
     const {setAlertMsg, setOpenAlert} = industrialBaseData
-
+    set_isLoading(true);
     updateForm({payload, form_id : form_id as string, form_category : "industrial-chemical"})
     .then(res => {
       if(res.status === 204){
@@ -214,6 +214,7 @@ const Chemical = () => {
   const acceptUpdateHandler = () => {
     const form_id = searchParams.get("form_id");
     const {setAlertMsg, setOpenAlert} = industrialBaseData
+    set_isLoading(true);
     acceptFormUpdate({form_id : form_id as string, form_category : "industrial-chemical"})
     .then((res) => {
       if(res.status === 204){
@@ -241,6 +242,7 @@ const Chemical = () => {
   const finishHandler = () => {
     const form_id = searchParams.get("form_id");
     const {setAlertMsg, setOpenAlert} = industrialBaseData
+    set_isLoading(true);
     finishForm({form_id : form_id as string, form_category : "industrial-chemical"})
     .then((res) => {
       if(res.status === 204){
@@ -271,7 +273,7 @@ const Chemical = () => {
 
   return (
     <div className="">
-      <DialogBox open = {openDialogBox} setOpen={setOpenDialogBox} message = 'Please double check the data before submitting' label='Confirmation' submit={
+      <DialogBox isLoading = {isLoading} open = {openDialogBox} setOpen={setOpenDialogBox} message = 'Please double check the data before submitting' label='Confirmation' submit={
         params.action === "submit" ? submitHandler
         : params.action === "update" ? updateHandler
         : params.action === "view" ? acceptUpdateHandler

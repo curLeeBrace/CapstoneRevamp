@@ -12,6 +12,8 @@ import OthersSchema from '../../db_schema/Industrial/OthersSchema';
 import AgricultureCrops from '../../db_schema/Agriculture/AgricultureCrops';
 import AgricultureLiveStock from '../../db_schema/Agriculture/AgricultureLiveStock';
 
+
+import StationarySchema from '../../db_schema/StationarySchema';
 import { auditLogType, saveAuditLog } from "../AuditLog/audit_log";
 
 
@@ -41,6 +43,8 @@ const insertFormData = async (req: Request, res: Response) => {
             insert = await AgricultureCrops.create(req.body);
         } else if (form_category === "agriculture-livestocks"){
             insert = await AgricultureLiveStock.create(req.body);
+        } else if(form_category === "stationary") {
+            insert = await StationarySchema.create(req.body);
         }
 
 

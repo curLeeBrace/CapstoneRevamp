@@ -12,6 +12,8 @@ import useUserInfo from '../../custom-hooks/useUserType';
 import { Typography } from '@material-tailwind/react';
 import GhgChartModal from './GhgChartModal';
 
+import BarChart from '../../Components/Dashboard/BarChart';
+
 type Emission = {
   co2e : number;
   ch4e : number;
@@ -32,7 +34,8 @@ type DashBoardData = {
       wasteWaterGHGe : number[],
       industrialGHGe : number[],
       agriculture_cropsGHGe : number[],
-      agriculture_liveStocksGHGe : number[]
+      agriculture_liveStocksGHGe : number[],
+      stationaryGHGe : number[]
   }
   total_ghge : number;
 
@@ -104,6 +107,18 @@ function DashBoard() {
         })) : [{ x: null, y: null }],
         
       },
+
+      {
+        name: "Stationary GHGe",
+        data: dashboard_data ? dashboard_data.table_data.mobileCombustionGHGe.map((tb_data, index) => ({
+          x: tb_data.loc_name,
+          y: dashboard_data.table_data.stationaryGHGe[index].toFixed(2)
+        })) : [{ x: null, y: null }],
+        
+      },
+
+
+
     ],
     options: {
       chart: {
@@ -184,11 +199,11 @@ function DashBoard() {
     },
   }
   
-  const [, setSelectedChart] = useState<string>('mobileCombustionGHGe'); // Default to mobile combustion
+  // const [, setSelectedChart] = useState<string>('mobileCombustionGHGe'); // Default to mobile combustion
 
-  const handleCardClick = (chartKey: string) => {
-    setSelectedChart(chartKey);
-  };
+  // const handleCardClick = (chartKey: string) => {
+  //   setSelectedChart(chartKey);
+  // };
   // const TABLE_HEAD = [
   //   "Emission Source",
   //   "GHG Emissions (tonnes CO2e)",
@@ -252,7 +267,7 @@ function DashBoard() {
           <Typography className='bg-darkgreen font-bold text-base mb-4 rounded-lg py-2 -mt-2 text-center' color='white'>
             Green House Gas Emission (Charts)
             </Typography>
-            <div className="mb-7 px-4 h-20 text-xs" onClick={() => handleCardClick('mobileCombustionGHGe')}>
+            <div className="mb-7 px-4 h-20 text-xs">
               <SimpleCard
               body={`${dashboard_data?.table_data.mobileCombustionGHGe.reduce((acc, val) => acc + val.emission.ghge, 0).toFixed(2)}`} // Make sure this accesses the correct properties
               header="Mobile Combustion"
@@ -262,7 +277,7 @@ function DashBoard() {
               />
             </div>
 
-            <div className="mb-7 px-4 h-20" onClick={() => handleCardClick('wasteWaterGHGe')}>
+            <div className="mb-7 px-4 h-20">
               <SimpleCard
                 body={`${dashboard_data?.table_data.wasteWaterGHGe.reduce((acc, val) => acc + val, 0).toFixed(2)}`}
                 header="Waste Water"
@@ -272,7 +287,7 @@ function DashBoard() {
               />
             </div>
 
-            <div className="mb-7 px-4 h-20" onClick={() => handleCardClick('industrialGHGe')}>
+            <div className="mb-7 px-4 h-20">
               <SimpleCard
               body={`${dashboard_data?.table_data.industrialGHGe.reduce((acc, val) => acc + val, 0).toFixed(2)}`}
               header="Industrial"
@@ -282,7 +297,7 @@ function DashBoard() {
               />
             </div>
 
-            <div className="mb-7 px-4 h-20" onClick={() => handleCardClick('agriculture_cropsGHGe')}>
+            <div className="mb-7 px-4 h-20">
               <SimpleCard
               body={`${dashboard_data?.table_data.agriculture_cropsGHGe.reduce((acc, val) => acc + val, 0).toFixed(2)}`}
               header="Agriculture Crops"
@@ -292,12 +307,24 @@ function DashBoard() {
               />
             </div>
 
-            <div className="mb-4 px-4 h-20" onClick={() => handleCardClick('agriculture_liveStocksGHGe')}>
+            <div className="mb-4 px-4 h-20">
               <SimpleCard
                 body={`${dashboard_data?.table_data.agriculture_liveStocksGHGe.reduce((acc, val) => acc + val, 0).toFixed(2)}`}
                 header="Agriculture Live Stocks"
                 icon={<GlobeAsiaAustraliaIcon className="h-6 w-6" />}
                 child_card={<GhgChartModal ChartTitle="Agriculture Live Stocks" chartDataKey="agriculture_liveStocksGHGe" />}
+                isLoading={isLoading}
+              />
+            </div>
+
+
+            
+            <div className="mb-4 px-4 h-20">
+              <SimpleCard
+                body={`${dashboard_data?.table_data.stationaryGHGe.reduce((acc, val) => acc + val, 0).toFixed(2)}`}
+                header="Stationary"
+                icon={<GlobeAsiaAustraliaIcon className="h-6 w-6" />}
+                child_card={<BarChart chart_icon={<GlobeAsiaAustraliaIcon className="h-6 w-6" />} chart_label='Stationary GHGe' chart_meaning= {`GHGe per ${user_info.user_type === "s-admin" ? "Municipality" : "Brgy"}`} series={[chartConfig.series[5] as any]} isLoading = {isLoading}/>}
                 isLoading={isLoading}
               />
             </div>
