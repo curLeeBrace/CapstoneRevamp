@@ -143,7 +143,7 @@ const WasteWaterForm = () => {
 
   const submitHandler = () => {
     const payload = preparePayLoad();
-
+    set_isLoading(true)
     submitForm({payload, form_category : "waste-water"})
     .then(res => {
             if(res.status === 201){
@@ -162,6 +162,7 @@ const WasteWaterForm = () => {
     })
     .finally(()=>{
       setOpenDialogBox(false)
+      set_isLoading(false)
     })
   
 
@@ -175,6 +176,7 @@ const WasteWaterForm = () => {
   const updateHandler = () => {
     const payload = preparePayLoad();
     const form_id = searchParams.get("form_id");
+    set_isLoading(true)
     updateForm({payload, form_id : form_id as string, form_category : "waste-water"})
     .then(res => {
       if(res.status === 204){
@@ -203,6 +205,7 @@ console.log("Form Data : ", formData)
   
 const acceptUpdateHandler = () => {
   const form_id = searchParams.get("form_id");
+  set_isLoading(true)
   acceptFormUpdate({form_id : form_id as string, form_category : "waste-water"})
   .then((res) => {
     if(res.status === 204){
@@ -232,6 +235,7 @@ const acceptUpdateHandler = () => {
 const finishHandler = () => {
 
   const form_id = searchParams.get("form_id");
+  set_isLoading(true)
   finishForm({form_id : form_id as string, form_category : "waste-water"})
   .then((res) => {
     if(res.status === 204){
@@ -305,7 +309,7 @@ const finishHandler = () => {
     
   
     <div className="flex justify-center min-h-screen px-4 py-10 overflow-x-hidden">
-       <DialogBox open = {openDialogBox} setOpen={setOpenDialogBox} message = 'Please double check the data before submitting' label='Confirmation' submit={
+       <DialogBox isLoading = {isLoading} open = {openDialogBox} setOpen={setOpenDialogBox} message = 'Please double check the data before submitting' label='Confirmation' submit={
         params.action === "submit" ? submitHandler
         : params.action === "update" ? updateHandler
         :params.action === "view" ? acceptUpdateHandler

@@ -156,6 +156,7 @@ const clearForm = () => {
 
 const submitHandler = () => {
   const payload = preparePayLoad();
+  set_isLoading(true)
   submitForm({payload, form_category : "mobile-combustion"})
   .then(res => {
           if(res.status === 201){
@@ -185,6 +186,7 @@ const updateHandler = () => {
   const form_id = searchParams.get("form_id");
 
   // alert(`FORM ID ${form_id}`)
+  set_isLoading(true)
   updateForm({payload, form_id : form_id as string, form_category : "mobile-combustion"})
   .then(res => {
     if(res.status === 204){
@@ -212,6 +214,7 @@ const updateHandler = () => {
 
 const acceptUpdateHandler = () => {
   const form_id = searchParams.get("form_id");
+  set_isLoading(true)
   acceptFormUpdate({form_id : form_id as string, form_category : "mobile-combustion"})
   .then((res) => {
     if(res.status === 204){
@@ -240,6 +243,7 @@ const acceptUpdateHandler = () => {
 const finishHandler = () => {
 
   const form_id = searchParams.get("form_id");
+  set_isLoading(true)
   finishForm({form_id : form_id as string, form_category : "mobile-combustion"})
   .then((res) => {
     if(res.status === 204){
@@ -289,7 +293,7 @@ console.log("FormData ", formData)
   return (
     <div className="flex justify-center min-h-screen px-4 py-10 overflow-x-hidden bg-gray-200">
 
-      <DialogBox open = {openDialogBox} setOpen={setOpenDialogBox} message = 'Please double check the data before submitting' label='Confirmation' submit={
+      <DialogBox isLoading = {isLoading} open = {openDialogBox} setOpen={setOpenDialogBox} message = 'Please double check the data before submitting' label='Confirmation' submit={
         params.action === "submit" ? submitHandler
         : params.action === "update" ? updateHandler
         : params.action === "view" ? acceptUpdateHandler

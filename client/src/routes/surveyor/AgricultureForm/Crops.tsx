@@ -121,6 +121,8 @@ const Crops = () => {
   const submitHandler = () => {
     const payload = preparePayload();
     const { setAlertMsg, setOpenAlert } = agricultureData;
+   set_isLoading(true);
+
 
     submitForm({ payload, form_category: "agriculture-crops" })
       .then((res) => {
@@ -140,6 +142,8 @@ const Crops = () => {
       })
       .finally(() => {
         setOpenDialogBox(false);
+        set_isLoading(false);
+
       });
   };
 
@@ -177,6 +181,8 @@ const Crops = () => {
   const acceptUpdateHandler = () => {
     const form_id = searchParams.get("form_id");
     const { setAlertMsg, setOpenAlert } = agricultureData;
+   set_isLoading(true);
+
     acceptFormUpdate({
       form_id: form_id as string,
       form_category: "agriculture-crops",
@@ -204,6 +210,8 @@ const Crops = () => {
   const finishHandler = () => {
     const form_id = searchParams.get("form_id");
     const { setAlertMsg, setOpenAlert } = agricultureData;
+   set_isLoading(true);
+
     finishForm({
       form_id: form_id as string,
       form_category: "agriculture-crops",
@@ -231,6 +239,7 @@ const Crops = () => {
   return (
     <div>
       <DialogBox
+        isLoading = {isLoading}
         open={openDialogBox}
         setOpen={setOpenDialogBox}
         message="Please double check the data before submitting"
