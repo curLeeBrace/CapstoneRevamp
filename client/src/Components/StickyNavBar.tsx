@@ -59,6 +59,10 @@ const url_listOfSurveyData = [
     title: "Agriculture",
     href: `/surveyor/surveyed-list/2/agriculture`,
   },
+  {
+    title: "Stationary",
+    href: `/surveyor/surveyed-list/0/stationary`,
+  },
   
 ];  
 

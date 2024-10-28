@@ -77,9 +77,26 @@ const SurveyedList = () => {
           "Status",
           "DateTime",
           "Action",])
+      } else {
+        set_tbHead([
+          "ID",
+          "Brgy",
+          "Charcoal - (Cooking)",
+          "Diesel - (Cooking)",
+          "Kerosene - (Cooking)",
+          "Propane - (Cooking)",
+          "Wood - (Cooking)",
+          "Motor Gasoline - (Generator)",
+          "Diesel - (Generator)",
+          "Kerosene - (Generator)",
+          "Residual Oil - (generator)",
+          "Kerosene - (Lighting)",
+          "DateTime",
+          "Action",
+        ])
       }
 
-  },[brgy, surveyType, survey_category])
+  },[brgy, surveyType, survey_category,])
 
   const prepare_tbData = (
     survey_category: string,
@@ -180,6 +197,65 @@ const SurveyedList = () => {
 
 
       })
+    } else {
+      tb_data = form_data.map((data: any) => {
+        const {
+          cooking,
+          generator,
+          lighting,
+          brgy_name,
+          form_type,
+        } = data.survey_data;
+        const dateTime = new Date(data.dateTime_created).toLocaleDateString() + " " + new Date(data.dateTime_created).toLocaleTimeString();
+        const form_id = data.form_id;
+
+        
+        const LinkComponent = (
+          <Link
+            to={`/surveyor/forms/update/stationary?form_id=${form_id}`}
+            state={{
+              brgy_name,
+              form_type,
+              cooking_charcoal: cooking.charcoal,
+              cooking_diesel: cooking.diesel,
+              cooking_kerosene: cooking.kerosene,
+              cooking_propane: cooking.propane,
+              cooking_wood: cooking.wood,
+              generator_motor_gasoline: generator.motor_gasoline,
+              generator_diesel: generator.diesel,
+              generator_kerosene: generator.kerosene,
+              generator_residual_fuelOil: generator.residual_fuelOil,
+              lighting_kerosene: lighting.kerosene,
+              
+            }}
+          >
+            <div className="text-green-700">Update</div>
+          </Link>
+        );
+        return [
+          data.form_id,
+          brgy_name,
+          cooking.charcoal,
+          cooking.diesel,
+          cooking.kerosene,
+          cooking.propane,
+          cooking.wood,
+          generator.motor_gasoline,
+          generator.diesel,
+          generator.kerosene,
+          generator.residual_fuelOil,
+          lighting.kerosene,
+
+
+          // form_type,
+          // status,
+          dateTime,
+          LinkComponent,
+        ];
+
+
+
+      })
     }
 
     return tb_data;
@@ -189,7 +265,7 @@ const SurveyedList = () => {
     <div className="flex flex-col items-center py-10 gap-5 max-h-screen">
       <div className="text-2xl self-center rounded-lg bg-darkgreen text-white px-2 py-2">{
         survey_category === "mobile-combustion" ? "Mobile Combustion Data" : 
-        survey_category === "waste-water" ? "Waste Water Data" : ""
+        survey_category === "waste-water" ? "Waste Water Data" : "Stationary Data"
       }</div>
 
       <div className="w-4/5 flex bg-blue-gray-100 px-3 py-1 rounded-lg shadow-lg items-center flex-wrap gap-3">

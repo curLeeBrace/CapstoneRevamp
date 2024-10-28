@@ -11,6 +11,8 @@ import AgricultureCrops = require("../../db_schema/Agriculture/AgricultureCrops"
 import AgricultureLiveStock = require("../../db_schema/Agriculture/AgricultureLiveStock");
 
 
+import StationarySchema = require("../../db_schema/StationarySchema");
+
 type ResponseTypes = {
     full_name : string
     img_id : string
@@ -52,6 +54,7 @@ const getNotification = async (req : Request, res : Response) => {
         const others_formData = await OthersSchema.find(query).exec();
         const cropsFormData = await AgricultureCrops.find(query).exec();
         const livestocksData = await AgricultureLiveStock.find(query).exec();
+        const stationaryData = await StationarySchema.find(query).exec();
 
    
 
@@ -69,7 +72,7 @@ const getNotification = async (req : Request, res : Response) => {
 
         const cropsResponse = prepareResponse(cropsFormData, "agriculture-crops", user_type as string);
         const livestocksResponse = prepareResponse(livestocksData, "agriculture-livestocks", user_type as string);
-
+        const stationaryResponse = prepareResponse(stationaryData, "stationary", user_type as string);
         const response = [
             ...mobileCombustionResponse, 
             ...wasteWaterResponse, 
@@ -79,7 +82,8 @@ const getNotification = async (req : Request, res : Response) => {
             ...electronicsResponse,
             ...othersResponse,
             ...cropsResponse,
-            ...livestocksResponse
+            ...livestocksResponse,
+            ...stationaryResponse
         ]
 
 

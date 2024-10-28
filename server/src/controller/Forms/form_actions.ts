@@ -126,6 +126,8 @@ const updateData = async (req: Request, res: Response) => {
             form_data = await AgricultureCrops.findByIdAndUpdate(form_id, update).exec();
         } else if(form_category === "agriculture-livestocks") {
             form_data = await AgricultureLiveStock.findByIdAndUpdate(form_id, update).exec();
+        } else {
+            form_data = await StationarySchema.findByIdAndUpdate(form_id, update).exec();
         }
 
         if(!form_data) return res.sendStatus(204);
@@ -178,6 +180,8 @@ const acceptUpdate = async (req: Request, res: Response) => {
             form_data = await AgricultureCrops.findByIdAndUpdate(form_id, updateQuery).exec();
         } else if(form_category === "agriculture-livestocks") {
             form_data = await AgricultureLiveStock.findByIdAndUpdate(form_id, updateQuery).exec();
+        } else {
+            form_data = await StationarySchema.findByIdAndUpdate(form_id, updateQuery).exec();
         }
 
 
@@ -234,6 +238,8 @@ const finishFormData = async (req: Request, res: Response) => {
             form_data = await AgricultureCrops.findByIdAndUpdate(form_id, {"survey_data.status" : "0"}).exec();
         } else if(form_category === "agriculture-livestocks") {
             form_data = await AgricultureLiveStock.findByIdAndUpdate(form_id, {"survey_data.status" : "0"}).exec();
+        } else {
+            form_data = await StationarySchema.findByIdAndUpdate(form_id, {"survey_data.status" : "0"}).exec();
         }
 
 
