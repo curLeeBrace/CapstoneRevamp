@@ -13,6 +13,8 @@ import AgricultureCrops from '../../db_schema/Agriculture/AgricultureCrops';
 import AgricultureLiveStock from '../../db_schema/Agriculture/AgricultureLiveStock';
 
 
+import StationarySchema from '../../db_schema/StationarySchema';
+
 const formData = async (req:Request, res:Response) => {
 
     const {
@@ -27,7 +29,7 @@ const formData = async (req:Request, res:Response) => {
         let query = {}
 
 
-        if(form_category === "waste-water" || form_category === "mobile-combustion"){
+        if(form_category === "waste-water" || form_category === "mobile-combustion" || form_category === "stationary"){
 
             query = brgy_code !== undefined ? 
                 {
@@ -82,15 +84,12 @@ const formData = async (req:Request, res:Response) => {
             form_data = await AgricultureCrops.find(query).exec()
         } else if(form_category === "agriculture-livestocks"){
             form_data = await AgricultureLiveStock.find(query).exec()
+        } else {
+            form_data = await StationarySchema.find(query).exec();
         }
 
 
 
-
-
-
-
-        
 
         
     

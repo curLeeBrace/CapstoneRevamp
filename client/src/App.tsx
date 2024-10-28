@@ -127,6 +127,7 @@ function App() {
                 <Route path="0/:survey_category" element = {<SurveyedList/>} />
                 <Route path="1/industrial" element = {<IndustrialList/>}/>
                 <Route path ="2/agriculture" element ={<AgricultureList/>}/>
+                {/* <Route */}
               
               </Route>
 

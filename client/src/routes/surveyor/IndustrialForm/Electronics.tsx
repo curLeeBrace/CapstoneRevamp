@@ -356,7 +356,7 @@ const finishHandler = () => {
                        "Submit"
                        : params.action === "update" ?
                        "Request Update"
-                       : params.action === "update" ?
+                       : params.action === "view" ?
                          "Accept Update"
                        : "Okay"
                     }
