@@ -156,11 +156,11 @@ const getIndustrialSummary = async (req: Request, res:Response) => {
 
 
 
-    const mineral_data = await MineralSchema.find(query).exec();
-    const chemical_data = await ChemicalSchema.find(query).exec();
-    const metal_data = await MetalSchema.find(query).exec();
-    const electronics_data = await ElectronicsSchema.find(query).exec();
-    const others_data = await OthersSchema.find(query).exec();
+    // const mineral_data = await MineralSchema.find(query).exec();
+    // const chemical_data = await ChemicalSchema.find(query).exec();
+    // const metal_data = await MetalSchema.find(query).exec();
+    // const electronics_data = await ElectronicsSchema.find(query).exec();
+    // const others_data = await OthersSchema.find(query).exec();
 
 
    
