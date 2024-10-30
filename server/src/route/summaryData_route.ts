@@ -9,6 +9,7 @@ import {getIndustrialRawSummary} from "../controller/SummaryData/Industrial/indu
 import getAgricultureSummary from "../controller/SummaryData/Agriculture/agriculture";
 
 import agricultureRawData from "../controller/SummaryData/Agriculture/agricultureRawData"
+import stationaryRawData from "../controller/SummaryData/stationaryRawData";
 
 const router = express.Router();
 
@@ -20,7 +21,9 @@ router.get('/industrial/:industrial_type', authenticate_token, getIndustrialRawS
 
 
 router.get('/agriculture', authenticate_token, getAgricultureSummary);
-router.get('/agriculture/raw-data', authenticate_token, agricultureRawData)
+router.get('/agriculture/raw-data', authenticate_token, agricultureRawData);
+
+router.get('/stationary/raw-data', authenticate_token, stationaryRawData);
 
 
 router.get('/dashboard/:form_category', authenticate_token,  getSurveyData);
