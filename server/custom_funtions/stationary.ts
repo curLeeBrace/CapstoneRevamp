@@ -148,12 +148,7 @@ const getStationaryGHGe = async (user_type : string, query : {}, locations : any
 
     })
 
-
-
     return ghge_container
-
-
-
 
 }
 

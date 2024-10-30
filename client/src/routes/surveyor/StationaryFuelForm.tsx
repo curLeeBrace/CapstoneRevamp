@@ -6,7 +6,7 @@ import {
   Typography,
 } from "@material-tailwind/react";
 import { useEffect, useState } from "react";
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation, useParams, useSearchParams } from "react-router-dom";
 // import AlertBox from "../../Components/Forms/AlertBox";
 import useUserInfo from "../../custom-hooks/useUserType";
 import BrgyMenu from "../../custom-hooks/BrgyMenu";
@@ -101,12 +101,18 @@ export function StationaryFuelForm() {
   const [brgy, setBrgy] = useState<AddressReturnDataType>();
   const { state } = useLocation();
   const handleChange = useHandleChange;
+  const [searchParams] = useSearchParams();
 
-  const {submitForm} = useSurveyFormActions();
+  const {submitForm, updateForm, acceptFormUpdate, finishForm} = useSurveyFormActions();
 
-  useEffect(() => {
-    console.log(brgy);
-  }, []);
+  useEffect(()=>{
+    const {action} = params
+    if(action !== "submit"){
+      setStationaryData(state)
+    } else {
+      clearForm()
+    }
+  },[searchParams])
 
 
 
@@ -138,11 +144,95 @@ export function StationaryFuelForm() {
   }
 
 
+  
+
+
 
   //EMPTY FUNCTION
-  const updateHandler = ()=>{}
-  const acceptUpdateHandler = ()=>{}
-  const finishHandler = ()=>{}
+  const updateHandler = () => {
+    const payload = preparePayLoad();
+    const form_id = searchParams.get("form_id");
+  
+    // alert(`FORM ID ${form_id}`)
+    set_isLoading(true)
+    updateForm({payload, form_id : form_id as string, form_category : "stationary"})
+    .then(res => {
+      if(res.status === 204){
+            alert("can't request update because form data not found!");
+          } else if(res.status === 200){
+            setOpenAlert(true);
+            setAlertMsg(res.data);
+            setOpenDialogBox(false)
+          }
+    })
+    .catch(err => {
+      console.log(err)
+      set_isLoading(false);
+      setOpenAlert(true);
+      setAlertMsg("Server Error!");
+    })
+    .finally(()=>{
+      set_isLoading(false)
+      setOpenDialogBox(false)
+      
+    })
+  
+  }
+  const acceptUpdateHandler = () => {
+    const form_id = searchParams.get("form_id");
+    set_isLoading(true)
+    acceptFormUpdate({form_id : form_id as string, form_category : "stationary"})
+    .then((res) => {
+      if(res.status === 204){
+        alert("can't accept request update because form data not found!");
+      } else if(res.status === 200){
+        setOpenAlert(true);
+        setAlertMsg(res.data);
+      }
+     
+    })
+    .catch(err => {
+      console.log(err)
+      set_isLoading(false);
+      setOpenAlert(true);
+      setAlertMsg("Server Error!");
+    })
+    .finally(()=>{
+      set_isLoading(false)
+      setOpenDialogBox(false)
+    })
+  
+  }
+
+
+
+const finishHandler = () => {
+
+  const form_id = searchParams.get("form_id");
+  set_isLoading(true)
+  finishForm({form_id : form_id as string, form_category : "stationary"})
+  .then((res) => {
+    if(res.status === 204){
+      alert("Error Occured! because form data not found!!");
+    } else if(res.status === 200){
+      setOpenAlert(true);
+      setAlertMsg(res.data);
+    }
+   
+  })
+  .catch(err => {
+    console.log(err)
+    set_isLoading(false);
+    setOpenAlert(true);
+    setAlertMsg("Server Error!");
+  })
+  .finally(()=>{
+    set_isLoading(false)
+    setOpenDialogBox(false)
+  })
+
+
+}
 
 
 
@@ -271,7 +361,7 @@ const clearForm = () => {
 
 
       <DialogBox isLoading = {isLoading} open = {openDialogBox} setOpen={setOpenDialogBox} message = 'Please double check the data before submitting' label='Confirmation' submit={
-        params.action === "submit" ? submitHandler
+          params.action === "submit" ? submitHandler
         : params.action === "update" ? updateHandler
         : params.action === "view" ? acceptUpdateHandler
         :finishHandler
@@ -288,7 +378,7 @@ const clearForm = () => {
             Form Type
           </Typography>
           <Checkbox
-            disabled={params.action === "view"}
+            disabled={params.action === "view" || params.action === "finish"}
             name="form_type"
             value={"residential"}
             checked={stationaryData.form_type === "residential"}
@@ -305,7 +395,7 @@ const clearForm = () => {
             containerProps={{ className: "-ml-2.5" }}
           />
           <Checkbox
-            disabled={params.action === "view"}
+            disabled={params.action === "view" || params.action === "finish"}
             name="form_type"
             value={"commercial"}
             checked={stationaryData.form_type === "commercial"}
@@ -324,7 +414,7 @@ const clearForm = () => {
           {/* Barangay Menu */}
           <div className="my-6 w-56">
             <BrgyMenu
-              disabled={params.action === "view"}
+              disabled={params.action === "view" || params.action === "finish"}
               municipality_code={user_info.municipality_code}
               setBrgys={setBrgy}
               deafult_brgyName={state && state.brgy_name}
@@ -339,6 +429,7 @@ const clearForm = () => {
             <div>
               <Typography>Charcoal (Kilogram)</Typography>
               <Input
+                disabled={params.action === "view" || params.action === "finish"}
                 name = "cooking_charcoal"
                 value={stationaryData.cooking_charcoal}
                 onChange={(e)=>handleChange({event : e, setFormStateData : setStationaryData})}
@@ -353,6 +444,7 @@ const clearForm = () => {
             <div>
               <Typography>Diesel (Liters)</Typography>
               <Input
+                disabled={params.action === "view" || params.action === "finish"}
                 name = "cooking_diesel"
                 value={stationaryData.cooking_diesel}
                 onChange={(e)=>handleChange({event : e, setFormStateData : setStationaryData})}
@@ -367,6 +459,7 @@ const clearForm = () => {
             <div>
               <Typography>Kerosene (Liters)</Typography>
               <Input
+                disabled={params.action === "view" || params.action === "finish"}
                 name = "cooking_kerosene"
                 value={stationaryData.cooking_kerosene}
                 onChange={(e)=>handleChange({event : e, setFormStateData : setStationaryData})}
@@ -381,6 +474,7 @@ const clearForm = () => {
             <div>
               <Typography>Propane/LPG (Kilogram)</Typography>
               <Input
+                disabled={params.action === "view" || params.action === "finish"}
                 name = "cooking_propane"
                 value={stationaryData.cooking_propane}
                 onChange={(e)=>handleChange({event : e, setFormStateData : setStationaryData})}
@@ -395,7 +489,7 @@ const clearForm = () => {
             <div>
               <Typography>Wood or Wood Waste (Kilogram)</Typography>
               <Input
-
+                disabled={params.action === "view" || params.action === "finish"}
                 name = "cooking_wood"
                 value={stationaryData.cooking_wood}
                 onChange={(e)=>handleChange({event : e, setFormStateData : setStationaryData})}
@@ -418,6 +512,7 @@ const clearForm = () => {
             <div>
               <Typography>Motor Gasoline (Liters)</Typography>
               <Input
+                disabled={params.action === "view" || params.action === "finish"}
                 name = "generator_motor_gasoline"
                 value={stationaryData.generator_motor_gasoline}
                 onChange={(e)=>handleChange({event : e, setFormStateData : setStationaryData})}
@@ -432,6 +527,7 @@ const clearForm = () => {
             <div>
               <Typography>Diesel (Liters)</Typography>
               <Input
+                disabled={params.action === "view" || params.action === "finish"}
                 name = "generator_diesel"
                 value={stationaryData.generator_diesel}
                 onChange={(e)=>handleChange({event : e, setFormStateData : setStationaryData})}
@@ -446,6 +542,7 @@ const clearForm = () => {
             <div>
               <Typography>Kerosene (Liters)</Typography>
               <Input
+                disabled={params.action === "view" || params.action === "finish"}
                 name = "generator_kerosene"
                 value={stationaryData.generator_kerosene}
                 onChange={(e)=>handleChange({event : e, setFormStateData : setStationaryData})}
@@ -460,6 +557,7 @@ const clearForm = () => {
             <div>
               <Typography>Residual Fuel Oil (Liters)</Typography>
               <Input
+                disabled={params.action === "view" || params.action === "finish"}
                 name = "generator_residual_fuelOil"
                 value={stationaryData.generator_residual_fuelOil}
                 onChange={(e)=>handleChange({event : e, setFormStateData : setStationaryData})}
@@ -481,6 +579,7 @@ const clearForm = () => {
             <div>
               <Typography>Kerosene (Liters)</Typography>
               <Input
+                disabled={params.action === "view" || params.action === "finish"}
                 name = "lighting_kerosene"
                 value={stationaryData.lighting_kerosene}
                 onChange={(e)=>handleChange({event : e, setFormStateData : setStationaryData})}
@@ -509,7 +608,7 @@ const clearForm = () => {
                       "Submit"
                       : params.action === "update" ?
                       "Request Update"
-                      : params.action === "update" ?
+                      : params.action === "view" ?
                         "Accept Update"
                       : "Okay"
                     }

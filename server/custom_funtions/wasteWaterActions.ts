@@ -117,20 +117,25 @@ export const getWasteWaterData_perSurvey = async (user_type:string , query : {})
     let wasteWaterDataPerSurvey : WasteWaterDataPerSurvey [] = []
     const wasteWaterFormDatas = await WasteWaterFormSchema.find(query);
 
-    wasteWaterDataPerSurvey = wasteWaterFormDatas.map(data => {
+    wasteWaterDataPerSurvey = wasteWaterFormDatas.map((dt : any) => {
 
-        const {openPits_latrines, riverDischarge, septic_tanks, form_type} = data.survey_data
+        const {openPits_latrines, riverDischarge, septic_tanks, form_type} = dt.survey_data
         const wasteWaterGHGe = prepateWasteWaterGHGe({septic_tanks, openPits_latrines, riverDischarge}, form_type)
-        // const wasteWaterGHGe = 
+        const {email, municipality_name} = dt.surveyor_info 
         return {
+            form_id : dt._id,
+            email,
+            municipality_name,
+            brgy_name : dt.survey_data.brgy_name as string,
+            
             populationUsingTheSystems : {
                 openPits_latrines,
                 riverDischarge,
                 septic_tanks
             },
             wasteWaterGHGe,
-            dateTime : data.dateTime_created,
-            surveyor : data.surveyor_info.full_name
+            dateTime : dt.dateTime_created,
+            surveyor : dt.surveyor_info.full_name
             
         }
     })

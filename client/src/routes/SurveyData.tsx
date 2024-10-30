@@ -33,9 +33,13 @@ interface PopulationUsingTheSystems {
 }
 
 interface WasteWaterDataPerSurvey {
+  form_id : string,
+  email : string,
+  municipality_name : string,
+
+  brgy_name : any,
   populationUsingTheSystems: PopulationUsingTheSystems;
   wasteWaterGHGe: number;
-  surveyor: string;
   dateTime: Date;
 }
 
@@ -63,7 +67,11 @@ const SurveyData = ({
   const column =
     survey_category === "mobile-combustion"
       ? [
-          "Surveyor",
+          "ID",
+          "Email",
+          "Municipality",
+          "Brgy",
+
           "Vehicle Type",
           "Vehicle Age",
           "Fuel Type",
@@ -72,7 +80,10 @@ const SurveyData = ({
           "DateTime",
         ]
       : [
-          "Surveyor",
+          "ID",
+          "Email",
+          "Municipality",
+          "Brgy",
           "Septic Tanks",
           "(OpenPits_Latrines) dry climate, ground water table lower than latrine, small family (2-5 people)",
           "(OpenPits_Latrines) dry climate, ground water table lower than latrine, communal",
@@ -113,7 +124,10 @@ const SurveyData = ({
               setData(
                 surveyData.map((mc_data: any) => {
                   const {
-                    surveyor,
+                    form_id,
+                    email,
+                    municipality_name,
+                    brgy_name,
                     v_type,
                     v_age,
                     f_type,
@@ -124,7 +138,10 @@ const SurveyData = ({
                   const date = new Date(dateTime).toLocaleDateString();
                   const time = new Date(dateTime).toLocaleTimeString();
                   return [
-                    surveyor,
+                    form_id,
+                    email,
+                    municipality_name,
+                    brgy_name,
                     v_type,
                     v_age,
                     f_type,
@@ -151,16 +168,18 @@ const SurveyData = ({
                   populationUsingTheSystems,
                   wasteWaterGHGe,
                   dateTime,
-                  surveyor,
                 } = surveyData as WasteWaterDataPerSurvey;
-                const { openPits_latrines, riverDischarge, septic_tanks } =
-                  populationUsingTheSystems;
+                const { openPits_latrines, riverDischarge, septic_tanks } = populationUsingTheSystems;
+                const {email, municipality_name, brgy_name} = surveyData
 
                 const date = new Date(dateTime).toLocaleDateString();
                 const time = new Date(dateTime).toLocaleTimeString();
                 const dTime = date + " : " + time;
                 return [
-                  surveyor,
+                  surveyData.form_id,
+                  email,
+                  municipality_name,
+                  brgy_name,
                   septic_tanks,
                   openPits_latrines.cat1,
                   openPits_latrines.cat2,

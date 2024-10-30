@@ -55,7 +55,7 @@ const SummaryData = () => {
         
         const barColor = "#006400";
         if(formType){
-            
+                
             const selectAll = selectAllData(municipality?.address_code, brgy?.address_code);
             set_isLoading(true)
             axiosPrivate.get(`/summary-data/${survey_category}`, {params : {
