@@ -9,7 +9,12 @@ import {PopulationUsingTheSystems, getWasteWaterData_perSurvey} from '../../../c
 
 
 type MC_DATA = {
-    surveyor : string;
+    // surveyor : string;
+    form_id : string;
+    email : string;
+    municipality_name : string;
+    brgy_name : string;
+    
     v_type : string;
     v_age : string;
     f_type : string;
@@ -46,16 +51,22 @@ const getSurveyData = async (req : Request, res : Response) => {
             const data = await FuelFormSchema.find(preparedQuery).exec() 
             if(!data) return res.sendStatus(204);
 
-            response = data.map(dt => {
+            response = data.map((dt:any) => {
                 const ghge = get_emission(dt.survey_data.fuel_type as string, dt.survey_data.liters_consumption);
+                const {email, municipality_name} = dt.surveyor_info 
+
                 return {
-                    surveyor : dt.surveyor_info.full_name as string,
+                    form_id : dt._id,
+                    email,
+                    municipality_name,
+                    brgy_name : dt.survey_data.brgy_name as string,
+                    
                     f_type : dt.survey_data.fuel_type as string,
                     v_age : dt.survey_data.vehicle_age?.toString(),
                     v_type : dt.survey_data.vehicle_type as string,
                     f_consumption : dt.survey_data.liters_consumption.toString(),
                     dateTime : dt.dateTime_created as Date,
-                    ghge : ghge.ghge
+                    ghge : ghge.ghge,
                 }
             }) as MC_DATA[]
 
