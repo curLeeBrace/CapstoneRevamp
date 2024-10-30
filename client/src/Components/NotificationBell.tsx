@@ -216,7 +216,20 @@ const NotificationBell = () => {
                       swine : survey_data.live_stock.swine,
                       non_dairyCattle : survey_data.live_stock.non_dairyCattle,
                     },`/surveyor/forms/agriculture/${action}/1/livestocks?form_id=${form_id}`,full_name)
-                  :null
+                  : notiffLink({
+                    brgy_name : survey_data.brgy_name ,
+                    form_type : survey_data.form_type,
+                    cooking_charcoal: survey_data.cooking.charcoal,
+                    cooking_diesel: survey_data.cooking.diesel,
+                    cooking_kerosene: survey_data.cooking.kerosene,
+                    cooking_propane: survey_data.cooking.propane,
+                    cooking_wood: survey_data.cooking.wood,
+                    generator_motor_gasoline: survey_data.generator.motor_gasoline,
+                    generator_diesel: survey_data.generator.diesel,
+                    generator_kerosene: survey_data.generator.kerosene,
+                    generator_residual_fuelOil: survey_data.generator.residual_fuelOil,
+                    lighting_kerosene: survey_data.lighting.kerosene,
+                  },`/surveyor/forms/${action}/stationary?form_id=${form_id}`,full_name)
                 
                 }
                 </MenuItem>

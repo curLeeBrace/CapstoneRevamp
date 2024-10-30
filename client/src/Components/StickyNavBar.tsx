@@ -59,6 +59,10 @@ const url_listOfSurveyData = [
     title: "Agriculture",
     href: `/surveyor/surveyed-list/2/agriculture`,
   },
+  {
+    title: "Stationary",
+    href: `/surveyor/surveyed-list/0/stationary`,
+  },
   
 ];  
 
@@ -99,6 +103,10 @@ export function StickyNavbar() {
     {
       title: "Agriculture",
       href: `/${user_info.user_type}/summary/2/agriculture`,
+    },
+    {
+      title: "Stationary",
+      href: `/${user_info.user_type}/summary/3/stationary`,
     }
   ]
 
