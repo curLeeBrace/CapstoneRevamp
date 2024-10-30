@@ -9,6 +9,7 @@ import MineralSchema from "../../db_schema/Industrial/MineralSchema";
 import OthersSchema from "../../db_schema/Industrial/OthersSchema";
 import AgricultureCrops from "../../db_schema/Agriculture/AgricultureCrops";
 import AgricultureLiveStock from "../../db_schema/Agriculture/AgricultureLiveStock";
+import StationarySchema from "../../db_schema/StationarySchema";
 
 const get_surveyor_info = async (req : Request, res : Response) => {
 
@@ -71,6 +72,8 @@ const get_surveyor_info = async (req : Request, res : Response) => {
             liveStocksData,
         };
         
+        const stationaryData = await StationarySchema.find({});
+
 
         if(!accs) return res.sendStatus(204);
         
@@ -83,6 +86,7 @@ const get_surveyor_info = async (req : Request, res : Response) => {
             let wasteWaterSurveyCount = getSurveyCount(wasteWaterData, acc.email);
             let industrialSurveyCount = getIndustrialSurveyCount(industrialData, acc.email);;
             let agricultureSurveyCount = getAgricultureSurveyCount(agricultureData, acc.email);;
+            let stationarySurveyCount = getSurveyCount(stationaryData, acc.email);
 
             user_infos.push({
                 full_name : acc.f_name + " " + acc.l_name,
@@ -92,7 +96,8 @@ const get_surveyor_info = async (req : Request, res : Response) => {
                 mobileCombustionSurveyCount,
                 wasteWaterSurveyCount,
                 industrialSurveyCount,
-                agricultureSurveyCount
+                agricultureSurveyCount,
+                stationarySurveyCount
             })
          
         })
