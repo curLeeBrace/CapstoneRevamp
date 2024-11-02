@@ -1,6 +1,6 @@
 import { Typography } from "@material-tailwind/react";
 import Chart from "react-apexcharts";
-
+import Skeleton from "../Skeleton";
 
 // type DonutChartSeriesTypes = {
 
@@ -15,10 +15,11 @@ import Chart from "react-apexcharts";
 
 
 type DonutChartProps = {
-    series : number[]
-    labels : string[]
+    series : number[] | undefined
+    labels : string[] | undefined
     title : string
-    chart_meaning: string
+    chart_meaning: string,
+    isLoading? : boolean
 }
 
 
@@ -30,7 +31,7 @@ export type DonutState = {
 
 
 
-const DonutChart = ({series, labels, title, chart_meaning} : DonutChartProps) => {
+const DonutChart = ({series, labels, title, chart_meaning, isLoading} : DonutChartProps) => {
 
     const chartConfig = {
         series,
@@ -88,21 +89,29 @@ const DonutChart = ({series, labels, title, chart_meaning} : DonutChartProps) =>
 
     return(
         <div >
-            <div className="text-base font-bold ml-4">{title}</div>
-            <Typography
-              variant="small"
-              color="gray"
-              className="max-w-sm font-normal ml-4"
-            >
-              {chart_meaning}
-            </Typography>
-                <Chart
-                    options={chartConfig.options}
-                    series={chartConfig.series}
-                    height={"110%"}
-                    width={"100%"}
-                    type="donut"
-                />
+          {
+            !isLoading && series && labels? 
+              <>
+                <div className="text-base font-bold ml-4">{title}</div>
+              <Typography
+                variant="small"
+                color="gray"
+                className="max-w-sm font-normal ml-4"
+              >
+                {chart_meaning}
+              </Typography>
+                  <Chart
+                      options={chartConfig.options}
+                      series={chartConfig.series}
+                      height={"110%"}
+                      width={"100%"}
+                      type="donut"
+                  />
+              
+              </> : <Skeleton/>
+
+        }
+            
           
         </div>
     )
