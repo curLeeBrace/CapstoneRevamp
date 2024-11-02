@@ -5,6 +5,7 @@ import { Typography } from "@material-tailwind/react";
 import Table from "../../Components/Table";
 import useUserInfo from "../../custom-hooks/useUserType";
 import useAxiosPrivate from "../../custom-hooks/auth_hooks/useAxiosPrivate";
+import DonutChart, {DonutState} from "../../Components/Dashboard/DonutChart";
 
 const StationarySummary = () => {
   const [municipality, setMunicipality] = useState<AddressReturnDataType>();
@@ -17,6 +18,11 @@ const StationarySummary = () => {
   const userInfo = useUserInfo();
   const axiosPrivate = useAxiosPrivate();
 //   const [loading, setIsLoading] = useState(false);
+
+ const [cookingDonut, setCookingDonut] = useState<DonutState>();
+ const [generatorDonut, setGeneratorDonut] = useState<DonutState>();
+ const [lightingDonut, setLightingDonut] = useState<DonutState>();
+
   
   const tb_head =[
     "ID",
@@ -57,6 +63,7 @@ const StationarySummary = () => {
     }})
     .then((res) => {
         const responseData = res.data;
+
         set_tbData(responseData.map((data:any)=>{
             const {
                 form_id,
@@ -71,7 +78,6 @@ const StationarySummary = () => {
                 date_Time,
             } = data
         const dateTime = new Date(date_Time).toLocaleDateString() + " " + new Date(date_Time).toLocaleTimeString();
-
 
 
             return [
@@ -94,6 +100,72 @@ const StationarySummary = () => {
                 dateTime
             ]
         }))
+
+
+
+        let stationaryDonutSereisHandler = {
+          cooking : {
+            charcoal : 0,
+            diesel : 0,
+            kerosene : 0,
+            propane : 0,
+            wood : 0,
+          },
+          generator : {
+            motor_gasoline : 0,
+            diesel : 0,
+            kerosene : 0,
+            residual_fuelOil : 0,
+          },
+
+          lighting : {
+            kerosene : 0
+          }
+        }
+        
+
+        responseData.forEach((data : any) => {
+
+          const {
+            cooking,
+            generator,
+            lighting,
+          }= data
+
+          stationaryDonutSereisHandler.cooking.charcoal += cooking.charcoal;
+          stationaryDonutSereisHandler.cooking.diesel += cooking.diesel;
+          stationaryDonutSereisHandler.cooking.kerosene += cooking.kerosene;
+          stationaryDonutSereisHandler.cooking.propane += cooking.propane;
+          stationaryDonutSereisHandler.cooking.wood += cooking.wood;
+
+          stationaryDonutSereisHandler.generator.motor_gasoline += generator.motor_gasoline;
+          stationaryDonutSereisHandler.generator.diesel += generator.diesel;
+          stationaryDonutSereisHandler.generator.kerosene += generator.kerosene;
+          stationaryDonutSereisHandler.generator.residual_fuelOil += generator.residual_fuelOil;
+
+          stationaryDonutSereisHandler.lighting.kerosene += lighting.kerosene;
+  
+
+        })
+
+        const {cooking, generator, lighting} = stationaryDonutSereisHandler
+        setCookingDonut({
+          labels : ["Charcoal(kg)", "Diesel(lt)", "Kerosene(lt)", "Propane(kg)", "Wood(kg)"],
+          series : [cooking.charcoal, cooking.diesel, cooking.kerosene, cooking.propane, cooking.wood]
+        })
+        setGeneratorDonut({
+          labels : ["Motor Gasoline(lt)", "Diesel(lt)", "Kerosene(lt)", "Residual Fuel Oil(lt)"],
+          series : [generator.motor_gasoline, generator.diesel, generator.kerosene, generator.residual_fuelOil],
+        })
+
+        setLightingDonut({
+          labels : ["Kerosene(lt)"],
+          series : [lighting.kerosene]
+        })
+
+
+
+
     })
     .catch(err => console.log(err))
     // .finally(()=>setIsLoading(false));
@@ -143,13 +215,19 @@ const StationarySummary = () => {
         </div>
       </div>
       <div className="flex justify-between">    
-              <div>Donut 1</div>
-              <div>Donut 2</div>
-              <div>Donut 3</div>
+              <div className="basis-full">
+                <DonutChart chart_meaning="Overall data for cooking" labels={cookingDonut?.labels} series={cookingDonut?.series} title="Cooking Donut Chart"/>
+              </div>
+              <div className="basis-full">
+                <DonutChart chart_meaning="Overall data for generator" labels={generatorDonut?.labels} series={generatorDonut?.series} title="Generator Donut Chart"/>
+              </div>
+              <div className="basis-full">
+                <DonutChart chart_meaning="Overall data for lighting" labels={lightingDonut?.labels} series={lightingDonut?.series} title="Lighting Donut Chart"/>
+              </div>
       </div>
 
         <div>
-            {tb_data ? <Table tb_head={tb_head} tb_datas={tb_data}/> :"Empty    "}
+            {tb_data ? <Table tb_head={tb_head} tb_datas={tb_data}/> :"Empty"}
         </div>
     </div>
   );
