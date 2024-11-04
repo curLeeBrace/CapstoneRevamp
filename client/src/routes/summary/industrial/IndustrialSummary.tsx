@@ -158,12 +158,12 @@ const IndustrialSummary = () => {
         <div className="w-4/12 flex flex-col">
           {/* 1st Donut Chart Container */}
           <div className="border-2 rounded-lg py-4 mb-2 border-gray-300">
-            {dsi && <DonutChart series={dsi.series} labels={dsi.labels} title={`Data Source Identifier (${industryLabel})`} chart_meaning={`${user_info.user_type === "s-admin" ? "Laguna Province" : user_info.user_type === "lgu_admin" ? `${user_info.municipality_name}` : "Brgy."}`}/>}
+            {dsi && <DonutChart series={dsi.series} labels={dsi.labels} title={`Data Source Identifier (${industryLabel})`} chart_meaning={`Overall collected data in ${user_info.user_type === "s-admin" ? "Laguna Province" : user_info.user_type === "lgu_admin" ? `${user_info.municipality_name}` : "Brgy."}`}/>}
                 
           </div>
           {/* 2nd Donut Chart Container */}
           <div className="border-2 rounded-lg py-4 border-gray-300">
-            {typeOfData && <DonutChart series={typeOfData.series} labels={typeOfData.labels} title={`Type of Data (${industryLabel})`} chart_meaning={`${user_info.user_type === "s-admin" ? "Laguna Province" : user_info.user_type === "lgu_admin" ? `${user_info.municipality_name}` : "Brgy."}`}/>}
+            {typeOfData && <DonutChart series={typeOfData.series} labels={typeOfData.labels} title={`Type of Data (${industryLabel})`} chart_meaning={`Overall collected data in ${user_info.user_type === "s-admin" ? "Laguna Province" : user_info.user_type === "lgu_admin" ? `${user_info.municipality_name}` : "Brgy."}`}/>}
 
           </div>
         </div>
