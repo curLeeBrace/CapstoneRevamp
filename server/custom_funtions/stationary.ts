@@ -141,9 +141,6 @@ const getStationaryGHGe = async (
 
 
 
-
-
-
 const getGHGe_perSurvey = (stationary_quantity : StationaryDataTypes) : number => {
     let total_ghge = 0;
 

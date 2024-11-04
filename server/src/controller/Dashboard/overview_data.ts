@@ -94,7 +94,7 @@ type DashBoardData = {
             
             const locations = getAvailableLocations(parent_code, user_type);
             
-            const mobileComstion_data =  await get_mobileComstion_data(user_type, query, locations);  
+            const mobileComstion_data =  await get_mobileComstion_GHGe(user_type, query, locations);  
             const wasteWaterGHGe = await getWasteWaterGHGeSum(user_type, query, locations);
             const industrialGHGe = await getIndustrialOverallGHGe(user_type, query, locations)
             const agriculture_cropsGHGe = await getAgricultureGHGe(user_type, query, locations, "crops")
@@ -176,7 +176,7 @@ type DashBoardData = {
 
  // This is mobile combustion function
 
- const get_mobileComstion_data = async (user_type:string , query : {}, locations : any[]) : Promise<MobileCombustionTableData[]> => {
+ const get_mobileComstion_GHGe = async (user_type:string , query : {}, locations : any[]) : Promise<MobileCombustionTableData[]> => {
 
     const table_data : MobileCombustionTableData[] = [];
 
@@ -212,7 +212,7 @@ type DashBoardData = {
                 //check if root_loc_code === data.surveyor_info.municipality_code
                 if(data.surveyor_info.municipality_code === root_loc_code)  {
                     //compute the municipality emmisions
-                    const single_form_emmmsion = get_emission(data.survey_data.fuel_type as string, data.survey_data.liters_consumption);
+                    const single_form_emmmsion = get_MobileCombustionEmission(data.survey_data.fuel_type as string, data.survey_data.liters_consumption);
                     const {co2e, ch4e, n2oe, ghge} = single_form_emmmsion
     
                     tb_co2e += co2e;
@@ -225,7 +225,7 @@ type DashBoardData = {
 
                 if(data.survey_data.brgy_code === root_loc_code)  {
                     //compute the municipality emmisions
-                    const single_form_emmmsion = get_emission(data.survey_data.fuel_type as string, data.survey_data.liters_consumption);
+                    const single_form_emmmsion = get_MobileCombustionEmission(data.survey_data.fuel_type as string, data.survey_data.liters_consumption);
                     const {co2e, ch4e, n2oe, ghge} = single_form_emmmsion
     
                     tb_co2e += co2e;
@@ -268,7 +268,7 @@ type DashBoardData = {
 
 
  // This is mobile combustion function
- const get_emission = (fuel_type : string,  liters_consumption: number) : Emission  => {
+ const get_MobileCombustionEmission = (fuel_type : string,  liters_consumption: number) : Emission  => {
 
      /*
         ==========================================
@@ -315,7 +315,11 @@ type DashBoardData = {
 
 
 
-export {overview_data, get_emission}
+export {
+    overview_data, 
+    get_MobileCombustionEmission, 
+    get_mobileComstion_GHGe,
+}
 
 
 
