@@ -96,7 +96,7 @@ const SurveyorInfo = () => {
                           <div className="text-black text-wrap overflow-hidden mr-10">{acc.full_name}</div>
                           <div className="text-black text-wrap overflow-hidden ml-2">{acc.municipality_name}</div>
                           <div className="text-black text-wrap overflow-hidden ml-10 ">{acc.mobileCombustionSurveyCount}</div>
-                          <div className="text-black text-wrap overflow-hidden ml-24 ">{acc.wasteWaterSurveyCount}</div>
+                          <div className="text-black text-wrap overflow-hidden ml-20 ">{acc.wasteWaterSurveyCount}</div>
                           <div className="text-black text-wrap overflow-hidden ml-20">{acc.industrialSurveyCount}</div>
                           <div className="text-black text-wrap overflow-hidden ml-10">{acc.agricultureSurveyCount}</div>
                           <div className="text-black text-wrap overflow-hidden ">{acc.stationarySurveyCount}</div>
