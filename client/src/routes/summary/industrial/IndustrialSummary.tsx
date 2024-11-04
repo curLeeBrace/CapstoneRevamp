@@ -128,7 +128,7 @@ const IndustrialSummary = () => {
 
 
   return (
-    <div className="flex flex-col gap-5 mt-10">
+    <div className="flex flex-col gap-5 mt-4">
       <div className="flex w-full justify-center gap-5">
         <div className="bg-darkgreen border-2 rounded-xl px-36">
             <Radio defaultChecked name="indusry_type" label={<span className="font-bold text-white">All (Industrial)</span>} color ="green" value={"all"} onChange={(e: any) => { setIndustryType(e.target.value); setIndustryLabel("Industrial");}} />

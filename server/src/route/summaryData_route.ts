@@ -11,6 +11,8 @@ import getAgricultureSummary from "../controller/SummaryData/Agriculture/agricul
 import agricultureRawData from "../controller/SummaryData/Agriculture/agricultureRawData"
 import stationaryRawData from "../controller/SummaryData/stationaryRawData";
 
+import ghgeSummary from "../controller/SummaryData/ghgeSummary";
+
 const router = express.Router();
 
 router.get('/mobile-combustion', authenticate_token, getMobileCombustionData);
@@ -24,6 +26,8 @@ router.get('/agriculture', authenticate_token, getAgricultureSummary);
 router.get('/agriculture/raw-data', authenticate_token, agricultureRawData);
 
 router.get('/stationary/raw-data', authenticate_token, stationaryRawData);
+
+router.get('/ghge-summary', authenticate_token, ghgeSummary);
 
 
 router.get('/dashboard/:form_category', authenticate_token,  getSurveyData);

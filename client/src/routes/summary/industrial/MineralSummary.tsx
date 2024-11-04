@@ -112,7 +112,7 @@ const MineralSummary = ({year} : MineralSummaryProps) => {
                 <div className="my-2 px-2">
                         {
                             donutState ?
-                                <DonutChart labels={donutState.labels} series={donutState.series} title="Mineral Donut Chart" chart_meaning={`${user_info.user_type === "s-admin" ? "Laguna Province" : user_info.user_type === "lgu_admin" ? ` ${user_info.municipality_name}` : "Brgy."}`}/>
+                                <DonutChart labels={donutState.labels} series={donutState.series} title="Mineral" chart_meaning={`${user_info.user_type === "s-admin" ? "Laguna Province" : user_info.user_type === "lgu_admin" ? ` ${user_info.municipality_name}` : "Brgy."}`}/>
                                 :<SimpleCard body={"No Available Data"} header="" icon={<ExclamationTriangleIcon className="h-full w-full"/>}/>
                         }
                 </div>

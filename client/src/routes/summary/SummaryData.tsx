@@ -250,12 +250,12 @@ const SummaryData = () => {
         <div className="">
             <div className="flex flex-col w-full px-20 gap-5 mt-5">
                 {/* TITLE */}
-                <div className="flex self-center mt-3">
+                <div className="flex self-center -mt-1 -mb-5">
                     <Typography className="font-bold text-white text-2xl text-center mb-4 bg-darkgreen py-2 px-10 rounded-lg" >{`${survey_category === "mobile-combustion" ? "Mobile Combustion" : "Waste Water"} Summary`}</Typography>
                 </div>
           
                     
-                <div className="flex gap-3 flex-wrap bg-gray-300 ">
+                <div className="flex gap-3 flex-wrap ">
                     {/* <div className="w-full 2xl:w-52">
                         <Select  value={survey_category} label="GHGe Category" onChange={(value)=>setSurveyCategory(value as string)}>
                             <Option value="mobile-combustion">Mobile Combustion</Option>
@@ -264,7 +264,7 @@ const SummaryData = () => {
 
                     </div> */}
 
-                    <div className="w-full text-nowrap 2xl:w-4/5">
+                    <div className="w-full text-nowrap 2xl:w-4/5 border-green-400 border-2 rounded-lg py-2 px-2">
                         <FilterComponent
                         
                             municipalityState={

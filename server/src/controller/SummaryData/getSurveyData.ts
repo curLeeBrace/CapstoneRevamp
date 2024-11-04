@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import FuelFormSchema from "../../db_schema/FuelFormSchema";
 import WasteWaterFormShema from '../../db_schema/WasteWaterFormShema';
-import {get_emission} from '../Dashboard/overview_data'
+import {get_MobileCombustionEmission} from '../Dashboard/overview_data'
 import { prepareQuery, RequestQueryTypes } from './mobile_combustion';
 import {PopulationUsingTheSystems, getWasteWaterData_perSurvey} from '../../../custom_funtions/wasteWaterActions';
 
@@ -52,7 +52,7 @@ const getSurveyData = async (req : Request, res : Response) => {
             if(!data) return res.sendStatus(204);
 
             response = data.map((dt:any) => {
-                const ghge = get_emission(dt.survey_data.fuel_type as string, dt.survey_data.liters_consumption);
+                const ghge = get_MobileCombustionEmission(dt.survey_data.fuel_type as string, dt.survey_data.liters_consumption);
                 const {email, municipality_name} = dt.surveyor_info 
 
                 return {
