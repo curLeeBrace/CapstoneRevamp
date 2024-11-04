@@ -231,13 +231,20 @@ function DashBoard() {
 
       const agricultureLiveStocksGHGe = dashboard_data?.table_data.agriculture_liveStocksGHGe || [];
       const totalAgricultureLivestockGHGE = agricultureLiveStocksGHGe.reduce((acc, val) => acc + val, 0).toFixed(2);
+
+      const formatToTwoDecimalPlaces = (value: number) => {
+        return (Math.floor(value * 100) / 100).toFixed(2);
+    };
       
       const residentialGHGe = dashboard_data?.table_data.residentialGHGe || [];
-      const totalStationaryResidentialGHGE = residentialGHGe.reduce((acc, val) => acc + val, 0).toFixed(2); 
+      const totalStationaryResidentialGHGE = residentialGHGe.reduce((acc, val) => acc + val, 0); 
 
 
       const commercialGHGe = dashboard_data?.table_data.commercialGHGe || [];
-      const totalStationaryCommercialGHGE = commercialGHGe.reduce((acc, val) => acc + val, 0).toFixed(2);
+      const totalStationaryCommercialGHGE = commercialGHGe.reduce((acc, val) => acc + val, 0);
+      
+      const formattedTotalResidential = formatToTwoDecimalPlaces(totalStationaryResidentialGHGE);
+      const formattedTotalCommercial = formatToTwoDecimalPlaces(totalStationaryCommercialGHGE);
 
     //  ========================================
     //    Total Scope 1 Emissions (GHG Emission)
@@ -248,8 +255,8 @@ function DashBoard() {
         parseFloat(totalIndustrialGHGE) +
         parseFloat(totalAgricultureCropsGHGE) +
         parseFloat(totalAgricultureLivestockGHGE)+
-        parseFloat(totalStationaryResidentialGHGE) +
-        parseFloat(totalStationaryCommercialGHGE)
+        (totalStationaryResidentialGHGE) +
+        (totalStationaryCommercialGHGE)
         
     ).toFixed(2);
     
@@ -267,8 +274,8 @@ function DashBoard() {
     const industrialProportion = calculateProportion(parseFloat(totalIndustrialGHGE), parseFloat(totalGHGEmissions));
     const agricultureCropsProportion = calculateProportion(parseFloat(totalAgricultureCropsGHGE), parseFloat(totalGHGEmissions));
     const agricultureLivestockProportion = calculateProportion(parseFloat(totalAgricultureLivestockGHGE), parseFloat(totalGHGEmissions));
-    const residentialStationaryProportion = calculateProportion(parseFloat(totalStationaryResidentialGHGE), parseFloat(totalGHGEmissions));
-    const commercialStationaryProportion = calculateProportion(parseFloat(totalStationaryCommercialGHGE), parseFloat(totalGHGEmissions));
+    const residentialStationaryProportion = calculateProportion((totalStationaryResidentialGHGE), parseFloat(totalGHGEmissions));
+    const commercialStationaryProportion = calculateProportion((totalStationaryCommercialGHGE), parseFloat(totalGHGEmissions));
     
 
 
@@ -292,8 +299,8 @@ function DashBoard() {
   
   const TABLE_ROWS = [
     { name: "Scope 1 Emissions (Net of Forestry and Land Use)", ghge: "", proportion: "", isCategory: true },
-    { name: "GHG Emissions from Community-Level Residential Stationary Fuel Use", ghge: totalStationaryResidentialGHGE, proportion: residentialStationaryProportion },
-    { name: "GHG Emissions from Community-Level Commercial Stationary Fuel Use", ghge: totalStationaryCommercialGHGE,  proportion: commercialStationaryProportion },
+    { name: "GHG Emissions from Community-Level Residential Stationary Fuel Use", ghge: formattedTotalResidential, proportion: residentialStationaryProportion },
+    { name: "GHG Emissions from Community-Level Commercial Stationary Fuel Use", ghge: formattedTotalCommercial,  proportion: commercialStationaryProportion },
     { name: "GHG Emissions from Community Mobile Combustion", ghge: totalMobileCombustionGHGE, proportion:mobileCombustionProportion },
     // { name: "GHG Emissions from Solid Waste Disposal - IPCC FOD Method", ghge: "0.00", proportion: "0.00%" },
     // { name: "GHG Emissions from Other Solid Waste Treatment (ICLEI)", ghge: "0.00", proportion: "0.00%" },
