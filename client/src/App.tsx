@@ -25,6 +25,7 @@ import SummaryData from "./routes/summary/SummaryData";
 import IndustrialSummary from "./routes/summary/industrial/IndustrialSummary";
 import AgricultureSummary from "./routes/summary/agriculture/AgricultureSummary";
 import StationarySummary from "./routes/summary/StationarySummary";
+import GHGeSummary from "./routes/summary/GHGeSummary";
 
 //survey List Data
 import SurveyedList from "./routes/surveyor/SurveyListData/SurveyedList";
@@ -71,6 +72,7 @@ function App() {
             <Route path = "summary/1/industrial" element = {<IndustrialSummary/>}/> {/* For industial*/}
             <Route path = "summary/2/agriculture" element = {<AgricultureSummary/>}/>
             <Route path = "summary/3/stationary" element = {<StationarySummary/>}/>
+            <Route path = "summary/4/ghge" element = {<GHGeSummary/>}/>
 
               <Route path = 'register'>
                   <Route index element = {<Registration/>}/>
@@ -89,6 +91,7 @@ function App() {
             <Route path = "summary/1/industrial" element = {<IndustrialSummary/>}/> {/* For industial*/}
             <Route path = "summary/2/agriculture" element = {<AgricultureSummary/>}/>
             <Route path = "summary/3/stationary" element = {<StationarySummary/>}/>
+            <Route path = "summary/4/ghge" element = {<GHGeSummary/>}/>
 
 
               <Route path = 'register'>

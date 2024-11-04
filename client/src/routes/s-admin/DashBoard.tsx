@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import  SimpleCard from '../../Components/Dashboard/SimpleCard'
 
 import {UserIcon, GlobeAsiaAustraliaIcon} from "@heroicons/react/24/outline";
-// import Table from '../../Components/Table';
+
 
 import Chart from "react-apexcharts";
 import SurveyorInfo from '../../Components/Dashboard/SuerveyorInfo';
@@ -197,33 +197,7 @@ function DashBoard() {
     },
   }
   
-  // const [, setSelectedChart] = useState<string>('mobileCombustionGHGe'); // Default to mobile combustion
 
-  // const handleCardClick = (chartKey: string) => {
-  //   setSelectedChart(chartKey);
-  // };
-  // const TABLE_HEAD = [
-  //   "Emission Source",
-  //   "GHG Emissions (tonnes CO2e)",
-  //   "Proportion of Total Emissions"
-  // ];
-  
-  // const TABLE_ROWS = [
-  //   { name: "Scope 1 Emissions (Net of Forestry and Land Use)", ghge: "", proportion: "", isCategory: true },
-  //   { name: "GHG Emissions from Community-Level Residential Stationary Fuel Use", ghge: "0.00", proportion: "0.00%" },
-  //   { name: "GHG Emissions from Community-Level Commercial Stationary Fuel Use", ghge: "0.00", proportion: "0.00%" },
-  //   { name: "GHG Emissions from Community Mobile Combustion", ghge: "0.01", proportion: "0.03%" },
-  //   { name: "GHG Emissions from Solid Waste Disposal - IPCC FOD Method", ghge: "0.00", proportion: "0.00%" },
-  //   { name: "GHG Emissions from Other Solid Waste Treatment (ICLEI)", ghge: "0.00", proportion: "0.00%" },
-  //   { name: "GHG Emissions from Solid Waste Open Burning (ICLEI)", ghge: "0.00", proportion: "0.00%" },
-  //   { name: "GHG Emissions from Wastewater Treatment and Discharge", ghge: "0.00", proportion: "0.00%" },
-  //   { name: "GHG Emissions from Community-Level Agriculture (Crops)", ghge: "0.00", proportion: "0.00%" },
-  //   { name: "GHG Emissions from Community-Level Agriculture (Livestock)", ghge: "0.00", proportion: "0.00%" },
-  //   { name: "GHG Emissions from Solid Waste Disposal - Inside LGU Geopolitical Boundaries (ICLEI)", ghge: "0.00", proportion: "0.00%" },
-  //   { name: "Scope 1 Emissions/Removal (Forestry and Land Use)", ghge: "", proportion: "", isCategory: true },
-  //   { name: "GHG Emissions from Forestry and Land Use", ghge: "0.00", proportion: "0.00%" },
-  //   { name: "GHG Removal from Sink", ghge: "0.00", proportion: "0.00%" },
-  // ];
 
 
  
@@ -249,15 +223,7 @@ function DashBoard() {
 
        <div className='md:my-2 md:mx-8 md:flex'>
 
-          {/* ETO YUNG GINAWA KONG SUMMARY TABLE */}
-
-          {/* <TableWithFooter
-            tableHead={TABLE_HEAD}
-            tableRows={TABLE_ROWS}
-            totalGHGEmissions={"0"}
-            totalProportion={"100.00%"}
-          /> */}
-                    
+      
          
          
           <div className='text-xs bg-white mr-2 pt-2 rounded-lg'>
@@ -347,11 +313,6 @@ function DashBoard() {
         </div>
 
         <div className='flex flex-wrap md:flex-nowrap px-5 basis-3/4 gap-3 h-1/3 w-full'>
-
-          {/* <div className='hidden lg:block lg:basis-2/6 h-5/6 border border-gray-400 rounded-2xl overflow-hidden'>
-          
-             {dashboard_data && <Table TABLE_ROWS={dashboard_data.table_data}/>}
-          </div> */}
 
           {/* lg:basis-8/12 */}
           

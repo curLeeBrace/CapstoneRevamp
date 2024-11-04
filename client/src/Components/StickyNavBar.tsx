@@ -107,6 +107,10 @@ export function StickyNavbar() {
     {
       title: "Stationary",
       href: `/${user_info.user_type}/summary/3/stationary`,
+    },
+    {
+      title: "GHGe",
+      href: `/${user_info.user_type}/summary/4/GHGe`,
     }
   ]
 
