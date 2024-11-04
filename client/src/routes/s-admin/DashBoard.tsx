@@ -11,6 +11,9 @@ import useAxiosPrivate from '../../custom-hooks/auth_hooks/useAxiosPrivate';
 import useUserInfo from '../../custom-hooks/useUserType';
 import { Typography } from '@material-tailwind/react';
 import BarChart from '../../Components/Dashboard/BarChart';
+// import { TableWithFooter } from '../../Components/TableWithFooter';
+// import FilterSummary from './FilterSummary';
+// import { AddressReturnDataType } from '../../custom-hooks/useFilterAddrress';
 
 type Emission = {
   co2e : number;
@@ -25,6 +28,7 @@ export type  MobileCombustionTableData = {
 }
 
 type DashBoardData = {
+  mobileCombustionGHGe: number;
   total_surveryor : number;
   total_LGU_admins : number;
   table_data: {
@@ -33,7 +37,9 @@ type DashBoardData = {
       industrialGHGe : number[],
       agriculture_cropsGHGe : number[],
       agriculture_liveStocksGHGe : number[],
-      stationaryGHGe : number[]
+      stationaryGHGe : number[],
+      residentialGHGe?: number[]; 
+      commercialGHGe?: number[];   
   }
   total_ghge : number;
 
@@ -51,6 +57,8 @@ function DashBoard() {
   const increaseFontSize = () => setFontSize((prev) => prev + 1);
   const decreaseFontSize = () => setFontSize((prev) => (prev > 1 ? prev - 1 : 1));
 
+ 
+
   useEffect(()=>{
     axiosPrivate.get(`/dashboard/overview-data/${user_info.province_code}/${user_info.user_type}/${user_info.municipality_code}`)
     .then(res => {
@@ -60,6 +68,9 @@ function DashBoard() {
     })
     .catch(err => console.error(err))
   },[])
+  
+
+ 
   
   // bg-gradient-to-t from-green-400 via-green-200 to-slate-50
 
@@ -196,11 +207,11 @@ function DashBoard() {
       }
     },
   }
-  
 
 
 
- 
+
+   
 
   return (
     <div className='h-full w-full bg-gray-200 '>
@@ -208,7 +219,7 @@ function DashBoard() {
       <div className='flex flex-col h-full w-full'>
         <div className='flex items-center gap-3 basis-1/4 px-2 overflow-x-auto mx-6 my-4 pb-2'>
           <div className='h-4/5 w-full'>
-            <SimpleCard body={`${dashboard_data?.total_ghge.toFixed(2)}`}header='Total GHGe'  icon={<GlobeAsiaAustraliaIcon className='h-6 w-6'/>} isLoading={isLoading} /> {/*child_card={<DashboardGHGeSummary/>} */}
+            <SimpleCard body={`${dashboard_data?.total_ghge.toFixed(2)}`} header='Total GHGe'  icon={<GlobeAsiaAustraliaIcon className='h-6 w-6'/>} isLoading={isLoading} /> {/*child_card={<DashboardGHGeSummary/>} */}
           </div>        
           
           <div className='h-4/5 w-full'>
@@ -223,10 +234,10 @@ function DashBoard() {
 
        <div className='md:my-2 md:mx-8 md:flex'>
 
-      
+                    
          
          
-          <div className='text-xs bg-white mr-2 pt-2 rounded-lg'>
+       <div className=" md:w-1/3 h-1/4 text-xs bg-white ml-4 pt-2 rounded-lg shadow-md mr-4">
 
           <Typography className='bg-darkgreen font-bold text-base mb-4 rounded-lg py-2 -mt-2 text-center' color='white'>
             Green House Gas Emission (Charts)
@@ -293,8 +304,31 @@ function DashBoard() {
               />
             </div>
 
+          
 
         </div>
+
+
+
+
+
+
+        {/* ===============================================================
+          ETO YUNG GINAWA KONG SUMMARY TABLE
+          =============================================================== */}
+      {/* <div className="pt-4 px-4 bg-white rounded-lg overflow-x-auto shadow-md h-4/5">
+      <Typography className='bg-darkgreen font-bold text-lg mb-4 rounded-lg py-2 -mt-2 text-center' color='white'>
+      GHG Emissions Summary Table
+            </Typography>
+                    <div className='mb-2'>
+                    <TableWithFooter
+                        tableHead={TABLE_HEAD}
+                        tableRows={TABLE_ROWS}
+                        totalGHGEmissions={totalGHGEmissions}
+                        totalProportion= {totalProportion}
+                      />
+                      </div>
+                      </div> */}
 
         <div className='basis-full border border-gray-400 bg-white shadow-gray-500 rounded-lg px-4 '>
 

@@ -2,8 +2,8 @@ import { Card, Typography } from "@material-tailwind/react";
 
 interface TableRow {
   name: string;
-  ghge: string;
-  proportion: string;
+  ghge: string | number;
+  proportion: string | number;
   isCategory?: boolean; // For rows that represent categories/subtotals
 }
 
@@ -79,7 +79,7 @@ export function TableWithFooter({
             </td>
             <td className="p-2">
               <Typography color="white" variant="small" className="font-bold text-xs px-2">
-                {totalProportion}
+                {totalProportion}%
               </Typography>
             </td>
           </tr>
