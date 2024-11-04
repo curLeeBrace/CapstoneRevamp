@@ -84,10 +84,15 @@ const STATIONARY_EMMISION_FACTOR = {
     }
 }
 
-const getStationaryGHGe = async (user_type : string, query : {}, locations : any[]):Promise<number[]> => {
+const getStationaryGHGe = async (user_type : string, query : {}, locations : any[], formType?:"residential"|"commercial"):Promise<number[]> => {
     const ghge_container : number[] = [];
+    
+    let stationQuery : any = query;
 
-    const stationary_data = await StationarySchema.find(query);
+    if(formType){
+        stationQuery["survey_data.form_type"] = formType as any;
+    }
+    const stationary_data = await StationarySchema.find(stationQuery);
 
     locations.forEach((loc : any, index) => {
         const root_loc_code = user_type === "s-admin" ? loc.city_code : loc.brgy_code;
