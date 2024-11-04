@@ -4,13 +4,16 @@ import  SimpleCard from '../../Components/Dashboard/SimpleCard'
 import {UserIcon, GlobeAsiaAustraliaIcon} from "@heroicons/react/24/outline";
 // import Table from '../../Components/Table';
 
-import Chart from "react-apexcharts";
+
 import SurveyorInfo from '../../Components/Dashboard/SuerveyorInfo';
 // import DashboardGHGeSummary from '../../Components/Dashboard/DashboardGHGeSummary';
 import useAxiosPrivate from '../../custom-hooks/auth_hooks/useAxiosPrivate';
 import useUserInfo from '../../custom-hooks/useUserType';
 import { Typography } from '@material-tailwind/react';
 import BarChart from '../../Components/Dashboard/BarChart';
+import { TableWithFooter } from '../../Components/TableWithFooter';
+// import FilterSummary from './FilterSummary';
+// import { AddressReturnDataType } from '../../custom-hooks/useFilterAddrress';
 
 type Emission = {
   co2e : number;
@@ -25,6 +28,7 @@ export type  MobileCombustionTableData = {
 }
 
 type DashBoardData = {
+  mobileCombustionGHGe: number;
   total_surveryor : number;
   total_LGU_admins : number;
   table_data: {
@@ -33,7 +37,9 @@ type DashBoardData = {
       industrialGHGe : number[],
       agriculture_cropsGHGe : number[],
       agriculture_liveStocksGHGe : number[],
-      stationaryGHGe : number[]
+      stationaryGHGe : number[],
+      residentialGHGe?: number[]; 
+      commercialGHGe?: number[];   
   }
   total_ghge : number;
 
@@ -51,6 +57,8 @@ function DashBoard() {
   const increaseFontSize = () => setFontSize((prev) => prev + 1);
   const decreaseFontSize = () => setFontSize((prev) => (prev > 1 ? prev - 1 : 1));
 
+ 
+
   useEffect(()=>{
     axiosPrivate.get(`/dashboard/overview-data/${user_info.province_code}/${user_info.user_type}/${user_info.municipality_code}`)
     .then(res => {
@@ -60,6 +68,9 @@ function DashBoard() {
     })
     .catch(err => console.error(err))
   },[])
+  
+
+ 
   
   // bg-gradient-to-t from-green-400 via-green-200 to-slate-50
 
@@ -196,34 +207,113 @@ function DashBoard() {
       }
     },
   }
-  
-  // const [, setSelectedChart] = useState<string>('mobileCombustionGHGe'); // Default to mobile combustion
 
-  // const handleCardClick = (chartKey: string) => {
-  //   setSelectedChart(chartKey);
-  // };
-  // const TABLE_HEAD = [
-  //   "Emission Source",
-  //   "GHG Emissions (tonnes CO2e)",
-  //   "Proportion of Total Emissions"
-  // ];
+  {/* ===============================================================
+
+          ETO YUNG GINAWA KONG SUMMARY TABLE
+
+      =============================================================== */}
+    //  =============================
+    //    GHG Emissions (tonnes CO2e)
+    //  =============================
+
+      const mobileCombustionGHGe = dashboard_data?.table_data.mobileCombustionGHGe || [];
+      const totalMobileCombustionGHGE = mobileCombustionGHGe.reduce((acc, val) => acc + val.emission.ghge, 0).toFixed(2);
+      
+      const wasteWaterGHGe = dashboard_data?.table_data.wasteWaterGHGe || [];
+      const totalWasteWaterGHGE = wasteWaterGHGe.reduce((acc, val) => acc + val, 0).toFixed(2);
+      
+      const industrialGHGe = dashboard_data?.table_data.industrialGHGe || [];
+      const totalIndustrialGHGE = industrialGHGe.reduce((acc, val) => acc + val, 0).toFixed(2);
+      
+      const agricultureCropsGHGe = dashboard_data?.table_data.agriculture_cropsGHGe || [];
+      const totalAgricultureCropsGHGE = agricultureCropsGHGe.reduce((acc, val) => acc + val, 0).toFixed(2);
+
+      const agricultureLiveStocksGHGe = dashboard_data?.table_data.agriculture_liveStocksGHGe || [];
+      const totalAgricultureLivestockGHGE = agricultureLiveStocksGHGe.reduce((acc, val) => acc + val, 0).toFixed(2);
+
+      const formatToTwoDecimalPlaces = (value: number) => {
+        return (Math.floor(value * 100) / 100).toFixed(2);
+    };
+      
+      const residentialGHGe = dashboard_data?.table_data.residentialGHGe || [];
+      const totalStationaryResidentialGHGE = residentialGHGe.reduce((acc, val) => acc + val, 0); 
+
+
+      const commercialGHGe = dashboard_data?.table_data.commercialGHGe || [];
+      const totalStationaryCommercialGHGE = commercialGHGe.reduce((acc, val) => acc + val, 0);
+      
+      const formattedTotalResidential = formatToTwoDecimalPlaces(totalStationaryResidentialGHGE);
+      const formattedTotalCommercial = formatToTwoDecimalPlaces(totalStationaryCommercialGHGE);
+
+    //  ========================================
+    //    Total Scope 1 Emissions (GHG Emission)
+    //  ========================================
+      const totalGHGEmissions = (
+        parseFloat(totalMobileCombustionGHGE) +
+        parseFloat(totalWasteWaterGHGE) +
+        parseFloat(totalIndustrialGHGE) +
+        parseFloat(totalAgricultureCropsGHGE) +
+        parseFloat(totalAgricultureLivestockGHGE)+
+        (totalStationaryResidentialGHGE) +
+        (totalStationaryCommercialGHGE)
+        
+    ).toFixed(2);
+    
+    // Function to calculate proportion
+    const calculateProportion = (value: number, totalGHGEmissions: number) => {
+      const proportion = totalGHGEmissions > 0 ? (value / totalGHGEmissions) * 100 : 0;
+      return `${proportion.toFixed(2)}%`; // Round to two decimal places
+    };
+    
+    //  =============================
+    //  Proportion of Total Emissions
+    //  =============================
+    const mobileCombustionProportion = calculateProportion(parseFloat(totalMobileCombustionGHGE),parseFloat (totalGHGEmissions));
+    const wasteWaterProportion = calculateProportion(parseFloat(totalWasteWaterGHGE), parseFloat(totalGHGEmissions));
+    const industrialProportion = calculateProportion(parseFloat(totalIndustrialGHGE), parseFloat(totalGHGEmissions));
+    const agricultureCropsProportion = calculateProportion(parseFloat(totalAgricultureCropsGHGE), parseFloat(totalGHGEmissions));
+    const agricultureLivestockProportion = calculateProportion(parseFloat(totalAgricultureLivestockGHGE), parseFloat(totalGHGEmissions));
+    const residentialStationaryProportion = calculateProportion((totalStationaryResidentialGHGE), parseFloat(totalGHGEmissions));
+    const commercialStationaryProportion = calculateProportion((totalStationaryCommercialGHGE), parseFloat(totalGHGEmissions));
+    
+
+
+    const totalProportion = (
+      parseFloat(mobileCombustionProportion) +
+      parseFloat(wasteWaterProportion) +
+      parseFloat(industrialProportion) +
+      parseFloat(agricultureCropsProportion) +
+      parseFloat(agricultureLivestockProportion) +
+      parseFloat(residentialStationaryProportion) +
+      parseFloat(commercialStationaryProportion) 
+  ).toFixed(2);
+    
+    
+     
+  const TABLE_HEAD = [
+    `${user_info.user_type === "s-admin" ? "Laguna" : user_info.municipality_name} Emission Source`,
+    "GHG Emissions (tonnes CO2e)",
+    "Proportion of Total Emissions"
+  ];
   
-  // const TABLE_ROWS = [
-  //   { name: "Scope 1 Emissions (Net of Forestry and Land Use)", ghge: "", proportion: "", isCategory: true },
-  //   { name: "GHG Emissions from Community-Level Residential Stationary Fuel Use", ghge: "0.00", proportion: "0.00%" },
-  //   { name: "GHG Emissions from Community-Level Commercial Stationary Fuel Use", ghge: "0.00", proportion: "0.00%" },
-  //   { name: "GHG Emissions from Community Mobile Combustion", ghge: "0.01", proportion: "0.03%" },
-  //   { name: "GHG Emissions from Solid Waste Disposal - IPCC FOD Method", ghge: "0.00", proportion: "0.00%" },
-  //   { name: "GHG Emissions from Other Solid Waste Treatment (ICLEI)", ghge: "0.00", proportion: "0.00%" },
-  //   { name: "GHG Emissions from Solid Waste Open Burning (ICLEI)", ghge: "0.00", proportion: "0.00%" },
-  //   { name: "GHG Emissions from Wastewater Treatment and Discharge", ghge: "0.00", proportion: "0.00%" },
-  //   { name: "GHG Emissions from Community-Level Agriculture (Crops)", ghge: "0.00", proportion: "0.00%" },
-  //   { name: "GHG Emissions from Community-Level Agriculture (Livestock)", ghge: "0.00", proportion: "0.00%" },
-  //   { name: "GHG Emissions from Solid Waste Disposal - Inside LGU Geopolitical Boundaries (ICLEI)", ghge: "0.00", proportion: "0.00%" },
-  //   { name: "Scope 1 Emissions/Removal (Forestry and Land Use)", ghge: "", proportion: "", isCategory: true },
-  //   { name: "GHG Emissions from Forestry and Land Use", ghge: "0.00", proportion: "0.00%" },
-  //   { name: "GHG Removal from Sink", ghge: "0.00", proportion: "0.00%" },
-  // ];
+  const TABLE_ROWS = [
+    { name: "Scope 1 Emissions (Net of Forestry and Land Use)", ghge: "", proportion: "", isCategory: true },
+    { name: "GHG Emissions from Community-Level Residential Stationary Fuel Use", ghge: formattedTotalResidential, proportion: residentialStationaryProportion },
+    { name: "GHG Emissions from Community-Level Commercial Stationary Fuel Use", ghge: formattedTotalCommercial,  proportion: commercialStationaryProportion },
+    { name: "GHG Emissions from Community Mobile Combustion", ghge: totalMobileCombustionGHGE, proportion:mobileCombustionProportion },
+    // { name: "GHG Emissions from Solid Waste Disposal - IPCC FOD Method", ghge: "0.00", proportion: "0.00%" },
+    // { name: "GHG Emissions from Other Solid Waste Treatment (ICLEI)", ghge: "0.00", proportion: "0.00%" },
+    // { name: "GHG Emissions from Solid Waste Open Burning (ICLEI)", ghge: "0.00", proportion: "0.00%" },
+    { name: "GHG Emissions from Wastewater Treatment and Discharge", ghge: totalWasteWaterGHGE, proportion:wasteWaterProportion},
+    { name: "GHG Emissions from Community-Level Agriculture (Crops)", ghge: totalAgricultureCropsGHGE, proportion: agricultureCropsProportion },
+    { name: "GHG Emissions from Community-Level Agriculture (Livestock)", ghge: totalAgricultureLivestockGHGE, proportion: agricultureLivestockProportion},
+    // { name: "GHG Emissions from Solid Waste Disposal - Inside LGU Geopolitical Boundaries (ICLEI)", ghge: "0.00", proportion: "0.00%" },
+    { name: "GHG Emissions from Industrial Processes and Product Use", ghge: totalIndustrialGHGE, proportion: industrialProportion},
+    { name: "Scope 1 Emissions/Removal (Forestry and Land Use)", ghge: "", proportion: "", isCategory: true },
+    // { name: "GHG Emissions from Forestry and Land Use", ghge: "0.00", proportion: "0.00%" },
+    // { name: "GHG Removal from Sink", ghge:"0.00" , proportion: "0.00%" },
+  ];
 
 
  
@@ -234,7 +324,7 @@ function DashBoard() {
       <div className='flex flex-col h-full w-full'>
         <div className='flex items-center gap-3 basis-1/4 px-2 overflow-x-auto mx-6 my-4 pb-2'>
           <div className='h-4/5 w-full'>
-            <SimpleCard body={`${dashboard_data?.total_ghge.toFixed(2)}`}header='Total GHGe'  icon={<GlobeAsiaAustraliaIcon className='h-6 w-6'/>} isLoading={isLoading} /> {/*child_card={<DashboardGHGeSummary/>} */}
+            <SimpleCard body={`${dashboard_data?.total_ghge.toFixed(2)}`} header='Total GHGe'  icon={<GlobeAsiaAustraliaIcon className='h-6 w-6'/>} isLoading={isLoading} /> {/*child_card={<DashboardGHGeSummary/>} */}
           </div>        
           
           <div className='h-4/5 w-full'>
@@ -249,18 +339,10 @@ function DashBoard() {
 
        <div className='md:my-2 md:mx-8 md:flex'>
 
-          {/* ETO YUNG GINAWA KONG SUMMARY TABLE */}
-
-          {/* <TableWithFooter
-            tableHead={TABLE_HEAD}
-            tableRows={TABLE_ROWS}
-            totalGHGEmissions={"0"}
-            totalProportion={"100.00%"}
-          /> */}
-                    
+       
          
          
-          <div className='text-xs bg-white mr-2 pt-2 rounded-lg'>
+       <div className=" md:w-1/3 h-1/4 text-xs bg-white ml-4 pt-2 rounded-lg shadow-md mr-4">
 
           <Typography className='bg-darkgreen font-bold text-base mb-4 rounded-lg py-2 -mt-2 text-center' color='white'>
             Green House Gas Emission (Charts)
@@ -327,10 +409,57 @@ function DashBoard() {
               />
             </div>
 
+          
 
         </div>
+        {/* ===============================================================
+          ETO YUNG GINAWA KONG SUMMARY TABLE
+          =============================================================== */}
+      <div className="pt-4 px-4 bg-white rounded-lg overflow-x-auto shadow-md h-4/5">
+      <Typography className='bg-darkgreen font-bold text-lg mb-4 rounded-lg py-2 -mt-2 text-center' color='white'>
+      GHG Emissions Summary Table
+            </Typography>
+      {/* <div className="flex flex-col items-center w-full mb-4 gap-2 text-nowrap 2xl:w-4/5">
+      <Typography className=' bg-darkgreen px-2 font-bold text-base rounded-lg py-2 -mt-1 text-center mr-2' color='white'>
+      Filter by:
+            </Typography>
+                        <FilterSummary
+                        
+                            municipalityState={
+                                {
+                                    state : municipality,
+                                    setState : setMunicipality
+                                }
+                                
+                            }
+                            brgyState={
+                                {
+                                    state : brgy,
+                                    setState : setBrgy
+                                }
+                            }
+                        
 
-        <div className='basis-full border border-gray-400 bg-white shadow-gray-500 rounded-lg px-4 '>
+                            yearState={
+                                {
+                                    state : yearState,
+                                    setState : setYearState
+                                }
+                            }  
+                        
+                        />
+                    </div> */}
+                    <div className='mb-2'>
+                    <TableWithFooter
+                        tableHead={TABLE_HEAD}
+                        tableRows={TABLE_ROWS}
+                        totalGHGEmissions={totalGHGEmissions}
+                        totalProportion= {totalProportion}
+                      />
+                      </div>
+                      </div>
+
+        {/* <div className='basis-full border border-gray-400 bg-white shadow-gray-500 rounded-lg px-4 '>
 
         {
         chartConfig? 
@@ -343,7 +472,7 @@ function DashBoard() {
         /> : null
         }
 
-        </div>
+        </div> */}
         </div>
 
         <div className='flex flex-wrap md:flex-nowrap px-5 basis-3/4 gap-3 h-1/3 w-full'>

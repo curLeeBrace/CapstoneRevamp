@@ -84,73 +84,62 @@ const STATIONARY_EMMISION_FACTOR = {
     }
 }
 
-const getStationaryGHGe = async (user_type : string, query : {}, locations : any[]):Promise<number[]> => {
-    const ghge_container : number[] = [];
+const getStationaryGHGe = async (
+    user_type: string, 
+    query: {}, 
+    locations: any[],
+    form_type?: string
+): Promise<number[]> => {
+    const ghge_container: number[] = [];
 
     const stationary_data = await StationarySchema.find(query);
-
-    locations.forEach((loc : any, index) => {
+  
+    locations.forEach((loc: any) => {
         const root_loc_code = user_type === "s-admin" ? loc.city_code : loc.brgy_code;
         let temp_ghge = 0;
 
         stationary_data.forEach((data) => {
-            const  {cooking, generator, lighting} = data.survey_data;
-            if(user_type === "s-admin"){
-                if(data.surveyor_info.municipality_code === root_loc_code)  {
+            const { cooking, generator, lighting, form_type: dataFormType } = data.survey_data;
 
-                    temp_ghge = getGHGe_perSurvey({
-                        cooking : {
-                            charcoal : cooking.charcoal,
-                            diesel : cooking.diesel,
-                            kerosene : cooking.kerosene,
-                            propane : cooking.propane,
-                            wood : cooking.propane,
-                        },
-                        generator : {
-                            diesel : generator.diesel,
-                            kerosene : generator.kerosene,
-                            motor_gasoline : generator.motor_gasoline,
-                            residual_fuelOil : generator.residual_fuelOil,
-                        },
-                        lighting : {
-                            kerosene : lighting.kerosene
-                        }
-                    })    
-                }
-            } else {
-                if(data.survey_data.brgy_code === root_loc_code){
+            const matchesLocation = user_type === "s-admin"
+                ? data.surveyor_info.municipality_code === root_loc_code
+                : data.survey_data.brgy_code === root_loc_code;
 
-                    temp_ghge = getGHGe_perSurvey({
-                        cooking : {
-                            charcoal : cooking.charcoal,
-                            diesel : cooking.diesel,
-                            kerosene : cooking.kerosene,
-                            propane : cooking.propane,
-                            wood : cooking.propane,
-                        },
-                        generator : {
-                            diesel : generator.diesel,
-                            kerosene : generator.kerosene,
-                            motor_gasoline : generator.motor_gasoline,
-                            residual_fuelOil : generator.residual_fuelOil,
-                        },
-                        lighting : {
-                            kerosene : lighting.kerosene
-                        }
-                    }) 
-                }
+            const matchesFormType = form_type ? dataFormType === form_type : true;
+
+            if (matchesLocation && matchesFormType) {
+                const ghge = getGHGe_perSurvey({
+                    cooking: {
+                        charcoal: cooking.charcoal,
+                        diesel: cooking.diesel,
+                        kerosene: cooking.kerosene,
+                        propane: cooking.propane,
+                        wood: cooking.wood,
+                    },
+                    generator: {
+                        diesel: generator.diesel,
+                        kerosene: generator.kerosene,
+                        motor_gasoline: generator.motor_gasoline,
+                        residual_fuelOil: generator.residual_fuelOil,
+                    },
+                    lighting: {
+                        kerosene: lighting.kerosene,
+                    }
+                });
+
+
+                temp_ghge += ghge;
             }
-           
+        });
+
+       
+        ghge_container.push(temp_ghge);
+    });
+
+    return ghge_container;
+};
 
 
-        })
-        ghge_container.push(temp_ghge)
-
-    })
-
-    return ghge_container
-
-}
 
 
 
@@ -209,10 +198,9 @@ const getGHGe_perSurvey = (stationary_quantity : StationaryDataTypes) : number =
 
 
 
-
 export {
     getStationaryGHGe,
-    getGHGe_perSurvey
+    getGHGe_perSurvey,
 }
 
 
