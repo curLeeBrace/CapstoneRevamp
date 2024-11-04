@@ -147,15 +147,16 @@ const getStationaryGHGe = async (user_type : string, query : {}, locations : any
             }
            
 
-
+            ghge_container.push(temp_ghge);
         })
-        ghge_container.push(temp_ghge)
-
+       
     })
-
-    return ghge_container
-
+    
+    return ghge_container;
+    
 }
+
+
 
 
 
@@ -214,10 +215,9 @@ const getGHGe_perSurvey = (stationary_quantity : StationaryDataTypes) : number =
 
 
 
-
 export {
     getStationaryGHGe,
-    getGHGe_perSurvey
+    getGHGe_perSurvey,
 }
 
 

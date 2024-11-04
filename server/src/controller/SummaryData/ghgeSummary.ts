@@ -72,32 +72,78 @@ const ghgeSummary = async (req:Request, res:Response) => {
 
 
 
-        const mobileComstion_data =  await get_mobileComstion_GHGe(user_type, query, locations);  
+        const mobileComstion_data =  await get_mobileComstion_GHGe(user_type, query, locations);
+          
         const wasteWaterGHGe = await getWasteWaterGHGeSum(user_type, query, locations);
         const industrialGHGe = await getIndustrialOverallGHGe(user_type, query, locations)
         const agriculture_cropsGHGe = await getAgricultureGHGe(user_type, query, locations, "crops")
         const agriculture_liveStocksGHGe = await getAgricultureGHGe(user_type, query, locations, "liveStocks")
-        const stationaryGHGe = await getStationaryGHGe(user_type, query, locations);
+        const stationary_resGHGe = await getStationaryGHGe(user_type, query, locations, "residential");
+        const stationary_commGHGe = await getStationaryGHGe(user_type, query, locations, "commercial");
 
 
         let total_ghge = 0;
-        mobileComstion_data.forEach((mb_data, index) => {
+
+        mobileComstion_data.length > 0 && mobileComstion_data.forEach((mb_data)=>{
             total_ghge += Number(mb_data.emission.ghge.toFixed(2));
-            total_ghge += Number(wasteWaterGHGe[index].toFixed(2));
-            total_ghge += Number(industrialGHGe[index].toFixed(2));
-            total_ghge += Number(agriculture_cropsGHGe[index].toFixed(2));
-            total_ghge += Number(agriculture_liveStocksGHGe[index].toFixed(2));
-            total_ghge += Number(stationaryGHGe[index].toFixed(2))
+        })
+
+        wasteWaterGHGe.length > 0 && wasteWaterGHGe.map((data) => {
+            total_ghge +=  Number(data.toFixed(2));
+        })
+        industrialGHGe.length > 0 && industrialGHGe.map((data) => {
+            total_ghge +=  Number(data.toFixed(2));
+        })
+
+        agriculture_cropsGHGe.length > 0 && agriculture_cropsGHGe.map((data) => {
+            total_ghge +=  Number(data.toFixed(2));
+        })
+        agriculture_liveStocksGHGe.length > 0 && agriculture_liveStocksGHGe.map((data) => {
+            total_ghge +=  Number(data.toFixed(2));
+        })
+        stationary_resGHGe.length > 0 && stationary_resGHGe.map((data) => {
+            total_ghge +=  Number(data.toFixed(2));
+        })
+
+        stationary_commGHGe.length > 0 && stationary_commGHGe.map((data) => {
+            total_ghge +=  Number(data.toFixed(2));
         })
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+        
+        // mobileComstion_data.forEach((mb_data, index) => {
+        //     total_ghge += mobileComstion_data ? Number(mb_data.emission.ghge.toFixed(2)) : 0;
+        //     total_ghge += wasteWaterGHGe ? Number(wasteWaterGHGe[index].toFixed(2)) : 0;
+        //     total_ghge += industrialGHGe ? Number(industrialGHGe[index].toFixed(2)) : 0;
+        //     total_ghge += agriculture_cropsGHGe ? Number(agriculture_cropsGHGe[index].toFixed(2)) : 0;
+        //     total_ghge += agriculture_liveStocksGHGe ? Number(agriculture_liveStocksGHGe[index].toFixed(2)) : 0;
+        //     total_ghge += stationary_resGHGe ? Number(stationary_resGHGe[index].toFixed(2)) : 0
+        //     total_ghge += stationary_commGHGe ? Number(stationary_commGHGe[index].toFixed(2)) : 0
+        // })
+
+
         return res.status(200).send({
+
             mobileCombustionGHGe : mobileComstion_data,
             wasteWaterGHGe : wasteWaterGHGe,
             industrialGHGe,
             agriculture_cropsGHGe,
             agriculture_liveStocksGHGe,
-            stationaryGHGe,
+            stationary_resGHGe,
+            stationary_commGHGe,
+
             total_ghge
         })
 
