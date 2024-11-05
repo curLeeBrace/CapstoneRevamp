@@ -71,7 +71,7 @@ useEffect(()=>{
 
   axiosPrivate.get("/summary-data/ghge-summary",{params:{
     user_type,
-    municipality_code : user_type === "s-admin" && loc?.address_code ? loc?.address_code : municipality_code,
+    municipality_code : user_type === "s-admin" && province_code ? loc?.address_code : municipality_code || loc?.address_code,
     brgy_code :  user_type === "lgu_admin" && loc?.address_code ? loc?.address_code : undefined,
     year,
     province_code,
