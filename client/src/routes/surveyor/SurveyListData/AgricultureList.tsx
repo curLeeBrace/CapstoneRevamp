@@ -169,7 +169,7 @@ const AgricultureList = () => {
 
     return (
         <div className="flex flex-col mt-10 gap-5 px-5 lg:px-24">
-            <div className="text-2xl self-center">Industrial Surveyed List</div>
+            <div className="text-2xl self-center rounded-lg bg-darkgreen text-white py-2 px-2">Agriculture Surveyed List</div>
 
             <div className="flex bg-blue-gray-100 flex-wrap justify-center p-3 rounded-md shadow-md">
                 <div className=" w-full lg:w-52">
