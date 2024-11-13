@@ -16,12 +16,12 @@ import useAxiosPrivate from "../custom-hooks/auth_hooks/useAxiosPrivate";
 
 const NotificationBell = () => {
   const axiosPrivate = useAxiosPrivate();
-  const {user_type, municipality_code} = useUserInfo();
+  const {user_type, municipality_code, brgy_name} = useUserInfo();
   const [notificationList, setNotificationList] = useState<any[]>();
   const [isLoading, set_isLoading] = useState(false);
   const [openNotiff, setOpenNotiff] = useState(false);
   const [notiffCount, setNotiffCount] = useState(0);
-  const action = user_type === "lgu_admin" ? "view" : "finish"
+  const action = user_type === "lgu_admin" || user_type === "lu_admin"? "view" : "finish"
 
   useEffect(() => {
     getNotiffication().then((lenth) => setNotiffCount(lenth));
@@ -48,7 +48,8 @@ const NotificationBell = () => {
     set_isLoading(true);
     const nottiff_data = await axiosPrivate.get("/notiff/get-notification", {
       params: {
-        municipality_code : municipality_code,
+        municipality_code: municipality_code,
+        brgy_name: user_type === 'lu_surveyor' || user_type === 'lu_admin'? 'Laguna University' : brgy_name,
         user_type
       },
     });
@@ -71,7 +72,7 @@ const NotificationBell = () => {
       >
         <div className="font-bold tex-black">{surveyorName}</div>
         <div className="text-sm text-nowrap">
-          {user_type === "lgu_admin" ? "Request an Survey Update!" : "Update Accepted!"}
+          {user_type === "lgu_admin" || user_type === "lu_admin" ? "Request a Survey Update!" : "Update Accepted!"}
         </div>
       </Link>
     );

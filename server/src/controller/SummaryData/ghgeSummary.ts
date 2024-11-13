@@ -27,43 +27,52 @@ const ghgeSummary = async (req:Request, res:Response) => {
         //prepare query
         let query = undefined;
 
-        if(user_type === "s-admin"){
-            query = municipality_code ? {
-                "surveyor_info.municipality_code" : municipality_code,
-                dateTime_created : {
-                    $gte: new Date(`${year}-01-01T00:00:00.000Z`),
-                    $lte: new Date(`${year}-12-30T23:59:59.000Z`)
-                },
-                $or : [{"survey_data.status" : "0"}, {"survey_data.status" : "2"}]
-            } : {
-                dateTime_created : {
-                    $gte: new Date(`${year}-01-01T00:00:00.000Z`),
-                    $lte: new Date(`${year}-12-30T23:59:59.000Z`)
-                },
-                $or : [{"survey_data.status" : "0"}, {"survey_data.status" : "2"}]
-            };
-
-
-
-        } else {
-            query = brgy_code ? {
-                "survey_data.brgy_code" : brgy_code, 
-                "surveyor_info.municipality_code" : municipality_code,
-                dateTime_created : {
-                    $gte: new Date(`${year}-01-01T00:00:00.000Z`),
-                    $lte: new Date(`${year}-12-30T23:59:59.000Z`)
-                },
-                $or : [{"survey_data.status" : "0"}, {"survey_data.status" : "2"}]
-            } : 
-            {
-                "surveyor_info.municipality_code" : municipality_code,
-                dateTime_created : {
-                    $gte: new Date(`${year}-01-01T00:00:00.000Z`),
-                    $lte: new Date(`${year}-12-30T23:59:59.000Z`)
-                },
-                $or : [{"survey_data.status" : "0"}, {"survey_data.status" : "2"}]
-            };
-
+        if (user_type === "s-admin") {
+            query = municipality_code
+                ? {
+                    "surveyor_info.municipality_code": municipality_code,
+                    dateTime_created: {
+                        $gte: new Date(`${year}-01-01T00:00:00.000Z`),
+                        $lte: new Date(`${year}-12-30T23:59:59.000Z`),
+                    },
+                    $or: [{ "survey_data.status": "0" }, { "survey_data.status": "2" }],
+                }
+                : {
+                    dateTime_created: {
+                        $gte: new Date(`${year}-01-01T00:00:00.000Z`),
+                        $lte: new Date(`${year}-12-30T23:59:59.000Z`),
+                    },
+                    $or: [{ "survey_data.status": "0" }, { "survey_data.status": "2" }],
+                };
+            }else if (user_type === "lu_admin") {
+                query = {
+                    "surveyor_info.municipality_name": "Laguna University",  // Match brgy_name with municipality_name (Laguna University)
+                    dateTime_created: {
+                        $gte: new Date(`${year}-01-01T00:00:00.000Z`),
+                        $lte: new Date(`${year}-12-30T23:59:59.000Z`),
+                    },
+                    $or: [{ "survey_data.status": "0" }, { "survey_data.status": "2" }],
+                };
+            }
+             else {
+            query = brgy_code
+                ? {
+                    "survey_data.brgy_code": brgy_code,
+                    "surveyor_info.municipality_code": municipality_code,
+                    dateTime_created: {
+                        $gte: new Date(`${year}-01-01T00:00:00.000Z`),
+                        $lte: new Date(`${year}-12-30T23:59:59.000Z`),
+                    },
+                    $or: [{ "survey_data.status": "0" }, { "survey_data.status": "2" }],
+                }
+                : {
+                    "surveyor_info.municipality_code": municipality_code,
+                    dateTime_created: {
+                        $gte: new Date(`${year}-01-01T00:00:00.000Z`),
+                        $lte: new Date(`${year}-12-30T23:59:59.000Z`),
+                    },
+                    $or: [{ "survey_data.status": "0" }, { "survey_data.status": "2" }],
+                };
         }
 
         //prepare response
@@ -108,18 +117,6 @@ const ghgeSummary = async (req:Request, res:Response) => {
         stationary_commGHGe.length > 0 && stationary_commGHGe.map((data) => {
             total_ghge +=  Number(data.toFixed(2));
         })
-
-
-
-
-
-
-
-
-
-
-
-
 
 
         

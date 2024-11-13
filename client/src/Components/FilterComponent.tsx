@@ -83,15 +83,14 @@ const FilterComponent = ({municipalityState, formTypeState, brgyState, yearState
              <div>
                     <div className="flex w-full flex-wrap gap-2">
  
-                        <div className="flex h-full w-full xl:w-96 sm:flex-nowrap flex-wrap gap-6">
+                        <div className="flex h-full w-full xl:w-96 sm:flex-nowrap flex-wrap gap-6 text-sm font-bold text-darkgreen">
                             
                                 <Municipality setAddress={municipalityState.setState} />
 
-                            
                             {
                                 municipalityState.state && userInfo.user_type === "lgu_admin" && 
                                 
-                                    <BrgyMenu setBrgys={brgyState.setState} municipality_code={municipalityState.state.address_code} />
+                                    <BrgyMenu setBrgys={brgyState.setState} municipality_code={municipalityState.state.address_code} user_info={userInfo} />
                            
                             }
 

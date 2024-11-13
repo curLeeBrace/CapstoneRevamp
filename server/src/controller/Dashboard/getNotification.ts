@@ -32,18 +32,31 @@ const getNotification = async (req : Request, res : Response) => {
 
     try {
 
-        const status = user_type == "lgu_admin" ? "1" : "2"
-
+        const status = user_type === "lgu_admin" || user_type === "lu_admin" ? "1" : "2";
 
     
+        let query;
 
-
-
-
-        const query = {
-            "survey_data.status" : status,
-            "surveyor_info.municipality_code" : municipality_code
+        if (user_type === "lu_admin") {
+        query = {
+            "survey_data.status": status,
+            "surveyor_info.municipality_name": "Laguna University",
+        };
+        } else if (user_type === "lu_surveyor") {
+        query = {
+            "survey_data.status": status,
+            "surveyor_info.municipality_name": "Laguna University", 
+        };
+        } else {
+        query = {
+            "survey_data.status": status,
+            "surveyor_info.municipality_code": municipality_code,
+            "surveyor_info.municipality_name": { $ne: "Laguna University" },
+        };
         }
+
+        // console.log("Query for notifications:", query);
+
         const mobileCombustion_formData = await FuelFormSchema.find(query).exec();
         const wasteWater_formData = await WasteWaterFormShema.find(query).exec();
 
@@ -104,8 +117,8 @@ const prepareResponse = (form_data : any[], form_category : string, user_type : 
         const response = form_data.map(data => {
             return {
                 form_category,
-                full_name : user_type === "lgu_admin" ? data.surveyor_info.full_name : data.acceptedBy.admin_name,
-                img_id :  user_type === "lgu_admin" ? data.surveyor_info.img_id : data.acceptedBy.img_id,
+                full_name : user_type === "lgu_admin" || user_type === "lu_admin" ? data.surveyor_info.full_name : data.acceptedBy.admin_name,
+                img_id :  user_type === "lgu_admin" || user_type === "lu_admin"? data.surveyor_info.img_id : data.acceptedBy.img_id,
                 form_id : data._id,
                 survey_data : data.survey_data
             }

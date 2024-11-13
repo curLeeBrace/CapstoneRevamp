@@ -1,6 +1,6 @@
 import { Checkbox, Input, Typography} from "@material-tailwind/react";
 import Table from "../../../Components/Table";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import useUserInfo from "../../../custom-hooks/useUserType";
 import BrgyMenu from "../../../custom-hooks/BrgyMenu";
 import { useEffect, useState } from "react";
@@ -22,16 +22,19 @@ const SurveyedList = () => {
   const [tb_data, setTbData] = useState<any[]>();
   const [tb_head, set_tbHead] = useState<string[]>()
   const {survey_category} = useParams();
-
+  const {state} = useLocation();
   const [searchQuery, setSearchQuery] = useState<string>(""); 
   const filteredData = useSearchFilter(tb_data, searchQuery); 
-
+  
   // console.log("survey_category : ", survey_category)
   useEffect(()=>{
+    const {user_type} = user_info
       if(brgy){
           console.log("brgy.address_code" , brgy.address_code)
           axiosPrivate.get(`/forms/${survey_category}/surveyed-data`, {params : {
+              user_type,
               municipality_code : user_info.municipality_code,
+              brgy_name : brgy.address_name,
               brgy_code : brgy.address_code,
               surveyType
           }})
@@ -96,7 +99,7 @@ const SurveyedList = () => {
         ])
       }
 
-  },[brgy, surveyType, survey_category,])
+  },[brgy, surveyType, survey_category])
 
   const prepare_tbData = (
     survey_category: string,
@@ -262,7 +265,7 @@ const SurveyedList = () => {
   };
 
   return (
-    <div className="flex flex-col items-center py-10 gap-5 max-h-screen">
+    <div className="flex flex-col items-center py-3 gap-5 max-h-screen">
       <div className="text-2xl self-center rounded-lg bg-darkgreen text-white px-2 py-2">{
         survey_category === "mobile-combustion" ? "Mobile Combustion Data" : 
         survey_category === "waste-water" ? "Waste Water Data" : "Stationary Data"
@@ -281,8 +284,9 @@ const SurveyedList = () => {
           <BrgyMenu
             municipality_code={user_info.municipality_code}
             setBrgys={setBrgy}
-            // deafult_brgyName={user_info.}
-          />
+            user_info={user_info}
+            deafult_brgyName={user_info.user_type === 'lu_surveyor' ? 'Laguna University' : (state && state.brgy_name) }/>
+          
           <div className="my-2">  
          <Input
                     type="search"

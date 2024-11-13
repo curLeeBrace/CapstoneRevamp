@@ -52,21 +52,19 @@ type LiveStocksDataTypes = {
 
 const AgricultureRawData = ({agricultureType, year}:AgricultureRawDataProps) => {
     const {user_type, municipality_name, municipality_code} = useUserInfo();
-    const [loc, setLoc] = useState<AddressReturnDataType>({} as AddressReturnDataType);
+    const [loc, setLoc] = useState<AddressReturnDataType | undefined>(undefined);
     const axiosPrivate = useAxiosPrivate();
     const [tb_head, set_tbHead] = useState<string[]>();
     const [tb_data, set_tbData] = useState<any[][]>();
   
-
+    const user_info = useUserInfo();
 
     useEffect(()=>{
-
-        
         axiosPrivate.get('/summary-data/agriculture/raw-data',{
             params : {
                 agricultureType, 
-                municipality_name : user_type === "s-admin" ? loc.address_name : municipality_name, 
-                brgy_name : user_type === "s-admin" ? undefined : loc.address_name, 
+                municipality_name : user_type === "s-admin" ? loc?.address_name : municipality_name, 
+                brgy_name : user_type === "s-admin" ? undefined : loc?.address_name, 
                 user_type, 
                 year
             }
@@ -157,8 +155,8 @@ const AgricultureRawData = ({agricultureType, year}:AgricultureRawDataProps) => 
 
         })
         .catch(err => console.log(err))
-
-    },[agricultureType, year, loc.address_name])
+        
+    },[agricultureType, year, loc?.address_name])
     
     return(
         <div className="flex flex-col w-full h-full">
@@ -166,7 +164,7 @@ const AgricultureRawData = ({agricultureType, year}:AgricultureRawDataProps) => 
                 {
                     user_type === "s-admin" ?   
                         <Municipality setAddress={setLoc}/>
-                    :   <BrgyMenu municipality_code={municipality_code} setBrgys={setLoc}/>
+                    :   <BrgyMenu municipality_code={municipality_code} setBrgys={setLoc} user_info={user_info}/>
                 }
             </div>
             <div className="py-4">

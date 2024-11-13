@@ -38,6 +38,13 @@ const getWasteWaterSummary = async (req : Request, res : Response) => {
         return user_type === "s-admin" ? loc.city_name : loc.brgy_name
     })
 
+    if (user_type === "lu_admin") {
+        location_names.length = 0; // Clear the location_names array
+        location_names.push("Laguna University");
+    }else if (user_type === "s-admin" || user_type === "lgu_admin") {
+        location_names.push("Laguna University");
+    }
+    
 
     let wasteWaterSummaries : wasteWaterSummary[] = [];
 
@@ -61,7 +68,7 @@ const getWasteWaterSummary = async (req : Request, res : Response) => {
 
         wasteWaterData.forEach(data => {
             if(user_type === "s-admin") {
-                if(loc === data.surveyor_info.municipality_name){
+                if (loc === data.surveyor_info.municipality_name) {
                     
                     wasteWaterSummary.septic_tanks += data.survey_data.septic_tanks;
                     wasteWaterSummary.openPits_latrines.cat1 += data.survey_data.openPits_latrines.cat1
@@ -74,7 +81,7 @@ const getWasteWaterSummary = async (req : Request, res : Response) => {
                 }
             } else if (user_type === "lgu_admin"){
 
-                if(loc === data.survey_data.brgy_name){
+                if (loc === data.survey_data.brgy_name) {
 
                     // console.log("SEPTIC : ", data.survey_data.septic_tanks)
                     wasteWaterSummary.septic_tanks += data.survey_data.septic_tanks;
@@ -85,10 +92,35 @@ const getWasteWaterSummary = async (req : Request, res : Response) => {
                     wasteWaterSummary.riverDischarge.cat1 += data.survey_data.riverDischarge.cat1;
                     wasteWaterSummary.riverDischarge.cat2 += data.survey_data.riverDischarge.cat2;
                 }
+
+            } else if (user_type === "lu_admin") {
+                if (loc === "Laguna University") {
+                    wasteWaterSummary.septic_tanks += data.survey_data.septic_tanks;
+                    wasteWaterSummary.openPits_latrines.cat1 += data.survey_data.openPits_latrines.cat1;
+                    wasteWaterSummary.openPits_latrines.cat2 += data.survey_data.openPits_latrines.cat2;
+                    wasteWaterSummary.openPits_latrines.cat3 += data.survey_data.openPits_latrines.cat3;
+                    wasteWaterSummary.openPits_latrines.cat4 += data.survey_data.openPits_latrines.cat4;
+                    wasteWaterSummary.riverDischarge.cat1 += data.survey_data.riverDischarge.cat1;
+                    wasteWaterSummary.riverDischarge.cat2 += data.survey_data.riverDischarge.cat2;
+                }
             }
         })
 
        console.log("WASTE WATER : ", wasteWaterSummary);
+
+         // Check if Laguna University has no data or all values are still 0
+        if (
+            wasteWaterSummary.septic_tanks === 0 &&
+            wasteWaterSummary.openPits_latrines.cat1 === 0 &&
+            wasteWaterSummary.openPits_latrines.cat2 === 0 &&
+            wasteWaterSummary.openPits_latrines.cat3 === 0 &&
+            wasteWaterSummary.openPits_latrines.cat4 === 0 &&
+            wasteWaterSummary.riverDischarge.cat1 === 0 &&
+            wasteWaterSummary.riverDischarge.cat2 === 0
+        ) {
+            // If Laguna University has no data, skip adding it to the summaries
+            return;
+        }
 
         wasteWaterSummaries.push(wasteWaterSummary);
 

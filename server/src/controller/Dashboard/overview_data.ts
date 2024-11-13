@@ -44,6 +44,8 @@ export type MobileCombustionTableData = {
 type DashBoardData = {
     total_surveryor : number;
     total_LGU_admins : number;
+    total_LU_surveyors: number;
+    total_LU_admins: number;
     table_data: {
         mobileCombustionGHGe : MobileCombustionTableData[],
         wasteWaterGHGe : number[]
@@ -73,12 +75,18 @@ type DashBoardData = {
                 'lgu_municipality.province_code' : province_code
             }) : await AccountSchema.find({'lgu_municipality.province_code' : province_code, 'lgu_municipality.municipality_code' : municipality_code});
      
-
+            
             const lgu_admin = accounts.filter(acc => acc.user_type === "lgu_admin");
             const surveyor = accounts.filter(acc => acc.user_type === "surveyor");
 
+            const lu_admin = accounts.filter(acc => acc.user_type === "lu_admin" &&
+                acc.lgu_municipality.municipality_name === "Laguna University");
+
+            const lu_surveyor = accounts.filter(acc => acc.user_type === "lu_surveyor" &&
+                acc.lgu_municipality.municipality_name === "Laguna University");
 
             const parent_code = user_type === "s-admin" ? province_code : municipality_code
+
 
             const query = user_type === "s-admin" ? 
                 {
@@ -86,6 +94,11 @@ type DashBoardData = {
                     $or : [{"survey_data.status" : "0"}, {"survey_data.status" : "2"}]
                 }
             : 
+            user_type === "lu_admin" ?
+            {
+                'surveyor_info.municipality_name': "Laguna University",
+                $or : [{"survey_data.status" : "0"}, {"survey_data.status" : "2"}]
+            } :
                 {
                     'surveyor_info.municipality_code': municipality_code,
                     $or : [{"survey_data.status" : "0"}, {"survey_data.status" : "2"}]
@@ -138,6 +151,8 @@ type DashBoardData = {
             const response : DashBoardData = {
                     total_LGU_admins : lgu_admin.length,
                     total_surveryor : surveyor.length,
+                    total_LU_admins : lu_admin.length,
+                    total_LU_surveyors: lu_surveyor.length,
                     table_data: {
                         mobileCombustionGHGe : mobileComstion_data,
                         wasteWaterGHGe : wasteWaterGHGe,

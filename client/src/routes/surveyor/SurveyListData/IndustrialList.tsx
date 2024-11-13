@@ -5,7 +5,7 @@ import { Input, Radio } from "@material-tailwind/react";
 import Table from "../../../Components/Table";
 import useAxiosPrivate from "../../../custom-hooks/auth_hooks/useAxiosPrivate";
 import { AddressReturnDataType } from "../../../custom-hooks/useFilterAddrress";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import useSearchFilter from "../../../custom-hooks/useSearchFilter";
 import SimpleCard from "../../../Components/Dashboard/SimpleCard";
 import { ExclamationTriangleIcon } from "@heroicons/react/24/solid";
@@ -20,14 +20,14 @@ const IndustrialList = () => {
     const [tb_head, set_tbHead] = useState<string[]>();
     const [tb_data, set_tbData] = useState<any[][]>();
 
-
+    const user_info = useUserInfo();
     const axiosPrivate = useAxiosPrivate();
 
     const [searchQuery, setSearchQuery] = useState<string>(""); 
     const filteredData = useSearchFilter(tb_data, searchQuery); 
 
   
-    
+    const {state} = useLocation();
 
 
 
@@ -93,9 +93,10 @@ const IndustrialList = () => {
 
 
     useEffect(()=>{
-
+        const {user_type} = user_info
         axiosPrivate.get(`/forms/industrial-${indsutryType}/surveyed-data`, {params : {
             municipality_code : municipality_code,
+            user_type,
             brgy_code : brgy?.address_code,
             surveyType : null
         }})
@@ -340,12 +341,12 @@ const IndustrialList = () => {
     
 
     return (
-        <div className="flex flex-col mt-10 gap-5 px-5 lg:px-24 ">
+        <div className="flex flex-col py-3 gap-5 px-5 lg:px-24 ">
             <div className="text-2xl self-center rounded-lg bg-darkgreen text-white py-2 px-2">Industrial Surveyed List</div>
 
             <div className="flex bg-blue-gray-100 flex-wrap justify-center p-3 rounded-md shadow-md">
                 <div className=" w-full lg:w-52 mx-20">
-                    <BrgyMenu setBrgys={setBrgy} municipality_code={municipality_code}/>
+                    <BrgyMenu setBrgys={setBrgy} municipality_code={municipality_code} user_info={user_info} deafult_brgyName={user_info.user_type === 'lu_surveyor' ? 'Laguna University' : (state && state.brgy_name) }/>
                 <div className="my-2">  
                 <Input
                     type="search"
