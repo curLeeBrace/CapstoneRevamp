@@ -112,7 +112,7 @@ const WasteWaterForm = () => {
       openPits_latrinesCat4: formData.openPits_latrinesCat4,
       riverDischargeCat1: formData.riverDischargeCat1,
       septic_tanks: formData.septic_tanks
-    }).some(value => value && value.toString().trim() !== '') && brgy?.address_code !== undefined;
+    }).some(value => value && value.toString().trim() !== '') && (user_info.user_type !== 'lu_admin' ? brgy?.address_code !== undefined : true);
   
     // If validation fails
     if (!isDataFilled) {
@@ -308,7 +308,7 @@ const finishHandler = () => {
       <AlertBox openAlert = {openAlert}  setOpenAlert={setOpenAlert}  message={alert_msg}/>
     
   
-    <div className="flex justify-center min-h-screen px-4 py-10 overflow-x-hidden">
+    <div className="flex justify-center min-h-screen px-4 py-4 pt-12 overflow-x-hidden">
        <DialogBox isLoading = {isLoading} open = {openDialogBox} setOpen={setOpenDialogBox} message = 'Please double check the data before submitting' label='Confirmation' submit={
         params.action === "submit" ? submitHandler
         : params.action === "update" ? updateHandler
@@ -318,7 +318,7 @@ const finishHandler = () => {
       
       <Card className="w-full h-full sm:w-96 md:w-3/4 lg:w-2/3 xl:w-2/3 px-6 py-6 -mt-10 shadow-black shadow-2xl rounded-xl relative gap-5">
         
-        <Typography variant="h4" color="blue-gray" className="text-center">
+        <Typography variant="h4" color="blue-gray" className="text-center text-xl text-white bg-darkgreen rounded-lg py-2">
           Waste Water Form
         </Typography>
 
@@ -326,8 +326,11 @@ const finishHandler = () => {
           <BrgyMenu
             disabled = {params.action === "view" || params.action === "finish"}
             municipality_code={user_info.municipality_code}
-            setBrgys={setBrgy}
-            deafult_brgyName={state && state.brgy_name}
+            setBrgys={user_info.user_type === 'lu_surveyor' 
+              ? () => setBrgy({ address_code: '043426003', address_name: 'Laguna University', parent_code: '0434' }) 
+              : setBrgy} 
+            deafult_brgyName={user_info.user_type === 'lu_surveyor' ? 'Laguna University' : (state && state.brgy_name) }
+            user_info={user_info}
           />
         </div>
 

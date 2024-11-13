@@ -71,6 +71,13 @@ export function LogIn() {
               //AdminPage..
               navigate("/lgu_admin", {replace : true})
 
+            } else if(user_type == "lu_admin") {
+              //AdminPage..
+              navigate("/lu_admin", {replace : true})
+
+            } else if(user_type == "lu_surveyor") {
+              //AdminPage..
+              navigate("/lu_surveyor", {replace : true})
 
          
             } else {

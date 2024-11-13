@@ -136,7 +136,14 @@ const ElectronicsSummary = ({year} : ElectronicsSummaryProps) => {
                 <div className="my-2 px-2">
                         {
                             donutState ?
-                                <DonutChart labels={donutState.labels} series={donutState.series} title="Electronics" chart_meaning={`Overall collected data in ${user_info.user_type === "s-admin" ? "Laguna Province." : user_info.user_type === "lgu_admin" ? `${user_info.municipality_name}.` : "Brgy."}`}/>:
+                                <DonutChart labels={donutState.labels} series={donutState.series} title="Electronics" chart_meaning={`Overall collected data in ${
+                                    user_info.user_type === "s-admin"
+                                      ? "Laguna Province"
+                                      : user_info.user_type === "lgu_admin" || user_info.user_type === "lu_admin"
+                                      ? user_info.municipality_name
+                                      : "Brgy."
+                                  }`}
+                                  />:
                                 <SimpleCard body={"No Available Data"} header="" icon={<ExclamationTriangleIcon className="h-full w-full"/>}/>
                         }
                 </div>

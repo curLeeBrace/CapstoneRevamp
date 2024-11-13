@@ -51,6 +51,24 @@ const SurveyorInfo = () => {
 
   },[])
 
+  
+  useEffect(() => {
+    const {user_type, municipality_name} = userInfo;
+
+    if(user_type === "lu_admin"){
+      axiosPrivate
+      .get(`dashboard/get-surveyor-info/${municipality_name}/${user_type}`)
+      .then((res) => {
+        setAccs(res.data);
+        // console.log("Sheeesh Accounts! : ", res.data);
+      })
+      .catch((err) => console.log(err))
+      .finally(()=>setIsLoading(false))
+    }
+
+  },[])
+
+
 
 
   // console.log("Accs : ", accs);

@@ -7,6 +7,7 @@ import BarChart, {BarSeriesTypes} from "../../../Components/Dashboard/BarChart";
 import { ChartBarIcon } from "@heroicons/react/24/solid";
 import { TabsDefault } from "../../../Components/Tabs";
 import AgricultureRawData from "./AgricultureRawData";
+
 const AgricultureSummary = () => {
     const axiosPrivate = useAxiosPrivate();
     const [agricultureType, setAgricultureType] = useState<string>("crops");
@@ -17,10 +18,8 @@ const AgricultureSummary = () => {
     const user_info = useUserInfo()
 
 
-
-
-
     useEffect(()=>{
+
 
         axiosPrivate.get('/summary-data/agriculture',{
             params : {
@@ -191,7 +190,7 @@ const AgricultureSummary = () => {
     return (
         <div className="flex flex-col p-10">
             <Typography color="white" className="font-bold text-2xl flex self-center text-center -mt-6 mb-4 bg-darkgreen py-2 px-10 rounded-lg">
-                                    Agriculture Summary
+                                    Agriculture
                                 </Typography>
            <div className="flex gap-5">
                 <div className="bg-darkgreen border-2 rounded-xl px-20 mb-2">
@@ -211,7 +210,15 @@ const AgricultureSummary = () => {
                         {
                             label : "Bar Chart",
                             value : "barChart",
-                            tabPanelChild : <BarChart chart_icon={<ChartBarIcon className="w-6 h-6"/>} chart_label={`Agriculture ${agricultureType}`} chart_meaning={`Overall collected data ${user_info.user_type === "s-admin" ? "per Municipality (Laguna Province)" : user_info.user_type === "lgu_admin" ? `per Brgy. (${user_info.municipality_name})` : "Brgy."}`} series={agricultureSeries} isLoading = {isLoading}/>
+                            tabPanelChild : <BarChart chart_icon={<ChartBarIcon className="w-6 h-6"/>} chart_label={`Agriculture ${agricultureType}`} 
+                            chart_meaning={`Overall collected data in ${
+                                user_info.user_type === "s-admin"
+                                  ? "Laguna Province"
+                                  : user_info.user_type === "lgu_admin" || user_info.user_type === "lu_admin"
+                                  ? user_info.municipality_name
+                                  : "Brgy."
+                              }`}
+                            series={agricultureSeries} isLoading = {isLoading}/>
                             
                         },
 

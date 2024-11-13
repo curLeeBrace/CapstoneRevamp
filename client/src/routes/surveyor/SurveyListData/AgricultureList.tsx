@@ -5,7 +5,7 @@ import useUserInfo from "../../../custom-hooks/useUserType";
 import useAxiosPrivate from "../../../custom-hooks/auth_hooks/useAxiosPrivate";
 import { AddressReturnDataType } from "../../../custom-hooks/useFilterAddrress";
 import Table from "../../../Components/Table";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 const AgricultureList = () => {
 
@@ -16,7 +16,8 @@ const AgricultureList = () => {
     const [tb_head, set_tbHead] = useState<string[]>();
     const [tb_data, set_tbData] = useState<any[][]>();
     const axiosPrivate = useAxiosPrivate();
-
+    const user_info = useUserInfo()
+    const {state} = useLocation();
 
     useEffect(()=>{
         
@@ -31,10 +32,10 @@ const AgricultureList = () => {
 
 
     useEffect(()=>{
-
-
+        const {user_type} = user_info
 
         axiosPrivate.get(`/forms/agriculture-${agricultureType}/surveyed-data`, {params : {
+            user_type,
             municipality_code : municipality_code,
             brgy_code : brgy?.address_code,
             surveyType : null
@@ -168,12 +169,12 @@ const AgricultureList = () => {
 
 
     return (
-        <div className="flex flex-col mt-10 gap-5 px-5 lg:px-24">
-            <div className="text-2xl self-center">Industrial Surveyed List</div>
+        <div className="flex flex-col py-3 gap-5 px-5 lg:px-24">
+            <div className="text-2xl self-center rounded-lg bg-darkgreen text-white py-2 px-2">Agriculture Surveyed List</div>
 
             <div className="flex bg-blue-gray-100 flex-wrap justify-center p-3 rounded-md shadow-md">
                 <div className=" w-full lg:w-52">
-                    <BrgyMenu setBrgys={setBrgy} municipality_code={municipality_code}/>
+                    <BrgyMenu setBrgys={setBrgy} municipality_code={municipality_code} user_info={user_info} deafult_brgyName={user_info.user_type === 'lu_surveyor' ? 'Laguna University' : (state && state.brgy_name) }/>
                 </div>
                 <div className="flex  w-full gap-4 lg:w-1/2 flex-wrap">
                 {/* <Radio defaultChecked name="indusry_type" label="All" color ="green" value={"all"} onChange={(e:any)=>setIndustryType(e.target.value)}/> */}

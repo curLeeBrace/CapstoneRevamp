@@ -14,6 +14,9 @@ export type RequestQueryTypes = {
     municipality_code : string;
     brgy_code : string
     selectedYear? : string
+    brgy_name?: string; 
+    municipality_name: string,
+
 
 }
 
@@ -35,6 +38,7 @@ const prepareQuery = (requestQuery : RequestQueryTypes) : {} => {
             form_type,
             municipality_code,
             brgy_code,
+            municipality_name,
             selectedYear
         } = requestQuery
 
@@ -63,7 +67,17 @@ const prepareQuery = (requestQuery : RequestQueryTypes) : {} => {
 
             }
 
-        } else if(user_type === "lgu_admin"){
+        } else if (user_type === "lu_admin") {
+            // Custom condition for lu_admin user_type
+            query = {
+                $and: [
+                    { 'surveyor_info.province_code': province_code },
+                    { 'survey_data.form_type': form_type },
+                    { 'surveyor_info.municipality_name': "Laguna University" },
+                ],
+            };
+        }
+        else if(user_type === "lgu_admin"){
             
             if(selectAll === "true"){
                 query = {
@@ -133,7 +147,6 @@ const getMobileCombustionData = async (req:Request, res:Response) => {
        
 
         const preparedQuery = prepareQuery(req.query as RequestQueryTypes);
-
         
         const vehicleTypes = form_type === "residential" || "commercial" ? 
             [ "Motorcycle",
@@ -170,58 +183,47 @@ const getMobileCombustionData = async (req:Request, res:Response) => {
     
         
         mobile_combustionForm.forEach(data => {
-
-            if(user_type === "s-admin"){
-                if(selectAll === "true"){
-
+            if (user_type === "s-admin") {
+                if (selectAll === "true") {
                     const single_form_emmmsion = get_MobileCombustionEmission(data.survey_data.fuel_type as string, data.survey_data.liters_consumption);
-                    const {co2e, ch4e, n2oe, ghge} = single_form_emmmsion
+                    const { co2e, ch4e, n2oe, ghge } = single_form_emmmsion;
                     emmission.tb_co2e += co2e;
                     emmission.tb_ch4e += ch4e;
                     emmission.tb_n2oe += n2oe;
                     emmission.tb_ghge += ghge;
-                } else if(selectAll === "false"){
-
-                    if(data.surveyor_info.municipality_code === municipality_code)  {
-                        //compute the municipality emmisions
-                        const single_form_emmmsion = get_MobileCombustionEmission(data.survey_data.fuel_type as string, data.survey_data.liters_consumption);
-                        const {co2e, ch4e, n2oe, ghge} = single_form_emmmsion
-        
-                        emmission.tb_co2e += co2e;
-                        emmission.tb_ch4e += ch4e;
-                        emmission.tb_n2oe += n2oe;
-                        emmission.tb_ghge += ghge;
-                    }
-
+                } else if (selectAll === "false" && data.surveyor_info.municipality_code === municipality_code) {
+                    const single_form_emmmsion = get_MobileCombustionEmission(data.survey_data.fuel_type as string, data.survey_data.liters_consumption);
+                    const { co2e, ch4e, n2oe, ghge } = single_form_emmmsion;
+                    emmission.tb_co2e += co2e;
+                    emmission.tb_ch4e += ch4e;
+                    emmission.tb_n2oe += n2oe;
+                    emmission.tb_ghge += ghge;
                 }
-            } else if(user_type === "lgu_admin"){
-                if(selectAll === "true"){
-                        //compute the municipality emmisions
-                        const single_form_emmmsion = get_MobileCombustionEmission(data.survey_data.fuel_type as string, data.survey_data.liters_consumption);
-                        const {co2e, ch4e, n2oe, ghge} = single_form_emmmsion
-        
-                        emmission.tb_co2e += co2e;
-                        emmission.tb_ch4e += ch4e;
-                        emmission.tb_n2oe += n2oe;
-                        emmission.tb_ghge += ghge;
-
-                } else if(selectAll === "false"){
-
-                    if(data.survey_data.brgy_code === brgy_code){
-                        const single_form_emmmsion = get_MobileCombustionEmission(data.survey_data.fuel_type as string, data.survey_data.liters_consumption);
-                        const {co2e, ch4e, n2oe, ghge} = single_form_emmmsion
-        
-                        emmission.tb_co2e += co2e;
-                        emmission.tb_ch4e += ch4e;
-                        emmission.tb_n2oe += n2oe;
-                        emmission.tb_ghge += ghge;
-                    }
-
+            } else if (user_type === "lgu_admin") {
+                if (selectAll === "true") {
+                    const single_form_emmmsion = get_MobileCombustionEmission(data.survey_data.fuel_type as string, data.survey_data.liters_consumption);
+                    const { co2e, ch4e, n2oe, ghge } = single_form_emmmsion;
+                    emmission.tb_co2e += co2e;
+                    emmission.tb_ch4e += ch4e;
+                    emmission.tb_n2oe += n2oe;
+                    emmission.tb_ghge += ghge;
+                } else if (selectAll === "false" && data.survey_data.brgy_code === brgy_code) {
+                    const single_form_emmmsion = get_MobileCombustionEmission(data.survey_data.fuel_type as string, data.survey_data.liters_consumption);
+                    const { co2e, ch4e, n2oe, ghge } = single_form_emmmsion;
+                    emmission.tb_co2e += co2e;
+                    emmission.tb_ch4e += ch4e;
+                    emmission.tb_n2oe += n2oe;
+                    emmission.tb_ghge += ghge;
                 }
+            } else if (user_type === "lu_admin" && data.surveyor_info.municipality_name === "Laguna University") {
+                const single_form_emmmsion = get_MobileCombustionEmission(data.survey_data.fuel_type as string, data.survey_data.liters_consumption);
+                const { co2e, ch4e, n2oe, ghge } = single_form_emmmsion;
+                emmission.tb_co2e += co2e;
+                emmission.tb_ch4e += ch4e;
+                emmission.tb_n2oe += n2oe;
+                emmission.tb_ghge += ghge;
             }
-
-            
-        })
+        });
 
         const vehicleAges = mobile_combustionForm.map(mbc_data => mbc_data.survey_data.vehicle_age);
         const uniqueVehicleAges = Array.from(new Set(vehicleAges)).sort();

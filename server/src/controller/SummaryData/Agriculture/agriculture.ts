@@ -5,7 +5,7 @@ import getAvailableLocations from '../../../../custom_funtions/getAvailableLocat
 
 
 type RequestQueryTypes = {
-    user_type : "s-admin" | "lgu_admin"
+    user_type : "s-admin" | "lgu_admin" | "lu_admin"
     agricultureType : "crops" | "livestocks" ;
     municipality_code : string;
     prov_code : string;
@@ -27,8 +27,16 @@ const getAgricultureSummary = async (req:Request, res:Response) => {
         },
 
     } 
-    : 
-    {
+    : user_type === "lu_admin"
+            ? {
+                  "surveyor_info.municipality_name": "Laguna University", // `municipality_name` for `lu_admin`
+                  dateTime_created: {
+                      $gte: new Date(`${year}-01-01T00:00:00.000Z`),
+                      $lte: new Date(`${year}-12-30T23:59:59.000Z`),
+                  },
+              }
+            : {
+                
         "surveyor_info.municipality_code" : municipality_code,
         dateTime_created : {
             $gte: new Date(`${year}-01-01T00:00:00.000Z`),
@@ -71,21 +79,128 @@ const getAgricultureSummary = async (req:Request, res:Response) => {
     let responseContainer:any[] = []
 
 
-
+    const lagunaUniversityLocation = {
+        loc_code: "043426003", 
+        loc_name: "Laguna University",
+    };
+    
 
     if(user_type === "s-admin") {
-
-
         // const surveyData_LocName = filter_AggricultureData.map((industry_data)=> industry_data.municipality_name)
         /////////////////JUST FILTERING THE OUTPUT OF LOCATIONS///////////////////////////////////////
-        filter_locations = locations.map((loc) => {
-            return {
-                loc_code : loc.city_code,
-                loc_name : loc.city_name
-            }
-        })
-
+        filter_locations = [
+            lagunaUniversityLocation,
+            ...locations.map((loc) => ({
+                loc_code: loc.city_code,
+                loc_name: loc.city_name,
+            })),
+        ];
         ////////////////////////////////////////////////////////////////////////////
+        if(agricultureType === "crops"){
+            
+            filter_locations.map((loc)=>{
+                const {loc_name} = loc;
+                let responseTempCointainer = {
+                    location : loc_name,
+                    rdsi : 0,
+                    rdsr : 0,
+                    rwsi : 0,
+                    rwsr : 0,
+                    crop_residues : 0,
+                    dol_limestone : 0,
+                }
+    
+                agricultureData.map((data)=>{
+                    const {survey_data, surveyor_info} = data;
+                  
+                    const {municipality_name} = surveyor_info;
+    
+                    if(loc_name === municipality_name){
+    
+                            const {
+                                rdsi,
+                                rdsr,
+                                rwsi,
+                                rwsr,
+                                crop_residues,
+                                dol_limestone,
+                            } = survey_data.crops
+    
+                            responseTempCointainer.rdsi += rdsi;
+                            responseTempCointainer.rdsr += rdsr;
+                            responseTempCointainer.rwsi += rwsi;
+                            responseTempCointainer.rwsr += rwsr;
+                            responseTempCointainer.crop_residues += crop_residues;
+                            responseTempCointainer.dol_limestone += dol_limestone;
+    
+                    }
+    
+                })
+    
+                responseContainer.push(responseTempCointainer);
+            })
+        } else {
+            filter_locations.map((loc)=>{
+                const {loc_name} = loc;
+                let responseTempCointainer = {
+                    location : loc_name,
+                    buffalo : 0,
+                    cattle : 0,
+                    goat : 0,
+                    horse : 0,
+                    poultry : 0,
+                    swine : 0,
+                    non_dairyCattle : 0,
+                }
+    
+                agricultureData.map((data)=>{
+                    const {survey_data, surveyor_info} = data;
+                  
+                    const {municipality_name} = surveyor_info;
+    
+                    if(loc_name === municipality_name){
+    
+                            const {
+                                buffalo,
+                                cattle,
+                                goat,
+                                horse,
+                                poultry,
+                                swine,
+                                non_dairyCattle,
+                            } = survey_data.live_stock
+    
+                            responseTempCointainer.buffalo += buffalo;
+                            responseTempCointainer.cattle += cattle;
+                            responseTempCointainer.goat += goat;
+                            responseTempCointainer.horse += horse;
+                            responseTempCointainer.poultry += poultry;
+                            responseTempCointainer.swine += swine;
+                            responseTempCointainer.non_dairyCattle += non_dairyCattle;
+                    }
+    
+                })
+    
+                responseContainer.push(responseTempCointainer);
+            })
+        }   
+
+    } else if (user_type === "lu_admin") {
+        const lagunaUniversityLocation = {
+            loc_code: "043426", 
+            loc_name: "Laguna University",
+        };
+
+        filter_locations = [
+            lagunaUniversityLocation,
+            ...locations
+                .filter((loc) => loc.city_code !== "043426") 
+                .map((loc) => ({
+                    loc_code: loc.city_code,
+                    loc_name: loc.city_name,
+                })),
+        ];
+
         if(agricultureType === "crops"){
             
             filter_locations.map((loc)=>{
@@ -177,17 +292,18 @@ const getAgricultureSummary = async (req:Request, res:Response) => {
 
 
 
-
-
-
     } else {
         // const surveyData_LocName = filter_AggricultureData.map((industry_data)=> industry_data.brgy_name)
-        filter_locations = locations.map((loc) => {
-            return {
-                loc_code : loc.brgy_code,
-                loc_name : loc.brgy_name
-            }
-        })
+        const hasLagunaUniversityData = agricultureData.some((data) => data.surveyor_info.municipality_name === "Laguna University");
+
+        filter_locations = [
+            ...(hasLagunaUniversityData ? [lagunaUniversityLocation] : []),
+            ...locations.map((loc) => ({
+                loc_code: loc.brgy_code,
+                loc_name: loc.brgy_name,
+            })),
+        ];
+
 
 
 

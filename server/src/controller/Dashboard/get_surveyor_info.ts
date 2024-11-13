@@ -13,7 +13,7 @@ import StationarySchema from "../../db_schema/StationarySchema";
 
 const get_surveyor_info = async (req : Request, res : Response) => {
 
-    const {municipality_code, user_type} = req.params;
+    const {municipality_code, user_type, municipality_name} = req.params;
     // console.log(get_all, typeof(get_all))
     
     try {
@@ -24,11 +24,19 @@ const get_surveyor_info = async (req : Request, res : Response) => {
        
             if(user_type === "s-admin") {
                 if(municipality_code === "undefined") {
-                    query = {user_type : "surveyor"};
+                    query = { user_type: { $in: ["surveyor", "lu_surveyor"] } };
 
                 } else {
-                    query = {'lgu_municipality.municipality_code' : municipality_code, user_type:"surveyor"}
+                    query = { 'lgu_municipality.municipality_code': municipality_code, user_type: { $in: ["surveyor", "lu_surveyor"] } };
                 }
+            } else if (user_type === "lu_admin") {
+                if(municipality_name === "Laguna University") {
+                    query = { user_type: "lu_surveyor"};
+
+                } else {
+                    query = { 'lgu_municipality.municipality_name': "Laguna University", user_type: "lu_surveyor" };
+                }
+       
             } else {
 
                 query = {'lgu_municipality.municipality_code' : municipality_code, user_type:"surveyor"}
@@ -88,20 +96,23 @@ const get_surveyor_info = async (req : Request, res : Response) => {
             let agricultureSurveyCount = getAgricultureSurveyCount(agricultureData, acc.email);;
             let stationarySurveyCount = getSurveyCount(stationaryData, acc.email);
 
-            user_infos.push({
-                full_name : acc.f_name + " " + acc.l_name,
-                img_id : acc.img_id,
-                municipality_name : acc.lgu_municipality.municipality_name,
-                user_type : acc.user_type,
-                mobileCombustionSurveyCount,
-                wasteWaterSurveyCount,
-                industrialSurveyCount,
-                agricultureSurveyCount,
-                stationarySurveyCount
-            })
-         
-        })
+        
 
+            // Handle other user types if necessary
+         
+                user_infos.push({
+                    full_name: acc.f_name + " " + acc.l_name,
+                    img_id: acc.img_id,
+                    municipality_name: acc.lgu_municipality.municipality_name,
+                    user_type: acc.user_type,
+                    mobileCombustionSurveyCount,
+                    wasteWaterSurveyCount,
+                    industrialSurveyCount,
+                    agricultureSurveyCount,
+                    stationarySurveyCount
+                });
+            
+        });
 
 
         return res.status(200).json(user_infos)

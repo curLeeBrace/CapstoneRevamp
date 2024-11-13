@@ -187,7 +187,7 @@ const StationarySummary = () => {
       <div className="flex self-center mt-3">
         <Typography className="font-bold text-white text-2xl text-center bg-darkgreen py-2 px-10 rounded-lg">
           {" "}
-          Stationary Summary
+          Stationary Fuel Use
         </Typography>
       </div>
       <div>

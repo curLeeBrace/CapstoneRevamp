@@ -93,7 +93,7 @@ const getWasteWaterGHGeSum = async (user_type:string , query : {}, locations : a
                     wasteWaterGHGe += prepateWasteWaterGHGe({septic_tanks, openPits_latrines, riverDischarge}, surveyType)
 
                 }
-            } else {
+            }else {
                 if(wasteWaterFormData.survey_data.brgy_code === root_loc_code){
                     wasteWaterGHGe += prepateWasteWaterGHGe({septic_tanks, openPits_latrines, riverDischarge}, surveyType)
                 }   

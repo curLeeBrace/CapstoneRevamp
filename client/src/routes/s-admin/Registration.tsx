@@ -1,4 +1,3 @@
-
 import {
   Card,
   CardHeader,
@@ -56,7 +55,7 @@ function Registration() {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const handleChange = useHandleChange;
- const [user_type, setUserType] = useState<"s-admin"|"lgu_admin">();
+ const [user_type, setUserType] = useState<"s-admin"|"lgu_admin"|"lu_admin">();
 
   const [details, setDetails] = useState<DetailsTypes | undefined>()
 
@@ -166,7 +165,21 @@ function Registration() {
         ...prev, ["lgu_municipality"]:lgu_municipality
       }
       })
-    }
+    } 
+    // else if (user_info.user_type === "lu_admin") {
+    //   setDetails((prev: any) => {
+    //     const lgu_municipality = {
+    //       municipality_name: "Laguna University",
+    //          municipality_code: "043426", 
+    //          province_code: "0434", 
+    //     };
+  
+    //     return {
+    //       ...prev,
+    //       lgu_municipality
+    //     };
+    //   });
+    // }
 
 },[])
 
@@ -232,12 +245,13 @@ function Registration() {
                 }
                
             </Select> 
-            :<Typography>
-                LGU Municipality : {details?.lgu_municipality.municipality_name}
+            :<Typography className="font-bold text-darkgreen">
+            {user_type === "lu_admin" ? "Laguna University": `LGU Municipality : ${details?.lgu_municipality.municipality_name}`}
             </Typography>
           } 
-
-          <Select label="User Type" name="user_type" onChange={(value) => 
+        
+          {(user_type != "lu_admin" &&
+            <Select label="User Type" name="user_type" onChange={(value) => 
              setDetails((prev : any) => {
               return {
                 ...prev, ["user_type"]:value
@@ -247,8 +261,38 @@ function Registration() {
           >
                 <Option value="lgu_admin">LGU Admin</Option>
                 <Option value="surveyor">Survey Partner</Option>
-          </Select>
-
+          </Select>)}
+          
+        {user_type === "lu_admin" && (
+           <Select
+           label="User Type"
+           name="user_type"
+           onChange={(value) => {
+             setDetails((prev: any) => {
+               // Set default values for "lu_admin" or "lu_surveyor"
+               let lgu_municipality = prev.lgu_municipality;
+ 
+               if (value === "lu_admin" || value === "lu_surveyor") {
+                 lgu_municipality = {
+                   municipality_name: "Laguna University",
+                   municipality_code: "043426", 
+                   province_code: "0434", 
+                 };
+ 
+               }
+ 
+               return {
+                 ...prev,
+                 user_type: value,
+                 lgu_municipality, // Update the lgu_municipality state
+               };
+             });
+           }}
+         >
+           <Option value="lu_admin">Laguna University Admin</Option>
+           <Option value="lu_surveyor">Laguna University Surveyor</Option>
+         </Select>
+      )}
 
 
         </CardBody>

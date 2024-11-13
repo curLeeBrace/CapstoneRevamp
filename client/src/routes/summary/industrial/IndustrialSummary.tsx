@@ -150,20 +150,42 @@ const IndustrialSummary = () => {
         {/* Column/Bar Chart Container */}   
 
         <div className="w-3/5 h-[400px]">
-            <BarChart chart_icon={<UserIcon className="w-6 h-6"/>} chart_label={`Reponse per ${user_info.user_type === "s-admin" ? "Municipality" : `Brgy.`}`} 
-            chart_meaning={`Overall Response for ${industryLabel} ${user_info.user_type === "s-admin" ? "(Laguna Province)." : user_info.user_type === "lgu_admin" ? `(${user_info.municipality_name}).` : "Brgy."}`} series={res_series} />
+            <BarChart chart_icon={<UserIcon className="w-6 h-6"/>} 
+            chart_label={`Response ${user_info.user_type === "s-admin" || user_info.user_type === "lgu_admin" ? "per" : "in"} ${user_info.user_type === "lu_admin" ? "Laguna University" : user_info.user_type === "s-admin" ? "Municipality" : "Brgy."}`}
+            chart_meaning={`Overall Response for ${industryLabel} ${user_info.user_type === "s-admin" 
+            ? "Laguna Province" 
+            : user_info.user_type === "lu_admin" 
+            ? "Laguna University"
+            : user_info.user_type === "lgu_admin"
+            ? `${user_info.municipality_name}`
+            : "Selected Area"}.`}
+            series={res_series} />
         </div>
 
         {/* Donut Chart Container */}
         <div className="w-4/12 flex flex-col">
           {/* 1st Donut Chart Container */}
           <div className="border-2 rounded-lg py-4 mb-2 border-gray-300">
-            {dsi && <DonutChart series={dsi.series} labels={dsi.labels} title={`Data Source Identifier (${industryLabel})`} chart_meaning={`Overall collected data in ${user_info.user_type === "s-admin" ? "Laguna Province" : user_info.user_type === "lgu_admin" ? `${user_info.municipality_name}` : "Brgy."}`}/>}
+            {dsi && <DonutChart series={dsi.series} labels={dsi.labels} title={`Data Source Identifier (${industryLabel})`} chart_meaning={`Overall collected data in ${
+            user_info.user_type === "s-admin"
+            ? "Laguna Province"
+            : user_info.user_type === "lgu_admin" || user_info.user_type === "lu_admin"
+            ? user_info.municipality_name
+            : "Brgy."
+        }`}
+        />}
                 
           </div>
           {/* 2nd Donut Chart Container */}
           <div className="border-2 rounded-lg py-4 border-gray-300">
-            {typeOfData && <DonutChart series={typeOfData.series} labels={typeOfData.labels} title={`Type of Data (${industryLabel})`} chart_meaning={`Overall collected data in ${user_info.user_type === "s-admin" ? "Laguna Province" : user_info.user_type === "lgu_admin" ? `${user_info.municipality_name}` : "Brgy."}`}/>}
+            {typeOfData && <DonutChart series={typeOfData.series} labels={typeOfData.labels} title={`Type of Data (${industryLabel})`} chart_meaning={`Overall collected data in ${
+            user_info.user_type === "s-admin"
+            ? "Laguna Province"
+            : user_info.user_type === "lgu_admin" || user_info.user_type === "lu_admin"
+            ? user_info.municipality_name
+            : "Brgy."
+        }`}
+        />}
 
           </div>
         </div>
