@@ -222,10 +222,10 @@ export function StickyNavbar() {
             name: "Audit Log",
             url: `/${user_type}/audit-log`,
           },
-          // {
-          //   name: "Accounts",
-          //   url: `/${user_type}/accounts`,
-          // },
+          {
+            name: "Accounts",
+            url: `/${user_type}/accounts`,
+          },
         ])
 
       } else if (user_type === "lu_surveyor") {
