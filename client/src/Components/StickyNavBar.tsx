@@ -17,54 +17,7 @@ import useUserInfo from "../custom-hooks/useUserType";
 //==========================FOR OUTER COMPONENTS======================================
 
 
-const url_ofSurveyorsForm = [
-  {
-    title: "Mobile Combustion",
-    href: `/surveyor/forms/submit/mobile-combustion`,
-  },
-  {
-    title: "Waste Water",
-    href: `/surveyor/forms/submit/waste-water`,
-  },
-  {
-    title: "Industrial",
-    href: `/surveyor/forms/industrial/submit/0/mineral/`,
-  },
-  {
-    title: "Agriculture",
-    href: `/surveyor/forms/agriculture/submit/0/crops`,
-  },
-  {
-    title: "Stationary",
-    href: `/surveyor/forms/submit/stationary`,
-  },
-  
-];  
 
-
-const url_listOfSurveyData = [
-  {
-    title: "Mobile Combustion",
-    href: `/surveyor/surveyed-list/0/mobile-combustion`,
-  },
-  {
-    title: "Waste Water",
-    href: `/surveyor/surveyed-list/0/waste-water`,
-  },
-  {
-    title: "Industrial",
-    href: `/surveyor/surveyed-list/1/industrial`,
-  },
-  {
-    title: "Agriculture",
-    href: `/surveyor/surveyed-list/2/agriculture`,
-  },
-  {
-    title: "Stationary",
-    href: `/surveyor/surveyed-list/0/stationary`,
-  },
-  
-];  
 
 
 
@@ -117,13 +70,63 @@ export function StickyNavbar() {
   ]
 
 
+//==========================FOR OUTER COMPONENTS======================================
 
 
-
-
-
-
-
+  const url_ofSurveyorsForm = [
+    {
+      title: "Mobile Combustion",
+      href: `/${user_info.user_type}/forms/submit/mobile-combustion`,
+    },
+    {
+      title: "Waste Water",
+      href: `/${user_info.user_type}/forms/submit/waste-water`,
+    },
+    {
+      title: "Industrial",
+      href: `/${user_info.user_type}/forms/industrial/submit/0/mineral/`,
+    },
+    {
+      title: "Agriculture",
+      href: `/${user_info.user_type}/forms/agriculture/submit/0/crops`,
+    },
+    {
+      title: "Stationary",
+      href: `/${user_info.user_type}/forms/submit/stationary`,
+    },
+    {
+      title: "Forestry and Land Use",
+      href: `/${user_info.user_type}/forms/forestry-land-use/submit/0/wood/`,
+    },
+    
+  ];  
+  
+  
+  const url_listOfSurveyData = [
+    {
+      title: "Mobile Combustion",
+      href: `/${user_info.user_type}/surveyed-list/0/mobile-combustion`,
+    },
+    {
+      title: "Waste Water",
+      href: `/${user_info.user_type}/surveyed-list/0/waste-water`,
+    },
+    {
+      title: "Industrial",
+      href: `/${user_info.user_type}/surveyed-list/1/industrial`,
+    },
+    {
+      title: "Agriculture",
+      href: `/${user_info.user_type}/surveyed-list/2/agriculture`,
+    },
+    {
+      title: "Stationary",
+      href: `/${user_info.user_type}/surveyed-list/0/stationary`,
+    },
+    
+  ];  
+  
+//========================================================================
 
 
 
