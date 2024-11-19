@@ -43,6 +43,7 @@ import { AgricultureForm, Crops, LiveStocks} from "./routes/surveyor/Agriculture
 import { StationaryFuelForm } from "./routes/surveyor/StationaryFuelForm";
 import EmissionFactorForm from "./routes/s-admin/EmissionFactor";
 import CheckoutForm from "./routes/s-admin/EmissionFactor";
+import { ForestLands, ForestryForm, Wood } from "./routes/surveyor/ForestryForm/ForestryForm";
 
 
 function App() {
@@ -151,6 +152,11 @@ function App() {
                   <Route path=":action/3/:industrial_type" element = {<Electronics/>}/>
                   <Route path=":action/4/:industrial_type" element = {<Others/>}/>
                 </Route>
+            
+                <Route path = 'forestry-land-use' element = {<ForestryForm/>}>
+                  <Route path=":action/0/:forestry_type" element = {<Wood/>}/>
+                  <Route path=":action/1/:forestry_type" element = {<ForestLands/>}/>
+                </Route>
 
 
                 <Route path = 'agriculture' element = {<AgricultureForm/>}>
@@ -188,6 +194,11 @@ function App() {
                   <Route path=":action/2/:industrial_type" element = {<Metal/>}/>
                   <Route path=":action/3/:industrial_type" element = {<Electronics/>}/>
                   <Route path=":action/4/:industrial_type" element = {<Others/>}/>
+                </Route>
+
+                <Route path = 'forestry-land-use' element = {<ForestryForm/>}>
+                  <Route path=":action/0/:forestry_type" element = {<Wood/>}/>
+                  <Route path=":action/1/:forestry_type" element = {<ForestLands/>}/>
                 </Route>
 
 

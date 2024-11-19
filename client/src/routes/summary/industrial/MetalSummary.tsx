@@ -38,7 +38,7 @@ const MetalSummary = ({year} : MetalSummaryProps) => {
 
     useEffect(()=>{
         setIsLoading(true);
-        set_tbHead(['ID', 'Email', 'Municipality,', 'Brgy', 'Iron and Steel Production from Integrated Facilities (tons)', 'Iron and Steel Production from Non-integrated Facilities (tons)', 'GHGe'])
+        set_tbHead(['ID', 'Email', 'Municipality', 'Brgy', 'Iron and Steel Production from Integrated Facilities (tons)', 'Iron and Steel Production from Non-integrated Facilities (tons)', 'GHGe'])
         const {municipality_code, user_type, province_code} = user_info
         
         axiosPrivate.get('/summary-data/industrial/metal', {
