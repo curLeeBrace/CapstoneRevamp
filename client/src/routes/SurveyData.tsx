@@ -138,7 +138,7 @@ const SurveyData = ({
                   const date = new Date(dateTime).toLocaleDateString();
                   const time = new Date(dateTime).toLocaleTimeString();
                   return [
-                    form_id,
+                    form_id.slice(-3),
                     email,
                     municipality_name,
                     brgy_name,
@@ -174,9 +174,10 @@ const SurveyData = ({
 
                 const date = new Date(dateTime).toLocaleDateString();
                 const time = new Date(dateTime).toLocaleTimeString();
+                
                 const dTime = date + " : " + time;
                 return [
-                  surveyData.form_id,
+                  surveyData.form_id.slice(-3), 
                   email,
                   municipality_name,
                   brgy_name,

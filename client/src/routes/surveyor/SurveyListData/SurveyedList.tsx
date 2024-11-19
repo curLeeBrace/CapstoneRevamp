@@ -25,7 +25,9 @@ const SurveyedList = () => {
   const {state} = useLocation();
   const [searchQuery, setSearchQuery] = useState<string>(""); 
   const filteredData = useSearchFilter(tb_data, searchQuery); 
-  
+
+  const isLuUser = user_info?.user_type === "lu_surveyor";
+  const locationLabel = isLuUser ? "Institution" : "Brgy";
   // console.log("survey_category : ", survey_category)
   useEffect(()=>{
     const {user_type} = user_info
@@ -52,7 +54,7 @@ const SurveyedList = () => {
       if(survey_category === "mobile-combustion"){
         set_tbHead([ 
           "ID",
-          "Brgy",
+          locationLabel,
           "Vehicle Type",
           "Vehicle Age",
           "Fuel Type",
@@ -64,7 +66,7 @@ const SurveyedList = () => {
       } else if(survey_category === "waste-water"){
         set_tbHead([ 
           "ID",
-          "Brgy",
+          locationLabel,
           
           "Septik Tank (Poso Negro)",
           "Dry climate, ground water table lower than latrine, small family (2-5 people)",
@@ -83,7 +85,7 @@ const SurveyedList = () => {
       } else {
         set_tbHead([
           "ID",
-          "Brgy",
+          locationLabel,
           "Charcoal - (Cooking)",
           "Diesel - (Cooking)",
           "Kerosene - (Cooking)",
@@ -119,6 +121,7 @@ const SurveyedList = () => {
           form_type,
         } = data.survey_data;
         const dateTime = new Date(data.dateTime_created).toLocaleDateString() + " " + new Date(data.dateTime_created).toLocaleTimeString();
+        const shortFormId = data.form_id.slice(-3);
         const LinkComponent = (
           <Link
             to={`/surveyor/forms/update/mobile-combustion?form_id=${data.form_id}`}
@@ -136,7 +139,7 @@ const SurveyedList = () => {
         );
 
         return [
-          data.form_id,
+          shortFormId,
           brgy_name,
           vehicle_type,
           vehicle_age,
@@ -160,8 +163,7 @@ const SurveyedList = () => {
         } = data.survey_data;
         const dateTime = new Date(data.dateTime_created).toLocaleDateString() + " " + new Date(data.dateTime_created).toLocaleTimeString();
         const form_id = data.form_id;
-
-        
+        const shortFormId = data.form_id.slice(-3);
         const LinkComponent = (
           <Link
             to={`/surveyor/forms/update/waste-water?form_id=${form_id}`}
@@ -182,7 +184,7 @@ const SurveyedList = () => {
           </Link>
         );
         return [
-          data.form_id,
+          shortFormId,
           brgy_name,
           septic_tanks,
           openPits_latrines.cat1,
@@ -212,7 +214,7 @@ const SurveyedList = () => {
         const dateTime = new Date(data.dateTime_created).toLocaleDateString() + " " + new Date(data.dateTime_created).toLocaleTimeString();
         const form_id = data.form_id;
 
-        
+        const shortFormId = data.form_id.slice(-3);
         const LinkComponent = (
           <Link
             to={`/surveyor/forms/update/stationary?form_id=${form_id}`}
@@ -236,7 +238,7 @@ const SurveyedList = () => {
           </Link>
         );
         return [
-          data.form_id,
+          shortFormId,
           brgy_name,
           cooking.charcoal,
           cooking.diesel,

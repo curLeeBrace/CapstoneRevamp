@@ -49,11 +49,15 @@ const ProfileMenu = () => {
         icon: Cog6ToothIcon,
         onClick: ()=> navigate(`/${user_info.user_type}/change-pass`),
       },
-      // {
-      //   label: "Update Emission Factor",
-      //   icon: Cog6ToothIcon,
-      //   onClick: ()=> navigate(`/${user_info.user_type}/emission-factor`),
-      // },
+      ...(user_info.user_type === 'lu_admin' || user_info.user_type === 's-admin'
+        ? [
+            {
+              label: "Update Emission Factor",
+              icon: Cog6ToothIcon,
+              onClick: () => navigate(`/${user_info.user_type}/emission-factor`),
+            },
+          ]
+        : []),
       {
         label: "Sign Out",
         icon: PowerIcon,
