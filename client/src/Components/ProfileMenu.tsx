@@ -7,7 +7,7 @@ import {
   MenuList,
   Avatar,
 } from "@material-tailwind/react";
-import { ChevronDownIcon, UserCircleIcon} from "@heroicons/react/24/solid";
+import { ChevronDownIcon, PencilIcon, UserCircleIcon} from "@heroicons/react/24/solid";
 import {Cog6ToothIcon, PowerIcon, FaceSmileIcon} from "@heroicons/react/24/solid";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
@@ -53,7 +53,7 @@ const ProfileMenu = () => {
         ? [
             {
               label: "Update Emission Factor",
-              icon: Cog6ToothIcon,
+              icon: PencilIcon,
               onClick: () => navigate(`/${user_info.user_type}/emission-factor`),
             },
           ]

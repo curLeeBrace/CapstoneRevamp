@@ -29,7 +29,7 @@ export function StickyNavbar() {
   const [municipality_name, set_municipality_name] = useState("");
   const [openNav, setOpenNav] = useState(false);
 
-  const lu_img = "./../../public/img/lu.jpg"
+  const lu_img = "./../../../public/img/lu.jpg"
  
   const [nav, setNav] = useState([
     {
@@ -64,9 +64,13 @@ export function StickyNavbar() {
       href: `/${user_info.user_type}/summary/3/stationary`,
     },
     {
+      title: "Forestry Land Use",
+      href: `/${user_info.user_type}/summary/5/forestry`,
+    },
+    {
       title: "GHG Emission Summary-Overall",
       href: `/${user_info.user_type}/summary/4/GHGe`,
-    }
+    },
   ]
 
 

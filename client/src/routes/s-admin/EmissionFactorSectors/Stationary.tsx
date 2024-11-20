@@ -1,5 +1,5 @@
 import { LockClosedIcon } from "@heroicons/react/24/solid";
-import { Select, Option, Typography, Input } from "@material-tailwind/react";
+import { Select, Option, Typography, Input, Button } from "@material-tailwind/react";
 import { useState } from "react";
 
 type EmissionFactor = {
@@ -61,7 +61,8 @@ export default function StationaryEmissions() {
       [field]: parseFloat(value),
     }));
   };
-
+  const [isLoading, setIsLoading] = useState(false);
+  
 
   return (
     <div className=" mx-auto sm:max-w-lg border p-4 rounded-lg bg-gray-100">
@@ -119,6 +120,11 @@ export default function StationaryEmissions() {
             </div>
           ))}
         </div>
+        <div className="flex justify-center">
+                    <Button fullWidth className="w-full md:w-11/12" disabled={isLoading} >
+                        {isLoading ? "Updating..." : "Submit"}
+                    </Button>
+                </div>
         <Typography
                     variant="small"
                     color="gray"

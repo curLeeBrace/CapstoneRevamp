@@ -6,6 +6,8 @@ import Table from "../../Components/Table";
 import useUserInfo from "../../custom-hooks/useUserType";
 import useAxiosPrivate from "../../custom-hooks/auth_hooks/useAxiosPrivate";
 import DonutChart, {DonutState} from "../../Components/Dashboard/DonutChart";
+import { ArrowRightCircleIcon } from "@heroicons/react/24/solid";
+import exportToExcel from "../../custom-hooks/export_data/exportToExel";
 
 const StationarySummary = () => {
   const [municipality, setMunicipality] = useState<AddressReturnDataType>();
@@ -47,7 +49,18 @@ const StationarySummary = () => {
   const [tb_data, set_tbData] = useState<any[][]>();
 
   
+  const handleExport = () => {
+    if (!tb_data || tb_data.length === 0) {
+      alert("No data to export!");
+      return;
+    }
 
+    const fileName = `${userInfo.municipality_name} Stationary Fuel (${formType
+      .charAt(0)
+      .toUpperCase()}${formType.slice(1)}) Surveyed Data`;
+
+    exportToExcel(tb_data, tb_head, fileName);
+  };
 
 
 
@@ -177,6 +190,7 @@ const StationarySummary = () => {
 
   },[formType, municipality?.address_code, brgy?.address_code, yearState])
 
+ 
 
 
 
@@ -217,7 +231,7 @@ const StationarySummary = () => {
         </div>
       </div>
       <div className="px-10 rounded-lg text-xl py-2 -mb-5 bg-darkgreen text-white">Stationary Charts</div>
-
+      
       <div className="md:flex w-full gap-5 border-2 rounded-lg my-2 mx-auto border-gray-300">
         
               <div className="basis-full my-4">
@@ -246,11 +260,22 @@ const StationarySummary = () => {
                  labels={lightingDonut?.labels} series={lightingDonut?.series} title={`Lighting (${formType})`}/>
               </div>
       </div>
-
-      <div className="px-10 rounded-lg text-xl py-2 bg-darkgreen -mb-4 mt-4 text-white">Stationary Survey Data</div>
+        
+      <div className="border-gray-300 border-2 p-4 rounded-lg">
+      <div className="px-10 rounded-lg text-xl py-2 mb-2 bg-darkgreen mt-4 text-white">Stationary Survey Data</div>
+      <div className="flex my-2 font-bold items-center border-2 w-48 rounded-md border-gray-300 p-2">
+      <button
+        onClick={handleExport}
+        className="flex items-center"
+      >
+        <ArrowRightCircleIcon className="h-6 mx-2" />
+        Export to Excel
+      </button>
+      </div>
       <div className="basis-full">
             {tb_data ? <Table tb_head={tb_head} tb_datas={tb_data}/> :"Empty"}
         </div>
+    </div>
     </div>
   );
 };
