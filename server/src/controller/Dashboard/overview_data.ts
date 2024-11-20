@@ -9,7 +9,7 @@ import {getIndustrialOverallGHGe} from "../../../custom_funtions/Industrial/indu
 
 import getAgricultureGHGe from "../../../custom_funtions/agriculture";
 import { getStationaryGHGe} from "../../../custom_funtions/stationary"
-
+import MobileCombustionEfactorSchema = require("../../db_schema/EmmisisonFactorsSchema/MobileCombustionEfactorSchema");
 interface Municipality {
     city_code : String;
     city_name : String;
@@ -194,13 +194,7 @@ type DashBoardData = {
 
     const table_data : MobileCombustionTableData[] = [];
 
-    
-    
-
-
-
-   
-
+ 
     const form_data = await FuelFormSchema.find(query);
     // console.log("query : ", query)
 
@@ -208,7 +202,7 @@ type DashBoardData = {
 
 
 
-    locations.forEach((loc : Brgys & Municipality, index) => {
+    locations.forEach(async (loc : Brgys & Municipality, index) => {
 
         const root_loc_code = user_type === "s-admin" ? loc.city_code : loc.brgy_code;
 
@@ -219,14 +213,15 @@ type DashBoardData = {
 
 
         // iterate the form data
-        form_data.forEach(data => {
+        await Promise.all (
+            form_data.map(async (data) => {
 
             // check use type
             if(user_type === "s-admin"){
                 //check if root_loc_code === data.surveyor_info.municipality_code
                 if(data.surveyor_info.municipality_code === root_loc_code)  {
                     //compute the municipality emmisions
-                    const single_form_emmmsion = get_MobileCombustionEmission(data.survey_data.fuel_type as string, data.survey_data.liters_consumption);
+                    const single_form_emmmsion = await get_MobileCombustionEmission(data.survey_data.fuel_type as string, data.survey_data.liters_consumption);
                     const {co2e, ch4e, n2oe, ghge} = single_form_emmmsion
     
                     tb_co2e += co2e;
@@ -239,7 +234,7 @@ type DashBoardData = {
 
                 if(data.survey_data.brgy_code === root_loc_code)  {
                     //compute the municipality emmisions
-                    const single_form_emmmsion = get_MobileCombustionEmission(data.survey_data.fuel_type as string, data.survey_data.liters_consumption);
+                    const single_form_emmmsion = await get_MobileCombustionEmission(data.survey_data.fuel_type as string, data.survey_data.liters_consumption);
                     const {co2e, ch4e, n2oe, ghge} = single_form_emmmsion
     
                     tb_co2e += co2e;
@@ -251,6 +246,7 @@ type DashBoardData = {
 
 
         })
+    )
 
 
 
@@ -282,7 +278,7 @@ type DashBoardData = {
 
 
  // This is mobile combustion function
- const get_MobileCombustionEmission = (fuel_type : string,  liters_consumption: number) : Emission  => {
+ const get_MobileCombustionEmission = async (fuel_type : string,  liters_consumption: number) : Promise<Emission>  => {
 
      /*
         ==========================================
@@ -293,16 +289,29 @@ type DashBoardData = {
 
          ==========================================
     */
+    
 
-    const emission_factors = fuel_type === "diesel" ? {
-        co2 : 2.66,
-        ch4 : 4.0e-4,
-        n2o : 2.18e-5,
-    } : {
-        co2 : 2.07,
-        ch4 : 3.2e-4,
-        n2o : 1.9e-4,
+    let emission_factors = undefined;
+
+    const mb_efactor = await MobileCombustionEfactorSchema.findOne({fuel_type}).exec();
+
+    if(!mb_efactor){
+        emission_factors = fuel_type === "diesel" ? {
+            co2 : 2.66,
+            ch4 : 4.0e-4,
+            n2o : 2.18e-5,
+        } : {
+            co2 : 2.07,
+            ch4 : 3.2e-4,
+            n2o : 1.9e-4,
+        }
+    } else {
+        const {co2, ch4, n2o} = mb_efactor;
+        emission_factors = {
+            co2, ch4, n2o
+        }
     }
+ 
 
 
     const  co2e = (liters_consumption * emission_factors.co2) / 1000;

@@ -51,8 +51,9 @@ const getSurveyData = async (req : Request, res : Response) => {
             const data = await FuelFormSchema.find(preparedQuery).exec() 
             if(!data) return res.sendStatus(204);
 
-            response = data.map((dt:any) => {
-                const ghge = get_MobileCombustionEmission(dt.survey_data.fuel_type as string, dt.survey_data.liters_consumption);
+            
+            response = await Promise.all(data.map(async(dt:any) => {
+                const ghge = await get_MobileCombustionEmission(dt.survey_data.fuel_type as string, dt.survey_data.liters_consumption);
                 const {email, municipality_name} = dt.surveyor_info 
 
                 return {
@@ -68,7 +69,8 @@ const getSurveyData = async (req : Request, res : Response) => {
                     dateTime : dt.dateTime_created as Date,
                     ghge : ghge.ghge,
                 }
-            }) as MC_DATA[]
+            })
+        )
 
         } else if (form_category === "waste-water"){
 
@@ -77,6 +79,7 @@ const getSurveyData = async (req : Request, res : Response) => {
             response = wasteWaterDatas
 
         }
+        
     
         
 

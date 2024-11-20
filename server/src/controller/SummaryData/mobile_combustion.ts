@@ -182,17 +182,17 @@ const getMobileCombustionData = async (req:Request, res:Response) => {
 
     
         
-        mobile_combustionForm.forEach(data => {
+        mobile_combustionForm.forEach(async(data) => {
             if (user_type === "s-admin") {
                 if (selectAll === "true") {
-                    const single_form_emmmsion = get_MobileCombustionEmission(data.survey_data.fuel_type as string, data.survey_data.liters_consumption);
+                    const single_form_emmmsion = await get_MobileCombustionEmission(data.survey_data.fuel_type as string, data.survey_data.liters_consumption);
                     const { co2e, ch4e, n2oe, ghge } = single_form_emmmsion;
                     emmission.tb_co2e += co2e;
                     emmission.tb_ch4e += ch4e;
                     emmission.tb_n2oe += n2oe;
                     emmission.tb_ghge += ghge;
                 } else if (selectAll === "false" && data.surveyor_info.municipality_code === municipality_code) {
-                    const single_form_emmmsion = get_MobileCombustionEmission(data.survey_data.fuel_type as string, data.survey_data.liters_consumption);
+                    const single_form_emmmsion = await get_MobileCombustionEmission(data.survey_data.fuel_type as string, data.survey_data.liters_consumption);
                     const { co2e, ch4e, n2oe, ghge } = single_form_emmmsion;
                     emmission.tb_co2e += co2e;
                     emmission.tb_ch4e += ch4e;
@@ -201,14 +201,14 @@ const getMobileCombustionData = async (req:Request, res:Response) => {
                 }
             } else if (user_type === "lgu_admin") {
                 if (selectAll === "true") {
-                    const single_form_emmmsion = get_MobileCombustionEmission(data.survey_data.fuel_type as string, data.survey_data.liters_consumption);
+                    const single_form_emmmsion = await get_MobileCombustionEmission(data.survey_data.fuel_type as string, data.survey_data.liters_consumption);
                     const { co2e, ch4e, n2oe, ghge } = single_form_emmmsion;
                     emmission.tb_co2e += co2e;
                     emmission.tb_ch4e += ch4e;
                     emmission.tb_n2oe += n2oe;
                     emmission.tb_ghge += ghge;
                 } else if (selectAll === "false" && data.survey_data.brgy_code === brgy_code) {
-                    const single_form_emmmsion = get_MobileCombustionEmission(data.survey_data.fuel_type as string, data.survey_data.liters_consumption);
+                    const single_form_emmmsion = await get_MobileCombustionEmission(data.survey_data.fuel_type as string, data.survey_data.liters_consumption);
                     const { co2e, ch4e, n2oe, ghge } = single_form_emmmsion;
                     emmission.tb_co2e += co2e;
                     emmission.tb_ch4e += ch4e;
@@ -216,7 +216,7 @@ const getMobileCombustionData = async (req:Request, res:Response) => {
                     emmission.tb_ghge += ghge;
                 }
             } else if (user_type === "lu_admin" && data.surveyor_info.municipality_name === "Laguna University") {
-                const single_form_emmmsion = get_MobileCombustionEmission(data.survey_data.fuel_type as string, data.survey_data.liters_consumption);
+                const single_form_emmmsion = await get_MobileCombustionEmission(data.survey_data.fuel_type as string, data.survey_data.liters_consumption);
                 const { co2e, ch4e, n2oe, ghge } = single_form_emmmsion;
                 emmission.tb_co2e += co2e;
                 emmission.tb_ch4e += ch4e;
@@ -232,13 +232,13 @@ const getMobileCombustionData = async (req:Request, res:Response) => {
 
 
 
-        vehicleTypes.forEach(vehicle => {
+        vehicleTypes.forEach((vehicle) => {
             let count = 0;
             let vehicle_emssion = 0;
-            mobile_combustionForm.forEach(formData => {
+            mobile_combustionForm.forEach(async (formData) => {
                 if(formData.survey_data.vehicle_type === vehicle){
                     count++;
-                    const single_form_emmmsion = get_MobileCombustionEmission(formData.survey_data.fuel_type as string, formData.survey_data.liters_consumption);
+                    const single_form_emmmsion = await get_MobileCombustionEmission(formData.survey_data.fuel_type as string, formData.survey_data.liters_consumption);
                     const {co2e, ch4e, n2oe, ghge} = single_form_emmmsion
                     vehicle_emssion += ghge;
 
