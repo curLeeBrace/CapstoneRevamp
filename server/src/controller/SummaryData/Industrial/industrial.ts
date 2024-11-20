@@ -15,7 +15,7 @@ import OthersSchema = require('../../../db_schema/Industrial/OthersSchema');
 
 
 type RequestQueryTypes = {
-    user_type : "s-admin" | "lgu_admin"
+    user_type : "s-admin" | "lgu_admin" | 'lu_admin'
     industry_type : "all" | "mineral" | "chemical" | "metal" | "electronics" | "others";
     municipality_code : string;
     prov_code : string;
@@ -25,27 +25,48 @@ type RequestQueryTypes = {
 
 const getIndustrialSummary = async (req: Request, res:Response) => {
 
-
+    
     const {industry_type, municipality_code, user_type, prov_code, year} = req.query as RequestQueryTypes
+    // : user_type === "lu_admin"
+    //         ? {
+    //               "surveyor_info.municipality_name": municipality_code, // `municipality_name` for `lu_admin`
+    //               dateTime_created: {
+    //                   $gte: new Date(`${year}-01-01T00:00:00.000Z`),
+    //                   $lte: new Date(`${year}-12-30T23:59:59.000Z`),
+    //               },
+    //           }
+    //         : {
+    //     "surveyor_info.municipality_code" : municipality_code,
+    //     dateTime_created : {
+    //         $gte: new Date(`${year}-01-01T00:00:00.000Z`),
+    //         $lte: new Date(`${year}-12-30T23:59:59.000Z`)
+    //     },
 
-    const query = user_type === "s-admin" ? 
+    // }
+    let query = user_type === "s-admin" ? 
     {
-        "surveyor_info.province_code" : prov_code,
-        dateTime_created : {
-            $gte: new Date(`${year}-01-01T00:00:00.000Z`),
-            $lte: new Date(`${year}-12-30T23:59:59.000Z`)
+        "surveyor_info.province_code": prov_code,
+        dateTime_created: {
+        $gte: new Date(`${year}-01-01T00:00:00.000Z`),
+        $lte: new Date(`${year}-12-30T23:59:59.000Z`),
         },
-
     } 
-    : 
+    : user_type === "lu_admin" ? 
     {
-        "surveyor_info.municipality_code" : municipality_code,
-        dateTime_created : {
-            $gte: new Date(`${year}-01-01T00:00:00.000Z`),
-            $lte: new Date(`${year}-12-30T23:59:59.000Z`)
+        "surveyor_info.municipality_name": "Laguna University", 
+        dateTime_created: {
+        $gte: new Date(`${year}-01-01T00:00:00.000Z`),
+        $lte: new Date(`${year}-12-30T23:59:59.000Z`),
         },
-
-    }
+    } 
+    : {
+        "surveyor_info.municipality_code": municipality_code,
+        dateTime_created: {
+        $gte: new Date(`${year}-01-01T00:00:00.000Z`),
+        $lte: new Date(`${year}-12-30T23:59:59.000Z`),
+        },
+    };
+        
 
 
 
@@ -86,6 +107,11 @@ const getIndustrialSummary = async (req: Request, res:Response) => {
     const parent_code = user_type === "s-admin" ? prov_code : municipality_code
     const locations = getAvailableLocations(parent_code, user_type);
 
+    const lagunaUniversityLocation = {
+        loc_code: "043426", 
+        loc_name: "Laguna University",
+    };
+
     let filter_locations : any[] = []
 
     //clean data/filterdata
@@ -112,32 +138,60 @@ const getIndustrialSummary = async (req: Request, res:Response) => {
 
 
 
-
     if(user_type === "s-admin") {
 
-        
-        filter_locations = locations.map((loc) => {
-            return {
-                loc_code : loc.city_code,
-                loc_name : loc.city_name
-            }
-        })
+        // filter_locations = locations.map((loc) => {
+        //     return {
+        //         loc_code : loc.city_code,
+        //         loc_name : loc.city_name
+        //     }
+        // })
+
+        filter_locations = [
+            lagunaUniversityLocation,
+            ...locations.map((loc) => ({
+                loc_code: loc.city_code,
+                loc_name: loc.city_name,
+            })),
+        ];
 
         // call Analytics function
         const surveyData_LocName = filter_IndustryData.map((industry_data)=> industry_data.municipality_name)
         responsePerLocation = getResponseCountPerLocation(filter_locations, surveyData_LocName);
         // console.log("Response per Locations : ", )
       
+   
+        } else if (user_type === "lu_admin") {
+            filter_locations = [
+                lagunaUniversityLocation,
+                ...locations
+                    .filter((loc) => loc.city_code !== "043426") 
+                    .map((loc) => ({
+                        loc_code: loc.city_code,
+                        loc_name: loc.city_name,
+                    })),
+            ];
 
+            const surveyData_LocName = filter_IndustryData.map((industry_data) => industry_data.municipality_name);
+            responsePerLocation = getResponseCountPerLocation(filter_locations, surveyData_LocName);
 
-    } else {
-
-        filter_locations = locations.map((loc) => {
-            return {
-                loc_code : loc.brgy_code,
-                loc_name : loc.brgy_name
-            }
-        })
+        } else {
+        // to avoid displaying LU on other municipality chart
+        const hasLagunaUniversityData = filter_IndustryData.some((data) => data.municipality_name === "Laguna University");
+        
+        filter_locations = [
+            ...(hasLagunaUniversityData ? [lagunaUniversityLocation] : []),
+            ...locations.map((loc) => ({
+                loc_code: loc.brgy_code,
+                loc_name: loc.brgy_name
+            })),
+        ];
+        // filter_locations = locations.map((loc) => {
+        //     return {
+        //         loc_code : loc.brgy_code,
+        //         loc_name : loc.brgy_name
+        //     }
+        // })
 
         const surveyData_LocName = filter_IndustryData.map((industry_data)=> industry_data.brgy_name)
         responsePerLocation = getResponseCountPerLocation(filter_locations, surveyData_LocName);

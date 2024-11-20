@@ -105,7 +105,7 @@ const navLinkClass = (industryType : string) : string=> {
 
   return (
 
-      <div className="flex justify-center min-h-screen px-4 pb-5 overflow-x-hidden bg-gray-200">
+      <div className="flex justify-center min-h-screen px-4 py-2 overflow-x-hidden bg-gray-200">
          <AlertBox
             openAlert={openAlert}
             setOpenAlert={setOpenAlert}
@@ -114,7 +114,7 @@ const navLinkClass = (industryType : string) : string=> {
         <Card className="w-full max-w-4xl px-6 py-6 shadow-2xl shadow-black rounded-xl h-auto relative">
          
          
-          <Typography variant="h4" color="blue-gray" className="text-center">
+          <Typography variant="h4" color="blue-gray" className="text-center text-xl text-white bg-darkgreen rounded-lg py-2 mb-2">
             Industrial Survey
           </Typography>
 
@@ -167,8 +167,11 @@ const navLinkClass = (industryType : string) : string=> {
                 <BrgyMenu
                   disabled = {params.action === "view" || params.action === "finish"}
                   municipality_code={user_info.municipality_code}
-                  setBrgys={setBrgy}
-                  deafult_brgyName={state && state.brgy_name}
+                  setBrgys={user_info.user_type === 'lu_surveyor' 
+                    ? () => setBrgy({ address_code: '043426003', address_name: 'Laguna University', parent_code: '0434' }) 
+                    : setBrgy} 
+                  deafult_brgyName={user_info.user_type === 'lu_surveyor' ? 'Laguna University' : (state && state.brgy_name) }
+                  user_info={user_info}
                 />
 
                 <Select label="Data Source Identifier" onChange={(value)=> setDsi(value)} value={state ? state.dsi : dsi} disabled = {params.action === "view" || params.action === "finish"}>

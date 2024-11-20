@@ -3,10 +3,10 @@ import AuditLogSchema from "../../db_schema/AuditLogSchema";
 
 export const fetchAuditLogs = async (req: Request, res: Response) => {
   try {
-    const { startDate, endDate, action, province_code, municipality_code, user_type} = req.query;
-    const query = req.query;
+    const { startDate, endDate, action, province_code, municipality_code, user_type } = req.query;
     let filter: any = {};
 
+    // Date range filtering
     if (startDate || endDate) {
       const start = startDate ? new Date(startDate as string) : null;
       const end = endDate ? new Date(endDate as string) : null;
@@ -21,26 +21,23 @@ export const fetchAuditLogs = async (req: Request, res: Response) => {
       };
     }
 
+    // Action filtering
     if (action) {
       filter.action = { $regex: new RegExp(action as string, 'i') };
-    }
-
-    if (municipality_code) {
-      filter["lgu_municipality.municipality_code"] = municipality_code;
     }
 
     if (province_code) {
       filter["lgu_municipality.province_code"] = province_code;
     }
 
- 
-    // Fetch audit logs from the database with the filter applied
-    
-    if(user_type === "lgu_admin") filter = {...filter, $or : [{user_type : "surveyor"}, {user_type : "lgu_admin"}]};
+    if (user_type === "lu_admin") {
+      filter["lgu_municipality.municipality_name"] = { $regex: "^Laguna University$", $options: "i" };
+    } else if (user_type === "lgu_admin" && municipality_code) {
+      filter["lgu_municipality.municipality_code"] = municipality_code;
+      filter.user_type = { $in: ["surveyor", "lgu_admin"] };
+    }
 
-    
     const auditLogs = await AuditLogSchema.find(filter).sort({ dateTime: -1 }).limit(100).exec();
-
 
     res.status(200).json(auditLogs);
   } catch (error) {

@@ -76,6 +76,8 @@ export function StickyNavbar() {
   const [municipality_name, set_municipality_name] = useState("");
   const [openNav, setOpenNav] = useState(false);
 
+  const lu_img = "./../../public/img/lu.jpg"
+ 
   const [nav, setNav] = useState([
     {
       name: "",
@@ -197,7 +199,45 @@ export function StickyNavbar() {
           },
         ])
 
-      } else {
+      } else if (user_type === "lu_admin") {
+        set_uType("Laguna University Admin");
+        setNav([
+          {
+            name: "Home",
+            url: `/${user_type}/home`,
+          },
+          {
+            name: "Dashboard",
+            url: `/${user_type}/dashboard`,
+          },
+          // {
+          //   name: "Summary",
+          //   url: `/${user_type}/summary`,
+          // },
+          {
+            name: "Register",
+            url: `/${user_type}/register`,
+          },
+          {
+            name: "Audit Log",
+            url: `/${user_type}/audit-log`,
+          },
+          // {
+          //   name: "Accounts",
+          //   url: `/${user_type}/accounts`,
+          // },
+        ])
+
+      } else if (user_type === "lu_surveyor") {
+        set_uType("Laguna University Surveyor");
+        setNav([
+            {
+                name: "Home",
+                url: `/${user_type}/home`,
+            },
+        ]);
+    }
+      else {
         set_uType("Surveyor");
         setNav([
           {
@@ -244,14 +284,22 @@ export function StickyNavbar() {
       </Fragment>
     }
 
+    {u_type === "Laguna University Surveyor" &&
+      <Fragment>
+        <NavListMenu navListMenuItems={url_listOfSurveyData} navName="SurveyData" />
+        <NavListMenu navListMenuItems={url_ofSurveyorsForm} navName="Forms" />
+      </Fragment>
+    }
+
     {
-      u_type !== "Surveyor" && 
+      u_type !== "Surveyor" && u_type !== "Laguna University Surveyor" && 
       <Fragment>
         <NavListMenu navListMenuItems={summaryURL} navName="Summary"/>
       </Fragment>
     }
   </ul>
   );
+
 
   return (
     <>
@@ -265,13 +313,22 @@ export function StickyNavbar() {
               href="#"
               className="mr-4 cursor-pointer py-1.5 font-bold text-white"
             >
-              {`Welcome, ${u_type === "S-Admin" ? "":municipality_name } ${u_type}`}
+                <div className="flex flex-row gap-4">
+                {(u_type === "Laguna University Surveyor" || u_type === "Laguna University Admin") && (
+              <img src={lu_img} className="h-8 w-8 rounded-2xl -mt-1"/>
+          )}
+              {`Welcome, ${
+              (u_type === "S-Admin" || u_type === "Laguna University Surveyor"   || u_type === "Laguna University Admin")
+                ? ""
+                : municipality_name
+            } ${u_type}`}  
+            </div>
             </Typography>
             <div className="flex items-center gap-4 ">
               <div className="mr-4 hidden lg:block ">{navList}</div>
             
             {
-              user_info.user_type === "lgu_admin" || user_info.user_type === "surveyor" ? <NotificationBell/> : null
+              user_info.user_type === "lgu_admin" || user_info.user_type === "lu_admin" || user_info.user_type === "lu_surveyor" || user_info.user_type === "surveyor" ? <NotificationBell/> : null
             }
               
 

@@ -118,7 +118,6 @@ type LiveStocksDataTypes = {
                     temp_ghge += ghge;
 
                 }
-
             } else {
 
                 if(data.survey_data.brgy_code === root_loc_code)  {

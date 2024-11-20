@@ -68,8 +68,24 @@ const agricultureRawData = async (req : Request, res : Response) =>{
                     }
                 }
 
+                if(agricultureType === "crops") {
+                    
+                    responseContainer = await processIndustrialRawData("crops", query)
 
+                } else {
+                    
+                    responseContainer = await processIndustrialRawData("liveStocks", query)
+                }
+                
 
+                 } else if (user_type === "lu_admin") {  
+                let query = {
+                    "surveyor_info.municipality_name": "Laguna University", 
+                    dateTime_created: {
+                        $gte: new Date(`${year}-01-01T00:00:00.000Z`),
+                        $lte: new Date(`${year}-12-30T23:59:59.000Z`)
+                    },
+                }
 
 
                 if(agricultureType === "crops") {
@@ -83,7 +99,7 @@ const agricultureRawData = async (req : Request, res : Response) =>{
 
 
                 
-                
+
 
             }
 
