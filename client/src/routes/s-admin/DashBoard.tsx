@@ -439,7 +439,7 @@ function DashBoard() {
           width={'100%'}
           height={'100%'}
           type={'bar'}
-          series={chartConfig.series}
+          series={chartConfig.series as any}
           options={chartConfig.options}
         /> : null
         }
