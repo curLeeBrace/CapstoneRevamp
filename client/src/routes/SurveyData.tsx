@@ -5,7 +5,9 @@ import useAxiosPrivate from "../custom-hooks/auth_hooks/useAxiosPrivate";
 import useUserInfo from "../custom-hooks/useUserType";
 import useSelectAllData from "../custom-hooks/useSelectAllData";
 import SimpleCard from "../Components/Dashboard/SimpleCard";
-import { ExclamationTriangleIcon } from "@heroicons/react/24/solid";
+import { ArrowRightCircleIcon, ExclamationTriangleIcon } from "@heroicons/react/24/solid";
+import exportToExcel from "../custom-hooks/export_data/exportToExel";
+// import exportToPDF from "../custom-hooks/export_data/exportToPDF";
 
 
 type SurveyDataProps = {
@@ -216,8 +218,38 @@ const SurveyData = ({
     survey_category,
   ]);
 
+  const capitalizeFirstLetter = (str: string | undefined): string => {
+    if (!str) return ""; // Handle undefined or empty strings
+    return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+  };
+  
+  const handleExport = (format: "excel") => {
+    if (!data || !data.length) {
+      alert("No data to export.");
+      return;
+    }
+    const formattedSurveyCategory = capitalizeFirstLetter(survey_category);
+    const formattedFormType = capitalizeFirstLetter(form_type);
+  
+    if (format === "excel") {
+      exportToExcel(data, column, `${userInfo.municipality_name} ${formattedSurveyCategory} (${formattedFormType}) Surveyed Data`);
+    } 
+  };
+
+  
+
   return (
     <div className="h-full">
+      <div className="flex my-2 font-bold items-center border-2 w-48 rounded-md border-gray-300 p-2 text-black">
+        <button
+          onClick={() => handleExport("excel")}
+          className="flex items-center"
+        >
+          <ArrowRightCircleIcon className="h-6 mx-2" />
+          Export to Excel
+        </button>
+    </div>
+       {/* <button onClick={() => handleExport("pdf")}>Export to PDF</button> */}
       {isLoading ? (
         <Skeleton />
       ) : data && data.length > 0 ? (
