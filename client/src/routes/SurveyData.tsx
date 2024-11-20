@@ -69,8 +69,8 @@ const SurveyData = ({
       ? [
           "ID",
           "Email",
-          "Municipality",
-          "Brgy",
+          ...(userInfo.user_type !== "lu_admin" ? ["Municipality"] : []),
+          userInfo.user_type === "lu_admin" ? "Institution" : "Brgy",
 
           "Vehicle Type",
           "Vehicle Age",
@@ -82,8 +82,8 @@ const SurveyData = ({
       : [
           "ID",
           "Email",
-          "Municipality",
-          "Brgy",
+          ...(userInfo.user_type !== "lu_admin" ? ["Municipality"] : []),
+          userInfo.user_type === "lu_admin" ? "Institution" : "Brgy",
           "Septic Tanks",
           "(OpenPits_Latrines) dry climate, ground water table lower than latrine, small family (2-5 people)",
           "(OpenPits_Latrines) dry climate, ground water table lower than latrine, communal",
@@ -137,10 +137,12 @@ const SurveyData = ({
                   } = mc_data;
                   const date = new Date(dateTime).toLocaleDateString();
                   const time = new Date(dateTime).toLocaleTimeString();
+
+
                   return [
-                    form_id,
+                    form_id.slice(-3),
                     email,
-                    municipality_name,
+                    ...(userInfo.user_type !== "lu_admin" ? [municipality_name] : []),
                     brgy_name,
                     v_type,
                     v_age,
@@ -174,11 +176,12 @@ const SurveyData = ({
 
                 const date = new Date(dateTime).toLocaleDateString();
                 const time = new Date(dateTime).toLocaleTimeString();
+                
                 const dTime = date + " : " + time;
                 return [
-                  surveyData.form_id,
+                  surveyData.form_id.slice(-3), 
                   email,
-                  municipality_name,
+                  ...(userInfo.user_type !== "lu_admin" ? [municipality_name] : []),
                   brgy_name,
                   septic_tanks,
                   openPits_latrines.cat1,

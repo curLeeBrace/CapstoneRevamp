@@ -27,8 +27,8 @@ const StationarySummary = () => {
   const tb_head =[
     "ID",
     "Email",
-    "Municipality",
-    "Brgy",
+    ...(userInfo.user_type !== "lu_admin" ? ["Municipality"] : []),
+    userInfo.user_type === "lu_admin" ? "Institution" : "Brgy",
     "Form Type",
     "Charcoal - (Cooking)",
     "Diesel - (Cooking)",
@@ -80,10 +80,10 @@ const StationarySummary = () => {
         const dateTime = new Date(date_Time).toLocaleDateString() + " " + new Date(date_Time).toLocaleTimeString();
 
 
-            return [
-                form_id,
+        let rowData: any[] = [
+                form_id.slice(-3),
                 email,
-                municipality_name,
+                ...(userInfo.user_type !== "lu_admin" ? [municipality_name] : []),
                 brgy_name,
                 form_type,
                 cooking.charcoal,
@@ -99,6 +99,8 @@ const StationarySummary = () => {
                 ghge,
                 dateTime
             ]
+            return rowData;
+
         }))
 
 

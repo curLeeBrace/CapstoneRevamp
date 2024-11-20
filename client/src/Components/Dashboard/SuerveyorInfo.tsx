@@ -9,8 +9,6 @@ import useUserInfo from "../../custom-hooks/useUserType";
 
 
 
-const TB_HEADER = ["Profile", "Name",  "Municipality","Mobile Combustion", "Waste Water", "Industrial", "Agriculture", "Stationary"]
-
 const SurveyorInfo = () => {
   const [address, setAddress] = useState<AddressReturnDataType>();
   const [accs, setAccs] = useState<any[]>();
@@ -20,7 +18,10 @@ const SurveyorInfo = () => {
   const userInfo = useUserInfo()
   
   useEffect(() => {
+    
   const {user_type} = userInfo
+
+
   if(user_type === "s-admin") {
     setIsLoading(true)
     axiosPrivate
@@ -67,9 +68,10 @@ const SurveyorInfo = () => {
     }
 
   },[])
+  const isLuUser = userInfo.user_type === "lu_admin";
+  const locationLabel = isLuUser ? "Institution" : "Municipality";
 
-
-
+  const TB_HEADER = ["Profile", "Name",  locationLabel ,"Mobile Combustion", "Waste Water", "Industrial", "Agriculture", "Stationary"]
 
   // console.log("Accs : ", accs);
 

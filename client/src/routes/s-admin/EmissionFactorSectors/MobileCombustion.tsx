@@ -3,7 +3,6 @@ import { Button, Input, Option, Select, Typography } from '@material-tailwind/re
 import { useState } from 'react';
 import { axiosPivate } from '../../../api/axios';
 
-// Define the emission factor type for better type safety
 type EmissionFactors = {
     co2: number;
     ch4: number;
@@ -13,7 +12,7 @@ type EmissionFactors = {
 // Define the valid fuel types as a union type
 type FuelType = "Diesel" | "Gasoline";
 
-export default function MobileCombustion() {
+export default function MobileCombustionEmissions() {
     const [isLoading, setIsLoading] = useState(false);
     const [fuelType, setFuelType] = useState<FuelType>("Diesel");
 
@@ -26,7 +25,6 @@ export default function MobileCombustion() {
 
     // Handle fuel type change and update emission factors
     const handleFuelTypeChange = (value: string | undefined) => {
-        // Ensure the value is a valid FuelType, fallback to "Diesel" if undefined or invalid
         const fuel = value === "Diesel" || value === "Gasoline" ? value : "Diesel";
         setFuelType(fuel);
         setEmissionFactors(defaultEmissionFactors[fuel]);
@@ -58,14 +56,17 @@ export default function MobileCombustion() {
     };
 
     return (
-        <div>
+        <div className='border p-2 rounded-lg bg-gray-100 '>
             <form className="mt-12 flex flex-col gap-4 mx-4">
+            <Typography variant="h6" className="mb-4">
+                Update Mobile Combustion Emission Factors
+            </Typography>
                 <Select label="Select Fuel Type" value={fuelType} onChange={handleFuelTypeChange}>
                     <Option value="Diesel">Diesel</Option>
                     <Option value="Gasoline">Gasoline</Option>
                 </Select>
                 
-                <div className="my-4 grid grid-cols-3 gap-10">
+                <div className="my-4 md:grid md:grid-cols-3 gap-10">
                     {Object.entries(emissionFactors).map(([key, value]) => (
                         <div key={key}>
                             <Typography variant="small" color="blue-gray" className="mb-2 font-medium">
@@ -97,6 +98,7 @@ export default function MobileCombustion() {
                 >
                     <LockClosedIcon className="-mt-0.5 h-4 w-4" /> Press submit to apply changes.
                 </Typography>
+                
             </form>
         </div>
     );

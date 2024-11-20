@@ -414,7 +414,7 @@ const SummaryData = () => {
                                                             ? "Laguna University"
                                                             : "Selected Area"
                                                         }.`} 
-                                                     series={popultionUsingTheSystem} isLoading = {isLoading} stacked/>
+                                                     series={popultionUsingTheSystem} isLoading = {isLoading} />
                                                 }
                                     
                                             </div>
