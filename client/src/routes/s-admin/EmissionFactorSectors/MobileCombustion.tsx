@@ -1,7 +1,7 @@
 import { LockClosedIcon } from '@heroicons/react/24/solid';
 import { Button, Input, Option, Select, Typography } from '@material-tailwind/react';
-import { useState } from 'react';
-import { axiosPivate } from '../../../api/axios';
+import { useEffect, useState } from 'react';
+import useAxiosPrivate from '../../../custom-hooks/auth_hooks/useAxiosPrivate';
 
 type EmissionFactors = {
     co2: number;
@@ -15,45 +15,76 @@ type FuelType = "Diesel" | "Gasoline";
 export default function MobileCombustionEmissions() {
     const [isLoading, setIsLoading] = useState(false);
     const [fuelType, setFuelType] = useState<FuelType>("Diesel");
+    const [emissionFactors, setEmissionFactors] = useState<EmissionFactors>({
+        ch4 : 0,
+        co2 : 0,
+        n2o : 0,
+    });
+    const axiosPrivate = useAxiosPrivate();
 
-    // Define the emission factors for each fuel type, with proper types
-    const defaultEmissionFactors: Record<FuelType, EmissionFactors> = {
-        Diesel: { co2: 2.66, ch4: 4.0e-4, n2o: 2.18e-5 },
-        Gasoline: { co2: 2.07, ch4: 3.2e-4, n2o: 1.9e-4 },
-    };
-    const [emissionFactors, setEmissionFactors] = useState<EmissionFactors>(defaultEmissionFactors[fuelType]);
+    useEffect(()=>{
+        axiosPrivate.get(`efactor/mobile-combustion/get-efactor/${fuelType.toLowerCase()}`)
+        .then((res) => {
+            const mb_efactor : EmissionFactors = res.data as EmissionFactors;
+            setEmissionFactors(mb_efactor);
+        })
+        .catch((err) => console.log(err))
+        
+    },[fuelType])
+
 
     // Handle fuel type change and update emission factors
     const handleFuelTypeChange = (value: string | undefined) => {
         const fuel = value === "Diesel" || value === "Gasoline" ? value : "Diesel";
         setFuelType(fuel);
-        setEmissionFactors(defaultEmissionFactors[fuel]);
+        // setEmissionFactors(defaultEmissionFactors[fuel]);
     };
 
     // Handle emission factor changes
     const handleFactorChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
-        setEmissionFactors((prev) => ({ ...prev, [name]: parseFloat(value) }));
+        
+        
+            setEmissionFactors((prev) => ({ ...prev, [name]: value}));
+
+        
     };
+
+   
+
 
     // Handle form submission and validation
-    const submitValidation = async () => {
-        if (!emissionFactors.co2 || !emissionFactors.ch4 || !emissionFactors.n2o) {
-            alert("Please fill in all emission factors.");
-            return;
-        }
-
+    const submitValidation = () => {
         setIsLoading(true);
-        try {
-            await axiosPivate.put('/', { fuelType: fuelType.toLowerCase(), factors: emissionFactors });
-            alert('Emission factors updated successfully');
-        } catch (error) {
-            console.error('Error updating emission factors', error);
-            alert('Error updating emission factors');
-        } finally {
-            setIsLoading(false);
-        }
+            if (!emissionFactors.co2 || !emissionFactors.ch4 || !emissionFactors.n2o) {
+                alert("Please fill in all emission factors.");
+                setIsLoading(false);
+            } else {
+                const {co2, ch4, n2o} = emissionFactors
+                axiosPrivate.put('efactor/mobile-combustion/update-efactor', {
+                    fuel_type: fuelType.toLowerCase(),
+                    co2, 
+                    ch4, 
+                    n2o
+                })
+                .then(()=> {
+                    alert('Emission factors updated successfully');
+        
+                })
+                .catch((error)=>{
+                    alert('Error updating emission factors');
+                    console.error('Error updating emission factors', error);
+                    setIsLoading(false);
+        
+                })
+                .finally(()=>{
+                    setIsLoading(false);
+                })
+            }
+       
     };
+
+
 
     return (
         <div className='border p-2 rounded-lg bg-gray-100 '>
@@ -86,8 +117,11 @@ export default function MobileCombustionEmissions() {
                 </div>
 
                 <div className="flex justify-center">
-                    <Button fullWidth className="w-full md:w-11/12" disabled={isLoading} onClick={submitValidation}>
-                        {isLoading ? "Updating..." : "Submit"}
+                    <Button fullWidth className="w-full md:w-11/12" loading = {isLoading} onClick={()=>submitValidation()}>
+                        <div className='text-center w-full'>
+                            {isLoading ? "Updating..." : "Submit"}
+
+                        </div>
                     </Button>
                 </div>
                 

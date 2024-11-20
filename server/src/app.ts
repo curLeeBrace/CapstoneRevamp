@@ -10,7 +10,7 @@ import dashboardRoute from "./route/dashboard_route";
 import summaryDataRoute from "./route/summaryData_route";
 // import forecastingRoute from "./route/forecasting_route";
 import notificationRoute from "./route/notification_route";
-
+import efactor_route from "./route/efactor_route"
 
 
 
@@ -37,6 +37,7 @@ app.use('/api/dashboard', dashboardRoute);
 app.use('/api/summary-data', summaryDataRoute);
 // app.use('/api/forecast', forecastingRoute);
 app.use('/api/notiff', notificationRoute);
+app.use('/api/efactor', efactor_route);
 
 
 
