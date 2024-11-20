@@ -267,6 +267,7 @@ function Registration() {
            <Select
            label="User Type"
            name="user_type"
+           disabled={!details?.f_name}
            onChange={(value) => {
              setDetails((prev: any) => {
                // Set default values for "lu_admin" or "lu_surveyor"

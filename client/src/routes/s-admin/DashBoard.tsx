@@ -58,7 +58,7 @@ function DashBoard() {
   const [fontSize, setFontSize] = useState(13); 
   const increaseFontSize = () => setFontSize((prev) => prev + 1);
   const decreaseFontSize = () => setFontSize((prev) => (prev > 1 ? prev - 1 : 1));
-  
+
 
   useEffect(()=>{
     axiosPrivate.get(`/dashboard/overview-data/${user_info.province_code}/${user_info.user_type}/${user_info.municipality_code}`)
@@ -297,6 +297,7 @@ function DashBoard() {
             icon={ user_info.user_type === "lu_admin" 
             ? <img src={lu_img} className="h-6 w-6 rounded-lg" />
             : <GlobeAsiaAustraliaIcon className="h-6 w-6" />}  
+            isLoading={isLoading} 
             /> {/*child_card={<DashboardGHGeSummary/>} */}
           </div>        
           

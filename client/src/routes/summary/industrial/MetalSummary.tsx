@@ -38,7 +38,10 @@ const MetalSummary = ({year} : MetalSummaryProps) => {
 
     useEffect(()=>{
         setIsLoading(true);
-        set_tbHead(['ID', 'Email', 'Municipality', 'Brgy', 'Iron and Steel Production from Integrated Facilities (tons)', 'Iron and Steel Production from Non-integrated Facilities (tons)', 'GHGe'])
+        set_tbHead(['ID', 'Email',
+            ...(user_info.user_type !== "lu_admin" ? ["Municipality"] : []),
+            user_info.user_type === "lu_admin" ? "Institution" : "Brgy",
+              'Iron and Steel Production from Integrated Facilities (tons)', 'Iron and Steel Production from Non-integrated Facilities (tons)', 'GHGe'])
         const {municipality_code, user_type, province_code} = user_info
         
         axiosPrivate.get('/summary-data/industrial/metal', {
@@ -56,7 +59,11 @@ const MetalSummary = ({year} : MetalSummaryProps) => {
             setMetalData(
                     metalData.map((data : MetalDataTypes)=>{
                     const {email,municipality_name, ispif, ispnif, totalGHGe, brgy_name, form_id} = data;
-                    return [form_id,email,municipality_name, brgy_name, ispif, ispnif, totalGHGe]
+                    return [form_id,
+                        email,
+                        ...(user_info.user_type !== "lu_admin" ? [municipality_name] : []),
+                        brgy_name, 
+                         ispif, ispnif, totalGHGe]
                 })
             )
             //For Donut Chart
@@ -91,7 +98,7 @@ const MetalSummary = ({year} : MetalSummaryProps) => {
         <div className="flex flex-col gap-5 border-2 mx-4 rounded-lg my-2 border-gray-300">
 
         <div className="px-10 rounded-lg text-xl py-2 bg-darkgreen text-white">Metal Summary</div>
-        
+       
         <div className="w-full flex justify-center mx-8 mb-4">
 
                 <div className="w-2/4 mr-2 mb-2">
