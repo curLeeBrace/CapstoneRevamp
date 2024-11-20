@@ -15,6 +15,7 @@ import WasteWaterEmissions from "./EmissionFactorSectors/WasteWater";
 import IndustrialEmissions from "./EmissionFactorSectors/Industrial";
 import AgricultureEmissions from "./EmissionFactorSectors/Agriculture";
 import StationaryEmissions from "./EmissionFactorSectors/Stationary";
+import Forestry from "./EmissionFactorSectors/Forestry";
 
  
 export default function CheckoutForm() {
@@ -72,6 +73,13 @@ export default function CheckoutForm() {
       >
         Stationary
       </Tab>
+      <Tab
+        value="forestry"
+        onClick={() => setType("forestry")}
+        className={type === "forestry" ? "font-bold text-darkgreen" : ""}
+      >
+        Forestry
+      </Tab>
     </TabsHeader>
     <TabsBody
   className="!overflow-x-hidden !overflow-y-visible"
@@ -104,6 +112,11 @@ export default function CheckoutForm() {
   {type === "stationary" && (
     <TabPanel value="stationary">
       <StationaryEmissions />
+    </TabPanel>
+  )}
+   {type === "forestry" && (
+    <TabPanel value="forestry">
+      <Forestry />
     </TabPanel>
   )}
 </TabsBody>
