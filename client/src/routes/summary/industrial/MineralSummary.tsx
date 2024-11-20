@@ -40,7 +40,7 @@ const MineralSummary = ({year} : MineralSummaryProps) => {
 
     useEffect(()=>{
         setIsLoading(true);
-        set_tbHead(['ID', 'Email', 'Municipality,', 'Brgy', 'Cement Production - Portland (tons)', 'Lime Production (tons)', 'Cement Production - Portland (blended)', 'Glass Production (tons)', 'GHGe'])
+        set_tbHead(['ID', 'Email', 'Municipality', 'Brgy', 'Cement Production - Portland (tons)', 'Lime Production (tons)', 'Cement Production - Portland (blended)', 'Glass Production (tons)', 'GHGe'])
         const {municipality_code, user_type, province_code} = user_info
         
         axiosPrivate.get('/summary-data/industrial/mineral', {

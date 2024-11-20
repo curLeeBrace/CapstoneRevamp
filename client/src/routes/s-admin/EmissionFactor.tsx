@@ -10,8 +10,11 @@ import {
   Tab,
   TabPanel,
 } from "@material-tailwind/react";
-import WasteWater from "./EmissionFactorSectors/WasteWater";
-import MobileCombustion from "./EmissionFactorSectors/MobileCombustion";
+import MobileCombustionEmissions from "./EmissionFactorSectors/MobileCombustion";
+import WasteWaterEmissions from "./EmissionFactorSectors/WasteWater";
+import IndustrialEmissions from "./EmissionFactorSectors/Industrial";
+import AgricultureEmissions from "./EmissionFactorSectors/Agriculture";
+import StationaryEmissions from "./EmissionFactorSectors/Stationary";
 
  
 export default function CheckoutForm() {
@@ -32,61 +35,80 @@ export default function CheckoutForm() {
         </Typography>
       </CardHeader>
       <CardBody>
-        <Tabs value={type} className="">
-          <TabsHeader className="relative z-0 grid grid-cols-3 gap-3 ">
-            <Tab value="mobile-combustion" onClick={() => setType("mobile-combustion")}>
-              Mobile Combustion
-            </Tab>
-            <Tab value="waste-water" onClick={() => setType("waste-water")}>
-              Waste Water
-            </Tab>
-            <Tab value="industrial" onClick={() => setType("industrial")}>
-              Industrial
-            </Tab>
-            <Tab value="agriculture" onClick={() => setType("agriculture")}>
-              Agriculture
-            </Tab>
-            <Tab value="stationary" onClick={() => setType("waste-water")}>
-              Stationary
-            </Tab>
-            
-          </TabsHeader>
-          <TabsBody
-            className="!overflow-x-hidden !overflow-y-visible"
-            animate={{
-              initial: {
-                x: type === "card" ? 400 : -400,
-              },
-              mount: {
-                x: 0,
-              },
-              unmount: {
-                x: type === "card" ? 400 : -400,
-              },
-            }}
-          >
-            <TabPanel value="mobile-combustion" className="p-0">
-             <MobileCombustion/>
-            </TabPanel>
+      <Tabs value={type} className="">
+  <TabsHeader className="relative z-0 grid grid-cols-3 gap-3">
+      <Tab
+        value="mobile-combustion"
+        onClick={() => setType("mobile-combustion")}
+        className={type === "mobile-combustion" ? "font-bold text-darkgreen" : ""}
+      >
+        Mobile Combustion
+      </Tab>
+      <Tab
+        value="waste-water"
+        onClick={() => setType("waste-water")}
+        className={type === "waste-water" ? "font-bold text-darkgreen" : ""}
+      >
+        Waste Water
+      </Tab>
+      <Tab
+        value="industrial"
+        onClick={() => setType("industrial")}
+        className={type === "industrial" ? "font-bold text-darkgreen" : ""}
+      >
+        Industrial
+      </Tab>
+      <Tab
+        value="agriculture"
+        onClick={() => setType("agriculture")}
+        className={type === "agriculture" ? "font-bold text-darkgreen" : ""}
+      >
+        Agriculture
+      </Tab>
+      <Tab
+        value="stationary"
+        onClick={() => setType("stationary")}
+        className={type === "stationary" ? "font-bold text-darkgreen" : ""}
+      >
+        Stationary
+      </Tab>
+    </TabsHeader>
+    <TabsBody
+  className="!overflow-x-hidden !overflow-y-visible"
+  animate={{
+    initial: { x: type === "card" ? 400 : -400 },
+    mount: { x: 0 },
+    unmount: { x: type === "card" ? 400 : -400 },
+  }}
+>
+  {type === "mobile-combustion" && (
+    <TabPanel value="mobile-combustion">
+      <MobileCombustionEmissions />
+    </TabPanel>
+  )}
+  {type === "waste-water" && (
+    <TabPanel value="waste-water">
+      <WasteWaterEmissions />
+    </TabPanel>
+  )}
+  {type === "industrial" && (
+    <TabPanel value="industrial">
+      <IndustrialEmissions />
+    </TabPanel>
+  )}
+  {type === "agriculture" && (
+    <TabPanel value="agriculture">
+      <AgricultureEmissions />
+    </TabPanel>
+  )}
+  {type === "stationary" && (
+    <TabPanel value="stationary">
+      <StationaryEmissions />
+    </TabPanel>
+  )}
+</TabsBody>
+  </Tabs>
 
-            <TabPanel value="waste-water" className="p-0">
-             <WasteWater/>
-            </TabPanel>
-            
-            <TabPanel value="industrial" className="p-0">
-             <WasteWater/>
-            </TabPanel>
-
-            <TabPanel value="agriculture" className="p-0">
-             <WasteWater/>
-            </TabPanel>
-            
-            <TabPanel value="stationary" className="p-0">
-             <WasteWater/>
-            </TabPanel>
-
-          </TabsBody>
-        </Tabs>
       </CardBody>
     </Card>
     </div>

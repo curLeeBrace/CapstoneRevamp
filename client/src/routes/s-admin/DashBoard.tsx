@@ -40,8 +40,8 @@ type DashBoardData = {
       agriculture_cropsGHGe : number[],
       agriculture_liveStocksGHGe : number[],
       stationaryGHGe : number[],
-      residentialGHGe?: number[]; 
-      commercialGHGe?: number[];   
+      residentialGHGe: number[]; 
+      commercialGHGe: number[];   
   }
   total_ghge : number;
 
@@ -163,15 +163,33 @@ function DashBoard() {
       },
       
       {
-        name: "Stationary GHGe",
+        name: "Stationary Residential GHGe",
         data: dashboard_data
           ? dashboard_data.table_data.mobileCombustionGHGe.map((tb_data, index) => {
               if (user_info.user_type === "lu_admin" && tb_data.loc_name === "Bubukal") {
-                return { x: "Laguna University", y: dashboard_data.table_data.stationaryGHGe[index].toFixed(2) };
+                return { x: "Laguna University", y: dashboard_data.table_data.residentialGHGe[index].toFixed(2) };
               }
       
               if (user_info.user_type !== "lu_admin") {
-                return { x: tb_data.loc_name, y: dashboard_data.table_data.stationaryGHGe[index].toFixed(2) };
+                return { x: tb_data.loc_name, y: dashboard_data.table_data.residentialGHGe[index].toFixed(2) };
+              }
+      
+              return null;
+            })
+            .filter((data) => data !== null)
+          : [{ x: null, y: null }],
+      },
+
+      {
+        name: "Stationary Commercial GHGe",
+        data: dashboard_data
+          ? dashboard_data.table_data.mobileCombustionGHGe.map((tb_data, index) => {
+              if (user_info.user_type === "lu_admin" && tb_data.loc_name === "Bubukal") {
+                return { x: "Laguna University", y: dashboard_data.table_data.commercialGHGe[index].toFixed(2) };
+              }
+      
+              if (user_info.user_type !== "lu_admin") {
+                return { x: tb_data.loc_name, y: dashboard_data.table_data.commercialGHGe[index].toFixed(2) };
               }
       
               return null;
@@ -220,7 +238,7 @@ function DashBoard() {
         },
         foreColor: '#101010',
       },
-      colors : ["#248003", "#2942b3", "#f58142", "#fcba03", "#03fc20"],
+      colors : ["#248003", "#2942b3", "#f58142", "#fcba03", "#151B54", "#800000", "#A52A2A", "#00FF00"],
       plotOptions: {
         bar: {
           columnWidth: '90%',
@@ -267,7 +285,7 @@ function DashBoard() {
     },
   }
 
-  const lu_img = "./../../../../../public/img/lu.jpg"
+  const lu_img = "/img/lu.jpg"
    
   return (
     <div className='h-full w-full bg-gray-200 '>
@@ -413,10 +431,10 @@ function DashBoard() {
             
             <div className="mb-4 px-4 h-20">
               <SimpleCard
-                body={`${dashboard_data?.table_data.stationaryGHGe.reduce((acc, val) => acc + val, 0).toFixed(2)}`}
-                header="Stationary"
+                body={`${dashboard_data?.table_data.residentialGHGe?.reduce((acc, val) => acc + val, 0).toFixed(2)}`}
+                header="Stationary (Residential)"
                 icon={<GlobeAsiaAustraliaIcon className="h-6 w-6" />}
-                child_card={<BarChart chart_icon={<GlobeAsiaAustraliaIcon className="h-6 w-6" />} chart_label='Stationary' 
+                child_card={<BarChart chart_icon={<GlobeAsiaAustraliaIcon className="h-6 w-6" />} chart_label='Stationary Fuel Use (Residential)' 
                 chart_meaning = {
                   user_info.user_type === "s-admin" 
                     ? "GHGe per Municipality in Laguna." 
@@ -424,6 +442,23 @@ function DashBoard() {
                       ? "GHGe in Laguna University." 
                       : `GHGe per Brgy in ${user_info.municipality_name}.`}
                 series={[chartConfig.series[5] as any]} isLoading = {isLoading}/>}
+                isLoading={isLoading}
+              />
+            </div>
+
+            <div className="mb-4 px-4 h-20">
+              <SimpleCard
+                body={`${dashboard_data?.table_data.commercialGHGe?.reduce((acc, val) => acc + val, 0).toFixed(2)}`}
+                header="Stationary (Commercial)"
+                icon={<GlobeAsiaAustraliaIcon className="h-6 w-6" />}
+                child_card={<BarChart chart_icon={<GlobeAsiaAustraliaIcon className="h-6 w-6" />} chart_label='Stationary Fuel Use (Commercial)' 
+                chart_meaning = {
+                  user_info.user_type === "s-admin" 
+                    ? "GHGe per Municipality in Laguna." 
+                    : user_info.user_type === "lu_admin" 
+                      ? "GHGe in Laguna University." 
+                      : `GHGe per Brgy in ${user_info.municipality_name}.`}
+                series={[chartConfig.series[6] as any]} isLoading = {isLoading}/>}
                 isLoading={isLoading}
               />
             </div>

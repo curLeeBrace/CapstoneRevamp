@@ -6,7 +6,7 @@ interface SurveyFormProps {
     payload? : any
     form_id? : string
     form_category : "mobile-combustion" | "waste-water" | "industrial-mineral" | "industrial-chemical" | "industrial-metal" | "industrial-electronics"| "industrial-others" | 
-                    "agriculture-crops" | "agriculture-livestocks" | "stationary"
+                    "agriculture-crops" | "agriculture-livestocks" | "stationary" | "forestry-wood" | "forestry-forestlands"
 }
 
 
