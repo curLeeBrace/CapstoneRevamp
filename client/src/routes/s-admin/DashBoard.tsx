@@ -267,7 +267,7 @@ function DashBoard() {
     },
   }
 
-  const lu_img = "./../../../../../public/img/lu.jpg"
+  const lu_img = "/img/lu.jpg"
    
   return (
     <div className='h-full w-full bg-gray-200 '>
