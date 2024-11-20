@@ -112,12 +112,9 @@ type DashBoardData = {
             const industrialGHGe = await getIndustrialOverallGHGe(user_type, query, locations)
             const agriculture_cropsGHGe = await getAgricultureGHGe(user_type, query, locations, "crops")
             const agriculture_liveStocksGHGe = await getAgricultureGHGe(user_type, query, locations, "liveStocks")
-
-            const stationaryGHGe = await getStationaryGHGe(user_type, query, locations,);
-            const residentialGHGe = await getStationaryGHGe(user_type, query, locations, "residential"); 
-            const commercialGHGe = await getStationaryGHGe(user_type, query, locations, "commercial"); 
-
-
+            const stationaryGHGe = await getStationaryGHGe(user_type, query, locations); 
+            const residentialGHGe = await getStationaryGHGe(user_type, query, locations, "residential")
+            const commercialGHGe = await getStationaryGHGe(user_type, query, locations, "commercial")
 
 
 
@@ -127,7 +124,9 @@ type DashBoardData = {
                 total_ghge += Number(industrialGHGe[index].toFixed(2));
                 total_ghge += Number(agriculture_cropsGHGe[index].toFixed(2));
                 total_ghge += Number(agriculture_liveStocksGHGe[index].toFixed(2));
-                total_ghge += Number(stationaryGHGe[index].toFixed(2));
+                total_ghge += Number(residentialGHGe[index].toFixed(2));
+                total_ghge += Number(commercialGHGe[index].toFixed(2));
+
               
             })
                 

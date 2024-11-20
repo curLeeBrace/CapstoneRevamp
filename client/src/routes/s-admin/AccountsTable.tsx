@@ -8,6 +8,7 @@ import FilterMunicipality from './FilterMunicipality';
 import Loader from '../../Components/Loader';
 import { MagnifyingGlassCircleIcon } from '@heroicons/react/24/solid'; // Import an icon for the search button
 import useAxiosPrivate from '../../custom-hooks/auth_hooks/useAxiosPrivate';
+import useUserInfo from '../../custom-hooks/useUserType';
 
 interface AccInfo {
   brgy_name: string;
@@ -43,11 +44,18 @@ const AccountsTable: React.FC = () => {
   const [selectedMunicipality, setSelectedMunicipality] = useState<string>('');
   const [selectedUserType, setSelectedUserType] = useState<string>('');
   const [searchQuery, setSearchQuery] = useState<string>('');
+  const user_info = useUserInfo()
 
+  useEffect(() => {
+    if (user_info.user_type === "lu_admin") {
+      setSelectedUserType("lu_surveyor");
+    }
+  }, [user_info.user_type]);
+ 
   useEffect(() => {
     const fetchAccounts = async () => {
       try {
-        const response = await axiosPrivate.get('/account/get-all');
+        const response = await axiosPrivate.get(`/account/get-all/`);
         console.log("Accounts : ", response.data)
         const allDetails = response.data.filter((user: UserDetails) => user.user_type !== 's-admin');
         setDetails(allDetails);
@@ -120,7 +128,14 @@ const AccountsTable: React.FC = () => {
 
   const TABLE_HEAD = ["Name", "Profile", "UserType", "Municipality", "Email", "Action"];
 
-  const TABLE_ROWS = filteredDetails.map((detail) => ({
+  const TABLE_ROWS = filteredDetails
+  .filter((detail) => {
+    if (user_info.user_type === "lu_admin" && detail.user_type !== "lu_surveyor") {
+      return false; 
+    }
+    return true; 
+    
+  }).map((detail) => ({
     Name: `${detail.f_name} ${detail.m_name} ${detail.l_name}`,
     UserType: detail.user_type,
     Email: detail.email,
@@ -183,18 +198,36 @@ const AccountsTable: React.FC = () => {
             onClick={handleFilter}
           >
             <div className="mb-4">
-              <Select
-                className="font-semibold"
-                label="Select User Type"
-              >
-                <Option onClick={() => setSelectedUserType("")}>All Accounts</Option>
-                <Option onClick={() => setSelectedUserType("lgu_admin")}>LGU Admin</Option>
-                <Option onClick={() => setSelectedUserType("surveyor")}>Surveyor</Option>
+            {
+            user_info.user_type === "lu_admin" && (
+              <Select className="font-semibold" label="Select User Type">
+                <Option onClick={() => setSelectedUserType("lu_surveyor")}>
+                  Laguna University Surveyor
+                </Option>
               </Select>
+            )
+            }
+            {
+            user_info.user_type != "lu_admin" && (
+              <Select className="font-semibold" label="Select User Type"
+            >
+              <Option onClick={() => setSelectedUserType("")}>All Accounts</Option>
+              <Option onClick={() => setSelectedUserType("lgu_admin")}>LGU Admin</Option>
+              <Option onClick={() => setSelectedUserType("surveyor")}>Surveyor</Option>
+              <Option onClick={() => setSelectedUserType("lu_surveyor")}>Laguna University Surveyor</Option>
+              <Option onClick={() => setSelectedUserType("lu_admin")}>Laguna University Admin</Option>
+            </Select>
+            )
+            }
+            
             </div>
+            {
+            user_info.user_type != "lu_admin" && (
             <div>
               <FilterMunicipality setState={setSelectedMunicipality} />
             </div>
+              )
+            }
           </Modal>
 
           <button onClick={handleClearFilter} className="bg-red-500 text-white px-2 py-2 rounded-md font-bold hover:shadow-xl">Clear Filter</button>

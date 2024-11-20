@@ -22,7 +22,7 @@ router.post('/change-pass',authenticate_token, changePass);
 router.post('/login', authenticate_account);
 router.post('/recover', recoverAccount);
 
-router.get('/get-all',authenticate_token, get_allAcc);
+router.get('/get-all/:user_type?',authenticate_token, get_allAcc);
 router.delete('/delete/:accountId', authenticate_token, delete_Acc );
 router.get('/audit-logs', authenticate_token,  fetchAuditLogs);
 

@@ -90,26 +90,19 @@ useEffect(()=>{
         //    GHG Emissions (tonnes CO2e)
         //  =============================
     
-        // const mobileCombustionGHGe = ghge?.mobileCombustionGHGe || [];
         const totalMobileCombustionGHGE = ghge.mobileCombustionGHGe.reduce((acc:any, val:any) => acc + val.emission.ghge, 0).toFixed(2);
         
-        // const wasteWaterGHGe = ghge?.wasteWaterGHGe || [];
         const totalWasteWaterGHGE = ghge.wasteWaterGHGe.reduce((acc:any, val:any) => acc + val, 0).toFixed(2);
         
-        // const industrialGHGe = ghge?.industrialGHGe || [];
         const totalIndustrialGHGE = ghge.industrialGHGe.reduce((acc:any, val:any) => acc + val, 0).toFixed(2);
         
-        // const agricultureCropsGHGe = ghge?.agriculture_cropsGHGe || [];
         const totalAgricultureCropsGHGE = ghge.agriculture_cropsGHGe.reduce((acc:any, val:any) => acc + val, 0).toFixed(2);
     
-        // const agricultureLiveStocksGHGe = ghge?.agriculture_liveStocksGHGe || [];
         const totalAgricultureLivestockGHGE = ghge.agriculture_liveStocksGHGe.reduce((acc:any, val:any) => acc + val, 0).toFixed(2);
     
-        // const residentialGHGe = ghge?.stationary_resGHGe || [];
-        const totalStationaryResidentialGHGE = ghge.stationary_resGHGe.reduce((acc:any, val:any) => acc + val, 0); 
+        const totalStationaryResidentialGHGE = ghge.stationary_resGHGe.reduce((acc:any, val:any) => acc + val, 0).toFixed(2); 
     
-        // const commercialGHGe = ghge?.stationary_commGHGe || [];
-        const totalStationaryCommercialGHGE = ghge.stationary_commGHGe.reduce((acc:any, val:any) => acc + val, 0);
+        const totalStationaryCommercialGHGE = ghge.stationary_commGHGe.reduce((acc:any, val:any) => acc + val, 0).toFixed(2);
       
         
         //  =============================
@@ -143,7 +136,7 @@ useEffect(()=>{
     
     
         const TABLE_ROWS = [
-          { name: "Scope 1 Emissions (Net of Forestry and Land Use)", ghge: "", proportion: "", isCategory: true },
+          { name: "Scope 1 Emissions", ghge: "", proportion: "", isCategory: true },
           { name: "GHG Emissions from Community-Level Residential Stationary Fuel Use", ghge: totalStationaryResidentialGHGE, proportion: residentialStationaryProportion },
           { name: "GHG Emissions from Community-Level Commercial Stationary Fuel Use", ghge: totalStationaryCommercialGHGE,  proportion: commercialStationaryProportion },
           { name: "GHG Emissions from Community Mobile Combustion", ghge: totalMobileCombustionGHGE, proportion:mobileCombustionProportion },
@@ -184,19 +177,6 @@ useEffect(()=>{
 
   })
   .catch(err => console.log(err))
-
-
-
-
-
-
-
-
-
-
-
-
-
   
 
 
@@ -264,9 +244,6 @@ useEffect(()=>{
     "Proportion of Total Emissions"
   ];
   
-
-
-
 
 
 

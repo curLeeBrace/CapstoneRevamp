@@ -40,7 +40,7 @@ const ElectronicsSummary = ({year} : ElectronicsSummaryProps) => {
 
     useEffect(()=>{
         setIsLoading(true);
-        set_tbHead(['ID', 'Email', 'Municipality,', 'Brgy', 'Integrated circuit of semiconductor (tons)', 'Photovoltaics (tons)', 'TFT Flat Panel Display (tons)', 'Heat transfer fluid (tons)', 'GHGe'])
+        set_tbHead(['ID', 'Email', 'Municipality', 'Brgy', 'Integrated circuit of semiconductor (tons)', 'Photovoltaics (tons)', 'TFT Flat Panel Display (tons)', 'Heat transfer fluid (tons)', 'GHGe'])
         const {municipality_code, user_type, province_code} = user_info
         
         axiosPrivate.get('/summary-data/industrial/electronics', {

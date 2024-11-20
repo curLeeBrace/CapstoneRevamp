@@ -46,7 +46,7 @@ const ChemicalSummary = ({year} : ChemicalSummaryProps) => {
 
     useEffect(()=>{
         setIsLoading(true);
-        set_tbHead(['ID', 'Email', 'Municipality,', 'Brgy', 'Ammonia Production (tons)', 'Soda Ash Production (tons)', 'Dichloride and Vinyl Chloride Monomer (tons)', 'Methanol (tons)', 'Ethylene oxide (tons)', 'Carbon black (tons)', 'Ethylene (tons)', 'Acrylonitrile (tons)', 'GHGe'])
+        set_tbHead(['ID', 'Email', 'Municipality', 'Brgy', 'Ammonia Production (tons)', 'Soda Ash Production (tons)', 'Dichloride and Vinyl Chloride Monomer (tons)', 'Methanol (tons)', 'Ethylene oxide (tons)', 'Carbon black (tons)', 'Ethylene (tons)', 'Acrylonitrile (tons)', 'GHGe'])
         const {municipality_code, user_type, province_code} = user_info
         
         axiosPrivate.get('/summary-data/industrial/chemical', {
