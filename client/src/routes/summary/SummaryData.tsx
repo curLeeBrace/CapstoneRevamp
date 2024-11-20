@@ -44,15 +44,12 @@ const SummaryData = () => {
 
     const  {survey_category} = useParams()
   
-    const user_info = useUserInfo();
-
 
 
 
 
     useEffect(()=> {
 
-        
         const barColor = "#006400";
         if(formType){
                 
@@ -66,7 +63,6 @@ const SummaryData = () => {
                 form_type : formType,
                 selectAll,
                 selectedYear : yearState
-
 
             }})
             .then(res => {
@@ -205,7 +201,7 @@ const SummaryData = () => {
 
     },[formType, municipality?.address_code, brgy?.address_code, yearState, survey_category])
 
-
+    
 
 
     // const getExpected_ghgThisYear = () => {
@@ -251,7 +247,7 @@ const SummaryData = () => {
             <div className="flex flex-col w-full px-20 gap-5 mt-5">
                 {/* TITLE */}
                 <div className="flex self-center -mt-1 -mb-5">
-                    <Typography className="font-bold text-white text-2xl text-center mb-4 bg-darkgreen py-2 px-10 rounded-lg" >{`${survey_category === "mobile-combustion" ? "Mobile Combustion" : "Waste Water"} Summary`}</Typography>
+                    <Typography className="font-bold text-white text-2xl text-center mb-4 bg-darkgreen py-2 px-10 rounded-lg" >{`${survey_category === "mobile-combustion" ? "Mobile Combustion" : "Waste Water"}`}</Typography>
                 </div>
           
                     
@@ -331,14 +327,13 @@ const SummaryData = () => {
                                         tabPanelChild : 
                                         <SurveyData form_type={formType} 
                                             muni_code={
-
-                                                userInfo.user_type === "s-admin" ? 
-                                                municipality ? municipality.address_code : undefined 
-                                                :  userInfo.user_type === "lgu_admin" ?
-                                                municipality ? municipality.address_code : userInfo.municipality_code
-                                                :undefined
-                                                  
-                                                
+                                                userInfo.user_type === "s-admin" 
+                                                ? municipality ? municipality.parent_code : undefined 
+                                                : userInfo.user_type === "lgu_admin"
+                                                ? municipality ? municipality.address_code : userInfo.municipality_code 
+                                                : userInfo.user_type === "lu_admin"
+                                                ? municipality ? municipality.address_code : userInfo.municipality_name
+                                                : undefined
                                             } 
                                             prov_code={    
                                                 userInfo.province_code
@@ -366,10 +361,12 @@ const SummaryData = () => {
                                                         <div className="h-full shrink-0">
                                                             <BarChart chart_icon={<TruckIcon className="w-6 h-6"/>} chart_label={`Vehicle Type (${formType})`}  
                                                             chart_meaning={`Overall surveyed vehicles in
-                                                            ${user_info.user_type === "s-admin"
+                                                            ${userInfo.user_type === "s-admin"
                                                                 ? municipality?.address_name || "Laguna Province" 
-                                                                : user_info.user_type === "lgu_admin"
-                                                                ? `${brgy?.address_name || user_info.municipality_name}` 
+                                                                : userInfo.user_type === "lgu_admin"
+                                                                ? `${brgy?.address_name || userInfo.municipality_name}` 
+                                                                : userInfo.user_type === "lu_admin"
+                                                                ? `${userInfo.municipality_name}` 
                                                                 : "Selected Area"
                                                             }.`}
                                                             series={v_typeSeries} isLoading = {isLoading}/>
@@ -379,10 +376,12 @@ const SummaryData = () => {
 
                                                         <BarChart chart_icon={<TruckIcon className="h-6 w-6"/>} chart_label={`Vehicle Emission Rate (${formType})`}
                                                           chart_meaning={`Total Emission rate per vehicle in
-                                                            ${user_info.user_type === "s-admin"
+                                                            ${userInfo.user_type === "s-admin"
                                                                 ? municipality?.address_name || "Laguna Province" 
-                                                                : user_info.user_type === "lgu_admin"
-                                                                ? `${brgy?.address_name || user_info.municipality_name}` 
+                                                                : userInfo.user_type === "lgu_admin"
+                                                                ? `${brgy?.address_name || userInfo.municipality_name}` 
+                                                                : userInfo.user_type === "lu_admin"
+                                                                ? "Laguna University"
                                                                 : "Selected Area"
                                                             }.`}
                                                         series={vehicle_ghge_rate} isLoading = {isLoading}/>
@@ -392,10 +391,12 @@ const SummaryData = () => {
 
                                                             <BarChart chart_icon={<TruckIcon className="h-6 w-6"/>} chart_label={`Vehicle Age (${formType})`} 
                                                             chart_meaning={`Total counts of diffirent vehicle age in
-                                                                ${user_info.user_type === "s-admin"
+                                                                ${userInfo.user_type === "s-admin"
                                                                     ? municipality?.address_name || "Laguna Province" 
-                                                                    : user_info.user_type === "lgu_admin"
-                                                                    ? `${brgy?.address_name || user_info.municipality_name}` 
+                                                                    : userInfo.user_type === "lgu_admin"
+                                                                    ? `${brgy?.address_name || userInfo.municipality_name}` 
+                                                                    : userInfo.user_type === "lu_admin"
+                                                                    ? "Laguna University"
                                                                     : "Selected Area"
                                                                 }.`}
                                                             series={v_ageSeries} isLoading = {isLoading}/>
@@ -405,10 +406,14 @@ const SummaryData = () => {
                                                     
                                                     <BarChart chart_icon={<TruckIcon className="w-6 h-6"/>} chart_label={`Waste Water (${formType}) Population Using The Sytem`} 
                                                      chart_meaning={`Count Of People Using The Sytem in
-                                                        ${user_info.user_type === "s-admin" 
-                                                            ? municipality?.address_name || "Laguna Province"
-                                                            : user_info.user_type|| "lgu_admin"
-                                                            ? `${brgy?.address_name|| user_info.municipality_name}`: "Selected Area"}.`} 
+                                                        ${userInfo.user_type === "s-admin" 
+                                                            ? municipality?.address_name || "Laguna Province" 
+                                                            : userInfo.user_type === "lgu_admin"
+                                                            ? `${brgy?.address_name || userInfo.municipality_name}` 
+                                                            : userInfo.user_type === "lu_admin"
+                                                            ? "Laguna University"
+                                                            : "Selected Area"
+                                                        }.`} 
                                                      series={popultionUsingTheSystem} isLoading = {isLoading} stacked/>
                                                 }
                                     

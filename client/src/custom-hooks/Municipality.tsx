@@ -4,7 +4,7 @@ import { Select, Option } from "@material-tailwind/react";
 import useUserInfo from "./useUserType";
 
 interface MunicipalityProps {
-  setAddress : React.SetStateAction<any>;
+  setAddress: React.Dispatch<React.SetStateAction<AddressReturnDataType | undefined>>;
   deafult_municipalityName? : string;
   disabled? : boolean
 }
@@ -30,7 +30,14 @@ const Municipality = ({setAddress, disabled, deafult_municipalityName}:Municipal
           //   address_code : address[0].address_code,
           //   parent_code  : address[0].parent_code
           // })
-      } else {
+        } else if (userInfo.user_type === "lu_admin") {
+          // For "lu_admin", directly set the address
+          setAddress({
+            address_name: "Laguna University",
+            address_code: "043426",
+            parent_code: "0434", 
+          });
+        } else {
         setAddress({
           address_name : userInfo.municipality_name,
           address_code : userInfo.municipality_code,

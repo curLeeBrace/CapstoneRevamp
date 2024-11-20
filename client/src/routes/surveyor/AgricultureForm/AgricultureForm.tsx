@@ -61,7 +61,7 @@ function AgricultureForm() {
   }
 
   return (
-    <div className="flex justify-center min-h-screen px-4 py-10 overflow-x-hidden">
+    <div className="flex justify-center min-h-screen px-4 py-3 overflow-x-hidden">
       <AlertBox
         openAlert={openAlert}
         setOpenAlert={setOpenAlert}
@@ -69,7 +69,7 @@ function AgricultureForm() {
       />
 
       <Card className="w-full max-w-4xl px-6 py-6 shadow-2xl shadow-black rounded-xl h-auto relative">
-        <Typography variant="h4" color="blue-gray" className="text-center">
+        <Typography variant="h4" color="blue-gray" className="text-center text-xl text-white bg-darkgreen rounded-lg py-2">
           Agriculture Survey
         </Typography>
 
@@ -79,8 +79,11 @@ function AgricultureForm() {
             <BrgyMenu
               disabled = {params.action === "view" || params.action === "finish"}
               municipality_code={user_info.municipality_code}
-              setBrgys={setBrgy}
-              deafult_brgyName={state && state.brgy_name}
+              setBrgys={user_info.user_type === 'lu_surveyor' 
+                ? () => setBrgy({ address_code: '043426003', address_name: 'Laguna University', parent_code: '0434' }) 
+                : setBrgy} 
+              deafult_brgyName={user_info.user_type === 'lu_surveyor' ? 'Laguna University' : (state && state.brgy_name) }
+              user_info={user_info}
             />
           </div>
 

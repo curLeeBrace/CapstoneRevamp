@@ -32,17 +32,16 @@ export default function AuditLogs() {
       const response = await axiosPrivate.get('/account/audit-logs', { params });
       setAuditLogs(response.data);
       setFilteredLogs(response.data);
-      setLoading(false);
     } catch (error) {
       console.error('Error fetching data:', error);
+    } finally {
       setLoading(false);
     }
   };
 
   const getUserInfo = () => {
     const userInfo = JSON.parse(Cookies.get('user_info') as string);
-    // setUserType(userInfo.user_type);
-    // setMunicipalityName(userInfo.user_type === 'lgu_admin' ? userInfo.municipality_name : '');
+    console.log(userInfo)
     return userInfo;
   };
 
@@ -52,12 +51,16 @@ export default function AuditLogs() {
 
   useEffect(() => {
     const userInfo = getUserInfo();
-
+    const params: { user_type: string; municipality_code?: string; municipality_name?: string } = { user_type: userInfo.user_type };
+  
     if (userInfo.user_type === 'lgu_admin') {
-      handleFetchAuditLogs({ municipality_code: userInfo.municipality_code, user_type : userInfo.user_type});
-    } else {
-      handleFetchAuditLogs({user_type : userInfo.user_type});
+      params.municipality_code = userInfo.municipality_code;
+    } 
+    else if (userInfo.user_type === 'lu_admin') {
+      params.municipality_name = "Laguna University";
     }
+  
+    handleFetchAuditLogs(params);
   }, []);
 
   useEffect(() => {
@@ -83,9 +86,9 @@ export default function AuditLogs() {
       ...(startDate && { startDate }),
       ...(endDate && { endDate }),
       ...(selectedAction && { action: selectedAction }),
-      ...(userInfo.user_type === 'lgu_admin' && { municipality_code: userInfo.municipality_code }),
+      user_type: userInfo.user_type,
     };
-    handleFetchAuditLogs(params);
+    fetchAuditLogs(params);
   };
 
   const clearFilter = () => {
@@ -93,12 +96,7 @@ export default function AuditLogs() {
     setEndDate('');
     setSelectedAction(null);
     setSearchQuery('');
-    handleFilter(); // Call handleFilter to refetch audit logs after clearing filters
-    const userInfo = getUserInfo();
-    const params = {
-      ...(userInfo.user_type === 'lgu_admin' && { municipality_code: userInfo.municipality_code }),
-    };
-    fetchAuditLogs(params);
+    handleFilter(); // Refetch audit logs after clearing filters
   };
 
   const TABLE_HEAD = ["Name", "UserIdentifier", "Date", "TimeStamp", "Action"];
@@ -144,8 +142,8 @@ export default function AuditLogs() {
                 <Option onClick={() => setSelectedAction("Created")}>Created Accounts</Option>
                 <Option onClick={() => setSelectedAction("User logged in")}>Logged-in</Option>
                 <Option onClick={() => setSelectedAction("User logged out")}>Logged-out</Option>
-                <Option onClick={() => setSelectedAction("Inserted fuel data for residential form")}>Inserted data for Residential Mobile Combustion</Option>
-                <Option onClick={() => setSelectedAction("Inserted fuel data for commercial form")}>Inserted data for Commercial Mobile Combustion</Option>
+                <Option onClick={() => setSelectedAction("Inserted mobile-combustion data for residential")}>Inserted data for Residential Mobile Combustion</Option>
+                <Option onClick={() => setSelectedAction("Inserted mobile-combustion data for commercial")}>Inserted data for Commercial Mobile Combustion</Option>
                 <Option onClick={() => setSelectedAction("Inserted waste-water")}>Inserted data for Waster Water </Option>
                 <Option onClick={() => setSelectedAction("Inserted industrial")}>Inserted data for Industrial </Option>
                 <Option onClick={() => setSelectedAction("Inserted agriculture")}>Inserted data for Agriculture </Option>

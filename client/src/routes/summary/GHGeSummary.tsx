@@ -10,6 +10,7 @@ import YearMenu from '../../Components/YearMenu';
 
 import { AddressReturnDataType } from '../../custom-hooks/useFilterAddrress';
 import { Typography } from '@material-tailwind/react';
+import { useLocation } from 'react-router-dom';
 
 // type GHGeDataType = {
 //   mobileCombustionGHGe : {
@@ -60,6 +61,7 @@ const GHGeSummary = ()=>{
   const axiosPrivate = useAxiosPrivate();
   const user_info = useUserInfo();
 
+  const {state} = useLocation();
 
 
 
@@ -281,7 +283,9 @@ useEffect(()=>{
           <div className='md:flex flex-row w-1/2 md:justify-around self-center mb-4 border-green-400 border-2 rounded-lg py-3'> 
             <div>
               {
-                user_info.user_type === "s-admin" ? <Municipality setAddress={setLoc} /> : <BrgyMenu setBrgys={setLoc} municipality_code={user_info.municipality_code}/>
+                user_info.user_type === "s-admin" ? <Municipality setAddress={setLoc} /> :
+                 <BrgyMenu setBrgys={setLoc} municipality_code={user_info.municipality_code} user_info={user_info}
+                deafult_brgyName={user_info.user_type === 'lu_admin' ? 'Laguna University' : (state && state.brgy_name) }    />
               }
             </div>
 

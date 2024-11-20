@@ -76,9 +76,9 @@ useEffect(() => {
   setVehicleOptions(vType_options);
   console.log("State : ", state);
 
-  if (vType_options) {
-    setFormData({ ...formData, vehicle_type: "" });
-  }
+  // if (vType_options) {
+  //   setFormData({ ...formData, vehicle_type: "" });
+  // }
 
 }, [formData.form_type]);
 
@@ -113,7 +113,6 @@ useEffect(()=>{
   }
 
 },[formData?.vehicle_age, formData?.liters_consumption])
-
 
 
 
@@ -276,8 +275,8 @@ const finishHandler = () => {
 const submitValidation = () => {
     const {form_type, fuel_type, liters_consumption, vehicle_age, vehicle_type} = formData
    
-    if(form_type && fuel_type &&  liters_consumption && vehicle_age && vehicle_type && brgy?.address_name){
- 
+    if(form_type && fuel_type &&  liters_consumption && vehicle_age && vehicle_type &&  (user_info.user_type !== 'lu_admin' ? brgy?.address_name : true))
+    {
       setOpenDialogBox(true);
     } else {
       set_isLoading(false);
@@ -289,7 +288,6 @@ const submitValidation = () => {
 console.log("FormData ", formData)
 // console.log("SELECTED VTYPE : ", formData.vehicle_type)
 
-
   return (
     <div className="flex justify-center min-h-screen px-4 py-10 overflow-x-hidden bg-gray-200">
 
@@ -300,18 +298,26 @@ console.log("FormData ", formData)
         :finishHandler
       } />
 
-      <Card className="w-full h-full sm:w-96 md:w-3/4 lg:w-2/3 xl:w-1/2 px-6 py-6 -mt-10 shadow-black shadow-2xl rounded-xl relative">
+      <Card className="w-full h-full sm:w-96 md:w-3/4 lg:w-2/3 xl:w-1/2 px-6 py-6 shadow-black -mt-8 shadow-2xl rounded-xl relative">
             
              <AlertBox openAlert = {openAlert}  setOpenAlert={setOpenAlert}  message={aler_msg}/>
-        
-        <Typography variant="h4" color="blue-gray" className="text-center">
+             
+         
+        <Typography variant="h4" color="blue-gray" className="text-center text-xl text-white bg-darkgreen rounded-lg py-2">
           Mobile Combustion Form
         </Typography>
+       
 
         <div className="mt-8 grid grid-cols-1 gap-6">
           {/* Column 1 */}
           <div className="flex flex-col gap-6">
-            <BrgyMenu disabled = {params.action === "view" || params.action === "finish"} municipality_code= {user_info.municipality_code} setBrgys={setBrgy} deafult_brgyName={state && state.brgy_name}/>
+
+            <BrgyMenu disabled = {params.action === "view" || params.action === "finish"}
+             municipality_code= {user_info.municipality_code} 
+             setBrgys={user_info.user_type === 'lu_surveyor' 
+             ? () => setBrgy({ address_code: '043426003', address_name: 'Laguna University', parent_code: '0434' }) 
+             : setBrgy }
+             deafult_brgyName={user_info.user_type === 'lu_surveyor' ? 'Laguna University' : (state && state.brgy_name) }  user_info={user_info}/>
             
             <div>
               <Typography variant="h6" color="blue-gray">

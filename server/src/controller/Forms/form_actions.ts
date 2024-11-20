@@ -163,7 +163,7 @@ const acceptUpdate = async (req: Request, res: Response) => {
         };
 
         if(form_category === "waste-water"){
-            form_data = await WasteWaterFormShema.findByIdAndUpdate(form_id, ).exec()
+            form_data = await WasteWaterFormShema.findByIdAndUpdate(form_id, updateQuery).exec()
         } else if (form_category === "mobile-combustion"){
             form_data = await FuelFormSchema.findByIdAndUpdate(form_id, updateQuery).exec()
         } else if(form_category === "industrial-mineral"){

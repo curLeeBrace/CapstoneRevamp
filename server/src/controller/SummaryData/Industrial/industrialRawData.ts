@@ -17,7 +17,7 @@ import {
 
 
 type RequestQueryTypes = {
-    user_type : "s-admin" | "lgu_admin"
+    user_type : "s-admin" | "lgu_admin" | "lu_admin"
     municipality_code : string;
     prov_code : string;
     year : string;
@@ -42,7 +42,15 @@ const getIndustrialRawSummary = async (req : Request, res : Response) => {
             },
     
         } 
-        : 
+        : user_type === "lu_admin" ?
+        {
+            "surveyor_info.municipality_name" : 'Laguna University',
+            dateTime_created : {
+                $gte: new Date(`${year}-01-01T00:00:00.000Z`),
+                $lte: new Date(`${year}-12-30T23:59:59.000Z`)
+            },
+        }
+        :
         {
             "surveyor_info.municipality_code" : municipality_code,
             dateTime_created : {

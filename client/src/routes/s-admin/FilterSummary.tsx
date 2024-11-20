@@ -34,6 +34,7 @@ const FilterSummary = ({ municipalityState, yearState }: FilterSummaryProps) => 
                         <BrgyMenu
                             setBrgys={municipalityState.setState}
                             municipality_code={municipalityState.state.address_code}
+                            user_info={userInfo}
                         />
                     )}
                 </div>

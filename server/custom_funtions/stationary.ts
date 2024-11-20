@@ -96,8 +96,9 @@ const getStationaryGHGe = async (
   
     locations.forEach((loc: any) => {
         const root_loc_code = user_type === "s-admin" ? loc.city_code : loc.brgy_code;
-        let temp_ghge = 0;
 
+        let temp_ghge = 0;
+        
         stationary_data.forEach((data) => {
             const { cooking, generator, lighting, form_type: dataFormType } = data.survey_data;
 

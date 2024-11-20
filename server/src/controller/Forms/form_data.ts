@@ -20,49 +20,71 @@ const formData = async (req:Request, res:Response) => {
     const {
         municipality_code,
         brgy_code,
+        brgy_name,
+        user_type,
         surveyType,
-    } = req.query
-    const {form_category} = req.params;
+    } = req.query;
+    const { form_category } = req.params;
+    // const { user_type } = req.query; // Now we get user_type from query params
 
     try {
 
-        let query = {}
+        let query: any = {};
 
-
-        if(form_category === "waste-water" || form_category === "mobile-combustion" || form_category === "stationary"){
-
-            query = brgy_code !== undefined ? 
-                {
-                    "survey_data.form_type" : surveyType,
-                    "survey_data.brgy_code" : brgy_code,
-                    "surveyor_info.municipality_code" : municipality_code
-                } : 
-                {
-                    "survey_data.form_type" : surveyType,
-                    "surveyor_info.municipality_code" : municipality_code
+        if (user_type === "lu_surveyor") {
+            if (form_category === "waste-water" || form_category === "mobile-combustion" || 
+                form_category === "stationary" || form_category === "agriculture-crops" || form_category === "agriculture-livestocks" ||
+                form_category === "industrial-mineral" || form_category === "industrial-chemical" ||form_category === "industrial-metal" ||
+                form_category === "industrial-electronics" || form_category === "industrial-others" 
+             ) {
+                if (brgy_code !== undefined) {
+                    query = {
+                        "survey_data.form_type": surveyType,
+                        "surveyor_info.municipality_name": "Laguna University", // For LU Surveyors
+                        "survey_data.brgy_code": brgy_code
+                    };
+                } else {
+                    query = {
+                        "survey_data.form_type": surveyType,
+                        "surveyor_info.municipality_name": "Laguna University" // For LU Surveyors
+                    };
                 }
+            }
         } else {
-            
-            query = brgy_code !== undefined ? 
-                {
-                    // "survey_data.form_type" : surveyType,
-                    "survey_data.brgy_code" : brgy_code,
-                    "surveyor_info.municipality_code" : municipality_code
-                } : 
-                {
-                    // "survey_data.form_type" : surveyType,
-                    "surveyor_info.municipality_code" : municipality_code
+            // Default query for other users
+            if (form_category === "waste-water" || form_category === "mobile-combustion" || form_category === "stationary") {
+                if (brgy_code !== undefined) {
+                    query = {
+                        "survey_data.form_type": surveyType,
+                        "survey_data.brgy_code": brgy_code,
+                        "surveyor_info.municipality_name": { $ne: "Laguna University" },
+                        "surveyor_info.municipality_code": municipality_code
+                    };
+                } else {
+                    query = {
+                        "survey_data.form_type": surveyType,
+                        "surveyor_info.municipality_name": { $ne: "Laguna University" },
+                        "surveyor_info.municipality_code": municipality_code
+                    };
                 }
+            } else {
+                // Query for other categories
+                if (brgy_code !== undefined) {
+                    query = {
+                        "survey_data.brgy_code": brgy_code,
+                        "surveyor_info.municipality_name": { $ne: "Laguna University" },
+                        "surveyor_info.municipality_code": municipality_code
+                    };
+                } else {
+                    query = {
+                        "surveyor_info.municipality_code": municipality_code,
+                        "surveyor_info.municipality_name": { $ne: "Laguna University" }
+                    };
+                }
+            }
         }
-
-
-
-
-
-
-
-
-        
+        // console.log ("Form query:",query);
+     
 
         let form_data :any[] = [];
 

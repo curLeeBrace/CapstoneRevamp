@@ -93,7 +93,7 @@ const LiveStocks = () => {
       setOpenAlert(true);
       return;
     }
-    if (brgy?.address_name) {
+    if (user_info.user_type !== 'lu_admin' ? brgy?.address_name : true) {
       setOpenDialogBox(true);
     } else {
       set_isLoading(false);
