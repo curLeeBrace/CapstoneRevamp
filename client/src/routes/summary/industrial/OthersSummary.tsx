@@ -39,7 +39,7 @@ const OthersSummary = ({year} : othersSummaryProps) => {
 
     useEffect(()=>{
         setIsLoading(true);
-        set_tbHead(['ID', 'Email', 'Municipality,', 'Brgy', 'Pulp and paper industry (tons)', 'Other carbon in pulp (tons)', 'Food and beverages industry (tons)', 'GHGe'])
+        set_tbHead(['ID', 'Email', 'Municipality', 'Brgy', 'Pulp and paper industry (tons)', 'Other carbon in pulp (tons)', 'Food and beverages industry (tons)', 'GHGe'])
 
         const {municipality_code, user_type, province_code} = user_info
         
