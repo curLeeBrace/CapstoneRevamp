@@ -29,7 +29,7 @@ export function StickyNavbar() {
   const [municipality_name, set_municipality_name] = useState("");
   const [openNav, setOpenNav] = useState(false);
 
-  const lu_img = "./../../public/img/lu.jpg"
+  const lu_img = "./../../../public/img/lu.jpg"
  
   const [nav, setNav] = useState([
     {

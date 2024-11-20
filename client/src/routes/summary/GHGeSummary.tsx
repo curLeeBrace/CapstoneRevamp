@@ -148,8 +148,8 @@ useEffect(()=>{
           { name: "GHG Emissions from Community-Level Agriculture (Livestock)", ghge: totalAgricultureLivestockGHGE, proportion: agricultureLivestockProportion},
           // { name: "GHG Emissions from Solid Waste Disposal - Inside LGU Geopolitical Boundaries (ICLEI)", ghge: "0.00", proportion: "0.00%" },
           { name: "GHG Emissions from Industrial Processes and Product Use", ghge: totalIndustrialGHGE, proportion: industrialProportion},
-          // { name: "Scope 1 Emissions/Removal (Forestry and Land Use)", ghge: "", proportion: "", isCategory: true },
-          // { name: "GHG Emissions from Forestry and Land Use", ghge: "0.00", proportion: "0.00%" },
+          { name: "Scope 1 Emissions (Forestry and Land Use)", ghge: "", proportion: "", isCategory: true },
+          { name: "GHG Emissions from Forestry and Land Use", ghge: "0.00", proportion: "0.00%" },
           // { name: "GHG Removal from Sink", ghge:"0.00" , proportion: "0.00%" },
         ];
     
