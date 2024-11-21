@@ -44,6 +44,7 @@ import { StationaryFuelForm } from "./routes/surveyor/StationaryFuelForm";
 import EmissionFactorForm from "./routes/s-admin/EmissionFactor";
 import CheckoutForm from "./routes/s-admin/EmissionFactor";
 import { ForestLands, ForestryForm, Wood } from "./routes/surveyor/ForestryForm/ForestryForm";
+import ForestrySummary from "./routes/summary/ForestryLandUse/ForestrySummary";
 
 
 function App() {
@@ -126,6 +127,7 @@ function App() {
             <Route path = "summary/1/industrial" element = {<IndustrialSummary/>}/> {/* For industial*/}
             <Route path = "summary/2/agriculture" element = {<AgricultureSummary/>}/>
             <Route path = "summary/3/stationary" element = {<StationarySummary/>}/>
+            <Route path = "summary/5/forestry" element = {<ForestrySummary/>}/> {/* For industial*/}
             <Route path = "summary/4/ghge" element = {<GHGeSummary/>}/>
             
 
