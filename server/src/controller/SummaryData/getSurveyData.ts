@@ -59,6 +59,7 @@ const getSurveyData = async (req : Request, res : Response) => {
                     form_id : dt._id,
                     email,
                     municipality_name,
+                    municipality_code,
                     brgy_name : dt.survey_data.brgy_name as string,
                     
                     f_type : dt.survey_data.fuel_type as string,

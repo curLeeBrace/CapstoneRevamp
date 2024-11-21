@@ -45,7 +45,10 @@ const SummaryData = () => {
     const  {survey_category} = useParams()
   
 
-
+    useEffect(() => {
+        console.log("Selected Municipality:", municipality);
+    }, [municipality]);
+    
 
 
     useEffect(()=> {
@@ -328,7 +331,7 @@ const SummaryData = () => {
                                         <SurveyData form_type={formType} 
                                             muni_code={
                                                 userInfo.user_type === "s-admin" 
-                                                ? municipality ? municipality.parent_code : undefined 
+                                                ? municipality ? municipality.address_code : undefined 
                                                 : userInfo.user_type === "lgu_admin"
                                                 ? municipality ? municipality.address_code : userInfo.municipality_code 
                                                 : userInfo.user_type === "lu_admin"
