@@ -284,8 +284,8 @@ function DashBoard() {
       }
     },
   }
-  
-  const lu_img = "./../../../../../public/img/lu.jpg"
+
+  const lu_img = "/img/lu.jpg"
    
   return (
     <div className='h-full w-full bg-gray-200 '>
@@ -475,7 +475,7 @@ function DashBoard() {
           width={'100%'}
           height={'100%'}
           type={'bar'}
-          series={chartConfig.series}
+          series={chartConfig.series as any}
           options={chartConfig.options}
         /> : null
         }

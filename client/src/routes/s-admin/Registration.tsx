@@ -112,7 +112,7 @@ function Registration() {
           formData.append('l_name', l_name);
           formData.append('lgu_municipality', JSON.stringify(lgu_municipality));
           formData.append('m_name', m_name ? m_name : "");
-          formData.append('user_type', user_type);
+          formData.append("user_type", user_type || "");
           formData.append('img', img as File, img_fileName);
 
           axios.post('/account/register', formData)
@@ -135,12 +135,13 @@ function Registration() {
 
     } catch (error) {
       console.log(error)
+      
     }
 
   }
 
 
-
+  
 
 
   useEffect(()=>{
@@ -166,20 +167,19 @@ function Registration() {
       }
       })
     } 
-    // else if (user_info.user_type === "lu_admin") {
-    //   setDetails((prev: any) => {
-    //     const lgu_municipality = {
-    //       municipality_name: "Laguna University",
-    //          municipality_code: "043426", 
-    //          province_code: "0434", 
-    //     };
+    if (user_info.user_type === "lu_admin") {
+      setDetails((prev: any) => {
+        const lgu_municipality = {
+          municipality_name: "Laguna University",
+             municipality_code: "043426", 
+             province_code: "0434", 
+        };
   
-    //     return {
-    //       ...prev,
-    //       lgu_municipality
-    //     };
-    //   });
-    // }
+        return {
+          ...prev, ["lgu_municipality"]:lgu_municipality
+        };
+      });
+    }
 
 },[])
 
@@ -267,7 +267,6 @@ function Registration() {
            <Select
            label="User Type"
            name="user_type"
-           disabled={!details?.f_name}
            onChange={(value) => {
              setDetails((prev: any) => {
                // Set default values for "lu_admin" or "lu_surveyor"
@@ -284,8 +283,8 @@ function Registration() {
  
                return {
                  ...prev,
-                 user_type: value,
-                 lgu_municipality, // Update the lgu_municipality state
+                 ["user_type"]:value,
+                 lgu_municipality, 
                };
              });
            }}
