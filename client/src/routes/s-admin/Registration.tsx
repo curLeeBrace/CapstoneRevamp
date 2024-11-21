@@ -112,7 +112,7 @@ function Registration() {
           formData.append('l_name', l_name);
           formData.append('lgu_municipality', JSON.stringify(lgu_municipality));
           formData.append('m_name', m_name ? m_name : "");
-          formData.append("user_type", user_type || "");
+          formData.append('user_type', user_type);
           formData.append('img', img as File, img_fileName);
 
           axios.post('/account/register', formData)
@@ -135,13 +135,12 @@ function Registration() {
 
     } catch (error) {
       console.log(error)
-      
     }
 
   }
 
 
-  
+
 
 
   useEffect(()=>{
@@ -167,12 +166,13 @@ function Registration() {
       }
       })
     } 
-    if (user_info.user_type === "lu_admin") {
+    else if (user_info.user_type === "lu_admin") {
       setDetails((prev: any) => {
-        const lgu_municipality = {
+        let lgu_municipality:any;
+        lgu_municipality = {
           municipality_name: "Laguna University",
-             municipality_code: "043426", 
-             province_code: "0434", 
+          municipality_code: "043426", 
+          province_code: "0434", 
         };
   
         return {
@@ -282,10 +282,9 @@ function Registration() {
                }
  
                return {
-                 ...prev,
-                 ["user_type"]:value,
-                 lgu_municipality, 
-               };
+                 ...prev, ["user_type"]:value,
+                 lgu_municipality
+                };
              });
            }}
          >
