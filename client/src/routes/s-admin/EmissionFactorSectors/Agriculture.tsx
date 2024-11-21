@@ -1,5 +1,5 @@
 import { LockClosedIcon } from "@heroicons/react/24/solid";
-import { Select, Option, Typography, Input } from "@material-tailwind/react";
+import { Select, Option, Typography, Input, Button } from "@material-tailwind/react";
 import { useState } from "react";
 
 type EmissionFactor = {
@@ -38,7 +38,8 @@ const defaultEmissionData: Record<AgricultureType, EmissionEntry[]> = {
 export default function UpdateEmissionFactors() {
   const [agricultureType, setAgricultureType] = useState<AgricultureType>("crops");
   const [emissionData, setEmissionData] = useState<EmissionEntry[]>(defaultEmissionData[agricultureType]);
-
+  const [isLoading, ] = useState(false);
+ 
   const handleTypeChange = (value: string | undefined) => {
     const validType: AgricultureType = (value as AgricultureType) || "crops";
     setAgricultureType(validType);
@@ -111,9 +112,13 @@ export default function UpdateEmissionFactors() {
           
         ))}
           <div className="flex justify-center">
-                  
+                    <Button fullWidth className="w-full md:w-11/12" disabled={isLoading} >
+                        {isLoading ? "Updating..." : "Submit"}
+                    </Button>
                 </div>
-                
+          <div className="flex justify-center">
+          
+                </div>
                 <Typography
                     variant="small"
                     color="gray"
