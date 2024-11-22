@@ -99,20 +99,20 @@ export default function MobileCombustionEmissions() {
                 
                 <div className="my-4 md:grid md:grid-cols-3 gap-10">
                     {Object.entries(emissionFactors).map(([key, value]) => (
-                        <div key={key}>
-                            <Typography variant="small" color="blue-gray" className="mb-2 font-medium">
-                                {key.toUpperCase()} Factor
-                            </Typography>
-                            <Input
-                                type="number"
-                                name={key}
-                                value={value}
-                                onChange={handleFactorChange}
-                                placeholder={key.toUpperCase()}
-                                className="!border-t-blue-gray-200 focus:!border-t-gray-900"
-                                labelProps={{ className: "before:content-none after:content-none" }}
-                            />
-                        </div>
+                            <div key={key}>
+                                <Typography variant="small" color="blue-gray" className="mb-2 font-medium">
+                                    {key.toUpperCase()} Factor
+                                </Typography>
+                                <Input
+                                    type="number"
+                                    name={key}
+                                    value={value}
+                                    onChange={handleFactorChange}
+                                    placeholder={key.toUpperCase()}
+                                    className="!border-t-blue-gray-200 focus:!border-t-gray-900"
+                                    labelProps={{ className: "before:content-none after:content-none" }}
+                                />
+                            </div>
                     ))}
                 </div>
 

@@ -1,6 +1,6 @@
 import getGHGe_perOperation from "./GHGE_perOperations"
-
-
+import IndustrialEfactorSchema = require("../../src/db_schema/EmmisisonFactorsSchema/IndustrialEfactorSchema")
+//This is the default EmmisionFactor if the system do not find any Emmsion in Database
 interface IndustrialEmmisionFactor {
     CO2 : number
     CH4 : number
@@ -60,7 +60,7 @@ const metal_eFactor:IndustrialEmmisionFactor = {
     C6F14 : 0, 
 } 
 
-const electronicsEfactors : IndustrialEmmisionFactor[]  = [
+const default_electronicsEfactors : IndustrialEmmisionFactor[]  = [
     {
         CO2 : 0,
         CH4 : 0,
@@ -68,7 +68,7 @@ const electronicsEfactors : IndustrialEmmisionFactor[]  = [
         C2F6_1st : 2,
         CHF3 : 2,
         C3F8 : 2,
-        C2F6_2nd : 2,
+        C2F6_2nd : 0,
         NF3 : 2,
         SF6 : 2,
         C6F14 : 0,  
@@ -124,10 +124,12 @@ const othersEfactor : IndustrialEmmisionFactor = {
 }
 
 
-const mineral_eFactors: IndustrialEmmisionFactor[] = [mineral_eFactor, mineral_eFactor, mineral_eFactor,mineral_eFactor] 
-const chemical_eFactors : IndustrialEmmisionFactor[]= [chemical_eFactor, chemical_eFactor, chemical_eFactor,  chemical_eFactor, chemical_eFactor, chemical_eFactor, chemical_eFactor, chemical_eFactor];
-const metal_eFactors : IndustrialEmmisionFactor[] = [metal_eFactor, metal_eFactor];
-const othersEfactors : IndustrialEmmisionFactor[] = [othersEfactor, othersEfactor, othersEfactor]
+const default_mineral_eFactors: IndustrialEmmisionFactor[] = [mineral_eFactor, mineral_eFactor, mineral_eFactor,mineral_eFactor] 
+const default_chemical_eFactors : IndustrialEmmisionFactor[]= [chemical_eFactor, chemical_eFactor, chemical_eFactor,  chemical_eFactor, chemical_eFactor, chemical_eFactor, chemical_eFactor, chemical_eFactor];
+const default_metal_eFactors : IndustrialEmmisionFactor[] = [metal_eFactor, metal_eFactor];
+const default_othersEfactors : IndustrialEmmisionFactor[] = [othersEfactor, othersEfactor, othersEfactor]
+//End of SettingUp the default Emmision Factor
+
 
 
 
@@ -157,22 +159,31 @@ const getIndustrialOverallGHGe = async (user_type : string, query : {}, location
 
     let industrialGHGeContainer:number[] = []
 
+    //will do fetching efactors in database......... then set the default one if no one find....
+    
+    //check if Efactors is already in mongodb
+    const mineral_eFactor = await get_dbEfactor("mineral");
+    const chemical_eFactor = await get_dbEfactor("chemical");
+    const metal_eFactor = await get_dbEfactor("metal");
+    const electronics_eFactor = await get_dbEfactor("electronics");
+    const others_eFactor = await get_dbEfactor("others");
+    //////////////////////////////////////////////
+
     //GETTING MINERAL GHGE
-    const mineralGHGe = await getGHGe_perOperation(user_type, query, locations, mineral_eFactors, "Mineral");
+    const mineralGHGe = await getGHGe_perOperation(user_type, query, locations, mineral_eFactor ? mineral_eFactor : default_mineral_eFactors, "Mineral");
     const mineralGHGeSum = ghgeSumPerOperation(mineralGHGe);
 
 
 
     ///GETTING CHEMICAL GHGE
-
-    const checmicalGHGe =   await getGHGe_perOperation(user_type, query, locations, chemical_eFactors, "Chemical");
+    const checmicalGHGe =   await getGHGe_perOperation(user_type, query, locations, chemical_eFactor ? chemical_eFactor : default_chemical_eFactors, "Chemical");
     const chemicalGHGeSum = ghgeSumPerOperation(checmicalGHGe);
 
 
 
     //GETTING METAL GHGE
 
-    const metalGHGe = await getGHGe_perOperation(user_type, query, locations, metal_eFactors, "Metal");
+    const metalGHGe = await getGHGe_perOperation(user_type, query, locations, metal_eFactor ? metal_eFactor : default_metal_eFactors, "Metal");
     const metalGHGeSum = ghgeSumPerOperation(metalGHGe);
 
 
@@ -182,13 +193,13 @@ const getIndustrialOverallGHGe = async (user_type : string, query : {}, location
 
 
 
-    const electronicsGHGe = await getGHGe_perOperation(user_type, query, locations, electronicsEfactors, "Electronics");
+    const electronicsGHGe = await getGHGe_perOperation(user_type, query, locations,electronics_eFactor ?electronics_eFactor : default_electronicsEfactors, "Electronics");
     const electronicsGHGeSum = ghgeSumPerOperation(electronicsGHGe);
 
 
     //GETTING OTHERS GHGE
 
-    const othersGHGe = await getGHGe_perOperation(user_type, query, locations, othersEfactors, "Others");
+    const othersGHGe = await getGHGe_perOperation(user_type, query, locations, others_eFactor ? others_eFactor :  default_othersEfactors, "Others");
     const othersGHGeSum = ghgeSumPerOperation(othersGHGe);
 
     ///GETTING THE INDUSTRIAL OVERALL GHGE
@@ -259,18 +270,28 @@ const formulaForGettingIndstrialGHGe = (emmisionFactor : IndustrialEmmisionFacto
 
 }
 
+const get_dbEfactor = async(industry_type:string):Promise<IndustrialEmmisionFactor[]|undefined> => {
 
+    const db_Efactors = await IndustrialEfactorSchema.findOne({industry_type}).exec();
+    
+    if(!db_Efactors) return undefined
+
+    return db_Efactors.e_factor;
+
+
+}
 
 
 export {
     getIndustrialOverallGHGe,
     formulaForGettingIndstrialGHGe,
     IndustrialEmmisionFactor,
-    mineral_eFactors,
-    chemical_eFactors,
-    metal_eFactors,
-    othersEfactors,
-    electronicsEfactors
+    default_mineral_eFactors,
+    default_chemical_eFactors,
+    default_metal_eFactors,
+    default_othersEfactors,
+    default_electronicsEfactors,
+    get_dbEfactor
 }
 
 

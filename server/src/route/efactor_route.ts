@@ -3,10 +3,15 @@ const router = express.Router();
 
 import { authenticate_token } from "../controller/Token/auth_token";
 import { getMobileCombustionEmmisionFactor, updateMobileCombustionEmmisionFactor } from "../controller/EmmisionFactor/mobileCombustionEfactor";
+import { getIndustrialEfactor, updateIndustrialEfactor} from "../controller/EmmisionFactor/industrialEfactor";
 
 //mobilecobustion efactor actions
 router.get('/mobile-combustion/get-efactor/:fuel_type', authenticate_token, getMobileCombustionEmmisionFactor);
 router.put('/mobile-combustion/update-efactor', authenticate_token, updateMobileCombustionEmmisionFactor);
+
+//industrial efactor actions
+router.get('/industrial/get-efactor/:industry_type', authenticate_token, getIndustrialEfactor);
+router.put('/industrial/update-efactor',authenticate_token,updateIndustrialEfactor);
 
 
 
