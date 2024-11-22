@@ -19,6 +19,7 @@ import { useNavigate } from "react-router-dom";
 import useHandleChange from "../../custom-hooks/useHandleChange";
 import axios from "../../api/axios";
 import Cookies from "js-cookie";
+import useUserInfo from './../../custom-hooks/useUserType';
 
 
 
@@ -59,7 +60,7 @@ function Registration() {
 
   const [details, setDetails] = useState<DetailsTypes | undefined>()
 
-
+  const user_info = useUserInfo();
 
 
 
@@ -209,10 +210,55 @@ function Registration() {
           {/* <DatePicker setState={setDetails}/> */}
           <Input label="Choose Profile Picture" type="file" accept="image/*" name="img_name" onChange={(value)=> upload_imgHandler(value)} required disabled = {!details?.f_name || !details.l_name}/>
           <Typography variant="h5" color="gray">Account Information</Typography>
+         
+        
+          {(user_type != "lu_admin" && 
+            <Select label="User Type" name="user_type" onChange={(value) => 
+              setDetails((prev: any) => {
+                let updatedDetails = {
+                  ...prev,
+                  user_type: value, 
+                };
+                const user_info = useUserInfo()
+                if (user_info.user_type === "lgu_admin" && (value === "lgu_admin" || value === "surveyor")) {
+                  updatedDetails.lgu_municipality = {
+                    municipality_name: user_info.municipality_name,
+                    municipality_code: user_info.municipality_code,
+                    province_code: user_info.province_code,
+                  };
+                } else if (value === "lu_admin" || value === "lu_surveyor") {
+                  updatedDetails.lgu_municipality = {
+                    municipality_name: "Laguna University",
+                    municipality_code: "043426", 
+                    province_code: "0434",
+                  };
+                } else {
+                  updatedDetails.lgu_municipality = null;
+                }
           
+                return updatedDetails;
+              })
+            }
+          >
+                <Option value="lgu_admin">LGU Admin</Option>
+                <Option value="surveyor">Survey Partner</Option>
+              <Option value="lu_admin"  
+              disabled={!(user_info.user_type === "s-admin" || (user_info.user_type === "lgu_admin" && user_info.municipality_code === "043426"))}>
+                Laguna University Admin</Option>
+              <Option value="lu_surveyor"  
+              disabled={!(user_info.user_type === "s-admin" || (user_info.user_type === "lgu_admin" && user_info.municipality_code === "043426"))}>
+                Laguna University Surveyor</Option>
+       
+          </Select>)}
+
+           
           {
             user_type === "s-admin" ?
-            <Select label="LGU Municipality" onChange={(value) => {
+            <Select label="LGU Municipality" 
+            disabled={details?.user_type === "lu_admin" || details?.user_type === "lu_surveyor" || !details?.user_type} 
+            value={details?.lgu_municipality?.municipality_name || ""}
+        
+            onChange={(value) => {
               setDetails((prev : any) => {
                 let lgu_municipality:any;
                 
@@ -249,19 +295,6 @@ function Registration() {
             {user_type === "lu_admin" ? "Laguna University": `LGU Municipality : ${details?.lgu_municipality.municipality_name}`}
             </Typography>
           } 
-        
-          {(user_type != "lu_admin" &&
-            <Select label="User Type" name="user_type" onChange={(value) => 
-             setDetails((prev : any) => {
-              return {
-                ...prev, ["user_type"]:value
-              }
-            })
-          }
-          >
-                <Option value="lgu_admin">LGU Admin</Option>
-                <Option value="surveyor">Survey Partner</Option>
-          </Select>)}
           
         {user_type === "lu_admin" && (
            <Select
