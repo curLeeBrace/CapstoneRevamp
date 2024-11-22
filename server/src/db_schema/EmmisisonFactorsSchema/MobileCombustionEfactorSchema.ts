@@ -10,6 +10,6 @@ const MobileCombustionEfactorSchema = new mongoose.Schema({
 })
 
 
-export = mongoose.model("mobileCombustionEfactor", MobileCombustionEfactorSchema);
+export = mongoose.model("mobileCombustion_efactor", MobileCombustionEfactorSchema);
 
 

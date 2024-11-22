@@ -5,14 +5,15 @@ import MetalSchema from '../../../db_schema/Industrial/MetalSchema';
 import ElectronicsSchema from '../../../db_schema/Industrial/ElectronicsSchema';
 import OthersSchema from '../../../db_schema/Industrial/OthersSchema';
 
+import IndustrialEfactorSchema from '../../../db_schema/EmmisisonFactorsSchema/IndustrialEfactorSchema';
 import {
     IndustrialEmmisionFactor,
     formulaForGettingIndstrialGHGe,
-    chemical_eFactors,
-    electronicsEfactors,
-    metal_eFactors,
-    mineral_eFactors,
-    othersEfactors
+    default_chemical_eFactors,
+    default_electronicsEfactors,
+    default_metal_eFactors,
+    default_mineral_eFactors,
+    default_othersEfactors
 } from "../../../../custom_funtions/Industrial/industrialAction"
 
 
@@ -60,6 +61,9 @@ const getIndustrialRawSummary = async (req : Request, res : Response) => {
     
         }
         let response = undefined
+
+        let industry_efactors = await IndustrialEfactorSchema.findOne({industry_type : industrial_type});
+
         
         if(industrial_type === "mineral"){
             const mineralData = await MineralSchema.find(query).exec();
@@ -68,7 +72,7 @@ const getIndustrialRawSummary = async (req : Request, res : Response) => {
             response = mineralData.map((data) => {
                 const {cpp, cpb, lp, gp, brgy_name} = data.survey_data
                 const {email, municipality_name} = data.surveyor_info
-                const totalGHGe = getGHGe_perRow(mineral_eFactors, [cpp, cpb, lp, gp])
+                const totalGHGe = getGHGe_perRow(industry_efactors ? industry_efactors.e_factor : default_mineral_eFactors, [cpp, cpb, lp, gp])
                 return {
                     form_id : data._id,
                     email,
@@ -98,7 +102,7 @@ const getIndustrialRawSummary = async (req : Request, res : Response) => {
                     brgy_name
                 } = data.survey_data
                 const {email, municipality_name} = data.surveyor_info
-                const totalGHGe = getGHGe_perRow(chemical_eFactors, [
+                const totalGHGe = getGHGe_perRow(industry_efactors ? industry_efactors.e_factor :default_chemical_eFactors, [
                     ap,
                     sap,
                     pcbp_EDVCM,
@@ -136,7 +140,7 @@ const getIndustrialRawSummary = async (req : Request, res : Response) => {
                 response = metalData.map((data:any)=>{
                     const {email, municipality_name} = data.surveyor_info
                     const {ispif, ispnif,brgy_name} = data.survey_data
-                    const totalGHGe = getGHGe_perRow(metal_eFactors, [ispif, ispnif])
+                    const totalGHGe = getGHGe_perRow(industry_efactors ? industry_efactors.e_factor :default_metal_eFactors, [ispif, ispnif])
 
                     return {
                         form_id : data._id,
@@ -163,7 +167,7 @@ const getIndustrialRawSummary = async (req : Request, res : Response) => {
                     brgy_name
                 } = data.survey_data
 
-                const totalGHGe = getGHGe_perRow(electronicsEfactors, [
+                const totalGHGe = getGHGe_perRow(industry_efactors ? industry_efactors.e_factor :default_electronicsEfactors, [
                     ics,
                     tft_FPD,
                     photovoltaics,
@@ -197,7 +201,7 @@ const getIndustrialRawSummary = async (req : Request, res : Response) => {
                     brgy_name
                 } = data.survey_data
 
-                const totalGHGe = getGHGe_perRow(othersEfactors, [
+                const totalGHGe = getGHGe_perRow(industry_efactors ? industry_efactors.e_factor :default_othersEfactors, [
                     ppi,
                     fbi,
                     other,
