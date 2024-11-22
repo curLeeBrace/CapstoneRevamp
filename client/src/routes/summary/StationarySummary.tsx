@@ -72,7 +72,9 @@ const StationarySummary = () => {
         form_type : formType,
         year : yearState,
         municipality_name : municipality?.address_name,
+        municipality_code : municipality?.address_code,
         brgy_name : brgy?.address_name,
+        brgy_code : brgy?.address_code,
     }})
     .then((res) => {
         const responseData = res.data;
