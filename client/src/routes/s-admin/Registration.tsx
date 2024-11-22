@@ -166,20 +166,20 @@ function Registration() {
       }
       })
     } 
-    // else if (user_info.user_type === "lu_admin") {
-    //   setDetails((prev: any) => {
-    //     const lgu_municipality = {
-    //       municipality_name: "Laguna University",
-    //          municipality_code: "043426", 
-    //          province_code: "0434", 
-    //     };
+    else if (user_info.user_type === "lu_admin") {
+      setDetails((prev: any) => {
+        let lgu_municipality:any;
+        lgu_municipality = {
+          municipality_name: "Laguna University",
+          municipality_code: "043426", 
+          province_code: "0434", 
+        };
   
-    //     return {
-    //       ...prev,
-    //       lgu_municipality
-    //     };
-    //   });
-    // }
+        return {
+          ...prev, ["lgu_municipality"]:lgu_municipality
+        };
+      });
+    }
 
 },[])
 
@@ -267,7 +267,6 @@ function Registration() {
            <Select
            label="User Type"
            name="user_type"
-           disabled={!details?.f_name}
            onChange={(value) => {
              setDetails((prev: any) => {
                // Set default values for "lu_admin" or "lu_surveyor"
@@ -283,10 +282,9 @@ function Registration() {
                }
  
                return {
-                 ...prev,
-                 user_type: value,
-                 lgu_municipality, // Update the lgu_municipality state
-               };
+                 ...prev, ["user_type"]:value,
+                 lgu_municipality
+                };
              });
            }}
          >
