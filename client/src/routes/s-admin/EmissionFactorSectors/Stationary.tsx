@@ -61,7 +61,7 @@ export default function StationaryEmissions() {
       [field]: parseFloat(value),
     }));
   };
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading] = useState(false);
   
 
   return (
