@@ -118,7 +118,7 @@ const getWasteWaterGHGeSum = async (user_type:string , query : {}, locations : a
                 wasteWaterFormDatas.map(async(wasteWaterFormData)=>{
                     const {septic_tanks, openPits_latrines, riverDischarge, form_type}  = wasteWaterFormData.survey_data
                     const surveyType = wasteWaterFormData.survey_data.form_type;
-                    const waste_wateEfactorData : WasteWaterEfatorType|undefined = await WasteWaterEfactorSchema.findOne({surveyType : form_type}).exec() as WasteWaterEfatorType|undefined;
+                    const waste_wateEfactorData : WasteWaterEfatorType|null = await WasteWaterEfactorSchema.findOne({surveyType : form_type}).exec() as WasteWaterEfatorType|null;
 
                     
                     if(user_type === "s-admin"){
@@ -161,7 +161,8 @@ export const getWasteWaterData_perSurvey = async (user_type:string , query : {})
     wasteWaterDataPerSurvey = await Promise.all(wasteWaterFormDatas.map(async (dt : any) => {
 
         const {openPits_latrines, riverDischarge, septic_tanks, form_type} = dt.survey_data
-        const waste_wateEfactorData : WasteWaterEfatorType|undefined = await WasteWaterEfactorSchema.findOne({surveyType : form_type}).exec() as WasteWaterEfatorType|undefined;
+        const waste_wateEfactorData : WasteWaterEfatorType|null = await WasteWaterEfactorSchema.findOne({surveyType : form_type}).exec() as WasteWaterEfatorType|null;
+        console.log("waste_wateEfactorData : ", waste_wateEfactorData);
 
 
         const wasteWaterGHGe = await prepateWasteWaterGHGe({septic_tanks, openPits_latrines, riverDischarge}, form_type, waste_wateEfactorData)
@@ -196,7 +197,7 @@ export const getWasteWaterData_perSurvey = async (user_type:string , query : {})
 
 
 
-const prepateWasteWaterGHGe = async (populations : PopulationUsingTheSystems, surveyType : string, wasteWater_eFactor : WasteWaterEfatorType | undefined) : Promise<number> =>{
+const prepateWasteWaterGHGe = async (populations : PopulationUsingTheSystems, surveyType : string, wasteWater_eFactor : WasteWaterEfatorType|null) : Promise<number> =>{
 
 
     
@@ -215,14 +216,14 @@ const prepateWasteWaterGHGe = async (populations : PopulationUsingTheSystems, su
 
 
 
-const getEstimatedTOW = async (populations : PopulationUsingTheSystems, wasteWater_eFactor : WasteWaterEfatorType | undefined) : Promise<PopulationUsingTheSystems> => {
+const getEstimatedTOW = async (populations : PopulationUsingTheSystems, wasteWater_eFactor : WasteWaterEfatorType | null) : Promise<PopulationUsingTheSystems> => {
 
     //This is Static value
     let BOD_generation_per_year = 14.60; // will auto compute
     let cfi_BOD_dischargersSewer = 1.00; // will be customizable
 
     //This Value is from Database if wasteWater_eFactor is not = to undefined
-    if(wasteWater_eFactor !== undefined) {
+    if(wasteWater_eFactor !== null) {
         const {percapitaBODgeneration_perday} = wasteWater_eFactor.uncollected
         BOD_generation_per_year =  (percapitaBODgeneration_perday * 365)/1000;
         cfi_BOD_dischargersSewer = wasteWater_eFactor.uncollected.cfi_BOD_dischargersSewer
@@ -263,7 +264,7 @@ const getEstimatedTOW = async (populations : PopulationUsingTheSystems, wasteWat
 
 
 
-const getCH4EmmitedTones = async (estimatedTOW : PopulationUsingTheSystems, surveyType : string, wasteWater_eFactor : WasteWaterEfatorType|undefined) : Promise<PopulationUsingTheSystems> => {
+const getCH4EmmitedTones = async (estimatedTOW : PopulationUsingTheSystems, surveyType : string, wasteWater_eFactor : WasteWaterEfatorType|null) : Promise<PopulationUsingTheSystems> => {
     
 
     //SETUP DEFAULT EMMISION FACTOR
@@ -297,7 +298,7 @@ const getCH4EmmitedTones = async (estimatedTOW : PopulationUsingTheSystems, surv
     /////////////////////////////////////
     //Get the methane factor to database, then compute the tatoal emmsion factor for every category...
     const computeEFactor = (max_ch4Production:number, methane_correction_factor :number) => {return max_ch4Production * methane_correction_factor}
-    if(wasteWater_eFactor != undefined){
+    if(wasteWater_eFactor !== null){
 
         const {methane_correction_factor} = wasteWater_eFactor.uncollected;
         const {max_ch4Production} = wasteWater_eFactor
