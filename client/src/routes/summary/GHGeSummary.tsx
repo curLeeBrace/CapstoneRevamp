@@ -92,17 +92,17 @@ useEffect(()=>{
     
         const totalMobileCombustionGHGE = ghge.mobileCombustionGHGe.reduce((acc:any, val:any) => acc + val.emission.ghge, 0).toFixed(2);
         
-        const totalWasteWaterGHGE = ghge.wasteWaterGHGe.reduce((acc:any, val:any) => acc + val, 0).toFixed(2);
+        const totalWasteWaterGHGE = ghge.wasteWaterGHGe.reduce((acc:any, val:any) => acc + val.ghge, 0).toFixed(2);
         
-        const totalIndustrialGHGE = ghge.industrialGHGe.reduce((acc:any, val:any) => acc + val, 0).toFixed(2);
+        const totalIndustrialGHGE = ghge.industrialGHGe.reduce((acc:any, val:any) => acc + val.ghge, 0).toFixed(2);
         
-        const totalAgricultureCropsGHGE = ghge.agriculture_cropsGHGe.reduce((acc:any, val:any) => acc + val, 0).toFixed(2);
+        const totalAgricultureCropsGHGE = ghge.agriculture_cropsGHGe.reduce((acc:any, val:any) => acc + val.ghge, 0).toFixed(2);
     
-        const totalAgricultureLivestockGHGE = ghge.agriculture_liveStocksGHGe.reduce((acc:any, val:any) => acc + val, 0).toFixed(2);
+        const totalAgricultureLivestockGHGE = ghge.agriculture_liveStocksGHGe.reduce((acc:any, val:any) => acc + val.ghge, 0).toFixed(2);
     
-        const totalStationaryResidentialGHGE = ghge.stationary_resGHGe.reduce((acc:any, val:any) => acc + val, 0).toFixed(2); 
+        const totalStationaryResidentialGHGE = ghge.stationary_resGHGe.reduce((acc:any, val:any) => acc + val.ghge, 0).toFixed(2); 
     
-        const totalStationaryCommercialGHGE = ghge.stationary_commGHGe.reduce((acc:any, val:any) => acc + val, 0).toFixed(2);
+        const totalStationaryCommercialGHGE = ghge.stationary_commGHGe.reduce((acc:any, val:any) => acc + val.ghge, 0).toFixed(2);
       
         
         //  =============================
