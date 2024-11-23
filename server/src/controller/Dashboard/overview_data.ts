@@ -64,9 +64,16 @@ type DashBoardData = {
             ghge : number,
             loc_name : string
         }[]
-        stationaryGHGe : number[]
-        residentialGHGe: number[]
-        commercialGHGe : number[]
+        // stationaryGHGe : number[]
+        
+        residentialGHGe: {
+            ghge : number,
+            loc_name : string
+        }[]
+        commercialGHGe : {
+            ghge : number,
+            loc_name : string
+        }[]
        
 
     }
@@ -126,7 +133,7 @@ type DashBoardData = {
             const industrialGHGe = await getIndustrialOverallGHGe(user_type, query, locations)
             const agriculture_cropsGHGe = await getAgricultureGHGe(user_type, query, locations, "crops")
             const agriculture_liveStocksGHGe = await getAgricultureGHGe(user_type, query, locations, "liveStocks")
-            const stationaryGHGe = await getStationaryGHGe(user_type, query, locations); 
+            // const stationaryGHGe = await getStationaryGHGe(user_type, query, locations); 
             const residentialGHGe = await getStationaryGHGe(user_type, query, locations, "residential")
             const commercialGHGe = await getStationaryGHGe(user_type, query, locations, "commercial")
 
@@ -138,8 +145,8 @@ type DashBoardData = {
                 total_ghge += Number(industrialGHGe[index].ghge.toFixed(2));
                 total_ghge += Number(agriculture_cropsGHGe[index].ghge.toFixed(2));
                 total_ghge += Number(agriculture_liveStocksGHGe[index].ghge.toFixed(2));
-                total_ghge += Number(residentialGHGe[index].toFixed(2));
-                total_ghge += Number(commercialGHGe[index].toFixed(2));
+                total_ghge += Number(residentialGHGe[index].ghge.toFixed(2));
+                total_ghge += Number(commercialGHGe[index].ghge.toFixed(2));
 
               
             })
@@ -172,7 +179,7 @@ type DashBoardData = {
                         industrialGHGe,
                         agriculture_cropsGHGe,
                         agriculture_liveStocksGHGe,
-                        stationaryGHGe,
+                        // stationaryGHGe,
                         residentialGHGe,
                         commercialGHGe,
                     },

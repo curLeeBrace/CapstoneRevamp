@@ -89,14 +89,20 @@ const getStationaryGHGe = async (
     query: {}, 
     locations: any[],
     form_type?: string
-): Promise<number[]> => {
-    const ghge_container: number[] = [];
+): Promise<{
+    ghge : number,
+    loc_name : string
+}[]> => {
+    const ghge_container: {
+        ghge : number,
+        loc_name : string
+    }[] = [];
 
     const stationary_data = await StationarySchema.find(query);
   
     locations.forEach((loc: any) => {
         const root_loc_code = user_type === "s-admin" ? loc.city_code : loc.brgy_code;
-
+        const loc_name = user_type === "s-admin" ? loc.city_name : loc.brgy_name;
         let temp_ghge = 0;
         
         stationary_data.forEach((data) => {
@@ -134,7 +140,10 @@ const getStationaryGHGe = async (
         });
 
        
-        ghge_container.push(temp_ghge);
+        ghge_container.push({
+            ghge : temp_ghge,
+            loc_name
+        });
     });
 
     return ghge_container;

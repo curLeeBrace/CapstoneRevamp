@@ -51,9 +51,15 @@ type DashBoardData = {
         ghge : number,
         loc_name : string
     }[],
-      stationaryGHGe : number[],
-      residentialGHGe: number[]; 
-      commercialGHGe: number[];   
+      // stationaryGHGe : number[],
+      residentialGHGe: {
+        ghge : number,
+        loc_name : string
+    }[]; 
+      commercialGHGe: {
+        ghge : number,
+        loc_name : string
+    }[];   
   }
   total_ghge : number;
 
@@ -177,17 +183,17 @@ function DashBoard() {
       {
         name: "Stationary Residential GHGe",
         data: dashboard_data
-          ? dashboard_data.table_data.mobileCombustionGHGe.map((tb_data, index) => {
-              if (user_info.user_type === "lu_admin" && tb_data.loc_name === "Bubukal") {
-                return { x: "Laguna University", y: dashboard_data.table_data.residentialGHGe[index].toFixed(2) };
+          ? dashboard_data.table_data.residentialGHGe.map((stationaryResData) => {
+              if (user_info.user_type === "lu_admin" && stationaryResData.loc_name === "Bubukal") {
+                return { x: "Laguna University", y:stationaryResData.ghge.toFixed(2) };
               }
       
               if (user_info.user_type !== "lu_admin") {
-                return { x: tb_data.loc_name, y: dashboard_data.table_data.residentialGHGe[index].toFixed(2) };
+                return { x: stationaryResData.loc_name, y: stationaryResData.ghge.toFixed(2) };
               }
       
               // return null;
-            })
+            }).sort((a:any, b:any) => a.x.localeCompare(b.x))
             // .filter((data) => data !== null)
           : [{ x: null, y: null }],
       },
@@ -195,17 +201,17 @@ function DashBoard() {
       {
         name: "Stationary Commercial GHGe",
         data: dashboard_data
-          ? dashboard_data.table_data.mobileCombustionGHGe.map((tb_data, index) => {
-              if (user_info.user_type === "lu_admin" && tb_data.loc_name === "Bubukal") {
-                return { x: "Laguna University", y: dashboard_data.table_data.commercialGHGe[index].toFixed(2) };
+          ? dashboard_data.table_data.commercialGHGe.map((stationaryCommData) => {
+              if (user_info.user_type === "lu_admin" && stationaryCommData.loc_name === "Bubukal") {
+                return { x: "Laguna University", y: stationaryCommData.ghge.toFixed(2) };
               }
       
               if (user_info.user_type !== "lu_admin") {
-                return { x: tb_data.loc_name, y: dashboard_data.table_data.commercialGHGe[index].toFixed(2) };
+                return { x: stationaryCommData.loc_name, y: stationaryCommData.ghge.toFixed(2) };
               }
       
               // return null;
-            })
+            }).sort((a:any, b:any) => a.x.localeCompare(b.x))
             // .filter((data) => data !== null)
           : [{ x: null, y: null }],
       },
@@ -444,7 +450,7 @@ function DashBoard() {
             
             <div className="mb-4 px-4 h-20">
               <SimpleCard
-                body={`${dashboard_data?.table_data.residentialGHGe?.reduce((acc, val) => acc + val, 0).toFixed(2)}`}
+                body={`${dashboard_data?.table_data.residentialGHGe?.reduce((acc, val) => acc + val.ghge, 0).toFixed(2)}`}
                 header="Stationary (Residential)"
                 icon={<GlobeAsiaAustraliaIcon className="h-6 w-6" />}
                 child_card={<BarChart chart_icon={<GlobeAsiaAustraliaIcon className="h-6 w-6" />} chart_label='Stationary Fuel Use (Residential)' 
@@ -461,7 +467,7 @@ function DashBoard() {
 
             <div className="mb-4 px-4 h-20">
               <SimpleCard
-                body={`${dashboard_data?.table_data.commercialGHGe?.reduce((acc, val) => acc + val, 0).toFixed(2)}`}
+                body={`${dashboard_data?.table_data.commercialGHGe?.reduce((acc, val) => acc + val.ghge, 0).toFixed(2)}`}
                 header="Stationary (Commercial)"
                 icon={<GlobeAsiaAustraliaIcon className="h-6 w-6" />}
                 child_card={<BarChart chart_icon={<GlobeAsiaAustraliaIcon className="h-6 w-6" />} chart_label='Stationary Fuel Use (Commercial)' 
