@@ -111,11 +111,11 @@ const ghgeSummary = async (req:Request, res:Response) => {
             total_ghge +=  Number(data.ghge.toFixed(2));
         })
         stationary_resGHGe.length > 0 && stationary_resGHGe.map((data) => {
-            total_ghge +=  Number(data.toFixed(2));
+            total_ghge +=  Number(data.ghge.toFixed(2));
         })
 
         stationary_commGHGe.length > 0 && stationary_commGHGe.map((data) => {
-            total_ghge +=  Number(data.toFixed(2));
+            total_ghge +=  Number(data.ghge.toFixed(2));
         })
 
 
