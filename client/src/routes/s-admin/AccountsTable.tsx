@@ -224,7 +224,7 @@ const AccountsTable: React.FC = () => {
             {
             user_info.user_type != "lu_admin" && (
             <div>
-              <FilterMunicipality setState={setSelectedMunicipality} />
+              <FilterMunicipality   setState={setSelectedMunicipality} />
             </div>
               )
             }
