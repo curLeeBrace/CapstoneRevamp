@@ -1,4 +1,5 @@
 import WasteWaterFormSchema from '../src/db_schema/WasteWaterFormShema'
+import WasteWaterEfactorSchema from '../src/db_schema/EmmisisonFactorsSchema/WasteWaterEfactorSchema';
 /* 
     WASTE WATER VARIABLES AND FORMULA
 
@@ -66,6 +67,19 @@ interface WasteWaterDataPerSurvey{
     surveyor : string;
     dateTime: Date
 }
+
+
+
+type WasteWaterEfatorType = {
+    surveyType : string;
+    uncollected : {
+        percapitaBODgeneration_perday : number;
+        percapitaBODgeneration_peryear : number;
+        cfi_BOD_dischargersSewer : number;
+        methane_correction_factor : PopulationUsingTheSystems // but this is a mehtane factor
+    }
+    max_ch4Production : number;
+}
     
 
 
@@ -102,19 +116,20 @@ const getWasteWaterGHGeSum = async (user_type:string , query : {}, locations : a
 
             await Promise.all(
                 wasteWaterFormDatas.map(async(wasteWaterFormData)=>{
-                    const {septic_tanks, openPits_latrines, riverDischarge}  = wasteWaterFormData.survey_data
+                    const {septic_tanks, openPits_latrines, riverDischarge, form_type}  = wasteWaterFormData.survey_data
                     const surveyType = wasteWaterFormData.survey_data.form_type;
+                    const waste_wateEfactorData : WasteWaterEfatorType|undefined = await WasteWaterEfactorSchema.findOne({surveyType : form_type}).exec() as WasteWaterEfatorType|undefined;
 
                     
                     if(user_type === "s-admin"){
                         if(wasteWaterFormData.surveyor_info.municipality_code === root_loc_code){
-                            const temp_ghge = await prepateWasteWaterGHGe({septic_tanks, openPits_latrines, riverDischarge}, surveyType)
+                            const temp_ghge = await prepateWasteWaterGHGe({septic_tanks, openPits_latrines, riverDischarge}, surveyType, waste_wateEfactorData)
                             wasteWaterGHGe += temp_ghge
 
                         }
                     }else {
                         if(wasteWaterFormData.survey_data.brgy_code === root_loc_code){
-                            const temp_ghge = await prepateWasteWaterGHGe({septic_tanks, openPits_latrines, riverDischarge}, surveyType)
+                            const temp_ghge = await prepateWasteWaterGHGe({septic_tanks, openPits_latrines, riverDischarge}, surveyType, waste_wateEfactorData)
                             wasteWaterGHGe += temp_ghge
                         }   
                     }
@@ -140,11 +155,16 @@ export const getWasteWaterData_perSurvey = async (user_type:string , query : {})
 
     let wasteWaterDataPerSurvey : WasteWaterDataPerSurvey [] = []
     const wasteWaterFormDatas = await WasteWaterFormSchema.find(query);
+    
+    
 
     wasteWaterDataPerSurvey = await Promise.all(wasteWaterFormDatas.map(async (dt : any) => {
 
         const {openPits_latrines, riverDischarge, septic_tanks, form_type} = dt.survey_data
-        const wasteWaterGHGe = await prepateWasteWaterGHGe({septic_tanks, openPits_latrines, riverDischarge}, form_type)
+        const waste_wateEfactorData : WasteWaterEfatorType|undefined = await WasteWaterEfactorSchema.findOne({surveyType : form_type}).exec() as WasteWaterEfatorType|undefined;
+
+
+        const wasteWaterGHGe = await prepateWasteWaterGHGe({septic_tanks, openPits_latrines, riverDischarge}, form_type, waste_wateEfactorData)
         const {email, municipality_name} = dt.surveyor_info 
         return {
             form_id : dt._id,
@@ -176,36 +196,18 @@ export const getWasteWaterData_perSurvey = async (user_type:string , query : {})
 
 
 
+const prepateWasteWaterGHGe = async (populations : PopulationUsingTheSystems, surveyType : string, wasteWater_eFactor : WasteWaterEfatorType | undefined) : Promise<number> =>{
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-const prepateWasteWaterGHGe = async (populations : PopulationUsingTheSystems, surveyType : string) : Promise<number> =>{
-
-    const estimatedTOW = await getEstimatedTOW(populations) // getEStimatedTOW
-    const chr4Created = await getCH4EmmitedTones(estimatedTOW, surveyType) // getCH4Created
+    
+    const estimatedTOW = await getEstimatedTOW(populations, wasteWater_eFactor) // getEStimatedTOW
+    const chr4Created = await getCH4EmmitedTones(estimatedTOW, surveyType, wasteWater_eFactor) // getCH4Created
 
     const {openPits_latrines, riverDischarge, septic_tanks} = chr4Created;
 
     const sumOfWasteWaterGHGe = septic_tanks + openPits_latrines.cat1 + openPits_latrines.cat2 + openPits_latrines.cat3 + openPits_latrines.cat4 + riverDischarge.cat1 + riverDischarge.cat2
     return sumOfWasteWaterGHGe
     
-
 }
 
 
@@ -213,10 +215,19 @@ const prepateWasteWaterGHGe = async (populations : PopulationUsingTheSystems, su
 
 
 
-const getEstimatedTOW = async (populations : PopulationUsingTheSystems) : Promise<PopulationUsingTheSystems> => {
+const getEstimatedTOW = async (populations : PopulationUsingTheSystems, wasteWater_eFactor : WasteWaterEfatorType | undefined) : Promise<PopulationUsingTheSystems> => {
 
-    const BOD_generation_per_year = 14.60; // will auto compute
-    const cfi_BOD_dischargersSewer = 1.00; // will be customizable
+    //This is Static value
+    let BOD_generation_per_year = 14.60; // will auto compute
+    let cfi_BOD_dischargersSewer = 1.00; // will be customizable
+
+    //This Value is from Database if wasteWater_eFactor is not = to undefined
+    if(wasteWater_eFactor !== undefined) {
+        const {percapitaBODgeneration_perday} = wasteWater_eFactor.uncollected
+        BOD_generation_per_year =  (percapitaBODgeneration_perday * 365)/1000;
+        cfi_BOD_dischargersSewer = wasteWater_eFactor.uncollected.cfi_BOD_dischargersSewer
+    }
+    
 
 
     //computeSingleEstimatedTOW 
@@ -252,11 +263,11 @@ const getEstimatedTOW = async (populations : PopulationUsingTheSystems) : Promis
 
 
 
-const getCH4EmmitedTones = async (estimatedTOW : PopulationUsingTheSystems, surveyType : string) : Promise<PopulationUsingTheSystems> => {
+const getCH4EmmitedTones = async (estimatedTOW : PopulationUsingTheSystems, surveyType : string, wasteWater_eFactor : WasteWaterEfatorType|undefined) : Promise<PopulationUsingTheSystems> => {
     
 
     //SETUP DEFAULT EMMISION FACTOR
-    const emmisionFactor : PopulationUsingTheSystems  = surveyType === "residential" ? {
+    let emmisionFactor : PopulationUsingTheSystems  = surveyType === "residential" ? {
         septic_tanks : 0.30,
         openPits_latrines : {
             cat1 : 0.06,
@@ -284,14 +295,28 @@ const getCH4EmmitedTones = async (estimatedTOW : PopulationUsingTheSystems, surv
         }
     }
     /////////////////////////////////////
+    //Get the methane factor to database, then compute the tatoal emmsion factor for every category...
+    const computeEFactor = (max_ch4Production:number, methane_correction_factor :number) => {return max_ch4Production * methane_correction_factor}
+    if(wasteWater_eFactor != undefined){
 
+        const {methane_correction_factor} = wasteWater_eFactor.uncollected;
+        const {max_ch4Production} = wasteWater_eFactor
 
+        emmisionFactor = {
+            septic_tanks : computeEFactor(max_ch4Production, methane_correction_factor.septic_tanks),
+            openPits_latrines : {
+                cat1 : computeEFactor(max_ch4Production, methane_correction_factor.openPits_latrines.cat1),
+                cat2 : computeEFactor(max_ch4Production, methane_correction_factor.openPits_latrines.cat1),
+                cat3 : computeEFactor(max_ch4Production, methane_correction_factor.openPits_latrines.cat3),
+                cat4 : computeEFactor(max_ch4Production, methane_correction_factor.openPits_latrines.cat4),
+            },
+            riverDischarge : {
+                cat1 : computeEFactor(max_ch4Production, methane_correction_factor.riverDischarge.cat1),
+                cat2 : computeEFactor(max_ch4Production, methane_correction_factor.riverDischarge.cat2),
+            }
+        }
 
-
-
-
-
-
+    }
 
 
 
@@ -335,24 +360,6 @@ const getCH4EmmitedTones = async (estimatedTOW : PopulationUsingTheSystems, surv
 
 
 export default getWasteWaterGHGeSum
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
