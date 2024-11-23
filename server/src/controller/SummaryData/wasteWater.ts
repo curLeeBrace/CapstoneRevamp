@@ -38,12 +38,12 @@ const getWasteWaterSummary = async (req : Request, res : Response) => {
         return user_type === "s-admin" ? loc.city_name : loc.brgy_name
     })
 
-    if (user_type === "lu_admin") {
-        location_names.length = 0; // Clear the location_names array
-        location_names.push("Laguna University");
-    }else if (user_type === "s-admin" || user_type === "lgu_admin") {
-        location_names.push("Laguna University");
-    }
+    // if (user_type === "lu_admin") {
+    //     location_names.length = 0; // Clear the location_names array
+    //     location_names.push("Laguna University");
+    // }else if (user_type === "s-admin" || user_type === "lgu_admin") {
+    //     location_names.push("Laguna University");
+    // }
     
 
     let wasteWaterSummaries : wasteWaterSummary[] = [];

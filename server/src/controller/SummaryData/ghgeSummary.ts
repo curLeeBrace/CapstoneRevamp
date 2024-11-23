@@ -98,17 +98,17 @@ const ghgeSummary = async (req:Request, res:Response) => {
         })
 
         wasteWaterGHGe.length > 0 && wasteWaterGHGe.map((data) => {
-            total_ghge +=  Number(data.toFixed(2));
+            total_ghge +=  Number(data.ghge.toFixed(2));
         })
         industrialGHGe.length > 0 && industrialGHGe.map((data) => {
-            total_ghge +=  Number(data.toFixed(2));
+            total_ghge +=  Number(data.ghge.toFixed(2));
         })
 
         agriculture_cropsGHGe.length > 0 && agriculture_cropsGHGe.map((data) => {
-            total_ghge +=  Number(data.toFixed(2));
+            total_ghge +=  Number(data.ghge.toFixed(2));
         })
         agriculture_liveStocksGHGe.length > 0 && agriculture_liveStocksGHGe.map((data) => {
-            total_ghge +=  Number(data.toFixed(2));
+            total_ghge +=  Number(data.ghge.toFixed(2));
         })
         stationary_resGHGe.length > 0 && stationary_resGHGe.map((data) => {
             total_ghge +=  Number(data.toFixed(2));

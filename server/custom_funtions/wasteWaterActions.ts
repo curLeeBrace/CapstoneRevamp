@@ -73,37 +73,61 @@ interface WasteWaterDataPerSurvey{
 
 
 
+const getWasteWaterGHGeSum = async (user_type:string , query : {}, locations : any[]) : Promise<{
+    ghge:number,
+    loc_name : string
+}[]>  =>{
 
-const getWasteWaterGHGeSum = async (user_type:string , query : {}, locations : any[]) : Promise<number[]>  =>{
-
-    let wasteWaterGHGes : number[]= [];
+    let wasteWaterGHGes : {
+        ghge:number,
+        loc_name : string
+    }[]= [];
     const wasteWaterFormDatas = await WasteWaterFormSchema.find(query);
-
-    locations.forEach((location)=> {
-        const root_loc_code = user_type === "s-admin" ? location.city_code : location.brgy_code;
-        let wasteWaterGHGe = 0;
-
-        wasteWaterFormDatas.forEach((wasteWaterFormData)=>{
-            const {septic_tanks, openPits_latrines, riverDischarge}  = wasteWaterFormData.survey_data
-            const surveyType = wasteWaterFormData.survey_data.form_type;
+    
+    // const sort_locations = locations.sort((a: { city_name: string, brgy_name: string }, b: { city_name: string, brgy_name: string }) => {
+    //     return user_type === "s-admin" 
+    //         ? a.city_name.localeCompare(b.city_name) 
+    //         : a.brgy_name.localeCompare(b.brgy_name);
+    // });
 
 
-            if(user_type === "s-admin"){
-                if(wasteWaterFormData.surveyor_info.municipality_code === root_loc_code){
-                    wasteWaterGHGe += prepateWasteWaterGHGe({septic_tanks, openPits_latrines, riverDischarge}, surveyType)
+    // console.log("SORT LOcATIONS : ",)
+    
 
-                }
-            }else {
-                if(wasteWaterFormData.survey_data.brgy_code === root_loc_code){
-                    wasteWaterGHGe += prepateWasteWaterGHGe({septic_tanks, openPits_latrines, riverDischarge}, surveyType)
-                }   
-            }
+
+        locations.map(async(location)=> {
+            const root_loc_code = user_type === "s-admin" ? location.city_code : location.brgy_code;
+            const loc_name = user_type === "s-admin" ? location.city_name : location.brgy_name;
+            let wasteWaterGHGe = 0;
+
+            await Promise.all(
+                wasteWaterFormDatas.map(async(wasteWaterFormData)=>{
+                    const {septic_tanks, openPits_latrines, riverDischarge}  = wasteWaterFormData.survey_data
+                    const surveyType = wasteWaterFormData.survey_data.form_type;
+
+                    
+                    if(user_type === "s-admin"){
+                        if(wasteWaterFormData.surveyor_info.municipality_code === root_loc_code){
+                            const temp_ghge = await prepateWasteWaterGHGe({septic_tanks, openPits_latrines, riverDischarge}, surveyType)
+                            wasteWaterGHGe += temp_ghge
+
+                        }
+                    }else {
+                        if(wasteWaterFormData.survey_data.brgy_code === root_loc_code){
+                            const temp_ghge = await prepateWasteWaterGHGe({septic_tanks, openPits_latrines, riverDischarge}, surveyType)
+                            wasteWaterGHGe += temp_ghge
+                        }   
+                    }
+                })
+            )
+            wasteWaterGHGes.push({
+                ghge : wasteWaterGHGe,
+                loc_name
+            });
+
+
         })
-
-        wasteWaterGHGes.push(wasteWaterGHGe);
-
-
-    })
+    
 
 
     return wasteWaterGHGes
@@ -117,10 +141,10 @@ export const getWasteWaterData_perSurvey = async (user_type:string , query : {})
     let wasteWaterDataPerSurvey : WasteWaterDataPerSurvey [] = []
     const wasteWaterFormDatas = await WasteWaterFormSchema.find(query);
 
-    wasteWaterDataPerSurvey = wasteWaterFormDatas.map((dt : any) => {
+    wasteWaterDataPerSurvey = await Promise.all(wasteWaterFormDatas.map(async (dt : any) => {
 
         const {openPits_latrines, riverDischarge, septic_tanks, form_type} = dt.survey_data
-        const wasteWaterGHGe = prepateWasteWaterGHGe({septic_tanks, openPits_latrines, riverDischarge}, form_type)
+        const wasteWaterGHGe = await prepateWasteWaterGHGe({septic_tanks, openPits_latrines, riverDischarge}, form_type)
         const {email, municipality_name} = dt.surveyor_info 
         return {
             form_id : dt._id,
@@ -138,7 +162,7 @@ export const getWasteWaterData_perSurvey = async (user_type:string , query : {})
             surveyor : dt.surveyor_info.full_name
             
         }
-    })
+    }))
 
 
     return wasteWaterDataPerSurvey
@@ -171,10 +195,10 @@ export const getWasteWaterData_perSurvey = async (user_type:string , query : {})
 
 
 
-const prepateWasteWaterGHGe = (populations : PopulationUsingTheSystems, surveyType : string) : number =>{
+const prepateWasteWaterGHGe = async (populations : PopulationUsingTheSystems, surveyType : string) : Promise<number> =>{
 
-    const estimatedTOW = getEstimatedTOW(populations) // getEStimatedTOW
-    const chr4Created = getCH4EmmitedTones(estimatedTOW, surveyType) // getCH4Created
+    const estimatedTOW = await getEstimatedTOW(populations) // getEStimatedTOW
+    const chr4Created = await getCH4EmmitedTones(estimatedTOW, surveyType) // getCH4Created
 
     const {openPits_latrines, riverDischarge, septic_tanks} = chr4Created;
 
@@ -189,9 +213,10 @@ const prepateWasteWaterGHGe = (populations : PopulationUsingTheSystems, surveyTy
 
 
 
-const getEstimatedTOW = (populations : PopulationUsingTheSystems) : PopulationUsingTheSystems => {
-    const BOD_generation_per_year = 14.60;
-    const cfi_BOD_dischargersSewer = 1.00;
+const getEstimatedTOW = async (populations : PopulationUsingTheSystems) : Promise<PopulationUsingTheSystems> => {
+
+    const BOD_generation_per_year = 14.60; // will auto compute
+    const cfi_BOD_dischargersSewer = 1.00; // will be customizable
 
 
     //computeSingleEstimatedTOW 
@@ -227,8 +252,10 @@ const getEstimatedTOW = (populations : PopulationUsingTheSystems) : PopulationUs
 
 
 
-const getCH4EmmitedTones = (estimatedTOW : PopulationUsingTheSystems, surveyType : string) : PopulationUsingTheSystems => {
+const getCH4EmmitedTones = async (estimatedTOW : PopulationUsingTheSystems, surveyType : string) : Promise<PopulationUsingTheSystems> => {
+    
 
+    //SETUP DEFAULT EMMISION FACTOR
     const emmisionFactor : PopulationUsingTheSystems  = surveyType === "residential" ? {
         septic_tanks : 0.30,
         openPits_latrines : {
@@ -256,6 +283,21 @@ const getCH4EmmitedTones = (estimatedTOW : PopulationUsingTheSystems, surveyType
             cat2 : 0.00
         }
     }
+    /////////////////////////////////////
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     //computation or formula form CH4Created
     const computeCH4_emitedTones = (emmisionFactor : number, estimatedTOW : number) : number => {
         const chr4Emmited = (estimatedTOW * emmisionFactor); // compute CH4 emitted
@@ -284,13 +326,7 @@ const getCH4EmmitedTones = (estimatedTOW : PopulationUsingTheSystems, surveyType
 
 
 
-return chr4Created
-
-
-
-
-
-
+    return chr4Created
 
 
 }

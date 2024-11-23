@@ -34,14 +34,22 @@ type LiveStocksDataTypes = {
 
 
 
- const getAgricultureGHGe = async (user_type:string , query : {}, locations : any[], agricultureType : "crops" | "liveStocks") : Promise<number[]> => {
-    const ghge_container : number[] = [];
+ const getAgricultureGHGe = async (user_type:string , query : {}, locations : any[], agricultureType : "crops" | "liveStocks") : Promise<{
+    ghge : number
+    loc_name : string;
+ }[]> => {
+    const ghge_container : {
+        ghge : number
+        loc_name : string;
+    }[] = [];
 
     const form_data = agricultureType === "crops" ? await Crops.find(query) : await LiveStocks.find(query)
-  
-    locations.forEach((loc : any, index) => {
+    
+    locations.forEach((location : any, index) => {
 
-        const root_loc_code = user_type === "s-admin" ? loc.city_code : loc.brgy_code;
+        const loc_name = user_type === "s-admin" ? location.city_name : location.brgy_name;
+
+        const root_loc_code = user_type === "s-admin" ? location.city_code : location.brgy_code;
 
         
         let temp_ghge = 0;
@@ -132,7 +140,10 @@ type LiveStocksDataTypes = {
 
 
         
-        ghge_container.push(temp_ghge)
+        ghge_container.push({
+            ghge : temp_ghge,
+            loc_name
+        })
 
     });
 
