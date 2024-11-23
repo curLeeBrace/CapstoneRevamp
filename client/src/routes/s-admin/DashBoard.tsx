@@ -97,34 +97,41 @@ function DashBoard() {
       {
         name: "Mobile-Combustion GHGe",
         data: dashboard_data
-          ? dashboard_data.table_data.mobileCombustionGHGe.map((tb_data) => {
-              if (user_info.user_type === "lu_admin" && tb_data.loc_name === "Bubukal") {
-                return { x: "Laguna University", y: tb_data.emission.ghge.toFixed(2) };
-              }
-              if (user_info.user_type !== "lu_admin") {
-                return { x: tb_data.loc_name, y: tb_data.emission.ghge.toFixed(2) };
-              }
-              // return null; 
-            }).sort((a:any, b:any) => a.x.localeCompare(b.x))
-            // .filter((data) => data !== null) // Remove any null entries
-          : [{ x: null, y: null }],
+          ? dashboard_data.table_data.mobileCombustionGHGe
+              .map((tb_data) => {
+                if (user_info.user_type === "lu_admin") {
+                  return tb_data.loc_name === "Bubukal"
+                    ? { x: "Laguna University", y: tb_data.emission.ghge.toFixed(2) }
+                    : null; 
+                }
+  
+                if (user_info.user_type !== "lu_admin" && tb_data.loc_name) {
+                  return { x: tb_data.loc_name, y: tb_data.emission.ghge.toFixed(2) };
+                }
+                })
+              .filter((data) => data !== null) 
+              .sort((a:any, b:any) => a.x.localeCompare(b.x)) 
+          : [{ x: null, y: null }], 
       },
 
       {
         name: "Waste-Water GHGe",
         data: dashboard_data
           ? dashboard_data.table_data.wasteWaterGHGe.map((wasteWaterData, index) => {
-              if (user_info.user_type === "lu_admin" && wasteWaterData.loc_name === "Bubukal") {
-                return { x: "Laguna University", y: dashboard_data.table_data.wasteWaterGHGe[index].ghge.toFixed(2) };
+              if (user_info.user_type === "lu_admin") {
+                return wasteWaterData.loc_name === "Bubukal"
+                ? { x: "Laguna University", y: dashboard_data.table_data.wasteWaterGHGe[index].ghge.toFixed(2) }
+                : null;
               }
               if (user_info.user_type !== "lu_admin") {
                 return { x: wasteWaterData.loc_name, y: dashboard_data.table_data.wasteWaterGHGe[index].ghge.toFixed(2) };
               }
               
               // return null;
-            }).sort((a:any, b:any) => a.x.localeCompare(b.x))
-            // .filter((data) => data !== null)
-          : [{ x: null, y: null }],
+            })
+            .filter((data) => data !== null)
+            .sort((a:any, b:any) => a.x.localeCompare(b.x))
+            : [{ x: null, y: null }],
       },
       
             
@@ -132,51 +139,57 @@ function DashBoard() {
         name: "Industrial GHGe",
         data: dashboard_data
           ? dashboard_data.table_data.industrialGHGe.map((industrialData) => {
-              if (user_info.user_type === "lu_admin" && industrialData.loc_name === "Bubukal") {
-                return { x: "Laguna University", y: industrialData.ghge.toFixed(2)};
+              if (user_info.user_type === "lu_admin") {
+                return industrialData.loc_name === "Bubukal"
+                ? { x: "Laguna University", y: industrialData.ghge.toFixed(2) }
+                : null;
               }
 
               if (user_info.user_type !== "lu_admin") {
                 return { x: industrialData.loc_name, y: industrialData.ghge.toFixed(2)};
               }
 
-              // return null;
-            }).sort((a:any, b:any) => a.x.localeCompare(b.x))
-            // .filter((data) => data !== null)
+            })
+            .filter((data) => data !== null)
+            .sort((a:any, b:any) => a.x.localeCompare(b.x))
           : [{ x: null, y: null }],
       },
       {
         name: "AgricultureCrops GHGe",
         data: dashboard_data
           ? dashboard_data.table_data.agriculture_cropsGHGe.map((agriculture_cropsData) => {
-              if (user_info.user_type === "lu_admin" && agriculture_cropsData.loc_name === "Bubukal") {
-                return { x: "Laguna University", y: agriculture_cropsData.ghge.toFixed(2) };
+              if (user_info.user_type === "lu_admin") {
+                return agriculture_cropsData.loc_name === "Bubukal"
+                ? { x: "Laguna University", y: agriculture_cropsData.ghge.toFixed(2) }
+                : null;
               }
       
               if (user_info.user_type !== "lu_admin") {
                 return { x: agriculture_cropsData.loc_name, y: agriculture_cropsData.ghge.toFixed(2) };
               }
       
-              // return null;
-            }).sort((a:any, b:any) => a.x.localeCompare(b.x))
-            // .filter((data) => data !== null)
+            })
+            .filter((data) => data !== null)
+            .sort((a:any, b:any) => a.x.localeCompare(b.x))
           : [{ x: null, y: null }],
       },
       {
         name: "AgricultureLiveStocks GHGe",
         data: dashboard_data
           ? dashboard_data.table_data.agriculture_cropsGHGe.map((agriculture_livestockData) => {
-              if (user_info.user_type === "lu_admin" && agriculture_livestockData.loc_name === "Bubukal") {
-                return { x: "Laguna University", y:agriculture_livestockData.ghge.toFixed(2)};
+              if (user_info.user_type === "lu_admin") {
+                return agriculture_livestockData.loc_name === "Bubukal"
+                ? { x: "Laguna University", y: agriculture_livestockData.ghge.toFixed(2) }
+                : null;
               }
       
               if (user_info.user_type !== "lu_admin") {
                 return { x: agriculture_livestockData.loc_name, y: agriculture_livestockData.ghge.toFixed(2)};
               }
       
-              // return null;
-            }).sort((a:any, b:any) => a.x.localeCompare(b.x))
-            // .filter((data) => data !== null)
+            })
+            .filter((data) => data !== null)
+            .sort((a:any, b:any) => a.x.localeCompare(b.x))
           : [{ x: null, y: null }],
       },
       
@@ -184,17 +197,19 @@ function DashBoard() {
         name: "Stationary Residential GHGe",
         data: dashboard_data
           ? dashboard_data.table_data.residentialGHGe.map((stationaryResData) => {
-              if (user_info.user_type === "lu_admin" && stationaryResData.loc_name === "Bubukal") {
-                return { x: "Laguna University", y:stationaryResData.ghge.toFixed(2) };
+              if (user_info.user_type === "lu_admin") {
+                return stationaryResData.loc_name === "Bubukal"
+                ? { x: "Laguna University", y: stationaryResData.ghge.toFixed(2) }
+                : null;
               }
       
               if (user_info.user_type !== "lu_admin") {
                 return { x: stationaryResData.loc_name, y: stationaryResData.ghge.toFixed(2) };
               }
       
-              // return null;
-            }).sort((a:any, b:any) => a.x.localeCompare(b.x))
-            // .filter((data) => data !== null)
+            })
+            .filter((data) => data !== null)
+            .sort((a:any, b:any) => a.x.localeCompare(b.x))
           : [{ x: null, y: null }],
       },
 
@@ -202,17 +217,17 @@ function DashBoard() {
         name: "Stationary Commercial GHGe",
         data: dashboard_data
           ? dashboard_data.table_data.commercialGHGe.map((stationaryCommData) => {
-              if (user_info.user_type === "lu_admin" && stationaryCommData.loc_name === "Bubukal") {
-                return { x: "Laguna University", y: stationaryCommData.ghge.toFixed(2) };
-              }
-      
+              if (user_info.user_type === "lu_admin") {
+                return stationaryCommData.loc_name === "Bubukal"
+                ? { x: "Laguna University", y: stationaryCommData.ghge.toFixed(2) }
+                : null;              }
               if (user_info.user_type !== "lu_admin") {
                 return { x: stationaryCommData.loc_name, y: stationaryCommData.ghge.toFixed(2) };
               }
       
-              // return null;
-            }).sort((a:any, b:any) => a.x.localeCompare(b.x))
-            // .filter((data) => data !== null)
+            })
+            .filter((data) => data !== null)
+            .sort((a:any, b:any) => a.x.localeCompare(b.x))
           : [{ x: null, y: null }],
       },
 

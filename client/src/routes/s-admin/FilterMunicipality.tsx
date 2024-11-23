@@ -13,6 +13,7 @@ interface InputAddressProps {
 function FilterMunicipality({ setState }: InputAddressProps) {
     const filter_address = useFilterAddress({ address_type: "mucipality" }); // Pass the required argument here
     const [municipalityList, setMunicipalityList] = useState<string[]>([]);
+    const [selectedUserType] = useState();
 
     useEffect(() => {
         const municipality_data = filter_address;
@@ -21,7 +22,8 @@ function FilterMunicipality({ setState }: InputAddressProps) {
 
     return (
         <div className="flex flex-wrap lg:flex-nowrap gap-3">
-            <Select label="Select Municipality" onChange={(value) => setState(value ?? '')}>
+            <Select label="Select Municipality" disabled={selectedUserType === "lu_surveyor" || selectedUserType === "lu_admin"} 
+ onChange={(value) => setState(value ?? '')}>
                 {municipalityList.map((municipality, index) => (
                     <Option key={index} value={municipality}>{municipality}</Option>
                 ))}
