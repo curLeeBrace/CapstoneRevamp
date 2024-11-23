@@ -3,7 +3,7 @@ import WasteWaterEfactorSchema = require("../../db_schema/EmmisisonFactorsSchema
 
 
 type WasterWaterEfactorSchemaType = {
-    surveyType : string;
+    surveyType? : string;
     uncollected : {
         percapitaBODgeneration_perday : number;
         percapitaBODgeneration_peryear : number;
@@ -24,6 +24,7 @@ type WasterWaterEfactorSchemaType = {
     };
     max_ch4Production : number;
 }
+
 
 
 
@@ -58,51 +59,59 @@ const getWasteWaterEfactor = async(req : Request, res :Response) => {
 
     
     const wasteWaterEfactor = await WasteWaterEfactorSchema.findOne({surveyType}).exec();
-    let response = undefined;
+    let response : WasterWaterEfactorSchemaType = {} as WasterWaterEfactorSchemaType;
     if(!wasteWaterEfactor){
 
         await WasteWaterEfactorSchema.create(defaultEmmsionFactor);
 
         response = {
-            cfi_BOD_dischargersSewer : defaultEmmsionFactor.uncollected.cfi_BOD_dischargersSewer,
-            max_ch4Production : defaultEmmsionFactor.max_ch4Production,
-            percapitaBODgeneration_perday : defaultEmmsionFactor.uncollected.percapitaBODgeneration_perday,
-            percapitaBODgeneration_peryear : defaultEmmsionFactor.uncollected.percapitaBODgeneration_peryear,
-            septic_tanks : defaultEmmsionFactor.uncollected.methane_correction_factor.septic_tanks,
-            openPits_latrines : {
-                cat1 : defaultEmmsionFactor.uncollected.methane_correction_factor.openPits_latrines.cat1,
-                cat2 : defaultEmmsionFactor.uncollected.methane_correction_factor.openPits_latrines.cat2,
-                cat3 : defaultEmmsionFactor.uncollected.methane_correction_factor.openPits_latrines.cat3,
-                cat4 : defaultEmmsionFactor.uncollected.methane_correction_factor.openPits_latrines.cat4,
+            uncollected : {
+                cfi_BOD_dischargersSewer : defaultEmmsionFactor.uncollected.cfi_BOD_dischargersSewer,
+                percapitaBODgeneration_perday : defaultEmmsionFactor.uncollected.percapitaBODgeneration_perday,
+                percapitaBODgeneration_peryear : defaultEmmsionFactor.uncollected.percapitaBODgeneration_peryear,
+                methane_correction_factor : {
+                    septic_tanks : defaultEmmsionFactor.uncollected.methane_correction_factor.septic_tanks,
+                    openPits_latrines : {
+                        cat1 : defaultEmmsionFactor.uncollected.methane_correction_factor.openPits_latrines.cat1,
+                        cat2 : defaultEmmsionFactor.uncollected.methane_correction_factor.openPits_latrines.cat2,
+                        cat3 : defaultEmmsionFactor.uncollected.methane_correction_factor.openPits_latrines.cat3,
+                        cat4 : defaultEmmsionFactor.uncollected.methane_correction_factor.openPits_latrines.cat4,
+                    },
+                    riverDischarge : {
+                        cat1 : defaultEmmsionFactor.uncollected.methane_correction_factor.riverDischarge.cat1,
+                        cat2 : defaultEmmsionFactor.uncollected.methane_correction_factor.riverDischarge.cat2
+                    },
+                },
             },
-            riverDischarge : {
-                cat1 : defaultEmmsionFactor.uncollected.methane_correction_factor.riverDischarge.cat1,
-                cat2 : defaultEmmsionFactor.uncollected.methane_correction_factor.riverDischarge.cat2
-            }
+            max_ch4Production : defaultEmmsionFactor.max_ch4Production,
               
-        }
+        } as WasterWaterEfactorSchemaType
 
 
     } else {
 
-         response = {
-            cfi_BOD_dischargersSewer : wasteWaterEfactor.uncollected.cfi_BOD_dischargersSewer,
-            max_ch4Production : wasteWaterEfactor.max_ch4Production,
-            percapitaBODgeneration_perday : wasteWaterEfactor.uncollected.percapitaBODgeneration_perday,
-            percapitaBODgeneration_peryear : wasteWaterEfactor.uncollected.percapitaBODgeneration_peryear,
-            septic_tanks : wasteWaterEfactor.uncollected.methane_correction_factor.septic_tanks,
-            openPits_latrines : {
-                cat1 : wasteWaterEfactor.uncollected.methane_correction_factor.openPits_latrines.cat1,
-                cat2 : wasteWaterEfactor.uncollected.methane_correction_factor.openPits_latrines.cat2,
-                cat3 : wasteWaterEfactor.uncollected.methane_correction_factor.openPits_latrines.cat3,
-                cat4 : wasteWaterEfactor.uncollected.methane_correction_factor.openPits_latrines.cat4,
+        response = {
+            uncollected : {
+                cfi_BOD_dischargersSewer : wasteWaterEfactor.uncollected.cfi_BOD_dischargersSewer,
+                percapitaBODgeneration_perday : wasteWaterEfactor.uncollected.percapitaBODgeneration_perday,
+                percapitaBODgeneration_peryear : wasteWaterEfactor.uncollected.percapitaBODgeneration_peryear,
+                methane_correction_factor : {
+                    septic_tanks : wasteWaterEfactor.uncollected.methane_correction_factor.septic_tanks,
+                    openPits_latrines : {
+                        cat1 : wasteWaterEfactor.uncollected.methane_correction_factor.openPits_latrines.cat1,
+                        cat2 : wasteWaterEfactor.uncollected.methane_correction_factor.openPits_latrines.cat2,
+                        cat3 : wasteWaterEfactor.uncollected.methane_correction_factor.openPits_latrines.cat3,
+                        cat4 : wasteWaterEfactor.uncollected.methane_correction_factor.openPits_latrines.cat4,
+                    },
+                    riverDischarge : {
+                        cat1 : wasteWaterEfactor.uncollected.methane_correction_factor.riverDischarge.cat1,
+                        cat2 : wasteWaterEfactor.uncollected.methane_correction_factor.riverDischarge.cat2
+                    },
+                },
             },
-            riverDischarge : {
-                cat1 : wasteWaterEfactor.uncollected.methane_correction_factor.riverDischarge.cat1,
-                cat2 : wasteWaterEfactor.uncollected.methane_correction_factor.riverDischarge.cat2
-            }
+            max_ch4Production : wasteWaterEfactor.max_ch4Production,
               
-        }
+        } as WasterWaterEfactorSchemaType
 
     }
     
@@ -119,7 +128,35 @@ const getWasteWaterEfactor = async(req : Request, res :Response) => {
 
 
 
+const updateWasteWaterEfactor = async(req:Request, res:Response)=>{
+
+    try {
+        const {emissionFactors, surveyType} = req.body;
+      
+
+        const updateEfactors = await WasteWaterEfactorSchema.findOneAndUpdate({surveyType : surveyType}, emissionFactors).exec();
+
+        if(!updateEfactors) {
+            return res.status(204).send("Request is succsess but failed to update emmission factor")
+        } else {
+            return res.status(200).send("Emission factors updated successfully!");
+        }
+
+        
+
+
+
+    } catch (error) {
+        console.log(error);
+        return res.sendStatus(500)
+    }
+}
+
+
+
+
 export {
-    getWasteWaterEfactor
+    getWasteWaterEfactor,
+    updateWasteWaterEfactor
 }
 
