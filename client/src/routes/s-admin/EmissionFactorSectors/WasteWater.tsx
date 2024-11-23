@@ -13,47 +13,59 @@ import { Fragment, useEffect, useState } from "react";
 import useAxiosPrivate from "../../../custom-hooks/auth_hooks/useAxiosPrivate";
 
 type EmissionFactors = {
-  percapitaBODgeneration_perday : number;
-  percapitaBODgeneration_peryear : number;
-  cfi_BOD_dischargersSewer : number;
-  max_ch4Production : number; 
+  uncollected : {
+    percapitaBODgeneration_perday : number;
+    percapitaBODgeneration_peryear : number;
+    cfi_BOD_dischargersSewer : number;
+    methane_correction_factor : {
+      septic_tanks: number;
+      openPits_latrines: {
+        cat1: number;
+        cat2: number;
+        cat3: number;
+        cat4: number;
+      };
+      riverDischarge: {
+        cat1: number;
+        cat2: number;
+      };
 
-  septic_tanks: number;
-  openPits_latrines: {
-    cat1: number;
-    cat2: number;
-    cat3: number;
-    cat4: number;
-  };
-  riverDischarge: {
-    cat1: number;
-    cat2: number;
-  };
+    }
+
+  }
+  max_ch4Production : number; 
+  
 };
 
 type FormType = "residential" | "commercial";
 
 export default function WasteWaterEmissions() {
-  const [isLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [formType, setFormType] = useState<FormType>("residential");
 
 
+
   const [emissionFactors, setEmissionFactors] = useState<EmissionFactors>({
-    cfi_BOD_dischargersSewer : 0,
-    max_ch4Production : 0,
-    percapitaBODgeneration_perday : 0,
-    percapitaBODgeneration_peryear : 0,
-    septic_tanks : 0,
-    openPits_latrines : {
-        cat1 : 0,
-        cat2 : 0,
-        cat3 : 0,
-        cat4 : 0,
+    uncollected : {
+      cfi_BOD_dischargersSewer : 0,
+      percapitaBODgeneration_perday : 0,
+      percapitaBODgeneration_peryear : 0,
+      methane_correction_factor : {
+        septic_tanks : 0,
+        openPits_latrines : {
+          cat1 : 0,
+            cat2 : 0,
+            cat3 : 0,
+            cat4 : 0,
+        },
+        riverDischarge : {
+            cat1 : 0,
+            cat2 : 0
+        }
+        
+      }
     },
-    riverDischarge : {
-        cat1 : 0,
-        cat2 : 0
-    }
+    max_ch4Production : 0,
   });
 
   const axiosPrivate = useAxiosPrivate();
@@ -73,6 +85,7 @@ export default function WasteWaterEmissions() {
 
 
 
+  console.log("Emisison Factors", emissionFactors);
 
 
 
@@ -87,40 +100,98 @@ export default function WasteWaterEmissions() {
   };
 
 
+  // const handleFactorChange = (
+  //   e: React.ChangeEvent<HTMLInputElement>,
+  //   category: keyof EmissionFactors,
+  //   subCategory?: string
+  // ) => {
+  //   const { value } = e.target;
+  //   const parsedValue = parseFloat(value);
+  //   if(parsedValue >= 0 && parsedValue <= 100 || value == ''){
+
+  //       setEmissionFactors((prev) => {
+  //         if (subCategory) {
+  //           // Ensure the property being spread is an object
+  //           const nestedCategory = prev[category] as Record<string, number>;
+    
+  //           return {
+  //             ...prev,
+  //             [category]: {
+  //               ...nestedCategory,
+  //               [subCategory]: parsedValue,
+  //             },
+  //           };
+  //         }
+  //         return {
+  //           ...prev,
+  //           [category]: parsedValue,
+  //         };
+  //       });
+  //   } else {
+  //       alert("Invalid Input!!")
+  //   }
+
+  // };
+
+
+
+
+
+
+  //can be reusable...
+  // Utility function to update deeply nested objects
+  const updateNestedValue = (
+    obj: any,
+    keys: string[],
+    value: any
+  ): Record<string, any> => {
+    if (keys.length === 1) {
+      return { ...obj, [keys[0]]: value };
+    }
+    const [key, ...restKeys] = keys;
+    return {
+      ...obj,
+      [key]: updateNestedValue(obj[key], restKeys, value),
+    };
+  };
+
+
+
   const handleFactorChange = (
     e: React.ChangeEvent<HTMLInputElement>,
-    category: keyof EmissionFactors,
-    subCategory?: string
+    keys: string[]
   ) => {
     const { value } = e.target;
     const parsedValue = parseFloat(value);
     if(parsedValue >= 0 && parsedValue <= 100 || value == ''){
+      setEmissionFactors((prev) =>
+        updateNestedValue(prev, keys, value) as EmissionFactors
+      );
 
-        setEmissionFactors((prev) => {
-          if (subCategory) {
-            // Ensure the property being spread is an object
-            const nestedCategory = prev[category] as Record<string, number>;
-    
-            return {
-              ...prev,
-              [category]: {
-                ...nestedCategory,
-                [subCategory]: parsedValue,
-              },
-            };
-          }
-          return {
-            ...prev,
-            [category]: parsedValue,
-          };
-        });
     } else {
-        alert("Invalid Input!!")
+      alert("Invalid Input!!")
     }
 
-  };
+  }
+//////////////////////////////////////////////
 
-console.log("Emmision Factor : ", emissionFactors);
+// console.log("Emmision Factor : ", emissionFactors);
+const handleSubmit = () => {
+
+  setIsLoading(true);
+
+  axiosPrivate.put('efactor/waste-water/update-efactor', {
+    surveyType : formType,
+    emissionFactors : emissionFactors
+  })
+  .then(res => alert(res.data))
+  .catch(err => console.log(err))
+  .finally(()=>setIsLoading(false))
+
+
+
+
+}
 
 
   return (
@@ -156,8 +227,8 @@ console.log("Emmision Factor : ", emissionFactors);
               <div className="flex gap-2">
                 <div className="basis-3/4 shrink-0">
                   <Input
-                    value={emissionFactors.percapitaBODgeneration_perday}
-                    onChange={(e)=>handleFactorChange(e, "percapitaBODgeneration_perday")}
+                    value={emissionFactors.uncollected.percapitaBODgeneration_perday}
+                    onChange={(e)=>handleFactorChange(e, ["uncollected","percapitaBODgeneration_perday"])}
                     type="number"
                     className="!border-t-blue-gray-200 focus:!border-t-gray-900"
                     labelProps={{
@@ -180,7 +251,7 @@ console.log("Emmision Factor : ", emissionFactors);
               <div className="flex gap-2">
                 <div className="basis-3/4 shrink-0">
                   <Input
-                   value={(emissionFactors.percapitaBODgeneration_perday*365)/1000}
+                   value={(emissionFactors.uncollected.percapitaBODgeneration_perday*365)/1000}
                 //    onChange={(e)=>handleFactorChange(e, "percapitaBODgeneration_peryear")}
                     type="number"
                     className="!border-t-blue-gray-200 focus:!border-t-gray-900"
@@ -205,8 +276,8 @@ console.log("Emmision Factor : ", emissionFactors);
               <div className="flex gap-2">
                 <div className="basis-3/4 shrink-0">
                   <Input
-                    value={emissionFactors.cfi_BOD_dischargersSewer}
-                    onChange={(e)=>handleFactorChange(e, "cfi_BOD_dischargersSewer")}
+                    value={emissionFactors.uncollected.cfi_BOD_dischargersSewer}
+                    onChange={(e)=>handleFactorChange(e, ["uncollected","cfi_BOD_dischargersSewer"])}
                     type="number"
                     className="!border-t-blue-gray-200 focus:!border-t-gray-900"
                     labelProps={{
@@ -244,7 +315,7 @@ console.log("Emmision Factor : ", emissionFactors);
                 <div className="basis-3/4 shrink-0">
                   <Input
                     value={emissionFactors.max_ch4Production}
-                    onChange={(e)=>handleFactorChange(e, "max_ch4Production")}
+                    onChange={(e)=>handleFactorChange(e, ["max_ch4Production"])}
                     type="number"
                     className="!border-t-blue-gray-200 focus:!border-t-gray-900"
                     labelProps={{
@@ -285,8 +356,8 @@ console.log("Emmision Factor : ", emissionFactors);
                     <div className="basis-1/2">
                       <Input
                         type="number"
-                        value={emissionFactors.septic_tanks}
-                        onChange={(e) => handleFactorChange(e, "septic_tanks")}
+                        value={emissionFactors.uncollected.methane_correction_factor.septic_tanks}
+                        onChange={(e) => handleFactorChange(e, ["uncollected","methane_correction_factor","septic_tanks"])}
                         placeholder="Septic Tanks"
                         className="!border-t-blue-gray-200 focus:!border-t-gray-900"
                         labelProps={{
@@ -299,7 +370,7 @@ console.log("Emmision Factor : ", emissionFactors);
                         variant="small"
                         className="font-bold text-base text-center"
                       >
-                        {isNaN(emissionFactors.max_ch4Production * emissionFactors.septic_tanks) ? 0 : (emissionFactors.max_ch4Production * emissionFactors.septic_tanks).toFixed(2)}
+                        {isNaN(emissionFactors.max_ch4Production * emissionFactors.uncollected.methane_correction_factor.septic_tanks) ? 0 : (emissionFactors.max_ch4Production * emissionFactors.uncollected.methane_correction_factor.septic_tanks).toFixed(2)}
 
                       </Typography>
                     </div>
@@ -316,7 +387,7 @@ console.log("Emmision Factor : ", emissionFactors);
                   </Typography>
 
                   
-                    {Object.entries(emissionFactors.openPits_latrines).map(
+                    {Object.entries(emissionFactors.uncollected.methane_correction_factor.openPits_latrines).map(
                       ([key, value]) => (
                         <Fragment  key={key}>
                             <Typography variant="small" className="text-gray-500">
@@ -329,7 +400,7 @@ console.log("Emmision Factor : ", emissionFactors);
                                         type="number"
                                         value={value}
                                         onChange={(e) =>
-                                        handleFactorChange(e, "openPits_latrines", key)
+                                        handleFactorChange(e, ["uncollected","methane_correction_factor", "openPits_latrines" ,key],)
                                         }
                                         className="!border-t-blue-gray-200 focus:!border-t-gray-900"
                                         labelProps={{
@@ -371,7 +442,7 @@ console.log("Emmision Factor : ", emissionFactors);
                   </Typography>
 
                   
-                    {Object.entries(emissionFactors.riverDischarge).map(
+                    {Object.entries(emissionFactors.uncollected.methane_correction_factor.riverDischarge).map(
                       ([key, value]) => (
                         <Fragment  key={key}>
                             <Typography variant="small" className="text-gray-500">
@@ -384,7 +455,7 @@ console.log("Emmision Factor : ", emissionFactors);
                                         type="number"
                                         value={value}
                                         onChange={(e) =>
-                                        handleFactorChange(e, "riverDischarge", key)
+                                          handleFactorChange(e, ["uncollected","methane_correction_factor", "riverDischarge", key],)
                                         }
                                         className="!border-t-blue-gray-200 focus:!border-t-gray-900"
                                         labelProps={{
@@ -421,7 +492,7 @@ console.log("Emmision Factor : ", emissionFactors);
         </div>
 
         <div className="flex justify-center">
-          <Button fullWidth className="w-full md:w-11/12" disabled={isLoading}>
+          <Button fullWidth className="w-full md:w-11/12" disabled={isLoading} onClick={handleSubmit}>
             {isLoading ? "Updating..." : "Submit"}
           </Button>
         </div>
