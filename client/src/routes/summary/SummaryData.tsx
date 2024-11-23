@@ -43,6 +43,16 @@ const SummaryData = () => {
     // const [totalGHGe, setTotalGHGe] = useState<number>(0);
 
     const  {survey_category} = useParams()
+
+    const wasteWaterColors = [
+        '#1E90FF', 
+        '#3CB371', 
+        '#FFA500',
+        '#FF6347', 
+        '#6A5ACD', 
+        '#00CED1', 
+        '#7CFC00',
+    ];
   
 
     useEffect(() => {
@@ -126,7 +136,8 @@ const SummaryData = () => {
                             data : wasteWaterSummary.map(summary => {
                                 return {
                                     x : summary.location,
-                                    y : summary.septic_tanks
+                                    y : summary.septic_tanks,
+                                    fillColor: wasteWaterColors[0],
                                 }
                             })
                         },
@@ -135,54 +146,61 @@ const SummaryData = () => {
                             data : wasteWaterSummary.map(summary => {
                                 return {
                                     x : summary.location,
-                                    y : summary.openPits_latrines.cat1
+                                    y : summary.openPits_latrines.cat1,
                                 }
-                            })
+                            }),
+                            color : wasteWaterColors[1]
                         },
                         {
                             name : "Category2 - Open Pits Latrines",
                             data : wasteWaterSummary.map(summary => {
                                 return {
                                     x : summary.location,
-                                    y : summary.openPits_latrines.cat2
+                                    y : summary.openPits_latrines.cat2,
+                                    
                                 }
-                            })
+                            }),
+                            color : wasteWaterColors[2]
                         },
                         {
                             name : "Category3 - Open Pits Latrines",
                             data : wasteWaterSummary.map(summary => {
                                 return {
                                     x : summary.location,
-                                    y : summary.openPits_latrines.cat3
+                                    y : summary.openPits_latrines.cat3,
                                 }
-                            })
+                            }),
+                            color : wasteWaterColors[3]
                         },
                         {
                             name : "Category4 - Open Pits Latrines",
                             data : wasteWaterSummary.map(summary => {
                                 return {
                                     x : summary.location,
-                                    y : summary.openPits_latrines.cat4
+                                    y : summary.openPits_latrines.cat4,
                                 }
-                            })
+                            }),
+                            color : wasteWaterColors[4]
                         },
                         {
                             name : "Category1 - River Discharge",
                             data : wasteWaterSummary.map(summary => {
                                 return {
                                     x : summary.location,
-                                    y : summary.riverDischarge.cat1
+                                    y : summary.riverDischarge.cat1,
                                 }
-                            })
+                            }),
+                            color: wasteWaterColors[5]
                         },
                         {
                             name : "Category2 - River Discharge",
                             data : wasteWaterSummary.map(summary => {
                                 return {
                                     x : summary.location,
-                                    y : summary.riverDischarge.cat2
+                                    y : summary.riverDischarge.cat2,
                                 }
-                            })
+                            }),
+                            color: wasteWaterColors[6]
                         },
                     ])
                     

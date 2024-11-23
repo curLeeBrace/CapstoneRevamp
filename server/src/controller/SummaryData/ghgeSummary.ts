@@ -93,7 +93,7 @@ const ghgeSummary = async (req:Request, res:Response) => {
 
         let total_ghge = 0;
 
-        mobileComstion_data.length > 0 && mobileComstion_data.forEach((mb_data)=>{
+        mobileComstion_data.length > 0 && mobileComstion_data.map((mb_data)=>{
             total_ghge += Number(mb_data.emission.ghge.toFixed(2));
         })
 
