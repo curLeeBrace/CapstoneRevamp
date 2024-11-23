@@ -12,9 +12,9 @@ import {formulaForGettingIndstrialGHGe, IndustrialEmmisionFactor} from "./indust
 
 
 const getGHGe_perOperation = async (user_type : string, query : {}, locations : any[], industryEmissionFactors : IndustrialEmmisionFactor[], 
-    industryType : "Mineral" | "Chemical" | "Metal" | "Electronics" | "Others") : Promise<number[][]> => {
+    industryType : "Mineral" | "Chemical" | "Metal" | "Electronics" | "Others") : Promise<{ghge : number[],loc_name : string}[]> => {
 
-    let industryGHGe_container_perOperation : number[][] =  []
+    let industryGHGe_container_perOperation : {ghge : number[],loc_name : string}[] =  []
 
         
     const IndustrialData = industryType === "Mineral" ? await Mineral.find(query)
@@ -42,7 +42,7 @@ const getGHGe_perOperation = async (user_type : string, query : {}, locations : 
     locations.forEach((location)=>{
 
         const root_loc_code = user_type === "s-admin" ? location.city_code : location.brgy_code;
-
+        const loc_name = user_type === "s-admin" ? location.city_name : location.brgy_name;
 
         // let mineralGHE_perOperation : MineralTonsData = {
         //     cpp : 0,
@@ -150,7 +150,10 @@ const getGHGe_perOperation = async (user_type : string, query : {}, locations : 
         })
         
 
-        industryGHGe_container_perOperation.push(GHE_perOperation)
+        industryGHGe_container_perOperation.push({
+            ghge : GHE_perOperation,
+            loc_name : loc_name
+        })
 
        
 

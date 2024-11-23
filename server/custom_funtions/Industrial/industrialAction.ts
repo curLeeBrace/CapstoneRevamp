@@ -155,9 +155,15 @@ const ghgeSumPerOperation = (ghgePerOperation : number[][]):number[]=> {
 }
 
 //final function
-const getIndustrialOverallGHGe = async (user_type : string, query : {}, locations : any[]) : Promise<number[]> => {
+const getIndustrialOverallGHGe = async (user_type : string, query : {}, locations : any[]) : Promise<{
+    ghge : number,
+    loc_name : string
+}[]> => {
 
-    let industrialGHGeContainer:number[] = []
+    let industrialGHGeContainer:{
+        ghge : number,
+        loc_name : string
+    }[] = []
 
     //will do fetching efactors in database......... then set the default one if no one find....
     
@@ -171,20 +177,20 @@ const getIndustrialOverallGHGe = async (user_type : string, query : {}, location
 
     //GETTING MINERAL GHGE
     const mineralGHGe = await getGHGe_perOperation(user_type, query, locations, mineral_eFactor ? mineral_eFactor : default_mineral_eFactors, "Mineral");
-    const mineralGHGeSum = ghgeSumPerOperation(mineralGHGe);
+    const mineralGHGeSum = ghgeSumPerOperation(mineralGHGe.map(data => data.ghge));
 
 
 
     ///GETTING CHEMICAL GHGE
     const checmicalGHGe =   await getGHGe_perOperation(user_type, query, locations, chemical_eFactor ? chemical_eFactor : default_chemical_eFactors, "Chemical");
-    const chemicalGHGeSum = ghgeSumPerOperation(checmicalGHGe);
+    const chemicalGHGeSum = ghgeSumPerOperation(checmicalGHGe.map(data => data.ghge));
 
 
 
     //GETTING METAL GHGE
 
     const metalGHGe = await getGHGe_perOperation(user_type, query, locations, metal_eFactor ? metal_eFactor : default_metal_eFactors, "Metal");
-    const metalGHGeSum = ghgeSumPerOperation(metalGHGe);
+    const metalGHGeSum = ghgeSumPerOperation(metalGHGe.map(data => data.ghge));
 
 
 
@@ -194,26 +200,51 @@ const getIndustrialOverallGHGe = async (user_type : string, query : {}, location
 
 
     const electronicsGHGe = await getGHGe_perOperation(user_type, query, locations,electronics_eFactor ?electronics_eFactor : default_electronicsEfactors, "Electronics");
-    const electronicsGHGeSum = ghgeSumPerOperation(electronicsGHGe);
+    const electronicsGHGeSum = ghgeSumPerOperation(electronicsGHGe.map(data => data.ghge));
 
 
     //GETTING OTHERS GHGE
 
     const othersGHGe = await getGHGe_perOperation(user_type, query, locations, others_eFactor ? others_eFactor :  default_othersEfactors, "Others");
-    const othersGHGeSum = ghgeSumPerOperation(othersGHGe);
+    const othersGHGeSum = ghgeSumPerOperation(othersGHGe.map(data => data.ghge));
 
     ///GETTING THE INDUSTRIAL OVERALL GHGE
-        locations.forEach((_, index)=>{
+        locations.forEach((location, index)=>{
+
+
+            const loc_name = user_type === "s-admin" ? location.city_name : location.brgy_name;
             let totalGHGe = 0;
 
-            totalGHGe += mineralGHGeSum[index];
-            totalGHGe += chemicalGHGeSum[index]
-            totalGHGe += metalGHGeSum[index]
-            totalGHGe += electronicsGHGeSum[index]
-            totalGHGe += othersGHGeSum[index]
+            if(loc_name === mineralGHGe[index].loc_name){
+                totalGHGe += mineralGHGeSum[index];
+            }
+
+            if(loc_name === checmicalGHGe[index].loc_name){
+
+                totalGHGe += chemicalGHGeSum[index]
+            }
+
+            if(loc_name === metalGHGe[index].loc_name){
+
+                totalGHGe += metalGHGeSum[index]
+            }
+
+            if(loc_name === electronicsGHGe[index].loc_name){
+
+                totalGHGe += electronicsGHGeSum[index]
+            }
+
+            if(loc_name === othersGHGe[index].loc_name){
+
+                totalGHGe += othersGHGeSum[index]
+            }
+
             
             
-            industrialGHGeContainer.push(totalGHGe)
+            industrialGHGeContainer.push({
+                ghge : totalGHGe,
+                loc_name : loc_name
+            })
   
         })
 

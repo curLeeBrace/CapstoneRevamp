@@ -35,10 +35,22 @@ type DashBoardData = {
   total_LU_admins: number;
   table_data: {
       mobileCombustionGHGe : MobileCombustionTableData[],
-      wasteWaterGHGe : number[],
-      industrialGHGe : number[],
-      agriculture_cropsGHGe : number[],
-      agriculture_liveStocksGHGe : number[],
+      wasteWaterGHGe : {
+        ghge : number,
+        loc_name : string
+      }[],
+      industrialGHGe : {
+        ghge : number,
+        loc_name : string
+      }[],
+      agriculture_cropsGHGe : {
+        ghge : number,
+        loc_name : string
+    }[],
+      agriculture_liveStocksGHGe : {
+        ghge : number,
+        loc_name : string
+    }[],
       stationaryGHGe : number[],
       residentialGHGe: number[]; 
       commercialGHGe: number[];   
@@ -86,26 +98,26 @@ function DashBoard() {
               if (user_info.user_type !== "lu_admin") {
                 return { x: tb_data.loc_name, y: tb_data.emission.ghge.toFixed(2) };
               }
-              return null; 
-            })
-            .filter((data) => data !== null) // Remove any null entries
+              // return null; 
+            }).sort((a:any, b:any) => a.x.localeCompare(b.x))
+            // .filter((data) => data !== null) // Remove any null entries
           : [{ x: null, y: null }],
       },
 
       {
         name: "Waste-Water GHGe",
         data: dashboard_data
-          ? dashboard_data.table_data.mobileCombustionGHGe.map((tb_data, index) => {
-              if (user_info.user_type === "lu_admin" && tb_data.loc_name === "Bubukal") {
-                return { x: "Laguna University", y: dashboard_data.table_data.wasteWaterGHGe[index].toFixed(2) };
+          ? dashboard_data.table_data.wasteWaterGHGe.map((wasteWaterData, index) => {
+              if (user_info.user_type === "lu_admin" && wasteWaterData.loc_name === "Bubukal") {
+                return { x: "Laguna University", y: dashboard_data.table_data.wasteWaterGHGe[index].ghge.toFixed(2) };
               }
               if (user_info.user_type !== "lu_admin") {
-                return { x: tb_data.loc_name, y: dashboard_data.table_data.wasteWaterGHGe[index].toFixed(2) };
+                return { x: wasteWaterData.loc_name, y: dashboard_data.table_data.wasteWaterGHGe[index].ghge.toFixed(2) };
               }
               
-              return null;
-            })
-            .filter((data) => data !== null)
+              // return null;
+            }).sort((a:any, b:any) => a.x.localeCompare(b.x))
+            // .filter((data) => data !== null)
           : [{ x: null, y: null }],
       },
       
@@ -113,52 +125,52 @@ function DashBoard() {
       {
         name: "Industrial GHGe",
         data: dashboard_data
-          ? dashboard_data.table_data.mobileCombustionGHGe.map((tb_data, index) => {
-              if (user_info.user_type === "lu_admin" && tb_data.loc_name === "Bubukal") {
-                return { x: "Laguna University", y: dashboard_data.table_data.industrialGHGe[index].toFixed(2) };
+          ? dashboard_data.table_data.industrialGHGe.map((industrialData) => {
+              if (user_info.user_type === "lu_admin" && industrialData.loc_name === "Bubukal") {
+                return { x: "Laguna University", y: industrialData.ghge.toFixed(2)};
               }
 
               if (user_info.user_type !== "lu_admin") {
-                return { x: tb_data.loc_name, y: dashboard_data.table_data.industrialGHGe[index].toFixed(2) };
+                return { x: industrialData.loc_name, y: industrialData.ghge.toFixed(2)};
               }
 
-              return null;
-            })
-            .filter((data) => data !== null)
+              // return null;
+            }).sort((a:any, b:any) => a.x.localeCompare(b.x))
+            // .filter((data) => data !== null)
           : [{ x: null, y: null }],
       },
       {
         name: "AgricultureCrops GHGe",
         data: dashboard_data
-          ? dashboard_data.table_data.mobileCombustionGHGe.map((tb_data, index) => {
-              if (user_info.user_type === "lu_admin" && tb_data.loc_name === "Bubukal") {
-                return { x: "Laguna University", y: dashboard_data.table_data.agriculture_cropsGHGe[index].toFixed(2) };
+          ? dashboard_data.table_data.agriculture_cropsGHGe.map((agriculture_cropsData) => {
+              if (user_info.user_type === "lu_admin" && agriculture_cropsData.loc_name === "Bubukal") {
+                return { x: "Laguna University", y: agriculture_cropsData.ghge.toFixed(2) };
               }
       
               if (user_info.user_type !== "lu_admin") {
-                return { x: tb_data.loc_name, y: dashboard_data.table_data.agriculture_cropsGHGe[index].toFixed(2) };
+                return { x: agriculture_cropsData.loc_name, y: agriculture_cropsData.ghge.toFixed(2) };
               }
       
-              return null;
-            })
-            .filter((data) => data !== null)
+              // return null;
+            }).sort((a:any, b:any) => a.x.localeCompare(b.x))
+            // .filter((data) => data !== null)
           : [{ x: null, y: null }],
       },
       {
         name: "AgricultureLiveStocks GHGe",
         data: dashboard_data
-          ? dashboard_data.table_data.mobileCombustionGHGe.map((tb_data, index) => {
-              if (user_info.user_type === "lu_admin" && tb_data.loc_name === "Bubukal") {
-                return { x: "Laguna University", y: dashboard_data.table_data.agriculture_liveStocksGHGe[index].toFixed(2) };
+          ? dashboard_data.table_data.agriculture_cropsGHGe.map((agriculture_livestockData) => {
+              if (user_info.user_type === "lu_admin" && agriculture_livestockData.loc_name === "Bubukal") {
+                return { x: "Laguna University", y:agriculture_livestockData.ghge.toFixed(2)};
               }
       
               if (user_info.user_type !== "lu_admin") {
-                return { x: tb_data.loc_name, y: dashboard_data.table_data.agriculture_liveStocksGHGe[index].toFixed(2) };
+                return { x: agriculture_livestockData.loc_name, y: agriculture_livestockData.ghge.toFixed(2)};
               }
       
-              return null;
-            })
-            .filter((data) => data !== null)
+              // return null;
+            }).sort((a:any, b:any) => a.x.localeCompare(b.x))
+            // .filter((data) => data !== null)
           : [{ x: null, y: null }],
       },
       
@@ -174,9 +186,9 @@ function DashBoard() {
                 return { x: tb_data.loc_name, y: dashboard_data.table_data.residentialGHGe[index].toFixed(2) };
               }
       
-              return null;
+              // return null;
             })
-            .filter((data) => data !== null)
+            // .filter((data) => data !== null)
           : [{ x: null, y: null }],
       },
 
@@ -192,9 +204,9 @@ function DashBoard() {
                 return { x: tb_data.loc_name, y: dashboard_data.table_data.commercialGHGe[index].toFixed(2) };
               }
       
-              return null;
+              // return null;
             })
-            .filter((data) => data !== null)
+            // .filter((data) => data !== null)
           : [{ x: null, y: null }],
       },
 
@@ -362,7 +374,7 @@ function DashBoard() {
 
             <div className="mb-4 px-4 h-20">
               <SimpleCard
-                body={`${dashboard_data?.table_data.wasteWaterGHGe.reduce((acc, val) => acc + val, 0).toFixed(2)}`}
+                body={`${dashboard_data?.table_data.wasteWaterGHGe.reduce((acc, val) => acc + val.ghge, 0).toFixed(2)}`}
                 header="Waste Water"
                 icon={<GlobeAsiaAustraliaIcon className="h-6 w-6" />}
                 child_card={<BarChart chart_icon={<GlobeAsiaAustraliaIcon className="h-6 w-6" />} chart_label='Waste Water' 
@@ -379,7 +391,7 @@ function DashBoard() {
 
             <div className="mb-4 px-4 h-20">
               <SimpleCard
-              body={`${dashboard_data?.table_data.industrialGHGe.reduce((acc, val) => acc + val, 0).toFixed(2)}`}
+              body={`${dashboard_data?.table_data.industrialGHGe.reduce((acc, val) => acc + val.ghge, 0).toFixed(2)}`}
               header="Industrial"
                 icon={<GlobeAsiaAustraliaIcon className="h-6 w-6" />}
                 child_card={<BarChart chart_icon={<GlobeAsiaAustraliaIcon className="h-6 w-6" />} chart_label='Industrial' 
@@ -396,7 +408,7 @@ function DashBoard() {
 
             <div className="mb-4 px-4 h-20">
               <SimpleCard
-              body={`${dashboard_data?.table_data.agriculture_cropsGHGe.reduce((acc, val) => acc + val, 0).toFixed(2)}`}
+              body={`${dashboard_data?.table_data.agriculture_cropsGHGe.reduce((acc, val) => acc + val.ghge, 0).toFixed(2)}`}
               header="Agriculture Crops"
                 icon={<GlobeAsiaAustraliaIcon className="h-6 w-6" />}
                 child_card={<BarChart chart_icon={<GlobeAsiaAustraliaIcon className="h-6 w-6" />} chart_label='Agriculture Crops' 
@@ -413,7 +425,7 @@ function DashBoard() {
 
             <div className="mb-4 px-4 h-20">
               <SimpleCard
-                body={`${dashboard_data?.table_data.agriculture_liveStocksGHGe.reduce((acc, val) => acc + val, 0).toFixed(2)}`}
+                body={`${dashboard_data?.table_data.agriculture_liveStocksGHGe.reduce((acc, val) => acc + val.ghge, 0).toFixed(2)}`}
                 header="Agriculture Live Stocks"
                 icon={<GlobeAsiaAustraliaIcon className="h-6 w-6" />}
                 child_card={<BarChart chart_icon={<GlobeAsiaAustraliaIcon className="h-6 w-6" />} chart_label='Agriculture Live Stocks' 

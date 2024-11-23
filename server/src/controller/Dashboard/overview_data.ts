@@ -36,7 +36,7 @@ export type Emission = {
 
 export type MobileCombustionTableData = {
     loc_name : String;
-    loc_code : String;
+    // loc_code : String;
     emission : Emission;
 }
 
@@ -48,10 +48,22 @@ type DashBoardData = {
     total_LU_admins: number;
     table_data: {
         mobileCombustionGHGe : MobileCombustionTableData[],
-        wasteWaterGHGe : number[]
-        industrialGHGe : number[]
-        agriculture_cropsGHGe : number[]
-        agriculture_liveStocksGHGe : number[]
+        wasteWaterGHGe : {
+            ghge : number,
+            loc_name : string
+        }[]
+        industrialGHGe : {
+            ghge : number,
+            loc_name : string
+        }[]
+        agriculture_cropsGHGe : {
+            ghge : number,
+            loc_name : string
+        }[]
+        agriculture_liveStocksGHGe : {
+            ghge : number,
+            loc_name : string
+        }[]
         stationaryGHGe : number[]
         residentialGHGe: number[]
         commercialGHGe : number[]
@@ -59,6 +71,7 @@ type DashBoardData = {
 
     }
     total_ghge : number;
+    loc_names : string[]
 
  }
  
@@ -106,6 +119,7 @@ type DashBoardData = {
 
             
             const locations = getAvailableLocations(parent_code, user_type);
+            // console.log(locations)
             
             const mobileComstion_data =  await get_mobileComstion_GHGe(user_type, query, locations);  
             const wasteWaterGHGe = await getWasteWaterGHGeSum(user_type, query, locations);
@@ -120,10 +134,10 @@ type DashBoardData = {
 
             mobileComstion_data.forEach((mb_data, index) => {
                 total_ghge += Number(mb_data.emission.ghge.toFixed(2));
-                total_ghge += Number(wasteWaterGHGe[index].toFixed(2));
-                total_ghge += Number(industrialGHGe[index].toFixed(2));
-                total_ghge += Number(agriculture_cropsGHGe[index].toFixed(2));
-                total_ghge += Number(agriculture_liveStocksGHGe[index].toFixed(2));
+                total_ghge += Number(wasteWaterGHGe[index].ghge.toFixed(2));
+                total_ghge += Number(industrialGHGe[index].ghge.toFixed(2));
+                total_ghge += Number(agriculture_cropsGHGe[index].ghge.toFixed(2));
+                total_ghge += Number(agriculture_liveStocksGHGe[index].ghge.toFixed(2));
                 total_ghge += Number(residentialGHGe[index].toFixed(2));
                 total_ghge += Number(commercialGHGe[index].toFixed(2));
 
@@ -163,6 +177,7 @@ type DashBoardData = {
                         commercialGHGe,
                     },
                     total_ghge,
+                    loc_names: locations.map((loc) => user_type === "s-admin" ? loc.city_name : loc.brgy_name),
             }
     
     
@@ -181,13 +196,6 @@ type DashBoardData = {
 
 
 
-
-
-
-
-
-
-
  // This is mobile combustion function
 
  const get_mobileComstion_GHGe = async (user_type:string , query : {}, locations : any[]) : Promise<MobileCombustionTableData[]> => {
@@ -201,68 +209,69 @@ type DashBoardData = {
     //iterate municipalities
 
 
+    await Promise.all (
+        locations.map(async (loc : Brgys & Municipality, index) => {
 
-    locations.forEach(async (loc : Brgys & Municipality, index) => {
+            const root_loc_code = user_type === "s-admin" ? loc.city_code : loc.brgy_code;
 
-        const root_loc_code = user_type === "s-admin" ? loc.city_code : loc.brgy_code;
-
-        let tb_co2e = 0;
-        let tb_ch4e = 0;
-        let tb_n2oe = 0;
-        let tb_ghge = 0;
+            let tb_co2e = 0;
+            let tb_ch4e = 0;
+            let tb_n2oe = 0;
+            let tb_ghge = 0;
 
 
-        // iterate the form data
-        await Promise.all (
-            form_data.map(async (data) => {
+            // iterate the form data
+            await Promise.all (
+                form_data.map(async (data) => {
 
-            // check use type
-            if(user_type === "s-admin"){
-                //check if root_loc_code === data.surveyor_info.municipality_code
-                if(data.surveyor_info.municipality_code === root_loc_code)  {
-                    //compute the municipality emmisions
-                    const single_form_emmmsion = await get_MobileCombustionEmission(data.survey_data.fuel_type as string, data.survey_data.liters_consumption);
-                    const {co2e, ch4e, n2oe, ghge} = single_form_emmmsion
-    
-                    tb_co2e += co2e;
-                    tb_ch4e += ch4e;
-                    tb_n2oe += n2oe;
-                    tb_ghge += ghge;
+                // check use type
+                if(user_type === "s-admin"){
+                    //check if root_loc_code === data.surveyor_info.municipality_code
+                    if(data.surveyor_info.municipality_code === root_loc_code)  {
+                        //compute the municipality emmisions
+                        const single_form_emmmsion = await get_MobileCombustionEmission(data.survey_data.fuel_type as string, data.survey_data.liters_consumption);
+                        const {co2e, ch4e, n2oe, ghge} = single_form_emmmsion
+        
+                        tb_co2e += co2e;
+                        tb_ch4e += ch4e;
+                        tb_n2oe += n2oe;
+                        tb_ghge += ghge;
+                    }
+
+                } else {
+
+                    if(data.survey_data.brgy_code === root_loc_code)  {
+                        //compute the municipality emmisions
+                        const single_form_emmmsion = await get_MobileCombustionEmission(data.survey_data.fuel_type as string, data.survey_data.liters_consumption);
+                        const {co2e, ch4e, n2oe, ghge} = single_form_emmmsion
+        
+                        tb_co2e += co2e;
+                        tb_ch4e += ch4e;
+                        tb_n2oe += n2oe;
+                        tb_ghge += ghge;
+                    }
                 }
 
-            } else {
 
-                if(data.survey_data.brgy_code === root_loc_code)  {
-                    //compute the municipality emmisions
-                    const single_form_emmmsion = await get_MobileCombustionEmission(data.survey_data.fuel_type as string, data.survey_data.liters_consumption);
-                    const {co2e, ch4e, n2oe, ghge} = single_form_emmmsion
-    
-                    tb_co2e += co2e;
-                    tb_ch4e += ch4e;
-                    tb_n2oe += n2oe;
-                    tb_ghge += ghge;
+            })
+        )
+
+
+
+            
+            table_data.push({
+                loc_name : user_type === "s-admin" ? loc.city_name : loc.brgy_name,
+                // loc_code :user_type === "s-admin" ? loc.city_code : loc.brgy_code,
+                emission : {
+                    co2e : tb_co2e,
+                    ch4e : tb_ch4e,
+                    n2oe : tb_n2oe,
+                    ghge : tb_ghge,
                 }
-            }
-
+            })
 
         })
     )
-
-
-
-        
-        table_data.push({
-            loc_name : user_type === "s-admin" ? loc.city_name : loc.brgy_name,
-            loc_code :user_type === "s-admin" ? loc.city_code : loc.brgy_code,
-            emission : {
-                co2e : tb_co2e,
-                ch4e : tb_ch4e,
-                n2oe : tb_n2oe,
-                ghge : tb_ghge,
-            }
-        })
-
-    });
 
 
 

@@ -72,13 +72,6 @@ const updateIndustrialEfactor = async(req:Request, res:Response) => {
 
 
 
-
-
-
-
-
-
-
 }
 
 
