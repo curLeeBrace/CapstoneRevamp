@@ -176,7 +176,7 @@ function DashBoard() {
       {
         name: "AgricultureLiveStocks GHGe",
         data: dashboard_data
-          ? dashboard_data.table_data.agriculture_cropsGHGe.map((agriculture_livestockData) => {
+          ? dashboard_data.table_data.agriculture_liveStocksGHGe.map((agriculture_livestockData) => {
               if (user_info.user_type === "lu_admin") {
                 return agriculture_livestockData.loc_name === "Bubukal"
                 ? { x: "Laguna University", y: agriculture_livestockData.ghge.toFixed(2) }

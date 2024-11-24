@@ -2,6 +2,7 @@ import { Button, Select, Option, Typography, Input } from '@material-tailwind/re
 import { useEffect, useState } from 'react';
 import useAxiosPrivate from '../../../custom-hooks/auth_hooks/useAxiosPrivate';
 import { LockClosedIcon } from '@heroicons/react/24/solid';
+import Skeleton from '../../../Components/Skeleton';
 
 type IndustrialEmissionFactor = {
     CO2?: number;
@@ -252,7 +253,7 @@ export default function IndustrialEmissions() {
    
     };
 
-    console.log("Industrial Efactor : ", emissionFactors);
+    // console.log("Industrial Efactor : ", emissionFactors);
     return (
         <div className="border p-4 rounded-lg bg-gray-100 ">
             <Typography variant="h6" className="mb-4">
@@ -296,13 +297,13 @@ export default function IndustrialEmissions() {
                               ))}
                              
                           </div>
-                      )) : null
+                      )) : <Skeleton/>
                  
                 }
             
             </div>
-            <Button onClick={handleSubmit} disabled={isLoading} className="mt-4 w-full">
-                {isLoading ? 'Submitting...' : 'Submit'}
+            <Button onClick={handleSubmit} disabled={isLoading} className="mt-4 w-full" loading = {isLoading}>
+                {isLoading ? 'Updating...' : 'Submit'}
             </Button>
             <Typography
                     variant="small"

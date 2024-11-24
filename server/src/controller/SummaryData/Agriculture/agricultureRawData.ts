@@ -129,7 +129,8 @@ const processIndustrialRawData = async (agricultureType : "crops" | "liveStocks"
     if(agricultureType === "crops"){
         const cropsData = await AgricultureCropsSchema.find(query).exec();
                     
-                    reponseContainer = cropsData.map(data => {
+                
+                    reponseContainer = await Promise.all(cropsData.map(async(data) => {
                         const form_id = data._id;
                         const {email, municipality_name} = data.surveyor_info
                         const brgy_name = data.survey_data.brgy_name
@@ -141,7 +142,7 @@ const processIndustrialRawData = async (agricultureType : "crops" | "liveStocks"
                             crop_residues,
                             dol_limestone,
                         } =  data.survey_data.crops
-                        const ghge = agricultureTotalGHGe(data.survey_data.crops, "crops");
+                        const ghge = await agricultureTotalGHGe(data.survey_data.crops, "crops");
                         const dateTime = data.dateTime_created;
 
                         return {
@@ -159,42 +160,43 @@ const processIndustrialRawData = async (agricultureType : "crops" | "liveStocks"
                             dateTime
                         }
                     })
+                )
     } else {
         const cropsData = await AgricultureLiveStocksSchema.find(query).exec();
 
-        reponseContainer = cropsData.map(data => {
-            const form_id = data._id;
-            const {email, municipality_name} = data.surveyor_info
-            const brgy_name = data.survey_data.brgy_name
-            const {
-                buffalo,
-                cattle,
-                goat,
-                horse,
-                poultry,
-                swine,
-                non_dairyCattle,
-            } =  data.survey_data.live_stock
-            const ghge = agricultureTotalGHGe(data.survey_data.live_stock, "liveStocks");
-            const dateTime = data.dateTime_created;
+        reponseContainer = await Promise.all(cropsData.map(async(data) => {
+                const form_id = data._id;
+                const {email, municipality_name} = data.surveyor_info
+                const brgy_name = data.survey_data.brgy_name
+                const {
+                    buffalo,
+                    cattle,
+                    goat,
+                    horse,
+                    poultry,
+                    swine,
+                    non_dairyCattle,
+                } =  data.survey_data.live_stock
+                const ghge = await agricultureTotalGHGe(data.survey_data.live_stock, "liveStocks");
+                const dateTime = data.dateTime_created;
 
-            return {
-                form_id,
-                email,
-                municipality_name,
-                brgy_name,
-                buffalo,
-                cattle,
-                goat,
-                horse,
-                poultry,
-                swine,
-                non_dairyCattle,
-                ghge,
-                dateTime
-            }
-        })
-        
+                return {
+                    form_id,
+                    email,
+                    municipality_name,
+                    brgy_name,
+                    buffalo,
+                    cattle,
+                    goat,
+                    horse,
+                    poultry,
+                    swine,
+                    non_dairyCattle,
+                    ghge,
+                    dateTime
+                }
+            })
+        )
     }   
 
 

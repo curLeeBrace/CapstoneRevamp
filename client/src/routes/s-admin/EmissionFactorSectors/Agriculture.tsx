@@ -1,11 +1,12 @@
 import { LockClosedIcon } from "@heroicons/react/24/solid";
 import { Select, Option, Typography, Input, Button } from "@material-tailwind/react";
-import { useState } from "react";
-
+import { useEffect, useState } from "react";
+import useAxiosPrivate from "../../../custom-hooks/auth_hooks/useAxiosPrivate";
+import Skeleton from "../../../Components/Skeleton";
 type EmissionFactor = {
-  co2: number;
-  ch4: number;
-  n2o: number;
+  co2: number | string;
+  ch4: number | string;
+  n2o: number | string;
 };
 
 type EmissionEntry = {
@@ -37,25 +38,127 @@ const defaultEmissionData: Record<AgricultureType, EmissionEntry[]> = {
 
 export default function UpdateEmissionFactors() {
   const [agricultureType, setAgricultureType] = useState<AgricultureType>("crops");
-  const [emissionData, setEmissionData] = useState<EmissionEntry[]>(defaultEmissionData[agricultureType]);
-  const [isLoading, ] = useState(false);
- 
+  const [emissionData, setEmissionData] = useState<EmissionEntry[]>();
+  const [isLoading, setIsLoading] = useState(false);
+  const axiosPrivate = useAxiosPrivate();
+
+
+
+
+
+
+
+
+  useEffect(()=>{
+
+    setIsLoading(true)
+    axiosPrivate.get(`efactor/agriculture/get-efactor/${agricultureType}`)
+    .then(res => {
+      const res_efactors : {agriculture_type : string, efactors : {
+        co2 : number;
+        ch4 : number;
+        n2o : number;
+      }[]}= res.data;
+
+
+      let getEFactorsData:EmissionEntry[] = [];
+      
+      if(res_efactors.agriculture_type === "crops"){
+        
+        getEFactorsData = defaultEmissionData.crops.map((e_data, index) => {
+          const {efactors} = res_efactors;
+          return {
+            factor :efactors[index],
+            label : e_data.label
+          }
+        })
+        
+      } else {
+        getEFactorsData = defaultEmissionData.livestock.map((e_data, index) => {
+          const {efactors} = res_efactors;
+          return {
+            factor :efactors[index],
+            label : e_data.label
+          }
+        })
+      }
+      
+      setEmissionData(getEFactorsData);
+
+
+
+    })
+    .catch(err => console.log(err))
+    .finally(()=> setIsLoading(false))
+
+
+
+  },[agricultureType])
+
+
+
+
+const handleSubmit = () => {
+let canSubmit = true;
+
+  if(emissionData) {
+    emissionData.forEach(data => {
+      const {co2, ch4, n2o} = data.factor
+
+      if(ch4 === '' || co2 === '' || n2o === ''){
+        // alert("Can't update efactors because some field are empty!")
+        canSubmit = false;
+        alert("Can't update efactors because some field are empty!")
+
+      }
+
+    })
+
+    //request to update the emmision factors
+    if(canSubmit){
+     
+      setIsLoading(true)
+  
+      axiosPrivate.put('efactor/agriculture/update-efactor/', {
+        agriculture_type : agricultureType,
+        e_factors : emissionData.map(data => data.factor)
+      })
+      .then(res => alert(res.data))
+      .catch(err => console.log(err))
+      .finally(()=>setIsLoading(false));
+    }
+  }
+
+  
+  
+  
+}
+
+
   const handleTypeChange = (value: string | undefined) => {
     const validType: AgricultureType = (value as AgricultureType) || "crops";
     setAgricultureType(validType);
-    setEmissionData([...defaultEmissionData[validType]]);
+    // setEmissionData([...defaultEmissionData[validType]]);
   };
 
   const handleFactorChange = (index: number, field: keyof EmissionFactor, value: string) => {
-    setEmissionData((prev) => {
-      const updated = [...prev];
-      updated[index].factor[field] = Number(value);
-      return updated;
-    });
+    const toNumValue = Number(value);
+    if(isNaN(toNumValue)){
+        alert("Invalid Input!!")
+      
+    } else {
+      setEmissionData((prev) => {
+        if(prev){
+          const updated = [...prev];
+          updated[index].factor[field] = value;
+          return updated;
+        } 
+      });
+    } 
   };
 
 
-
+// console.log("EMMISSION : ", emissionData)
   return (
     <div className="p-4">
       <Typography variant="h6" className="mb-4">
@@ -71,7 +174,7 @@ export default function UpdateEmissionFactors() {
         <Option value="livestock">Livestock</Option>
       </Select>
       <div className="mb-4 mt-4">
-        {emissionData.map((entry, index) => (
+        {emissionData ? emissionData.map((entry, index) => (
           <div key={index} className="mb-4 border p-2 rounded-lg bg-gray-100 ">
             <Typography variant="small" className="font-bold mb-2">
               {entry.label}
@@ -80,7 +183,7 @@ export default function UpdateEmissionFactors() {
               <div>
                 <Typography className="block mb-1">CO2</Typography>
                 <Input
-                  type="number"
+                  type="text"
                   value={entry.factor.co2}
                   onChange={(e) => handleFactorChange(index, "co2", e.target.value)}
                   className="!border-t-blue-gray-200 focus:!border-t-gray-900"
@@ -90,7 +193,7 @@ export default function UpdateEmissionFactors() {
               <div>
               <Typography className="block mb-1">CH4</Typography>
               <Input
-                  type="number"
+                  type="text"
                   value={entry.factor.ch4}
                   onChange={(e) => handleFactorChange(index, "ch4", e.target.value)}
                   className="!border-t-blue-gray-200 focus:!border-t-gray-900"
@@ -100,7 +203,7 @@ export default function UpdateEmissionFactors() {
               <div>
               <Typography className="block mb-1">N20</Typography>
               <Input
-                  type="number"
+                  type="text"
                   value={entry.factor.n2o}
                   onChange={(e) => handleFactorChange(index, "n2o", e.target.value)}
                   className="!border-t-blue-gray-200 focus:!border-t-gray-900"
@@ -110,9 +213,11 @@ export default function UpdateEmissionFactors() {
             </div>
           </div>
           
-        ))}
+        ))
+        : <Skeleton/>
+      }
           <div className="flex justify-center">
-                    <Button fullWidth className="w-full md:w-11/12" disabled={isLoading} >
+                    <Button fullWidth className="w-full md:w-11/12" disabled={isLoading} onClick={handleSubmit} loading = {isLoading}>
                         {isLoading ? "Updating..." : "Submit"}
                     </Button>
                 </div>
