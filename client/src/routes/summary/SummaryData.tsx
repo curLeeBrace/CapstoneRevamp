@@ -44,7 +44,7 @@ const SummaryData = () => {
 
     const  {survey_category} = useParams()
 
-    const wasteWaterColors = [
+    const legendColors = [
         '#1E90FF', 
         '#3CB371', 
         '#FFA500',
@@ -52,6 +52,12 @@ const SummaryData = () => {
         '#6A5ACD', 
         '#00CED1', 
         '#7CFC00',
+        '#808080',
+        '#FF00FF',
+        '#7FFFD4',
+        '#FF0000',
+        '#00008B',
+
     ];
   
 
@@ -113,6 +119,7 @@ const SummaryData = () => {
                         vehicle.vehicleTypes.map((v_type:any, o_index:number)=>{
                             return {
                                 name : v_type,
+                                color: legendColors[o_index % legendColors.length],
                                 data : vehicle.vehicleAges.map((v_age:any, index:number) =>{
                                         // console.log(v_age);
                                         return {
@@ -137,7 +144,7 @@ const SummaryData = () => {
                                 return {
                                     x : summary.location,
                                     y : summary.septic_tanks,
-                                    fillColor: wasteWaterColors[0],
+                                    fillColor: legendColors[0],
                                 }
                             })
                         },
@@ -149,7 +156,7 @@ const SummaryData = () => {
                                     y : summary.openPits_latrines.cat1,
                                 }
                             }),
-                            color : wasteWaterColors[1]
+                            color : legendColors[1]
                         },
                         {
                             name : "Category2 - Open Pits Latrines",
@@ -160,7 +167,7 @@ const SummaryData = () => {
                                     
                                 }
                             }),
-                            color : wasteWaterColors[2]
+                            color : legendColors[2]
                         },
                         {
                             name : "Category3 - Open Pits Latrines",
@@ -170,7 +177,7 @@ const SummaryData = () => {
                                     y : summary.openPits_latrines.cat3,
                                 }
                             }),
-                            color : wasteWaterColors[3]
+                            color : legendColors[3]
                         },
                         {
                             name : "Category4 - Open Pits Latrines",
@@ -180,7 +187,7 @@ const SummaryData = () => {
                                     y : summary.openPits_latrines.cat4,
                                 }
                             }),
-                            color : wasteWaterColors[4]
+                            color : legendColors[4]
                         },
                         {
                             name : "Category1 - River Discharge",
@@ -190,7 +197,7 @@ const SummaryData = () => {
                                     y : summary.riverDischarge.cat1,
                                 }
                             }),
-                            color: wasteWaterColors[5]
+                            color: legendColors[5]
                         },
                         {
                             name : "Category2 - River Discharge",
@@ -200,7 +207,7 @@ const SummaryData = () => {
                                     y : summary.riverDischarge.cat2,
                                 }
                             }),
-                            color: wasteWaterColors[6]
+                            color: legendColors[6]
                         },
                     ])
                     

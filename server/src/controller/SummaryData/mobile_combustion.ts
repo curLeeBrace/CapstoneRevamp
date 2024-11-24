@@ -232,22 +232,26 @@ const getMobileCombustionData = async (req:Request, res:Response) => {
 
 
 
-        vehicleTypes.forEach((vehicle) => {
+        for (const vehicle of vehicleTypes) {
             let count = 0;
-            let vehicle_emssion = 0;
-            mobile_combustionForm.forEach(async (formData) => {
-                if(formData.survey_data.vehicle_type === vehicle){
+            let vehicle_emission = 0;
+        
+            for (const formData of mobile_combustionForm) {
+                if (formData.survey_data.vehicle_type === vehicle) {
                     count++;
-                    const single_form_emmmsion = await get_MobileCombustionEmission(formData.survey_data.fuel_type as string, formData.survey_data.liters_consumption);
-                    const {co2e, ch4e, n2oe, ghge} = single_form_emmmsion
-                    vehicle_emssion += ghge;
-
+                    const single_form_emission = await get_MobileCombustionEmission(
+                        formData.survey_data.fuel_type as string,
+                        formData.survey_data.liters_consumption
+                    );
+                    const { ghge } = single_form_emission;
+                    vehicle_emission += ghge;
                 }
-            })
-
-            vehicle_ghge_rate.push(vehicle_emssion)
+            }
+        
+            vehicle_ghge_rate.push(vehicle_emission);
             counts_ofVehicleTypes.push(count);
-        })
+        }
+        
 
 
 
