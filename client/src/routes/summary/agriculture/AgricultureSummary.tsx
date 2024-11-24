@@ -7,7 +7,7 @@ import BarChart, {BarSeriesTypes} from "../../../Components/Dashboard/BarChart";
 import { ChartBarIcon } from "@heroicons/react/24/solid";
 import { TabsDefault } from "../../../Components/Tabs";
 import AgricultureRawData from "./AgricultureRawData";
-
+import Skeleton from "../../../Components/Skeleton";
 const AgricultureSummary = () => {
     const axiosPrivate = useAxiosPrivate();
     const [agricultureType, setAgricultureType] = useState<string>("crops");
@@ -200,6 +200,8 @@ const AgricultureSummary = () => {
                 <div><YearMenu useYearState={[year, setYear]}/></div>
            </div>
            <div>
+            {agricultureSeries && !isLoading? 
+            
                 <TabsDefault
                     data={[
                         {
@@ -213,11 +215,11 @@ const AgricultureSummary = () => {
                             tabPanelChild : <BarChart chart_icon={<ChartBarIcon className="w-6 h-6"/>} chart_label={`Agriculture ${agricultureType}`} 
                             chart_meaning={`Overall collected data in ${
                                 user_info.user_type === "s-admin"
-                                  ? "Laguna Province"
-                                  : user_info.user_type === "lgu_admin" || user_info.user_type === "lu_admin"
-                                  ? user_info.municipality_name
-                                  : "Brgy."
-                              }`}
+                                ? "Laguna Province"
+                                : user_info.user_type === "lgu_admin" || user_info.user_type === "lu_admin"
+                                ? user_info.municipality_name
+                                : "Brgy."
+                            }`}
                             series={agricultureSeries} isLoading = {isLoading}/>
                             
                         },
@@ -225,6 +227,13 @@ const AgricultureSummary = () => {
                     ]}
                 
                 />
+            
+            
+            
+            
+            
+            
+            : <Skeleton />}
                 
            </div>
         </div>

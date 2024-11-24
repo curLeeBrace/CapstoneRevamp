@@ -2,6 +2,7 @@ import { LockClosedIcon } from '@heroicons/react/24/solid';
 import { Button, Input, Option, Select, Typography } from '@material-tailwind/react';
 import { useEffect, useState } from 'react';
 import useAxiosPrivate from '../../../custom-hooks/auth_hooks/useAxiosPrivate';
+import Skeleton from '../../../Components/Skeleton';
 
 type EmissionFactors = {
     co2: number;
@@ -15,11 +16,7 @@ type FuelType = "Diesel" | "Gasoline";
 export default function MobileCombustionEmissions() {
     const [isLoading, setIsLoading] = useState(false);
     const [fuelType, setFuelType] = useState<FuelType>("Diesel");
-    const [emissionFactors, setEmissionFactors] = useState<EmissionFactors>({
-        ch4 : 0,
-        co2 : 0,
-        n2o : 0,
-    });
+    const [emissionFactors, setEmissionFactors] = useState<EmissionFactors>();
     const axiosPrivate = useAxiosPrivate();
 
     useEffect(()=>{
@@ -44,44 +41,45 @@ export default function MobileCombustionEmissions() {
     const handleFactorChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         
-        
-            setEmissionFactors((prev) => ({ ...prev, [name]: value}));
+            
+            setEmissionFactors((prev:any) => ({ ...prev, [name]: value}));
 
         
     };
-
+    
    
 
 
     // Handle form submission and validation
     const submitValidation = () => {
-        setIsLoading(true);
-            if (!emissionFactors.co2 || !emissionFactors.ch4 || !emissionFactors.n2o) {
-                alert("Please fill in all emission factors.");
-                setIsLoading(false);
-            } else {
-                const {co2, ch4, n2o} = emissionFactors
-                axiosPrivate.put('efactor/mobile-combustion/update-efactor', {
-                    fuel_type: fuelType.toLowerCase(),
-                    co2, 
-                    ch4, 
-                    n2o
-                })
-                .then(()=> {
-                    alert('Emission factors updated successfully');
-        
-                })
-                .catch((error)=>{
-                    alert('Error updating emission factors');
-                    console.error('Error updating emission factors', error);
+        if(emissionFactors){
+            setIsLoading(true);
+                if (!emissionFactors.co2 || !emissionFactors.ch4 || !emissionFactors.n2o) {
+                    alert("Please fill in all emission factors.");
                     setIsLoading(false);
-        
-                })
-                .finally(()=>{
-                    setIsLoading(false);
-                })
-            }
-       
+                } else {
+                    const {co2, ch4, n2o} = emissionFactors
+                    axiosPrivate.put('efactor/mobile-combustion/update-efactor', {
+                        fuel_type: fuelType.toLowerCase(),
+                        co2, 
+                        ch4, 
+                        n2o
+                    })
+                    .then(()=> {
+                        alert('Emission factors updated successfully');
+            
+                    })
+                    .catch((error)=>{
+                        alert('Error updating emission factors');
+                        console.error('Error updating emission factors', error);
+                        setIsLoading(false);
+            
+                    })
+                    .finally(()=>{
+                        setIsLoading(false);
+                    })
+                }
+        }
     };
 
 
@@ -96,25 +94,28 @@ export default function MobileCombustionEmissions() {
                     <Option value="Diesel">Diesel</Option>
                     <Option value="Gasoline">Gasoline</Option>
                 </Select>
-                
-                <div className="my-4 md:grid md:grid-cols-3 gap-10">
-                    {Object.entries(emissionFactors).map(([key, value]) => (
-                            <div key={key}>
-                                <Typography variant="small" color="blue-gray" className="mb-2 font-medium">
-                                    {key.toUpperCase()} Factor
-                                </Typography>
-                                <Input
-                                    type="number"
-                                    name={key}
-                                    value={value}
-                                    onChange={handleFactorChange}
-                                    placeholder={key.toUpperCase()}
-                                    className="!border-t-blue-gray-200 focus:!border-t-gray-900"
-                                    labelProps={{ className: "before:content-none after:content-none" }}
-                                />
-                            </div>
-                    ))}
-                </div>
+                {
+                    emissionFactors ? 
+                    <div className="my-4 md:grid md:grid-cols-3 gap-10">
+                        {Object.entries(emissionFactors).map(([key, value]) => (
+                                <div key={key}>
+                                    <Typography variant="small" color="blue-gray" className="mb-2 font-medium">
+                                        {key.toUpperCase()} Factor
+                                    </Typography>
+                                    <Input
+                                        type="number"
+                                        name={key}
+                                        value={value}
+                                        onChange={handleFactorChange}
+                                        placeholder={key.toUpperCase()}
+                                        className="!border-t-blue-gray-200 focus:!border-t-gray-900"
+                                        labelProps={{ className: "before:content-none after:content-none" }}
+                                    />
+                                </div>
+                        ))}
+                    </div>
+                    :<Skeleton/>
+                }
 
                 <div className="flex justify-center">
                     <Button fullWidth className="w-full md:w-11/12" loading = {isLoading} onClick={()=>submitValidation()}>
