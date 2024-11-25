@@ -49,7 +49,7 @@ const ProfileMenu = () => {
         icon: Cog6ToothIcon,
         onClick: ()=> navigate(`/${user_info.user_type}/change-pass`),
       },
-      ...(user_info.user_type === 'lu_admin' || user_info.user_type === 's-admin'
+      ...(user_info.user_type === 's-admin'
         ? [
             {
               label: "Update Emission Factor",
