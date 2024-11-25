@@ -41,7 +41,10 @@ const ElectronicsSummary = ({year} : ElectronicsSummaryProps) => {
 
     useEffect(()=>{
         setIsLoading(true);
-        set_tbHead(['ID', 'Email', 'Municipality', 'Brgy', 'Integrated circuit of semiconductor (tons)', 'Photovoltaics (tons)', 'TFT Flat Panel Display (tons)', 'Heat transfer fluid (tons)', 'GHGe'])
+        set_tbHead(['ID', 'Email', 
+            ...(user_info.user_type !== "lu_admin" ? ["Municipality"] : []),
+            user_info.user_type === "lu_admin" ? "Institution" : "Brgy",
+            'Integrated circuit of semiconductor (tons)', 'Photovoltaics (tons)', 'TFT Flat Panel Display (tons)', 'Heat transfer fluid (tons)', 'GHGe'])
         const {municipality_code, user_type, province_code} = user_info
         
         axiosPrivate.get('/summary-data/industrial/electronics', {
@@ -63,7 +66,9 @@ const ElectronicsSummary = ({year} : ElectronicsSummaryProps) => {
                         photovoltaics,
                         htf,
                         totalGHGe, brgy_name, form_id} = data;
-                    return [form_id,email,municipality_name, brgy_name, 
+                    return [form_id,email,
+                        ...(user_info.user_type !== "lu_admin" ? [municipality_name] : []),
+                        brgy_name, 
                         ics,
                         tft_FPD,
                         photovoltaics,

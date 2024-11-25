@@ -76,7 +76,10 @@ const AgricultureRawData = ({agricultureType, year}:AgricultureRawDataProps) => 
 
             if(agricultureType === "crops"){
                 const cropsData : CropsDataTypes[] = res.data as CropsDataTypes[]
-                set_tbHead(['ID', 'Email', 'Municipality', 'Brgy', 'Rice (Dry Season, Irrigated)', 'Rice (Dry Season, Rainfed)','Rice (Wet Season, Irrigated)','Rice (Wet Season, Rainfed)','Crop Residues (tonnes of dry weight)','Dolomite and/or Limestone Consumption', 'GHGe', 'DateTime'])
+                set_tbHead(['ID', 'Email', 
+                    ...(user_info.user_type !== "lu_admin" ? ["Municipality"] : []),
+                    user_info.user_type === "lu_admin" ? "Institution" : "Brgy",
+                    'Rice (Dry Season, Irrigated)', 'Rice (Dry Season, Rainfed)','Rice (Wet Season, Irrigated)','Rice (Wet Season, Rainfed)','Crop Residues (tonnes of dry weight)','Dolomite and/or Limestone Consumption', 'GHGe', 'DateTime'])
 
                 set_tbData(cropsData.map(data => {
                     const {
@@ -100,7 +103,7 @@ const AgricultureRawData = ({agricultureType, year}:AgricultureRawDataProps) => 
                     return [
                         form_id,
                         email,
-                        municipality_name,
+                        ...(user_info.user_type !== "lu_admin" ? [municipality_name] : []),
                         brgy_name,
                         rdsi,
                         rdsr,
