@@ -40,7 +40,10 @@ const OthersSummary = ({year} : othersSummaryProps) => {
 
     useEffect(()=>{
         setIsLoading(true);
-        set_tbHead(['ID', 'Email', 'Municipality', 'Brgy', 'Pulp and paper industry (tons)', 'Other carbon in pulp (tons)', 'Food and beverages industry (tons)', 'GHGe'])
+        set_tbHead(['ID', 'Email', 
+            ...(user_info.user_type !== "lu_admin" ? ["Municipality"] : []),
+            user_info.user_type === "lu_admin" ? "Institution" : "Brgy",
+            'Pulp and paper industry (tons)', 'Other carbon in pulp (tons)', 'Food and beverages industry (tons)', 'GHGe'])
 
         const {municipality_code, user_type, province_code} = user_info
         
@@ -61,7 +64,9 @@ const OthersSummary = ({year} : othersSummaryProps) => {
                     const {email,municipality_name, ppi,
                         fbi,
                         other, totalGHGe, brgy_name, form_id} = data;
-                    return [form_id,email,municipality_name, brgy_name, ppi,
+                    return [form_id,email,
+                        ...(user_info.user_type !== "lu_admin" ? [municipality_name] : []),
+                        brgy_name, ppi,
                         fbi,
                         other,
                         totalGHGe]
