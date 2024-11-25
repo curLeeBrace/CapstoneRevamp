@@ -207,7 +207,7 @@ export function StickyNavbar() {
         ])
 
       } else if (user_type === "lu_admin") {
-        set_uType("Laguna University Admin");
+        set_uType("L.U. Admin");
         setNav([
           {
             name: "Home",
@@ -236,7 +236,7 @@ export function StickyNavbar() {
         ])
 
       } else if (user_type === "lu_surveyor") {
-        set_uType("Laguna University Surveyor");
+        set_uType("L.U. Surveyor");
         setNav([
             {
                 name: "Home",
@@ -321,11 +321,11 @@ export function StickyNavbar() {
               className="mr-4 cursor-pointer py-1.5 font-bold text-white"
             >
                 <div className="flex flex-row gap-4">
-                {(u_type === "Laguna University Surveyor" || u_type === "Laguna University Admin") && (
+                {(u_type === "L.U. Surveyor" || u_type === "L.U. Admin") && (
               <img src={lu_img} className="h-8 w-8 rounded-2xl -mt-1"/>
           )}
               {`Welcome, ${
-              (u_type === "S-Admin" || u_type === "Laguna University Surveyor"   || u_type === "Laguna University Admin")
+              (u_type === "S-Admin" || u_type === "L.U. Surveyor"   || u_type === "L.U. Admin")
                 ? ""
                 : municipality_name
             } ${u_type}`}  
