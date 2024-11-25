@@ -40,8 +40,8 @@ const STATIONARY_EMISSION_FACTOR: StationaryEmissionFactors = {
 export default function StationaryEmissions() {
   const [category, setCategory] = useState<string>("cooking");
   const [fuelType, setFuelType] = useState<string|undefined>("charcoal");
-
   const [factors, setFactors] = useState<EmissionFactor>();
+  const [isLoading, setIsLoading] = useState(false);
   const axiosPrivate = useAxiosPrivate();
 
   useEffect(()=>{
@@ -58,8 +58,8 @@ export default function StationaryEmissions() {
 
   },[category, fuelType])
 
-  console.log("Category : ", category);
-  console.log("FuelType : ", fuelType);
+  // console.log("Category : ", category);
+  // console.log("FuelType : ", fuelType);
 
 
   const handleCategoryChange = (value : any) => {
@@ -81,8 +81,21 @@ export default function StationaryEmissions() {
       [field]: parseFloat(value),
     }));
   };
-  const [isLoading] = useState(false);
-  // console.log(factors)
+  
+  
+
+
+  const handleSubmit = ()=> {
+    setIsLoading(true);
+    axiosPrivate.put('/efactor/stationary/update-efactor', {
+      category,
+      fuelType,
+      e_factor : factors
+    })
+    .then(res => alert(res.data))
+    .catch(err => console.log(err))
+    .finally(() => setIsLoading(false))
+  }
   
 
   return (
@@ -144,7 +157,7 @@ export default function StationaryEmissions() {
           )) : <Skeleton/>}
         </div>
         <div className="flex justify-center">
-                    <Button fullWidth className="w-full md:w-11/12" disabled={isLoading} >
+                    <Button fullWidth className="w-full md:w-11/12" disabled={isLoading} onClick={handleSubmit}>
                         {isLoading ? "Updating..." : "Submit"}
                     </Button>
                 </div>
