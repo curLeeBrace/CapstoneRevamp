@@ -1,6 +1,10 @@
 import { LockClosedIcon } from "@heroicons/react/24/solid";
 import { Select, Option, Typography, Input, Button } from "@material-tailwind/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import useAxiosPrivate from "../../../custom-hooks/auth_hooks/useAxiosPrivate";
+import Skeleton from "../../../Components/Skeleton";
+
+
 
 type EmissionFactor = {
   co2: number;
@@ -35,33 +39,47 @@ const STATIONARY_EMISSION_FACTOR: StationaryEmissionFactors = {
 
 export default function StationaryEmissions() {
   const [category, setCategory] = useState<string>("cooking");
-  const [fuelType, setFuelType] = useState<string>("charcoal");
-  const [factors, setFactors] = useState<EmissionFactor>(
-    STATIONARY_EMISSION_FACTOR[category][fuelType]
-  );
+  const [fuelType, setFuelType] = useState<string|undefined>("charcoal");
+
+  const [factors, setFactors] = useState<EmissionFactor>();
+  const axiosPrivate = useAxiosPrivate();
+
+  useEffect(()=>{
+
+    axiosPrivate.get('/efactor/stationary/get-efactor', {params : {
+      category : category,
+      fuelType : fuelType
+    }})
+    .then((res) => setFactors(res.data.e_factors))
+    .catch(err => console.log(err));
+
+  },[category, fuelType])
+
+  console.log("Category : ", category);
+  console.log("FuelType : ", fuelType);
 
 
-
-
-  const handleCategoryChange = (value: string) => {
+  const handleCategoryChange = (value : any) => {
     setCategory(value);
-    const firstFuelType = Object.keys(STATIONARY_EMISSION_FACTOR[value])[0];
-    setFuelType(firstFuelType);
-    setFactors(STATIONARY_EMISSION_FACTOR[value][firstFuelType]);
+    // const firstFuelType = Object.keys(STATIONARY_EMISSION_FACTOR[value])[0];
+    setFuelType(undefined);
+    
+
   };
 
-  const handleFuelTypeChange = (value: string) => {
-    setFuelType(value);
-    setFactors(STATIONARY_EMISSION_FACTOR[category][value]);
-  };
+
+
+
+
 
   const handleFactorChange = (field: keyof EmissionFactor, value: string) => {
-    setFactors((prev) => ({
+    setFactors((prev : any) => ({
       ...prev,
       [field]: parseFloat(value),
     }));
   };
   const [isLoading] = useState(false);
+  // console.log(factors)
   
 
   return (
@@ -76,7 +94,8 @@ export default function StationaryEmissions() {
           <Select
             label = "Category"
             value={category}
-            onChange={(e) => handleCategoryChange(e as string)}
+            onChange={(e) => handleCategoryChange(e)}
+
           >
             {Object.keys(STATIONARY_EMISSION_FACTOR).map((key) => (
               <Option key={key} value={key}>
@@ -88,12 +107,12 @@ export default function StationaryEmissions() {
 
         {/* Fuel Type Selector */}
         <div>
-    
           <Select
             label = "Fuel"
             value={fuelType}
-            onChange={(e) => handleFuelTypeChange(e as string)}
+            onChange={(value)=>setFuelType(value)}
             className="w-full"
+            
           >
             {Object.keys(STATIONARY_EMISSION_FACTOR[category]).map((key) => (
               <Option key={key} value={key} >
@@ -101,11 +120,12 @@ export default function StationaryEmissions() {
               </Option>
             ))}
           </Select>
+       
         </div>
 
         {/* Emission Factors */}
         <div className=" sm:grid-cols-3 gap-4  ">
-          {(["co2", "ch4", "n2o"] as (keyof EmissionFactor)[]).map((factor) => (
+          {factors && !isLoading? (["co2", "ch4", "n2o"] as (keyof EmissionFactor)[]).map((factor) => (
             <div key={factor}>
               <Typography variant="small" className="font-medium mb-1">
                 {factor.toUpperCase()}
@@ -118,7 +138,7 @@ export default function StationaryEmissions() {
                 labelProps={{ className: "before:content-none after:content-none" }}
               />
             </div>
-          ))}
+          )) : <Skeleton/>}
         </div>
         <div className="flex justify-center">
                     <Button fullWidth className="w-full md:w-11/12" disabled={isLoading} >
