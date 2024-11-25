@@ -11,7 +11,12 @@ const getStationarEfactor = async(req:Request, res:Response) => {
 
         const nested_keys = `${category}.${fuelType}`;
 
-        const find_efactors = await StationaryEfactorSchema.findOne({}, {nested_keys : 1, _id : 0});
+        const find_efactors = await StationaryEfactorSchema.findOne({}, {
+            [nested_keys+".co2"] : 1, 
+            [nested_keys+".ch4"] : 1,
+            [nested_keys+".n2o"] : 1,
+            _id : 0
+        });
        
 
 
@@ -25,8 +30,8 @@ const getStationarEfactor = async(req:Request, res:Response) => {
         }
 
 
-
-
+        // console.log("DB_Efactors : ", find_efactors);
+        // console.log("Efactors : ", efactors);
         return res.status(200).send({e_factors : efactors});
 
     } catch (error) {
