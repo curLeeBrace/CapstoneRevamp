@@ -46,12 +46,15 @@ export default function StationaryEmissions() {
 
   useEffect(()=>{
 
-    axiosPrivate.get('/efactor/stationary/get-efactor', {params : {
-      category : category,
-      fuelType : fuelType
-    }})
-    .then((res) => setFactors(res.data.e_factors))
-    .catch(err => console.log(err));
+    if(fuelType){
+
+      axiosPrivate.get('/efactor/stationary/get-efactor', {params : {
+        category : category,
+        fuelType : fuelType
+      }})
+      .then((res) => setFactors(res.data.e_factors))
+      .catch(err => console.log(err));
+    }
 
   },[category, fuelType])
 
