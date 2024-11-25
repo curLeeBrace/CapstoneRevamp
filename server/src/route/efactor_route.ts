@@ -6,7 +6,7 @@ import { getMobileCombustionEmmisionFactor, updateMobileCombustionEmmisionFactor
 import { getIndustrialEfactor, updateIndustrialEfactor} from "../controller/EmmisionFactor/industrialEfactor";
 import { getWasteWaterEfactor, updateWasteWaterEfactor} from "../controller/EmmisionFactor/wasteWaterEfactor";
 import { getAgricultureEfactor, updateAgricultureEfactor} from "../controller/EmmisionFactor/agriculltureEfactor";
-import { getStationarEfactor } from "../controller/EmmisionFactor/stationaryEfactor";
+import { getStationarEfactor, updateStationarEfactor} from "../controller/EmmisionFactor/stationaryEfactor";
 
     //mobilecobustion efactor actions
     router.get('/mobile-combustion/get-efactor/:fuel_type', authenticate_token, getMobileCombustionEmmisionFactor);
@@ -27,6 +27,8 @@ import { getStationarEfactor } from "../controller/EmmisionFactor/stationaryEfac
 
     //stationary efactor actions
     router.get('/stationary/get-efactor', authenticate_token, getStationarEfactor);
+    router.put('/stationary/update-efactor', authenticate_token, updateStationarEfactor);
+
 
 
 
