@@ -42,7 +42,7 @@ import { AgricultureForm, Crops, LiveStocks} from "./routes/surveyor/Agriculture
 
 import { StationaryFuelForm } from "./routes/surveyor/StationaryFuelForm";
 import EmissionFactorForm from "./routes/s-admin/EmissionFactor";
-import CheckoutForm from "./routes/s-admin/EmissionFactor";
+// import EmissionFactorForm from "./routes/s-admin/EmissionFactor";
 import { ForestLands, ForestryForm, Wood } from "./routes/surveyor/ForestryForm/ForestryForm";
 import ForestrySummary from "./routes/summary/ForestryLandUse/ForestrySummary";
 
@@ -71,7 +71,7 @@ function App() {
               <Route path = 'change-pass' element = {<ChangePass/>}/>
               <Route path = "audit-log" element = {<AuditLogs/>}/>
               <Route path = "accounts" element = {<AccountsTable/>}/>
-              <Route path = "emission-factor" element = {<CheckoutForm/>}/>
+              <Route path = "emission-factor" element = {<EmissionFactorForm/>}/>
               
                   {/* Summary Route */}
             <Route path = "summary/0/:survey_category" element = {<SummaryData/>}/> {/* For Mobile Combustion and Waste Water*/}
@@ -106,8 +106,8 @@ function App() {
                     <Route path = 'sucsess' element = {<RegistrationCompleted/>}/>
               </Route> 
               <Route path = 'change-pass' element = {<ChangePass/>}/> 
-              <Route path = "emission-factor" element = {<EmissionFactorForm/>}/>
               <Route path = "audit-log" element = {<AuditLogs/>}/>
+              {/* <Route path = "emission-factor" element = {<EmissionFactorForm/>}/> */}
 
             </Route>
 
@@ -120,7 +120,7 @@ function App() {
               <Route path = 'change-pass' element = {<ChangePass/>}/>
               <Route path = "audit-log" element = {<AuditLogs/>}/>
               <Route path = "accounts" element = {<AccountsTable/>}/>
-              <Route path = "emission-factor" element = {<CheckoutForm/>}/>
+              {/* <Route path = "emission-factor" element = {<EmissionFactorForm/>}/> */}
               
                   {/* Summary Route */}
             <Route path = "summary/0/:survey_category" element = {<SummaryData/>}/> {/* For Mobile Combustion and Waste Water*/}

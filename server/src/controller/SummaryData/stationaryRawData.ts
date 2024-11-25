@@ -96,44 +96,44 @@ const stationaryRawData = async (req : Request, res : Response) => {
 
 
 
-const prepareStationaryResponseData = async (query : {}) => {
+const prepareStationaryResponseData = async (query : {}) : Promise<{}[]> => {
 
     let reponseContainer : {}[] = []
 
     const stationaryData = await StationarySchema.find(query).exec();
 
 
-    reponseContainer = stationaryData.map((data)=>{
-        const form_id = data._id;
-        const {
-            form_type,
-            cooking,
-            generator,
-            lighting,
-            brgy_name,
-        } = data.survey_data;
+    reponseContainer = await Promise.all(stationaryData.map(async(data)=>{
+            const form_id = data._id;
+            const {
+                form_type,
+                cooking,
+                generator,
+                lighting,
+                brgy_name,
+            } = data.survey_data;
 
-        const {
-            email,
-            municipality_name,
-        } = data.surveyor_info
-        const ghge = getGHGe_perSurvey({cooking, generator, lighting})
-        const date_Time = data.dateTime_created;
+            const {
+                email,
+                municipality_name,
+            } = data.surveyor_info
+            const ghge = await getGHGe_perSurvey({cooking, generator, lighting})
+            const date_Time = data.dateTime_created;
 
-        return {   
-            form_id,
-            email,
-            municipality_name,
-            brgy_name,
-            form_type,
-            cooking,
-            generator,
-            lighting,
-            ghge,
-            date_Time,
-        }
-    })
-
+            return {   
+                form_id,
+                email,
+                municipality_name,
+                brgy_name,
+                form_type,
+                cooking,
+                generator,
+                lighting,
+                ghge,
+                date_Time,
+            }
+        })
+    )
 
 
 return reponseContainer;
