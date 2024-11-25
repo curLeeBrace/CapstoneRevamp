@@ -6,7 +6,8 @@ import useAxiosPrivate from "../../../custom-hooks/auth_hooks/useAxiosPrivate";
 import { AddressReturnDataType } from "../../../custom-hooks/useFilterAddrress";
 import { useEffect, useState } from "react";
 import SimpleCard from "../../../Components/Dashboard/SimpleCard";
-import { ExclamationTriangleIcon } from "@heroicons/react/24/solid";
+import { ArrowRightCircleIcon, ExclamationTriangleIcon } from "@heroicons/react/24/solid";
+import exportToExcel from "../../../custom-hooks/export_data/exportToExel";
 
 
 
@@ -157,6 +158,14 @@ const AgricultureRawData = ({agricultureType, year}:AgricultureRawDataProps) => 
         .catch(err => console.log(err))
         
     },[agricultureType, year, loc?.address_name])
+
+    const handleExport = () => {
+        if (tb_data && tb_head) {
+          exportToExcel(tb_data, tb_head, `${user_info.user_type === 's-admin' ? 'Laguna' : user_info.municipality_name} Agriculture Surveyed Data`);
+        } else {
+          alert("No data to export.");
+        }
+      };
     
     return(
         <div className="flex flex-col w-full h-full">
@@ -168,6 +177,15 @@ const AgricultureRawData = ({agricultureType, year}:AgricultureRawDataProps) => 
                 }
             </div>
             <div className="py-4">
+            <div className="flex my-2 font-bold items-center border-2 w-48 rounded-md border-gray-300 p-2">
+            <button
+                onClick={handleExport}
+                className="flex items-center text-black"
+            >
+                <ArrowRightCircleIcon className="h-6 mx-2" />
+                Export to Excel
+            </button>
+            </div>
                 {
                     tb_data && tb_head && tb_data.length > 0 ?    <Table tb_datas={tb_data} tb_head={tb_head}/>:
                     <SimpleCard body={"No Available Data"} header="" icon={<ExclamationTriangleIcon className="h-full w-full"/>}/>
