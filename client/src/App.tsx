@@ -79,6 +79,7 @@ function App() {
             <Route path = "summary/2/agriculture" element = {<AgricultureSummary/>}/>
             <Route path = "summary/3/stationary" element = {<StationarySummary/>}/>
             <Route path = "summary/4/ghge" element = {<GHGeSummary/>}/>
+            <Route path = "summary/5/forestry" element = {<ForestrySummary/>}/> 
             
 
               <Route path = 'register'>
@@ -99,6 +100,8 @@ function App() {
             <Route path = "summary/2/agriculture" element = {<AgricultureSummary/>}/>
             <Route path = "summary/3/stationary" element = {<StationarySummary/>}/>
             <Route path = "summary/4/ghge" element = {<GHGeSummary/>}/>
+            <Route path = "summary/5/forestry" element = {<ForestrySummary/>}/> 
+
 
 
               <Route path = 'register'>
@@ -127,7 +130,7 @@ function App() {
             <Route path = "summary/1/industrial" element = {<IndustrialSummary/>}/> {/* For industial*/}
             <Route path = "summary/2/agriculture" element = {<AgricultureSummary/>}/>
             <Route path = "summary/3/stationary" element = {<StationarySummary/>}/>
-            <Route path = "summary/5/forestry" element = {<ForestrySummary/>}/> {/* For industial*/}
+            <Route path = "summary/5/forestry" element = {<ForestrySummary/>}/> 
             <Route path = "summary/4/ghge" element = {<GHGeSummary/>}/>
             
 
