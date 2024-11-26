@@ -7,7 +7,7 @@ import { getIndustrialEfactor, updateIndustrialEfactor} from "../controller/Emmi
 import { getWasteWaterEfactor, updateWasteWaterEfactor} from "../controller/EmmisionFactor/wasteWaterEfactor";
 import { getAgricultureEfactor, updateAgricultureEfactor} from "../controller/EmmisionFactor/agriculltureEfactor";
 import { getStationarEfactor, updateStationarEfactor} from "../controller/EmmisionFactor/stationaryEfactor";
-
+import { getforestLandUseEfactor, updatedforestLandUseEfactor} from "../controller/EmmisionFactor/forestLandUseEfactor";
     //mobilecobustion efactor actions
     router.get('/mobile-combustion/get-efactor/:fuel_type', authenticate_token, getMobileCombustionEmmisionFactor);
     router.put('/mobile-combustion/update-efactor', authenticate_token, updateMobileCombustionEmmisionFactor);
@@ -29,6 +29,9 @@ import { getStationarEfactor, updateStationarEfactor} from "../controller/Emmisi
     router.get('/stationary/get-efactor', authenticate_token, getStationarEfactor);
     router.put('/stationary/update-efactor', authenticate_token, updateStationarEfactor);
 
+    //forest and land use actions
+    router.get('/forest-landuse/get-efactor/:falu_type', authenticate_token, getforestLandUseEfactor);
+    router.put('/forest-landuse/update-efactor/', authenticate_token, updatedforestLandUseEfactor);
 
 
 
