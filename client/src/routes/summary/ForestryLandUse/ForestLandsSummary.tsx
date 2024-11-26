@@ -131,7 +131,7 @@ const ForestLandsSummary = ({year} : ForestlandsSummaryProps) => {
 
     const handleExport = () => {
         if (forestLandsData && tb_head) {
-          exportToExcel(forestLandsData, tb_head, `${user_info.municipality_name} Forestlands Surveyed Data`);
+          exportToExcel(forestLandsData, tb_head, `${user_info.user_type === 's-admin' ? 'Laguna' : user_info.municipality_name} Forestlands Surveyed Data`);
         } else {
           alert("No data to export.");
         }

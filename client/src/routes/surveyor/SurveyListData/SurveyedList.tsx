@@ -26,8 +26,8 @@ const SurveyedList = () => {
   const [searchQuery, setSearchQuery] = useState<string>(""); 
   const filteredData = useSearchFilter(tb_data, searchQuery); 
 
-  const isLuUser = user_info?.user_type === "lu_surveyor";
-  const locationLabel = isLuUser ? "Institution" : "Brgy";
+  const locationLabel = user_info?.user_type === "lu_surveyor" ? "Institution" : "Brgy";
+
   // console.log("survey_category : ", survey_category)
   useEffect(()=>{
     const {user_type} = user_info
@@ -121,7 +121,6 @@ const SurveyedList = () => {
           form_type,
         } = data.survey_data;
         const dateTime = new Date(data.dateTime_created).toLocaleDateString() + " " + new Date(data.dateTime_created).toLocaleTimeString();
-        const shortFormId = data.form_id.slice(-3);
         const LinkComponent = (
           <Link
             to={`/surveyor/forms/update/mobile-combustion?form_id=${data.form_id}`}
@@ -139,7 +138,7 @@ const SurveyedList = () => {
         );
 
         return [
-          shortFormId,
+          data.form_id.slice(-3),
           brgy_name,
           vehicle_type,
           vehicle_age,
@@ -163,7 +162,6 @@ const SurveyedList = () => {
         } = data.survey_data;
         const dateTime = new Date(data.dateTime_created).toLocaleDateString() + " " + new Date(data.dateTime_created).toLocaleTimeString();
         const form_id = data.form_id;
-        const shortFormId = data.form_id.slice(-3);
         const LinkComponent = (
           <Link
             to={`/surveyor/forms/update/waste-water?form_id=${form_id}`}
@@ -184,7 +182,7 @@ const SurveyedList = () => {
           </Link>
         );
         return [
-          shortFormId,
+          data.form_id.slice(-3),
           brgy_name,
           septic_tanks,
           openPits_latrines.cat1,
@@ -214,7 +212,6 @@ const SurveyedList = () => {
         const dateTime = new Date(data.dateTime_created).toLocaleDateString() + " " + new Date(data.dateTime_created).toLocaleTimeString();
         const form_id = data.form_id;
 
-        const shortFormId = data.form_id.slice(-3);
         const LinkComponent = (
           <Link
             to={`/surveyor/forms/update/stationary?form_id=${form_id}`}
@@ -238,7 +235,7 @@ const SurveyedList = () => {
           </Link>
         );
         return [
-          shortFormId,
+          data.form_id.slice(-3),
           brgy_name,
           cooking.charcoal,
           cooking.diesel,

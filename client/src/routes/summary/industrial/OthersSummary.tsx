@@ -4,7 +4,8 @@ import { useEffect, useState } from "react"
 import useAxiosPrivate from "../../../custom-hooks/auth_hooks/useAxiosPrivate"
 import useUserInfo from "../../../custom-hooks/useUserType"
 import SimpleCard from "../../../Components/Dashboard/SimpleCard"
-import { ExclamationTriangleIcon } from "@heroicons/react/24/solid"
+import { ArrowRightCircleIcon, ExclamationTriangleIcon } from "@heroicons/react/24/solid"
+import exportToExcel from "../../../custom-hooks/export_data/exportToExel"
 
 
 
@@ -39,7 +40,10 @@ const OthersSummary = ({year} : othersSummaryProps) => {
 
     useEffect(()=>{
         setIsLoading(true);
-        set_tbHead(['ID', 'Email', 'Municipality', 'Brgy', 'Pulp and paper industry (tons)', 'Other carbon in pulp (tons)', 'Food and beverages industry (tons)', 'GHGe'])
+        set_tbHead(['ID', 'Email', 
+            ...(user_info.user_type !== "lu_admin" ? ["Municipality"] : []),
+            user_info.user_type === "lu_admin" ? "Institution" : "Brgy",
+            'Pulp and paper industry (tons)', 'Other carbon in pulp (tons)', 'Food and beverages industry (tons)', 'GHGe'])
 
         const {municipality_code, user_type, province_code} = user_info
         
@@ -60,7 +64,9 @@ const OthersSummary = ({year} : othersSummaryProps) => {
                     const {email,municipality_name, ppi,
                         fbi,
                         other, totalGHGe, brgy_name, form_id} = data;
-                    return [form_id,email,municipality_name, brgy_name, ppi,
+                    return [form_id,email,
+                        ...(user_info.user_type !== "lu_admin" ? [municipality_name] : []),
+                        brgy_name, ppi,
                         fbi,
                         other,
                         totalGHGe]
@@ -97,12 +103,25 @@ const OthersSummary = ({year} : othersSummaryProps) => {
 
     },[year])
 
+    const handleExport = () => {
+        if (othersData && tb_head) {
+          exportToExcel(othersData, tb_head, `${user_info.user_type === 's-admin' ? 'Laguna' : user_info.municipality_name} Others Surveyed Data`);
+        } else {
+          alert("No data to export.");
+        }
+      };
+
 
     return(
         <div className="flex flex-col gap-5 border-2 mx-4 rounded-lg my-2 border-gray-300">
 
         <div className="px-10 rounded-lg text-xl py-2 bg-darkgreen text-white">Others Summary</div>
-        
+        <div className="flex my-2 ml-8 font-bold items-center border-2 -mb-4 w-48 rounded-md border-gray-300 p-2">
+        <button onClick={handleExport} className="flex items-center">
+                <ArrowRightCircleIcon className="h-6 mx-2" />
+                Export to Excel
+            </button>
+            </div>
         <div className="w-full flex justify-center mx-8 mb-4">
 
                 <div className="w-2/4 mr-2 mb-2">

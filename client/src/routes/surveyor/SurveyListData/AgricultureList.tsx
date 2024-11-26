@@ -1,4 +1,4 @@
-import { Radio } from "@material-tailwind/react"
+import { Input, Radio } from "@material-tailwind/react"
 import BrgyMenu from "../../../custom-hooks/BrgyMenu"
 import { useEffect, useState } from "react";
 import useUserInfo from "../../../custom-hooks/useUserType";
@@ -6,6 +6,9 @@ import useAxiosPrivate from "../../../custom-hooks/auth_hooks/useAxiosPrivate";
 import { AddressReturnDataType } from "../../../custom-hooks/useFilterAddrress";
 import Table from "../../../Components/Table";
 import { Link, useLocation } from "react-router-dom";
+import useSearchFilter from "../../../custom-hooks/useSearchFilter";
+import SimpleCard from "../../../Components/Dashboard/SimpleCard";
+import { ExclamationTriangleIcon } from "@heroicons/react/24/solid";
 
 const AgricultureList = () => {
 
@@ -18,13 +21,23 @@ const AgricultureList = () => {
     const axiosPrivate = useAxiosPrivate();
     const user_info = useUserInfo()
     const {state} = useLocation();
+    const [searchQuery, setSearchQuery] = useState<string>(""); 
+
+    const filteredData = useSearchFilter(tb_data, searchQuery); 
+
+    const locationLabel = user_info?.user_type === "lu_surveyor" ? "Institution" : "Brgy";
+
 
     useEffect(()=>{
         
         if(agricultureType === "crops"){
-            set_tbHead(["ID", "BRGY", "Dry Season, Irrigated (Has)", "Dry Season, Rainfed (Has)", "Wet Season, Irrigated (Has)", "Wet Season, Rainfed (Has)", "Crops Residue (Tons)", "Dolomite and/or Limestone Consumption (Kg)","DateTime","Action"])
+            set_tbHead(["ID", 
+                locationLabel, 
+                "Dry Season, Irrigated (Has)", "Dry Season, Rainfed (Has)", "Wet Season, Irrigated (Has)", "Wet Season, Rainfed (Has)", "Crops Residue (Tons)", "Dolomite and/or Limestone Consumption (Kg)","DateTime","Action"])
         } else {
-            set_tbHead(["ID", "BRGY", "Buffalo (Heads)", "Dairy Cattle (Heads)", "Goat (Heads)", "Horse (Heads)", "Non-Dairy Cattle (Heads)", "Poultry (Heads)", "Swine (Heads)","DateTime","Action"])
+            set_tbHead(["ID", 
+                locationLabel,
+                "Buffalo (Heads)", "Dairy Cattle (Heads)", "Goat (Heads)", "Horse (Heads)", "Non-Dairy Cattle (Heads)", "Poultry (Heads)", "Swine (Heads)","DateTime","Action"])
         }
 
     },[agricultureType])
@@ -95,7 +108,7 @@ const AgricultureList = () => {
 
 
                 return [
-                    form_id, 
+                    form_id.slice(-3), 
                     brgy_name,
                     rdsi,
                     rdsr,
@@ -145,7 +158,7 @@ const AgricultureList = () => {
 
 
                 return [
-                    form_id, 
+                    form_id.slice(-3), 
                     brgy_name,
                     buffalo,
                     cattle,
@@ -175,7 +188,19 @@ const AgricultureList = () => {
             <div className="flex bg-blue-gray-100 flex-wrap justify-center p-3 rounded-md shadow-md">
                 <div className=" w-full lg:w-52">
                     <BrgyMenu setBrgys={setBrgy} municipality_code={municipality_code} user_info={user_info} deafult_brgyName={user_info.user_type === 'lu_surveyor' ? 'Laguna University' : (state && state.brgy_name) }/>
+                   
+                    <div className="my-2">  
+                     <Input
+                    type="search"
+                    label="Search ID"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className=' bg-none'
+                />
                 </div>
+
+                </div>
+                
                 <div className="flex  w-full gap-4 lg:w-1/2 flex-wrap">
                 {/* <Radio defaultChecked name="indusry_type" label="All" color ="green" value={"all"} onChange={(e:any)=>setIndustryType(e.target.value)}/> */}
                     <Radio defaultChecked name="agriculture_type" label="Crops" color ="green" value={"crops"} onChange={(e:any)=>setAgricultureType(e.target.value)}/>
@@ -184,8 +209,10 @@ const AgricultureList = () => {
             </div>
             <div>
                 {
-                    tb_head && tb_data ? <Table tb_datas={tb_data} tb_head={tb_head}/>
-                    :<>No Available Data</>
+                    tb_head && filteredData.length ? 
+                    <Table tb_datas={filteredData} tb_head={tb_head}/>
+                    :
+                    <SimpleCard body={"No Available Data"} header="" icon={<ExclamationTriangleIcon className="h-full w-full"/>}/>
                 
                 }
 

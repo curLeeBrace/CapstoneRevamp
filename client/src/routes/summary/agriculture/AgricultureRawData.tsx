@@ -6,7 +6,8 @@ import useAxiosPrivate from "../../../custom-hooks/auth_hooks/useAxiosPrivate";
 import { AddressReturnDataType } from "../../../custom-hooks/useFilterAddrress";
 import { useEffect, useState } from "react";
 import SimpleCard from "../../../Components/Dashboard/SimpleCard";
-import { ExclamationTriangleIcon } from "@heroicons/react/24/solid";
+import { ArrowRightCircleIcon, ExclamationTriangleIcon } from "@heroicons/react/24/solid";
+import exportToExcel from "../../../custom-hooks/export_data/exportToExel";
 
 
 
@@ -56,7 +57,6 @@ const AgricultureRawData = ({agricultureType, year}:AgricultureRawDataProps) => 
     const axiosPrivate = useAxiosPrivate();
     const [tb_head, set_tbHead] = useState<string[]>();
     const [tb_data, set_tbData] = useState<any[][]>();
-  
     const user_info = useUserInfo();
 
     useEffect(()=>{
@@ -64,6 +64,7 @@ const AgricultureRawData = ({agricultureType, year}:AgricultureRawDataProps) => 
             params : {
                 agricultureType, 
                 municipality_name : user_type === "s-admin" ? loc?.address_name : municipality_name, 
+                municipality_code : municipality_code,
                 brgy_name : user_type === "s-admin" ? undefined : loc?.address_name, 
                 user_type, 
                 year
@@ -75,7 +76,10 @@ const AgricultureRawData = ({agricultureType, year}:AgricultureRawDataProps) => 
 
             if(agricultureType === "crops"){
                 const cropsData : CropsDataTypes[] = res.data as CropsDataTypes[]
-                set_tbHead(['ID', 'Email', 'Municipality', 'Brgy', 'Rice (Dry Season, Irrigated)', 'Rice (Dry Season, Rainfed)','Rice (Wet Season, Irrigated)','Rice (Wet Season, Rainfed)','Crop Residues (tonnes of dry weight)','Dolomite and/or Limestone Consumption', 'GHGe', 'DateTime'])
+                set_tbHead(['ID', 'Email', 
+                    ...(user_info.user_type !== "lu_admin" ? ["Municipality"] : []),
+                    user_info.user_type === "lu_admin" ? "Institution" : "Brgy",
+                    'Rice (Dry Season, Irrigated)', 'Rice (Dry Season, Rainfed)','Rice (Wet Season, Irrigated)','Rice (Wet Season, Rainfed)','Crop Residues (tonnes of dry weight)','Dolomite and/or Limestone Consumption', 'GHGe', 'DateTime'])
 
                 set_tbData(cropsData.map(data => {
                     const {
@@ -99,7 +103,7 @@ const AgricultureRawData = ({agricultureType, year}:AgricultureRawDataProps) => 
                     return [
                         form_id,
                         email,
-                        municipality_name,
+                        ...(user_info.user_type !== "lu_admin" ? [municipality_name] : []),
                         brgy_name,
                         rdsi,
                         rdsr,
@@ -115,7 +119,10 @@ const AgricultureRawData = ({agricultureType, year}:AgricultureRawDataProps) => 
 
             } else {
                 const liveStocksData:LiveStocksDataTypes[] = res.data as LiveStocksDataTypes[]
-                set_tbHead(['ID', 'Email', 'Municipality', 'Brgy', 'Buffalo', 'Cattle', 'Goat', 'Horse', 'Poultry', 'Swine', 'Non DairyCattle', 'GHGe', 'DateTime'])
+                set_tbHead(['ID', 'Email', 
+                    ...(user_info.user_type !== "lu_admin" ? ["Municipality"] : []),
+                    user_info.user_type === "lu_admin" ? "Institution" : "Brgy", 
+                    'Buffalo', 'Cattle', 'Goat', 'Horse', 'Poultry', 'Swine', 'Non DairyCattle', 'GHGe', 'DateTime'])
                 set_tbData(liveStocksData.map((data)=>{
                     const {
                         form_id,
@@ -137,7 +144,7 @@ const AgricultureRawData = ({agricultureType, year}:AgricultureRawDataProps) => 
                     return [
                         form_id,
                         email,
-                        municipality_name,
+                        ...(user_info.user_type !== "lu_admin" ? [municipality_name] : []),
                         brgy_name,
                         buffalo,
                         cattle,
@@ -157,6 +164,14 @@ const AgricultureRawData = ({agricultureType, year}:AgricultureRawDataProps) => 
         .catch(err => console.log(err))
         
     },[agricultureType, year, loc?.address_name])
+
+    const handleExport = () => {
+        if (tb_data && tb_head) {
+          exportToExcel(tb_data, tb_head, `${user_info.user_type === 's-admin' ? 'Laguna' : user_info.municipality_name} Agriculture Surveyed Data`);
+        } else {
+          alert("No data to export.");
+        }
+      };
     
     return(
         <div className="flex flex-col w-full h-full">
@@ -168,6 +183,15 @@ const AgricultureRawData = ({agricultureType, year}:AgricultureRawDataProps) => 
                 }
             </div>
             <div className="py-4">
+            <div className="flex my-2 font-bold items-center border-2 w-48 rounded-md border-gray-300 p-2">
+            <button
+                onClick={handleExport}
+                className="flex items-center text-black"
+            >
+                <ArrowRightCircleIcon className="h-6 mx-2" />
+                Export to Excel
+            </button>
+            </div>
                 {
                     tb_data && tb_head && tb_data.length > 0 ?    <Table tb_datas={tb_data} tb_head={tb_head}/>:
                     <SimpleCard body={"No Available Data"} header="" icon={<ExclamationTriangleIcon className="h-full w-full"/>}/>
