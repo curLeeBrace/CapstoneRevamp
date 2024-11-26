@@ -31,6 +31,7 @@ const IndustrialList = () => {
   
     const {state} = useLocation();
 
+    const locationLabel = user_info?.user_type === "lu_surveyor" ? "Institution" : "Brgy";
 
 
 
@@ -40,7 +41,8 @@ const IndustrialList = () => {
 
         if(indsutryType === "mineral"){
             set_tbHead(["ID",
-                "Brgy", "DSI", "Type of Data", 
+                locationLabel,
+                "DSI", "Type of Data", 
                 "Cement Production - Portland (tons)", 
                 "Lime Production (tons)", "Cement Production - Portland (blended)", 
                 "Glass Production (tons)", "DateTime", "Action"
@@ -48,7 +50,8 @@ const IndustrialList = () => {
         } else if(indsutryType === "chemical"){
             set_tbHead(
                 ["ID",
-                    "Brgy", "DSI", "Type of Data", 
+                    locationLabel,
+                    "DSI", "Type of Data", 
                     "Ammonia Production (tons)", "Soda Ash Production (tons)", 
                     "Dichloride and Vinyl Chloride Monomer (tons)", "Methanol (tons)",
                     "Ethylene oxide (tons)", "Carbon black (tons)", "Ethylene (tons)", 
@@ -58,7 +61,8 @@ const IndustrialList = () => {
         } else if(indsutryType === "metal"){
             set_tbHead(
                 ["ID",
-                    "Brgy", "DSI", "Type of Data", 
+                    locationLabel,
+                    "DSI", "Type of Data", 
                     "Iron and Steel Production from Integrated Facilities (tons)", 
                     "Iron and Steel Production from Non-integrated Facilities (tons)",
                     "DateTime", "Action" 
@@ -68,7 +72,8 @@ const IndustrialList = () => {
         } else if(indsutryType === "electronics"){
             set_tbHead(
                 ["ID",
-                    "Brgy", "DSI", "Type of Data", 
+                    locationLabel,
+                    "DSI", "Type of Data", 
                     "Integrated circuit of semiconductor (tons)", 
                     "Photovoltaics (tons)", "TFT Flat Panel Display (tons)",
                     "Heat transfer fluid (tons)",
@@ -81,7 +86,8 @@ const IndustrialList = () => {
 
             set_tbHead(
                 ["ID",
-                    "Brgy", "DSI", "Type of Data", 
+                    locationLabel,
+                    "DSI", "Type of Data", 
                     "Pulp and paper industry (tons)", 
                     "Other carbon in pulp (tons)", "Food and beverages industry (tons)",
                     "DateTime", "Action" 
@@ -156,7 +162,7 @@ const IndustrialList = () => {
 
 
                   return [
-                    data.form_id,
+                    data.form_id.slice(-3),
                     brgy_name, dsi, type_ofData,
                     cpp, lp, cpb,
                     gp, dateTime,   LinkComponent
@@ -203,7 +209,7 @@ const IndustrialList = () => {
 
 
                   return [
-                    data.form_id,
+                    data.form_id.slice(-3),
                     brgy_name, dsi, type_ofData,
                     ap,
                     sap,
@@ -244,7 +250,7 @@ const IndustrialList = () => {
 
 
                   return [
-                    data.form_id,
+                    data.form_id.slice(-3),
                     brgy_name, dsi, type_ofData,
                     ispif,
                     ispnif,
@@ -284,7 +290,7 @@ const IndustrialList = () => {
 
 
                   return [
-                    data.form_id,
+                    data.form_id.slice(-3),
                     brgy_name, dsi, type_ofData,
                     ics,
                     photovoltaics,
@@ -324,7 +330,7 @@ const IndustrialList = () => {
 
 
                   return [
-                    data.form_id,
+                    data.form_id.slice(-3),
                     brgy_name, dsi, type_ofData,
                     ppi,
                     other,

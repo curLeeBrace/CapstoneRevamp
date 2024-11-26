@@ -9,6 +9,7 @@ import  SimpleCard from "./SimpleCard";
 import { ExclamationTriangleIcon } from "@heroicons/react/16/solid";
 import Skeleton from "../Skeleton";
 import { useState } from "react";
+import useUserInfo from "../../custom-hooks/useUserType";
   
    
 
@@ -44,7 +45,7 @@ export type BarSeriesTypes = {
 
     const increaseFontSize = () => setFontSize((prev) => prev + 1);
     const decreaseFontSize = () => setFontSize((prev) => (prev > 1 ? prev - 1 : 1));
-
+    const user_info = useUserInfo()
     const chartConfig = {
       series,
       options: {
@@ -85,7 +86,7 @@ export type BarSeriesTypes = {
         },
         plotOptions: {
           bar: {
-            columnWidth: "80%",
+            columnWidth: user_info.user_type === 'lu_admin' ? '20%' : '90%', 
             barHeight: "100%",
             dataLabels: {
               total: {

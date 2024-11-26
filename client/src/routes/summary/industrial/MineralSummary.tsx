@@ -4,7 +4,8 @@ import { useEffect, useState } from "react"
 import useAxiosPrivate from "../../../custom-hooks/auth_hooks/useAxiosPrivate"
 import useUserInfo from "../../../custom-hooks/useUserType"
 import SimpleCard from "../../../Components/Dashboard/SimpleCard"
-import { ExclamationTriangleIcon } from "@heroicons/react/24/solid"
+import { ArrowRightCircleIcon, ExclamationTriangleIcon } from "@heroicons/react/24/solid"
+import exportToExcel from "../../../custom-hooks/export_data/exportToExel"
 
 
 
@@ -40,7 +41,10 @@ const MineralSummary = ({year} : MineralSummaryProps) => {
 
     useEffect(()=>{
         setIsLoading(true);
-        set_tbHead(['ID', 'Email', 'Municipality', 'Brgy', 'Cement Production - Portland (tons)', 'Lime Production (tons)', 'Cement Production - Portland (blended)', 'Glass Production (tons)', 'GHGe'])
+        set_tbHead(['ID', 'Email', 
+            ...(user_info.user_type !== "lu_admin" ? ["Municipality"] : []),
+            user_info.user_type === "lu_admin" ? "Institution" : "Brgy",
+            'Cement Production - Portland (tons)', 'Lime Production (tons)', 'Cement Production - Portland (blended)', 'Glass Production (tons)', 'GHGe'])
         const {municipality_code, user_type, province_code} = user_info
         
         axiosPrivate.get('/summary-data/industrial/mineral', {
@@ -58,7 +62,9 @@ const MineralSummary = ({year} : MineralSummaryProps) => {
             setMineraData(
                     mineralData.map((data : MineralDataTypes)=>{
                     const {email,municipality_name, cpb, cpp, lp, gp, totalGHGe, brgy_name, form_id} = data;
-                    return [form_id,email,municipality_name, brgy_name, cpb, cpp, lp, gp, totalGHGe]
+                    return [form_id,email,
+                        ...(user_info.user_type !== "lu_admin" ? [municipality_name] : []),
+                         brgy_name, cpb, cpp, lp, gp, totalGHGe]
                 })
             )
             //For Donut Chart
@@ -91,12 +97,24 @@ const MineralSummary = ({year} : MineralSummaryProps) => {
 
     },[year])
 
+    const handleExport = () => {
+        if (mineralData && tb_head) {
+          exportToExcel(mineralData, tb_head, `${user_info.user_type === 's-admin' ? 'Laguna' : user_info.municipality_name} Mineral Surveyed Data`);
+        } else {
+          alert("No data to export.");
+        }
+      };
 
     return(
         <div className="flex flex-col gap-5 border-2 mx-4 rounded-lg my-2 border-gray-300">
 
         <div className="px-10 rounded-lg text-xl py-2 bg-darkgreen text-white">Mineral Summary</div>
-        
+        <div className="flex my-2 ml-8 font-bold items-center border-2 -mb-4 w-48 rounded-md border-gray-300 p-2">
+        <button onClick={handleExport} className="flex items-center">
+                <ArrowRightCircleIcon className="h-6 mx-2" />
+                Export to Excel
+            </button>
+            </div>
         <div className="w-full flex justify-center mx-8 mb-4">
 
                 <div className="w-2/4 mr-2 mb-2">
