@@ -111,6 +111,8 @@ function App() {
               <Route path = 'change-pass' element = {<ChangePass/>}/> 
               <Route path = "emission-factor" element = {<EmissionFactorForm/>}/>
               <Route path = "audit-log" element = {<AuditLogs/>}/>
+              <Route path = "accounts" element = {<AccountsTable/>}/>
+
 
             </Route>
 

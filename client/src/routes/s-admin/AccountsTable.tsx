@@ -45,12 +45,6 @@ const AccountsTable: React.FC = () => {
   const [selectedUserType, setSelectedUserType] = useState<string>('');
   const [searchQuery, setSearchQuery] = useState<string>('');
   const user_info = useUserInfo()
-
-  useEffect(() => {
-    if (user_info.user_type === "lu_admin") {
-      setSelectedUserType("lu_surveyor");
-    }
-  }, [user_info.user_type]);
  
   useEffect(() => {
     const fetchAccounts = async () => {
@@ -126,20 +120,32 @@ const AccountsTable: React.FC = () => {
 
 
 
-  const TABLE_HEAD = ["Name", "Profile", "UserType", "Municipality", "Email", "Action"];
+  const TABLE_HEAD = ["Name", "Profile", "UserType", 
+    user_info.user_type === "lu_admin" ? "Institution" : "Municipality",
+    "Email", "Action"];
 
   const TABLE_ROWS = filteredDetails
   .filter((detail) => {
     if (user_info.user_type === "lu_admin" && detail.user_type !== "lu_surveyor") {
       return false; 
     }
-    return true; 
+
+    if (
+      user_info.user_type === "lgu_admin" &&
+      (detail.lgu_municipality?.municipality_code !== user_info.municipality_code ||
+        detail.user_type === "lgu_admin" ||  detail.user_type === "lu_surveyor" ||  detail.user_type === "lu_admin")
+    ) {
+      return false;
+    }
+
+    return true;
     
   }).map((detail) => ({
     Name: `${detail.f_name} ${detail.m_name} ${detail.l_name}`,
     UserType: detail.user_type,
     Email: detail.email,
-    Municipality: detail.lgu_municipality.municipality_name,
+    Institution: detail.lgu_municipality?.municipality_name,
+    Municipality: detail.lgu_municipality?.municipality_name,
     Profile: (
       <Avatar
         src={`https://drive.google.com/thumbnail?id=${detail.img_id}&sz=w1000`}
