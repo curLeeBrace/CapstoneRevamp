@@ -380,11 +380,11 @@ const IndustrialList = () => {
             <div>
                 {
 
-                tb_head && filteredData.length ? (
-                <Table tb_datas={filteredData} tb_head={tb_head} />
-                ) : (
-                    <SimpleCard body={"No Available Data"} header="" icon={<ExclamationTriangleIcon className="h-full w-full"/>}/>
-                )
+                    tb_head && filteredData.length ? (
+                    <Table tb_datas={filteredData} tb_head={tb_head} />
+                    ) : (
+                        <SimpleCard body={"No Available Data"} header="" icon={<ExclamationTriangleIcon className="h-full w-full"/>}/>
+                    )
 
                 }
 
