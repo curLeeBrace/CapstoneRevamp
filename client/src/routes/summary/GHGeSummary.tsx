@@ -11,6 +11,7 @@ import YearMenu from '../../Components/YearMenu';
 import { AddressReturnDataType } from '../../custom-hooks/useFilterAddrress';
 import { Typography } from '@material-tailwind/react';
 import { useLocation } from 'react-router-dom';
+import Loader from '../../Components/Loader';
 
 // type GHGeDataType = {
 //   mobileCombustionGHGe : {
@@ -39,7 +40,7 @@ const GHGeSummary = ()=>{
 
   const [loc, setLoc] = useState<AddressReturnDataType>()
   const [year, setYear] = useState<string | undefined>(new Date().getFullYear().toString());
-
+  const [isLoading, setisLoading] = useState<boolean>(true); 
 
   const [tablecontent, setTableContent] = useState({
     tb_rows : undefined as any,
@@ -80,6 +81,7 @@ useEffect(()=>{
   }})
   .then((res)=>{
     const ghge = res.data;
+    setisLoading(false)
 
 
 
@@ -257,8 +259,8 @@ useEffect(()=>{
        <Typography className='bg-darkgreen font-bold text-lg mb-4 rounded-lg py-3 -mt-3 text-center' color='white'>
       GHG Emissions Summary Table
             </Typography>
-          <div className='md:flex flex-row w-1/2 md:justify-around self-center mb-4 border-green-400 border-2 rounded-lg py-3'> 
-            <div>
+          <div className='lg:flex flex-row md:w-1/2 w-full md:justify-around self-center mb-4 border-green-400 border-2 rounded-lg py-3'> 
+            <div className='mb-2 mx-2'>
               {
                 user_info.user_type === "s-admin" ? <Municipality setAddress={setLoc} /> :
                  <BrgyMenu setBrgys={setLoc} municipality_code={user_info.municipality_code} user_info={user_info}
@@ -266,20 +268,24 @@ useEffect(()=>{
               }
             </div>
 
-            <div><YearMenu useYearState={[year, setYear]}/></div>
+            <div className='mx-2'><YearMenu useYearState={[year, setYear]}/></div>
+              {/* ETO YUNG GINAWA KONG SUMMARY TABLE */}
           </div>
-                 {/* ETO YUNG GINAWA KONG SUMMARY TABLE */}
-          {
-            tablecontent.tb_rows && 
-            <TableWithFooter
-            tableHead={TABLE_HEAD}
-            tableRows={tablecontent.tb_rows}
-            totalGHGEmissions={tablecontent.totalGHGe.toFixed(2)}
-            totalProportion={tablecontent.totalProportion}
-          />
-          }
-         
-                 
+               
+            {isLoading ? (
+              <div className='m-auto'> 
+            <Loader/>
+            </div>
+          ) : (
+            tablecontent.tb_rows && (
+              <TableWithFooter
+                tableHead={TABLE_HEAD}
+                tableRows={tablecontent.tb_rows}
+                totalGHGEmissions={tablecontent.totalGHGe.toFixed(2)}
+                totalProportion={tablecontent.totalProportion}
+              />
+            )
+          )}       
 
     </div>
    )

@@ -232,7 +232,7 @@ const SurveyData = ({
     const formattedFormType = capitalizeFirstLetter(form_type);
   
     if (format === "excel") {
-      exportToExcel(data, column, `${userInfo.municipality_name} ${formattedSurveyCategory} (${formattedFormType}) Surveyed Data`);
+      exportToExcel(data, column, `${userInfo.user_type === 's-admin' ? 'Laguna' : userInfo.municipality_name} ${formattedSurveyCategory} (${formattedFormType}) Surveyed Data`);
     } 
   };
 

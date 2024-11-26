@@ -55,7 +55,7 @@ const StationarySummary = () => {
       return;
     }
 
-    const fileName = `${userInfo.municipality_name} Stationary Fuel (${formType
+    const fileName = `${userInfo.user_type === 's-admin' ? 'Laguna' : userInfo.municipality_name} Stationary Fuel (${formType
       .charAt(0)
       .toUpperCase()}${formType.slice(1)}) Surveyed Data`;
 
