@@ -8,6 +8,8 @@ import { Link, useLocation } from "react-router-dom";
 import useSearchFilter from "../../../custom-hooks/useSearchFilter";
 
 import Table from "../../../Components/Table";
+import SimpleCard from "../../../Components/Dashboard/SimpleCard";
+import { ExclamationTriangleIcon } from "@heroicons/react/16/solid";
 
 
 
@@ -199,11 +201,14 @@ const ForestAndLandUseList = () => {
 
             <div>
                 {
-                    tb_head && tb_data ? <Table tb_datas={tb_data} tb_head={tb_head}/>
-                    :<>No Available Data</>
-                
-                }
 
+                    tb_head && filteredData.length ? (
+                    <Table tb_datas={filteredData} tb_head={tb_head} />
+                    ) : (
+                        <SimpleCard body={"No Available Data"} header="" icon={<ExclamationTriangleIcon className="h-full w-full"/>}/>
+                    )
+
+                }
                 
             </div>
 
