@@ -58,7 +58,7 @@ const ForestryBaseDataContext = createContext<ForestryContextInterface>({} as Fo
 
 
 
-    useEffect(()=>{
+     useEffect(()=>{
         const {action} = params 
         if(action !== "submit"){
             const {dsi, type_ofData} = state;

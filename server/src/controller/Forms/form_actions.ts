@@ -14,9 +14,11 @@ import AgricultureLiveStock from '../../db_schema/Agriculture/AgricultureLiveSto
 
 
 import StationarySchema from '../../db_schema/StationarySchema';
+
+import ForestLandSchema from '../../db_schema/ForestryAndLandUSe/ForestLandSchema';
+import WoodSchema from '../../db_schema/ForestryAndLandUSe/WoodSchema';
+
 import { auditLogType, saveAuditLog } from "../AuditLog/audit_log";
-
-
 
 const insertFormData = async (req: Request, res: Response) => {
     const {form_category} = req.params
@@ -45,6 +47,10 @@ const insertFormData = async (req: Request, res: Response) => {
             insert = await AgricultureLiveStock.create(req.body);
         } else if(form_category === "stationary") {
             insert = await StationarySchema.create(req.body);
+        } else if (form_category === "falu-wood"){
+            insert = await WoodSchema.create(req.body);
+        } else if (form_category === "falu-forestland"){
+            insert = await ForestLandSchema.create(req.body);
         }
 
 
@@ -126,9 +132,16 @@ const updateData = async (req: Request, res: Response) => {
             form_data = await AgricultureCrops.findByIdAndUpdate(form_id, update).exec();
         } else if(form_category === "agriculture-livestocks") {
             form_data = await AgricultureLiveStock.findByIdAndUpdate(form_id, update).exec();
-        } else {
+        } else if (form_category === "stationary"){
             form_data = await StationarySchema.findByIdAndUpdate(form_id, update).exec();
+        } else if (form_category === "falu-wood"){
+            form_data = await WoodSchema.findByIdAndUpdate(form_id, update);
+        } else if (form_category === "falu-forestland"){
+            form_data = await ForestLandSchema.findByIdAndUpdate(form_id, update);
         }
+
+
+
 
         if(!form_data) return res.sendStatus(204);
 
@@ -180,8 +193,12 @@ const acceptUpdate = async (req: Request, res: Response) => {
             form_data = await AgricultureCrops.findByIdAndUpdate(form_id, updateQuery).exec();
         } else if(form_category === "agriculture-livestocks") {
             form_data = await AgricultureLiveStock.findByIdAndUpdate(form_id, updateQuery).exec();
-        } else {
+        } else if(form_category === "stationary"){
             form_data = await StationarySchema.findByIdAndUpdate(form_id, updateQuery).exec();
+        } else if (form_category === "falu-wood"){
+            form_data = await WoodSchema.findByIdAndUpdate(form_id, updateQuery).exec();
+        } else if (form_category === "falu-forestland"){
+            form_data = await ForestLandSchema.findByIdAndUpdate(form_id, updateQuery).exec();
         }
 
 
@@ -238,8 +255,12 @@ const finishFormData = async (req: Request, res: Response) => {
             form_data = await AgricultureCrops.findByIdAndUpdate(form_id, {"survey_data.status" : "0"}).exec();
         } else if(form_category === "agriculture-livestocks") {
             form_data = await AgricultureLiveStock.findByIdAndUpdate(form_id, {"survey_data.status" : "0"}).exec();
-        } else {
+        } else if(form_category === "stationary") {
             form_data = await StationarySchema.findByIdAndUpdate(form_id, {"survey_data.status" : "0"}).exec();
+        } else if (form_category === "falu-wood"){
+            form_data = await WoodSchema.findByIdAndUpdate(form_id, {"survey_data.status" : "0"}).exec();
+        } else if (form_category === "falu-forestland"){
+            form_data = await ForestLandSchema.findByIdAndUpdate(form_id, {"survey_data.status" : "0"}).exec();
         }
 
 
@@ -251,7 +272,6 @@ const finishFormData = async (req: Request, res: Response) => {
         return res.sendStatus(500);
     }
 }
-
 
 
 

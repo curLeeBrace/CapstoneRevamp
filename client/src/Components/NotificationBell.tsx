@@ -217,7 +217,7 @@ const NotificationBell = () => {
                       swine : survey_data.live_stock.swine,
                       non_dairyCattle : survey_data.live_stock.non_dairyCattle,
                     },`/surveyor/forms/agriculture/${action}/1/livestocks?form_id=${form_id}`,full_name)
-                  : notiffLink({
+                  : form_category === "stationary" ? notiffLink({
                     brgy_name : survey_data.brgy_name ,
                     form_type : survey_data.form_type,
                     cooking_charcoal: survey_data.cooking.charcoal,
@@ -231,6 +231,25 @@ const NotificationBell = () => {
                     generator_residual_fuelOil: survey_data.generator.residual_fuelOil,
                     lighting_kerosene: survey_data.lighting.kerosene,
                   },`/surveyor/forms/${action}/stationary?form_id=${form_id}`,full_name)
+                  : form_category === "falu-wood" ?
+                  notiffLink({
+                    brgy_name : survey_data.brgy_name,
+                    dsi : survey_data.dsi,
+                    type_ofData : survey_data.type_ofData,
+                    fuelwood : survey_data.fuelwood,
+                    charcoal : survey_data.charcoal,
+                    construction : survey_data.construction,
+                    novelties : survey_data.novelties,
+
+                  },`surveyor/forms/forestry-land-use/${action}/0/falu-wood?form_id=${form_id}`,full_name)
+                  : notiffLink({
+                      brgy_name : survey_data.brgy_name,
+                      dsi : survey_data.dsi,
+                      type_ofData : survey_data.type_ofData,
+                      ufA : survey_data.ufA,
+                      uaG : survey_data.uaG,
+                      laBA : survey_data.laBA,
+                  },`surveyor/forms/forestry-land-use/${action}/1/falu-forestland?form_id=${form_id}`,full_name)
                 
                 }
                 </MenuItem>

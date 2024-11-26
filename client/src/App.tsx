@@ -31,6 +31,7 @@ import GHGeSummary from "./routes/summary/GHGeSummary";
 import SurveyedList from "./routes/surveyor/SurveyListData/SurveyedList";
 import IndustrialList from "./routes/surveyor/SurveyListData/IndustrialList";
 import AgricultureList from "./routes/surveyor/SurveyListData/AgricultureList";
+import ForestAndLandUseList from "./routes/surveyor/SurveyListData/ForestAndLandUseList";
 
 
 import WasteWaterForm from "./routes/surveyor/WasteWaterForm";
@@ -93,6 +94,7 @@ function App() {
             <Route index element = {<HomePage/>}/>
             <Route path = 'home' element = {<HomePage/>}/>
             <Route path = "dashboard" element = {<DashBoard/>}/>
+            {/* <Route path = "accounts" element = {<AccountsTable/>}/> */}
             {/* Summary Route */}
             <Route path = "summary/0/:survey_category" element = {<SummaryData/>}/> {/* For Mobile Combustion and Waste Water*/}
             <Route path = "summary/1/industrial" element = {<IndustrialSummary/>}/> {/* For industial*/}
@@ -174,6 +176,7 @@ function App() {
                 <Route path="0/:survey_category" element = {<SurveyedList/>} />
                 <Route path="1/industrial" element = {<IndustrialList/>}/>
                 <Route path ="2/agriculture" element ={<AgricultureList/>}/>
+                <Route path = "3/falu" element = {<ForestAndLandUseList/>}/>
                 {/* <Route */}
               
               </Route>
@@ -209,6 +212,7 @@ function App() {
                   <Route path=":action/1/:agriculture_type" element = {<LiveStocks/>}/>
                 </Route>
 
+
                 <Route path = ':action/stationary' element = {<StationaryFuelForm/>}/>
               </Route>
               
@@ -217,6 +221,8 @@ function App() {
                 <Route path="0/:survey_category" element = {<SurveyedList/>} />
                 <Route path="1/industrial" element = {<IndustrialList/>}/>
                 <Route path ="2/agriculture" element ={<AgricultureList/>}/>
+                <Route path = "3/falu" element = {<ForestAndLandUseList/>}/>
+
                 {/* <Route */}
               
               </Route>

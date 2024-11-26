@@ -15,6 +15,9 @@ import AgricultureLiveStock from '../../db_schema/Agriculture/AgricultureLiveSto
 
 import StationarySchema from '../../db_schema/StationarySchema';
 
+import ForestLandSchema from '../../db_schema/ForestryAndLandUSe/ForestLandSchema';
+import WoodSchema from '../../db_schema/ForestryAndLandUSe/WoodSchema';
+
 const formData = async (req:Request, res:Response) => {
 
     const {
@@ -106,8 +109,12 @@ const formData = async (req:Request, res:Response) => {
             form_data = await AgricultureCrops.find(query).exec()
         } else if(form_category === "agriculture-livestocks"){
             form_data = await AgricultureLiveStock.find(query).exec()
-        } else {
+        } else if (form_category === "stationary"){
             form_data = await StationarySchema.find(query).exec();
+        } else if (form_category === "falu-wood"){
+            form_data = await WoodSchema.find(query).exec();
+        } else if(form_category === "falu-forestland"){
+            form_data = await ForestLandSchema.find(query).exec();
         }
 
 
