@@ -7,7 +7,7 @@ import {agricultureTotalGHGe} from "../../../../custom_funtions/agriculture"
 
 const agricultureRawData = async (req : Request, res : Response) =>{
 
-        const {agricultureType, municipality_name, brgy_name, user_type, year} = req.query
+        const {agricultureType, municipality_name, municipality_code, brgy_name, user_type, year} = req.query
 
         let responseContainer = undefined;
         try {
@@ -51,7 +51,7 @@ const agricultureRawData = async (req : Request, res : Response) =>{
 
                 if(!brgy_name){
                     query = {
-                        "surveyor_info.municipality_name" : municipality_name,
+                        "surveyor_info.municipality_code" : municipality_code,
                         dateTime_created : {
                             $gte: new Date(`${year}-01-01T00:00:00.000Z`),
                             $lte: new Date(`${year}-12-30T23:59:59.000Z`)
@@ -59,7 +59,7 @@ const agricultureRawData = async (req : Request, res : Response) =>{
                     }
                 } else {
                     query = {
-                        "surveyor_info.municipality_name" : municipality_name,
+                        "surveyor_info.municipality_code" : municipality_code,
                         "survey_data.brgy_name" : brgy_name,
                         dateTime_created : {
                             $gte: new Date(`${year}-01-01T00:00:00.000Z`),
