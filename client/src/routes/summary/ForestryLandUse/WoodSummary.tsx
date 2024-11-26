@@ -137,7 +137,7 @@ const WoodSummary = ({year} : WoodSummaryProps) => {
 
     const handleExport = () => {
         if (woodData && tb_head) {
-          exportToExcel(woodData, tb_head, `${user_info.municipality_name} Woods and Wood Products Surveyed Data`);
+          exportToExcel(woodData, tb_head, `${user_info.user_type === 's-admin' ? 'Laguna' : user_info.municipality_name} Woods and Wood Products Surveyed Data`);
         } else {
           alert("No data to export.");
         }

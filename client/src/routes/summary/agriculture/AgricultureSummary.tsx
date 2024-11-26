@@ -200,8 +200,9 @@ const AgricultureSummary = () => {
                 <div><YearMenu useYearState={[year, setYear]}/></div>
            </div>
            <div>
-            {agricultureSeries && !isLoading? 
-            
+            {agricultureSeries && isLoading? 
+              <Skeleton />
+              :
                 <TabsDefault
                     data={[
                         {
@@ -233,7 +234,7 @@ const AgricultureSummary = () => {
             
             
             
-            : <Skeleton />}
+           }
                 
            </div>
         </div>

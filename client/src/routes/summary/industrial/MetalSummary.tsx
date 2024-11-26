@@ -3,8 +3,9 @@ import DonutChart, {DonutState} from "../../../Components/Dashboard/DonutChart"
 import { useEffect, useState } from "react"
 import useAxiosPrivate from "../../../custom-hooks/auth_hooks/useAxiosPrivate"
 import useUserInfo from "../../../custom-hooks/useUserType"
-import { ExclamationTriangleIcon } from "@heroicons/react/24/solid"
+import { ArrowRightCircleIcon, ExclamationTriangleIcon } from "@heroicons/react/24/solid"
 import SimpleCard from "../../../Components/Dashboard/SimpleCard"
+import exportToExcel from "../../../custom-hooks/export_data/exportToExel"
 
 
 
@@ -94,11 +95,24 @@ const MetalSummary = ({year} : MetalSummaryProps) => {
     },[year])
 
 
+    const handleExport = () => {
+        if (metalData && tb_head) {
+          exportToExcel(metalData, tb_head, `${user_info.user_type === 's-admin' ? 'Laguna' : user_info.municipality_name} Metal Surveyed Data`);
+        } else {
+          alert("No data to export.");
+        }
+      };
+
     return(
         <div className="flex flex-col gap-5 border-2 mx-4 rounded-lg my-2 border-gray-300">
 
         <div className="px-10 rounded-lg text-xl py-2 bg-darkgreen text-white">Metal Summary</div>
-       
+        <div className="flex my-2 ml-8 font-bold items-center border-2 -mb-4 w-48 rounded-md border-gray-300 p-2">
+        <button onClick={handleExport} className="flex items-center">
+                <ArrowRightCircleIcon className="h-6 mx-2" />
+                Export to Excel
+            </button>
+            </div>
         <div className="w-full flex justify-center mx-8 mb-4">
 
                 <div className="w-2/4 mr-2 mb-2">
