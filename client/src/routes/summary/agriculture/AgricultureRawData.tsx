@@ -57,7 +57,6 @@ const AgricultureRawData = ({agricultureType, year}:AgricultureRawDataProps) => 
     const axiosPrivate = useAxiosPrivate();
     const [tb_head, set_tbHead] = useState<string[]>();
     const [tb_data, set_tbData] = useState<any[][]>();
-  
     const user_info = useUserInfo();
 
     useEffect(()=>{
@@ -65,6 +64,7 @@ const AgricultureRawData = ({agricultureType, year}:AgricultureRawDataProps) => 
             params : {
                 agricultureType, 
                 municipality_name : user_type === "s-admin" ? loc?.address_name : municipality_name, 
+                municipality_code : municipality_code,
                 brgy_name : user_type === "s-admin" ? undefined : loc?.address_name, 
                 user_type, 
                 year
@@ -119,7 +119,10 @@ const AgricultureRawData = ({agricultureType, year}:AgricultureRawDataProps) => 
 
             } else {
                 const liveStocksData:LiveStocksDataTypes[] = res.data as LiveStocksDataTypes[]
-                set_tbHead(['ID', 'Email', 'Municipality', 'Brgy', 'Buffalo', 'Cattle', 'Goat', 'Horse', 'Poultry', 'Swine', 'Non DairyCattle', 'GHGe', 'DateTime'])
+                set_tbHead(['ID', 'Email', 
+                    ...(user_info.user_type !== "lu_admin" ? ["Municipality"] : []),
+                    user_info.user_type === "lu_admin" ? "Institution" : "Brgy", 
+                    'Buffalo', 'Cattle', 'Goat', 'Horse', 'Poultry', 'Swine', 'Non DairyCattle', 'GHGe', 'DateTime'])
                 set_tbData(liveStocksData.map((data)=>{
                     const {
                         form_id,
@@ -141,7 +144,7 @@ const AgricultureRawData = ({agricultureType, year}:AgricultureRawDataProps) => 
                     return [
                         form_id,
                         email,
-                        municipality_name,
+                        ...(user_info.user_type !== "lu_admin" ? [municipality_name] : []),
                         brgy_name,
                         buffalo,
                         cattle,

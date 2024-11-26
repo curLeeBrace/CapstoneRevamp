@@ -295,7 +295,7 @@ export function StickyNavbar() {
       </Fragment>
     }
 
-    {u_type === "Laguna University Surveyor" &&
+    {u_type === "L.U. Surveyor" &&
       <Fragment>
         <NavListMenu navListMenuItems={url_listOfSurveyData} navName="SurveyData" />
         <NavListMenu navListMenuItems={url_ofSurveyorsForm} navName="Forms" />
@@ -303,7 +303,7 @@ export function StickyNavbar() {
     }
 
     {
-      u_type !== "Surveyor" && u_type !== "Laguna University Surveyor" && 
+      u_type !== "Surveyor" && u_type !== "L.U. Surveyor" && 
       <Fragment>
         <NavListMenu navListMenuItems={summaryURL} navName="Summary"/>
       </Fragment>

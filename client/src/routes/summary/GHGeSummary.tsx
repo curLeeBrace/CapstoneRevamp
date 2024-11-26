@@ -40,7 +40,7 @@ const GHGeSummary = ()=>{
 
   const [loc, setLoc] = useState<AddressReturnDataType>()
   const [year, setYear] = useState<string | undefined>(new Date().getFullYear().toString());
-  const [isLoading] = useState<boolean>(false); 
+  const [isLoading, setisLoading] = useState<boolean>(true); 
 
   const [tablecontent, setTableContent] = useState({
     tb_rows : undefined as any,
@@ -81,6 +81,7 @@ useEffect(()=>{
   }})
   .then((res)=>{
     const ghge = res.data;
+    setisLoading(false)
 
 
 
