@@ -35,8 +35,6 @@ const Wood = () => {
   const [searchParams] = useSearchParams();
 
 
-
-
   const [forestLandsData, setforestLandsData] = useState({
     ufA : 0,
     uaG : 0,
@@ -44,7 +42,8 @@ const Wood = () => {
   } as ForestLandsData);
 
   useInputValidation(forestLandsData, setforestLandsData, 999);
-
+  // console.log("forestryBaseData : ", forestryBaseData);
+  // console.log("woodData : ", forestLandsData);
   useEffect(()=>{
 
     const {action} = params 
@@ -78,7 +77,7 @@ const Wood = () => {
 
     let payload = {
       survey_data : {
-        ...setforestLandsData,
+        ...forestLandsData,
         dsi,
         type_ofData,
         brgy_name : brgy?.address_name,
@@ -104,8 +103,9 @@ const Wood = () => {
      
   const submitValidation = () => {
     const { brgy, dsi, type_ofData, setAlertMsg, setOpenAlert } = forestryBaseData;
-    const isDataFilled = Object.values(setforestLandsData).some(value => value && value.toString().trim() !== '');
+    const isDataFilled = Object.values(forestLandsData).some(value => value && value.toString().trim() !== '');
 
+ 
     if (brgy && dsi && type_ofData && isDataFilled) {
       setOpenDialogBox(true);
     } else {
@@ -128,7 +128,7 @@ const Wood = () => {
     const {setAlertMsg, setOpenAlert} = forestryBaseData
  
     set_isLoading(true);
-    submitForm({payload, form_category : "forestry-forestlands"})
+    submitForm({payload, form_category : "falu-forestland"})
    .then(res => {
            if(res.status === 201){
              setOpenAlert(true);
@@ -161,7 +161,7 @@ const Wood = () => {
     const form_id = searchParams.get("form_id");
     const {setAlertMsg, setOpenAlert} = forestryBaseData
     set_isLoading(true);
-    updateForm({payload, form_id : form_id as string, form_category : "forestry-forestlands"})
+    updateForm({payload, form_id : form_id as string, form_category : "falu-forestland"})
     .then(res => {
       if(res.status === 204){
             alert("can't request update because form data not found!");
@@ -194,7 +194,7 @@ const Wood = () => {
     const form_id = searchParams.get("form_id");
     const {setAlertMsg, setOpenAlert} = forestryBaseData
     set_isLoading(true);
-    acceptFormUpdate({form_id : form_id as string, form_category : "forestry-forestlands"})
+    acceptFormUpdate({form_id : form_id as string, form_category : "falu-forestland"})
     .then((res) => {
       if(res.status === 204){
         alert("can't accep request update because form data not found!");
@@ -222,7 +222,7 @@ const Wood = () => {
     const form_id = searchParams.get("form_id");
     const {setAlertMsg, setOpenAlert} = forestryBaseData
     set_isLoading(true);
-    finishForm({form_id : form_id as string, form_category : "forestry-wood"})
+    finishForm({form_id : form_id as string, form_category : "falu-forestland"})
     .then((res) => {
       if(res.status === 204){
         alert("can't accep request update because form data not found!");

@@ -11,9 +11,11 @@ import SimpleCard from "../../../Components/Dashboard/SimpleCard";
 import { ExclamationTriangleIcon } from "@heroicons/react/24/solid";
 
 
+
+
 const IndustrialList = () => {
 
-    const [brgy, setBrgy] = useState<AddressReturnDataType>();
+    const [brgy, setBrgy] =  useState<AddressReturnDataType>();
     const [indsutryType, setIndustryType] = useState<string>("mineral");
     const { municipality_code} = useUserInfo();
 

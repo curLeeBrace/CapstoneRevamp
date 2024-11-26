@@ -13,6 +13,10 @@ import AgricultureLiveStock = require("../../db_schema/Agriculture/AgricultureLi
 
 import StationarySchema = require("../../db_schema/StationarySchema");
 
+
+import WoodSchema = require("../../db_schema/ForestryAndLandUSe/WoodSchema");
+import ForestLandSchema = require("../../db_schema/ForestryAndLandUSe/ForestLandSchema");
+
 type ResponseTypes = {
     full_name : string
     img_id : string
@@ -69,6 +73,9 @@ const getNotification = async (req : Request, res : Response) => {
         const livestocksData = await AgricultureLiveStock.find(query).exec();
         const stationaryData = await StationarySchema.find(query).exec();
 
+        const falu_wood = await WoodSchema.find(query).exec();
+        const falu_forestland = await ForestLandSchema.find(query).exec();
+
    
 
 
@@ -86,6 +93,13 @@ const getNotification = async (req : Request, res : Response) => {
         const cropsResponse = prepareResponse(cropsFormData, "agriculture-crops", user_type as string);
         const livestocksResponse = prepareResponse(livestocksData, "agriculture-livestocks", user_type as string);
         const stationaryResponse = prepareResponse(stationaryData, "stationary", user_type as string);
+
+        const woodResponse = prepareResponse(falu_wood, "falu-wood", user_type as string);
+        const forestlandResponse = prepareResponse(falu_forestland, "falu-forestland", user_type as string);
+        
+
+
+
         const response = [
             ...mobileCombustionResponse, 
             ...wasteWaterResponse, 
@@ -96,7 +110,10 @@ const getNotification = async (req : Request, res : Response) => {
             ...othersResponse,
             ...cropsResponse,
             ...livestocksResponse,
-            ...stationaryResponse
+            ...stationaryResponse,
+            ...woodResponse,
+            ...forestlandResponse
+            
         ]
 
 

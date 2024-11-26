@@ -127,6 +127,10 @@ export function StickyNavbar() {
       title: "Stationary",
       href: `/${user_info.user_type}/surveyed-list/0/stationary`,
     },
+    {
+      title: "Forest And Land Use",
+      href: `/${user_info.user_type}/surveyed-list/3/falu`,
+    },
     
   ];  
   
@@ -204,6 +208,10 @@ export function StickyNavbar() {
             name: "Audit Log",
             url: `/${user_type}/audit-log`,
           },
+          // {
+          //   name: "Accounts",
+          //   url: `/${user_type}/accounts`,
+          // },
         ])
 
       } else if (user_type === "lu_admin") {
