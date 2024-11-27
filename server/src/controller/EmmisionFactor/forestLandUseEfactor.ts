@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import FALU_EfactorSchema from "../../db_schema/EmmisisonFactorsSchema/FALU_EfactorSchema";
 
 
-const DEFAULT_FALU_EFATOR = {
+const DEFAULT_FALU_EFACTOR = {
     wood : {
         fuelwood_co2 : 1.80,
         charcoal_co2 : 0,
@@ -48,11 +48,11 @@ const getforestLandUseEfactor = async(req : Request, res:Response) => {
 
         } else {
             if(falu_type === "falu-wood") {
-                response_efactors = DEFAULT_FALU_EFATOR.wood
-                await FALU_EfactorSchema.create({wood :  DEFAULT_FALU_EFATOR.wood});
+                response_efactors = DEFAULT_FALU_EFACTOR.wood
+                await FALU_EfactorSchema.create({wood :  DEFAULT_FALU_EFACTOR.wood});
             } else {
-                response_efactors = DEFAULT_FALU_EFATOR.forestland
-                await FALU_EfactorSchema.create({forestland : DEFAULT_FALU_EFATOR.forestland});
+                response_efactors = DEFAULT_FALU_EFACTOR.forestland
+                await FALU_EfactorSchema.create({forestland : DEFAULT_FALU_EFACTOR.forestland});
             }
         }
 
@@ -96,5 +96,6 @@ const updatedforestLandUseEfactor = async(req:Request, res:Response) => {
 
 export  {
     getforestLandUseEfactor,
-    updatedforestLandUseEfactor
+    updatedforestLandUseEfactor,
+    DEFAULT_FALU_EFACTOR
 }
