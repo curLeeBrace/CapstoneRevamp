@@ -10,6 +10,8 @@ import {getIndustrialOverallGHGe} from "../../../custom_funtions/Industrial/indu
 import getAgricultureGHGe from "../../../custom_funtions/agriculture";
 import { getStationaryGHGe} from "../../../custom_funtions/stationary"
 import MobileCombustionEfactorSchema = require("../../db_schema/EmmisisonFactorsSchema/MobileCombustionEfactorSchema");
+
+import {getFALU_GHGe} from "../../../custom_funtions/forestryLanUse";
 interface Municipality {
     city_code : String;
     city_name : String;
@@ -71,6 +73,10 @@ type DashBoardData = {
             loc_name : string
         }[]
         commercialGHGe : {
+            ghge : number,
+            loc_name : string
+        }[],
+        forestLandUseGHGe : {
             ghge : number,
             loc_name : string
         }[]
@@ -136,9 +142,31 @@ type DashBoardData = {
             // const stationaryGHGe = await getStationaryGHGe(user_type, query, locations); 
             const residentialGHGe = await getStationaryGHGe(user_type, query, locations, "residential")
             const commercialGHGe = await getStationaryGHGe(user_type, query, locations, "commercial")
+            
 
+            //FALU...///////////////////////////////////////////////////////////////////////////////
+            let falu_wood = await getFALU_GHGe(user_type, query, locations, "falu-wood");
+            let falu_forestland = await getFALU_GHGe(user_type, query, locations, "falu-forestland");
 
+            // console.log("Forest Wood : ", falu_wood),
+            // console.log("ForestLand : ", falu_forestland)
+            let forestAndLandUseContainer : {loc_name:string, ghge:number}[] =[] 
 
+            falu_wood.forEach((falu_woodData)=>{
+                let total_ghge = 0
+                falu_forestland.forEach(falu_forestland => {
+                    if(falu_woodData.loc_name === falu_forestland.loc_name){
+                        total_ghge += falu_woodData.ghge + falu_forestland.ghge
+                    }
+                })
+                forestAndLandUseContainer.push({
+                    loc_name : falu_woodData.loc_name,
+                    ghge : total_ghge
+                })
+
+            })
+
+            ////////////////////////////////////////////////////////////////////////////////////
             mobileComstion_data.forEach((mb_data, index) => {
                 total_ghge += Number(mb_data.emission.ghge.toFixed(2));
                 total_ghge += Number(wasteWaterGHGe[index].ghge.toFixed(2));
@@ -147,6 +175,9 @@ type DashBoardData = {
                 total_ghge += Number(agriculture_liveStocksGHGe[index].ghge.toFixed(2));
                 total_ghge += Number(residentialGHGe[index].ghge.toFixed(2));
                 total_ghge += Number(commercialGHGe[index].ghge.toFixed(2));
+
+                total_ghge += Number(falu_wood[index].ghge.toFixed(2));
+                total_ghge += Number(falu_forestland[index].ghge.toFixed(2));
 
               
             })
@@ -159,13 +190,6 @@ type DashBoardData = {
             // industrialGHGe.forEach(ghge => {
             //     total_ghge += Number(ghge.toFixed(2));
             // })
-
-
-            agriculture_cropsGHGe
-
-
-
-
 
             
             const response : DashBoardData = {
@@ -182,6 +206,8 @@ type DashBoardData = {
                         // stationaryGHGe,
                         residentialGHGe,
                         commercialGHGe,
+                        forestLandUseGHGe : forestAndLandUseContainer
+                        
                     },
                     total_ghge,
                     loc_names: locations.map((loc) => user_type === "s-admin" ? loc.city_name : loc.brgy_name),
