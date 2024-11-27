@@ -483,8 +483,8 @@ function DashBoard() {
         </div>
 
         
-        <div className=" md:mx-8 md:flex h-full bg-black">
-          <div className=" md:w-1/3  text-xs bg-white  rounded-lg shadow-md flex flex-col gap-1">
+        <div className="flex h-full flex-wrap md:flex-nowrap px-8">
+          <div className=" md:w-1/4 w-full  text-xs bg-white  rounded-lg shadow-md flex flex-col gap-1">
           <Typography
               className="bg-darkgreen font-bold text-base  rounded-lg py-2  text-center"
               color="white"
@@ -753,7 +753,7 @@ function DashBoard() {
             </Carousel>
           </div>
 
-          <div className="basis-full border border-gray-400 bg-white shadow-gray-500 rounded-lg px-4 py-4 h-[500px]">
+          <div className="md:w-4/5 w-full border border-gray-400 bg-white shadow-gray-500 rounded-lg px-4 py-4 h-[500px]">
             {chartConfig ? (
               <Chart
                 width={"100%"}
