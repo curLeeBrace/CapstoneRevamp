@@ -11,7 +11,6 @@ import YearMenu from '../../Components/YearMenu';
 import { AddressReturnDataType } from '../../custom-hooks/useFilterAddrress';
 import { Typography } from '@material-tailwind/react';
 import { useLocation } from 'react-router-dom';
-import Loader from '../../Components/Loader';
 
 // type GHGeDataType = {
 //   mobileCombustionGHGe : {
@@ -82,7 +81,6 @@ useEffect(()=>{
   .then((res)=>{
     const ghge = res.data;
     setisLoading(false)
-
 
 
 
@@ -272,20 +270,17 @@ useEffect(()=>{
               {/* ETO YUNG GINAWA KONG SUMMARY TABLE */}
           </div>
                
-            {isLoading ? (
-              <div className='m-auto'> 
-            <Loader/>
-            </div>
-          ) : (
+            {
             tablecontent.tb_rows && (
               <TableWithFooter
                 tableHead={TABLE_HEAD}
                 tableRows={tablecontent.tb_rows}
                 totalGHGEmissions={tablecontent.totalGHGe.toFixed(2)}
                 totalProportion={tablecontent.totalProportion}
+                loading={isLoading}
               />
             )
-          )}       
+          }       
 
     </div>
    )
