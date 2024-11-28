@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react";
+import {useState } from "react";
 import YearMenu from "../../../Components/YearMenu";
 import BarChart, { BarSeriesTypes } from "../../../Components/Dashboard/BarChart";
 import DonutChart, { DonutState } from "../../../Components/Dashboard/DonutChart";
-import useAxiosPrivate from "../../../custom-hooks/auth_hooks/useAxiosPrivate";
+// import useAxiosPrivate from "../../../custom-hooks/auth_hooks/useAxiosPrivate";
 import useUserInfo from "../../../custom-hooks/useUserType";
 import { Radio, Typography } from "@material-tailwind/react";
 import { UserIcon } from "@heroicons/react/24/solid";
@@ -32,7 +32,7 @@ const ForestrySummary = () => {
 
     const [emissionLabel, setEnissionLabel] = useState<string>("Forestry Land Use"); // Store the label
 
-    const axiosPrivate = useAxiosPrivate();
+
     const user_info = useUserInfo();
 
 
