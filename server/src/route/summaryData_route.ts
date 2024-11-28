@@ -11,6 +11,8 @@ import getAgricultureSummary from "../controller/SummaryData/Agriculture/agricul
 import agricultureRawData from "../controller/SummaryData/Agriculture/agricultureRawData"
 import stationaryRawData from "../controller/SummaryData/stationaryRawData";
 
+import getFALU_RawData from "../controller/SummaryData/ForestAndLandUse.ts/forestAndLandUseRawData";
+
 import ghgeSummary from "../controller/SummaryData/ghgeSummary";
 
 const router = express.Router();
@@ -18,7 +20,8 @@ const router = express.Router();
 router.get('/mobile-combustion', authenticate_token, getMobileCombustionData);
 router.get('/waste-water', authenticate_token, getWasteWaterSummary);
 
-router.get('/industrial', authenticate_token, getIndustrialSummary);
+//for indstrual and forest and land use
+router.get('/base-summary/:category', authenticate_token, getIndustrialSummary);
 router.get('/industrial/:industrial_type', authenticate_token, getIndustrialRawSummary);
 
 
@@ -27,6 +30,8 @@ router.get('/agriculture/raw-data', authenticate_token, agricultureRawData);
 
 router.get('/stationary/raw-data', authenticate_token, stationaryRawData);
 
+
+router.get('/forest-land-use/:falu_type', authenticate_token, getFALU_RawData)
 router.get('/ghge-summary', authenticate_token, ghgeSummary);
 
 

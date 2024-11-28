@@ -1,17 +1,19 @@
 import YearMenu from "../../../Components/YearMenu";
 import BarChart, {BarSeriesTypes} from "../../../Components/Dashboard/BarChart";
 import {UserIcon} from "@heroicons/react/24/solid";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import DonutChart, {DonutState} from "../../../Components/Dashboard/DonutChart";
 
 import { Radio } from "@material-tailwind/react";
 import useUserInfo from "../../../custom-hooks/useUserType";
-import useAxiosPrivate from "../../../custom-hooks/auth_hooks/useAxiosPrivate";
 import MineralSummary from "./MineralSummary";
 import ChemicalSummary from "./ChemicalSummary";
 import MetalSummary from "./MetalSummary";
 import ElectronicsSummary from "./ElectronicsSummary";
 import OthersSummary from "./OthersSummary";
+
+
+import useGetBaseSummary from "../../../custom-hooks/useGetBaseSummary";
 
 // type BarSeriesTypes = {
 
@@ -29,14 +31,7 @@ import OthersSummary from "./OthersSummary";
 //   industry_type : 
 // }
 
-type RequestQueryTypes = {
-  user_type : string
-  industry_type : "all" | "mineral" | "chemical" | "metal" | "electronics" | "others";
-  municipality_code : string;
-  brgy_name : string;
-  prov_code : string;
-  year : string
-}
+
 
 const IndustrialSummary = () => {
 
@@ -51,8 +46,10 @@ const IndustrialSummary = () => {
 
     const [industryLabel, setIndustryLabel] = useState<string>("Industrial"); // Store the label
 
-    const axiosPrivate = useAxiosPrivate();
     const user_info = useUserInfo();
+
+
+    useGetBaseSummary({category : "industrial", setDSI, setResSeries, setTypeOfData, year, industry_type})
 
     // useEffect(()=>{
     //     console.log("YEAR : ", year);
@@ -61,68 +58,7 @@ const IndustrialSummary = () => {
   
 
 
-    useEffect(()=>{
-      const user_info = useUserInfo();
-      const {municipality_code, user_type, province_code, brgy_name} = user_info
-
-      axiosPrivate.get(`/summary-data/industrial`, {
-        params : {
-          brgy_name,
-          industry_type,
-          municipality_code,
-          prov_code : province_code,
-          user_type : user_type as string,
-          year : year ? year : new Date().getFullYear().toString()
-        } as RequestQueryTypes
-      })
-    .then(res => {
-
-      if(res.status === 200) {
-        const {responsePerLocation, dsi_analytics, tyoeOfDataAnalytics} = res.data
-        
-        setResSeries([{
-          name : "Survey Count",
-          data : responsePerLocation.map((response:any) => {
-            return {
-              x : response.location,
-              y : response.count
-            }
-          })
-        }])
-
-
-        const {commercial, industrial, institutional, others} = dsi_analytics
-        setDSI({
-          labels : ["commercial", "industrial", "institutional", "others"],
-          series : [commercial, industrial, institutional, others]
-        })
-
-
-        const {census, ibs} = tyoeOfDataAnalytics
-
-        setTypeOfData({
-          labels : ["census", "IBS", "others"],
-          series : [census, ibs, tyoeOfDataAnalytics.others]
-        })
-        
-
-
-
-
-
-
-
-        // setResSeries(responsePerLocation);
-        // setDSI(dsi_analytics);
-
-      }
-
-    })
-    .catch(err => console.log(err))
-
-
-
-    },[industry_type])
+   
 
 
 
