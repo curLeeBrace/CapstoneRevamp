@@ -1,23 +1,23 @@
-import { useEffect, useState } from "react";
+import {useState } from "react";
 import YearMenu from "../../../Components/YearMenu";
 import BarChart, { BarSeriesTypes } from "../../../Components/Dashboard/BarChart";
 import DonutChart, { DonutState } from "../../../Components/Dashboard/DonutChart";
-import useAxiosPrivate from "../../../custom-hooks/auth_hooks/useAxiosPrivate";
+// import useAxiosPrivate from "../../../custom-hooks/auth_hooks/useAxiosPrivate";
 import useUserInfo from "../../../custom-hooks/useUserType";
 import { Radio, Typography } from "@material-tailwind/react";
 import { UserIcon } from "@heroicons/react/24/solid";
 import WoodSummary from "./WoodSummary";
 import ForestLandsSummary from "./ForestLandsSummary";
+import useGetBaseSummary from "../../../custom-hooks/useGetBaseSummary";
 
-
-type RequestQueryTypes = {
-  user_type : string
-  emission_type : "forestry-wood" | "forestry-forestlands" 
-  municipality_code : string;
-  brgy_name : string;
-  prov_code : string;
-  year : string
-}
+// type RequestQueryTypes = {
+//   user_type : string
+//   falu_type : "forestry-wood" | "forestry-forestlands" 
+//   municipality_code : string;
+//   brgy_name : string;
+//   prov_code : string;
+//   year : string
+// }
 
 const ForestrySummary = () => {
 
@@ -27,75 +27,78 @@ const ForestrySummary = () => {
     const [typeOfData, setTypeOfData] = useState<DonutState>()
     
 
-    const [emission_type, setEmissionType] = useState<"forestry-wood" | "forestry-forestlands" >();
+    const [falu_type, setFaluType] = useState<"falu-wood" | "falu-forestland" >();
     const [year, setYear] = useState<string>();
 
     const [emissionLabel, setEnissionLabel] = useState<string>("Forestry Land Use"); // Store the label
 
-    const axiosPrivate = useAxiosPrivate();
+
     const user_info = useUserInfo();
 
-    useEffect(()=>{
-        console.log("YEAR : ", year);
-    },[])
+
+
+    useGetBaseSummary({category : "falu", setDSI, setResSeries, setTypeOfData, year, falu_type})
+    // useEffect(()=>{
+    //     console.log("YEAR : ", year);
+    // },[])
 
   
 
 
-    useEffect(()=>{
-      const user_info = useUserInfo();
-      const {municipality_code, user_type, province_code, brgy_name} = user_info
+    // useEffect(()=>{
+    //   const user_info = useUserInfo();
+    //   const {municipality_code, user_type, province_code, brgy_name} = user_info
 
-      axiosPrivate.get(`/`, {
-        params : {
-          brgy_name,
-          emission_type,
-          municipality_code,
-          prov_code : province_code,
-          user_type : user_type as string,
-          year : year ? year : new Date().getFullYear().toString()
-        } as RequestQueryTypes
-      })
-    .then(res => {
+    //   axiosPrivate.get(`/`, {
+    //     params : {
+    //       brgy_name,
+    //       falu_type,
+    //       municipality_code,
+    //       prov_code : province_code,
+    //       user_type : user_type as string,
+    //       year : year ? year : new Date().getFullYear().toString()
+    //     } as RequestQueryTypes
+    //   })
+    // .then(res => {
 
-      if(res.status === 200) {
-        const {responsePerLocation, dsi_analytics, tyoeOfDataAnalytics} = res.data
+    //   if(res.status === 200) {
+    //     const {responsePerLocation, dsi_analytics, tyoeOfDataAnalytics} = res.data
         
-        setResSeries([{
-          name : "GHG Emission",
-          data : responsePerLocation.map((response:any) => {
-            return {
-              x : response.location,
-              y : response.count
-            }
-          })
-        }])
+    //     setResSeries([{
+    //       name : "GHG Emission",
+    //       data : responsePerLocation.map((response:any) => {
+    //         return {
+    //           x : response.location,
+    //           y : response.count
+    //         }
+    //       })
+    //     }])
 
 
-        const {commercial, industrial, institutional, others} = dsi_analytics
-        setDSI({
-          labels : ["commercial", "industrial", "institutional", "others"],
-          series : [commercial, industrial, institutional, others]
-        })
+    //     const {commercial, industrial, institutional, others} = dsi_analytics
+    //     setDSI({
+    //       labels : ["commercial", "industrial", "institutional", "others"],
+    //       series : [commercial, industrial, institutional, others]
+    //     })
 
 
-        const {census, ibs} = tyoeOfDataAnalytics
+    //     const {census, ibs} = tyoeOfDataAnalytics
 
-        setTypeOfData({
-          labels : ["census", "IBS", "others"],
-          series : [census, ibs, tyoeOfDataAnalytics.others]
-        })
+    //     setTypeOfData({
+    //       labels : ["census", "IBS", "others"],
+    //       series : [census, ibs, tyoeOfDataAnalytics.others]
+    //     })
         
 
 
-      }
+    //   }
 
-    })
-    .catch(err => console.log(err))
+    // })
+    // .catch(err => console.log(err))
 
 
 
-    },[emission_type])
+    // },[falu_type])
 
 
 
@@ -110,9 +113,9 @@ const ForestrySummary = () => {
       </div>
       <div className="flex w-full justify-center gap-5">
         <div className="bg-darkgreen border-2 rounded-xl px-36">
-            <Radio defaultChecked name="emission_type" label={<span className="font-bold text-white">All</span>} color ="green" value={"all"} onChange={(e: any) => { setEmissionType(e.target.value); setEnissionLabel("Forestry Land Use");}} />
-            <Radio name="emission_type" label={<span className="font-bold text-white"> Wood Products Harvesting</span>} color ="green" value={"forestry-wood"} onChange={(e: any) => { setEmissionType(e.target.value); setEnissionLabel("Woods and wood Products Harvesting");}} />
-            <Radio name="emission_type" label={<span className="font-bold text-white">Changes in the Use of the Forestlands</span>} color ="green" value={"forestry-forestlands"} onChange={(e: any) => { setEmissionType(e.target.value); setEnissionLabel("Changes in the Use of the Forestlands");}} />         
+            <Radio defaultChecked name="falu_type" label={<span className="font-bold text-white">All</span>} color ="green" value={"all"} onChange={(e: any) => { setFaluType(e.target.value); setEnissionLabel("Forestry Land Use");}} />
+            <Radio name="falu_type" label={<span className="font-bold text-white"> Wood Products Harvesting</span>} color ="green" value={"falu-wood"} onChange={(e: any) => { setFaluType(e.target.value); setEnissionLabel("Woods and wood Products Harvesting");}} />
+            <Radio name="falu_type" label={<span className="font-bold text-white">Changes in the Use of the Forestlands</span>} color ="green" value={"falu-forestland"} onChange={(e: any) => { setFaluType(e.target.value); setEnissionLabel("Changes in the Use of the Forestlands");}} />         
         </div>
 
         <div>
@@ -163,11 +166,11 @@ const ForestrySummary = () => {
       </div>
       
         {
-          emission_type == "forestry-wood"? 
+          falu_type == "falu-wood"? 
             <div>
                 <WoodSummary year = {year ? year : new Date().getFullYear().toString()}/>
             </div> 
-          : emission_type == "forestry-forestlands"? 
+          : falu_type == "falu-forestland"? 
             <div>
                 <ForestLandsSummary year = {year ? year : new Date().getFullYear().toString()}/>
                 </div>

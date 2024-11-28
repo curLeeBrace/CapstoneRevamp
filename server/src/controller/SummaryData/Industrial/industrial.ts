@@ -12,21 +12,34 @@ import ElectronicsSchema  from '../../../db_schema/Industrial/ElectronicsSchema'
 import OthersSchema = require('../../../db_schema/Industrial/OthersSchema');
 
 
-
+import WoodSchema = require('../../../db_schema/ForestryAndLandUSe/WoodSchema');
+import ForestLandSchema = require('../../../db_schema/ForestryAndLandUSe/ForestLandSchema');
 
 type RequestQueryTypes = {
     user_type : "s-admin" | "lgu_admin" | 'lu_admin'
-    industry_type : "all" | "mineral" | "chemical" | "metal" | "electronics" | "others";
+    industry_type? : "all" | "mineral" | "chemical" | "metal" | "electronics" | "others";
+    falu_type? :"all" | "falu-wood" | "falu-forestland"
+
     municipality_code : string;
     prov_code : string;
     year : string;
 }
 
+type CategoryTypes = {
+    category : "industrial" | "falu"
+}
 
 const getIndustrialSummary = async (req: Request, res:Response) => {
 
     
-    const {industry_type, municipality_code, user_type, prov_code, year} = req.query as RequestQueryTypes
+    const {municipality_code, user_type, prov_code, year} = req.query as RequestQueryTypes
+    const {category} = req.params as CategoryTypes
+
+
+
+
+
+
     // : user_type === "lu_admin"
     //         ? {
     //               "surveyor_info.municipality_name": municipality_code, // `municipality_name` for `lu_admin`
@@ -70,33 +83,53 @@ const getIndustrialSummary = async (req: Request, res:Response) => {
 
 
 
-    let industryData : any[] = [];
+    let db_data : any[] = [];
     
-    if(industry_type === "mineral"){
-        industryData = await MineralSchema.find(query).exec();
-    } else if (industry_type === "chemical"){
-        industryData = await ChemicalSchema.find(query).exec();
-    } else if (industry_type === "metal") {
-        industryData = await MetalSchema.find(query).exec();
-    } else if (industry_type === "electronics"){
-        industryData = await ElectronicsSchema.find(query).exec();
-    } else if (industry_type === "others") {
-        industryData = await OthersSchema.find(query).exec();
+    if(category === "industrial"){
+        const {industry_type} = req.query
+        if(industry_type === "mineral"){
+            db_data = await MineralSchema.find(query).exec();
+        } else if (industry_type === "chemical"){
+            db_data = await ChemicalSchema.find(query).exec();
+        } else if (industry_type === "metal") {
+            db_data = await MetalSchema.find(query).exec();
+        } else if (industry_type === "electronics"){
+            db_data = await ElectronicsSchema.find(query).exec();
+        } else if (industry_type === "others") {
+            db_data = await OthersSchema.find(query).exec();
+        } else {
+    
+            const mineral_data = await MineralSchema.find(query).exec();
+            const chemical_data = await ChemicalSchema.find(query).exec();
+            const metal_data = await MetalSchema.find(query).exec();
+            const electronics_data = await ElectronicsSchema.find(query).exec();
+            const others_data = await OthersSchema.find(query).exec();
+    
+            db_data = [...mineral_data, ...chemical_data, ...metal_data, ...electronics_data, ...others_data]
+    
+        }
+
     } else {
+        const {falu_type} = req.query
+        if(falu_type === "falu-wood"){
+            db_data = await WoodSchema.find(query).exec();
 
-        const mineral_data = await MineralSchema.find(query).exec();
-        const chemical_data = await ChemicalSchema.find(query).exec();
-        const metal_data = await MetalSchema.find(query).exec();
-        const electronics_data = await ElectronicsSchema.find(query).exec();
-        const others_data = await OthersSchema.find(query).exec();
 
-        industryData = [...mineral_data, ...chemical_data, ...metal_data, ...electronics_data, ...others_data]
+        } else if(falu_type === 'falu-forestland') {
+
+            db_data = await ForestLandSchema.find(query).exec();
+        } else {
+            const falu_wood_data = await WoodSchema.find(query).exec();
+            const falu_forestland_data = await ForestLandSchema.find(query).exec();
+
+            db_data = [...falu_wood_data, ...falu_forestland_data]
+        }
 
     }
 
     // console.log("industryData : ", industryData);
 
-    if(industryData.length <= 0) return res.sendStatus(204);
+    if(db_data.length <= 0) return res.sendStatus(204);
 
 
 
@@ -120,7 +153,7 @@ const getIndustrialSummary = async (req: Request, res:Response) => {
         municipality_name    : string
         dsi : string
         typeOfData : string
-    }[] = industryData.map((data)=>{
+    }[] = db_data.map((data)=>{
         return {
             brgy_name : data.survey_data.brgy_name,
             municipality_name : data.surveyor_info.municipality_name,
@@ -340,3 +373,12 @@ const getTypeOfDataAnalytics = (survey_typeofDatas : string[]) : {census:number,
 
 
 export default getIndustrialSummary
+
+
+
+
+export {
+    getDSI_Analytics,
+    getTypeOfDataAnalytics,
+    getResponseCountPerLocation
+}

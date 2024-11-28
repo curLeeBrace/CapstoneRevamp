@@ -5,6 +5,7 @@ import getAgricultureGHGe from "../../../custom_funtions/agriculture";
 import {getStationaryGHGe} from "../../../custom_funtions/stationary";
 import {get_mobileComstion_GHGe} from "../Dashboard/overview_data"
 import getAvailableLocations from "../../../custom_funtions/getAvailableLocations"
+import { getFALU_GHGe } from "../../../custom_funtions/forestryLanUse";
 
 
 
@@ -20,7 +21,7 @@ const ghgeSummary = async (req:Request, res:Response) => {
         } = req.query as any;
 
         ///Thingking about, what prams to pass in this file....
-        // it about filtering ghge of filtered locations... 
+        // it's about filtering ghge of filtered locations... 
 
     
 
@@ -89,7 +90,27 @@ const ghgeSummary = async (req:Request, res:Response) => {
         const agriculture_liveStocksGHGe = await getAgricultureGHGe(user_type, query, locations, "liveStocks")
         const stationary_resGHGe = await getStationaryGHGe(user_type, query, locations, "residential");
         const stationary_commGHGe = await getStationaryGHGe(user_type, query, locations, "commercial");
+         //FALU...///////////////////////////////////////////////////////////////////////////////
+         let falu_wood = await getFALU_GHGe(user_type, query, locations, "falu-wood");
+         let falu_forestland = await getFALU_GHGe(user_type, query, locations, "falu-forestland");
 
+         // console.log("Forest Wood : ", falu_wood),
+         // console.log("ForestLand : ", falu_forestland)
+         let forestAndLandUseContainer : {loc_name:string, ghge:number}[] =[] 
+
+         falu_wood.forEach((falu_woodData)=>{
+             let total_ghge = 0
+             falu_forestland.forEach(falu_forestland => {
+                 if(falu_woodData.loc_name === falu_forestland.loc_name){
+                     total_ghge += falu_woodData.ghge + falu_forestland.ghge
+                 }
+             })
+             forestAndLandUseContainer.push({
+                 loc_name : falu_woodData.loc_name,
+                 ghge : total_ghge
+             })
+
+         })
 
         let total_ghge = 0;
 
@@ -118,6 +139,10 @@ const ghgeSummary = async (req:Request, res:Response) => {
             total_ghge +=  Number(data.ghge.toFixed(2));
         })
 
+        forestAndLandUseContainer.length > 0 && forestAndLandUseContainer.map((data) => {
+            total_ghge +=  Number(data.ghge.toFixed(2));
+        })
+
 
         
         // mobileComstion_data.forEach((mb_data, index) => {
@@ -140,6 +165,7 @@ const ghgeSummary = async (req:Request, res:Response) => {
             agriculture_liveStocksGHGe,
             stationary_resGHGe,
             stationary_commGHGe,
+            forestAndLandUseContainer,
 
             total_ghge
         })
