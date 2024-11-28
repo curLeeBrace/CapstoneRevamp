@@ -52,6 +52,7 @@ const GHGeSummary = ()=>{
       agricultureLivestockProportion : "0",
       residentialStationaryProportion : "0",
       commercialStationaryProportion : "0",
+      forestAndLandUseProportion : "0"
     },
     totalGHGe : 0,
     totalProportion : "0",
@@ -105,7 +106,8 @@ useEffect(()=>{
         const totalStationaryResidentialGHGE = ghge.stationary_resGHGe.reduce((acc:any, val:any) => acc + val.ghge, 0).toFixed(2); 
     
         const totalStationaryCommercialGHGE = ghge.stationary_commGHGe.reduce((acc:any, val:any) => acc + val.ghge, 0).toFixed(2);
-      
+
+        const totalForestAndLandUseContainerGHGE = ghge.forestAndLandUseContainer.reduce((acc:any, val:any) => acc + val.ghge, 0).toFixed(2);
         
         //  =============================
         //  Proportion of Total Emissions
@@ -117,6 +119,7 @@ useEffect(()=>{
         const agricultureLivestockProportion = calculateProportion(parseFloat(totalAgricultureLivestockGHGE), ghge.total_ghge);
         const residentialStationaryProportion = calculateProportion((totalStationaryResidentialGHGE), ghge.total_ghge);
         const commercialStationaryProportion = calculateProportion((totalStationaryCommercialGHGE), ghge.total_ghge);
+        const falu_proportion = calculateProportion((totalForestAndLandUseContainerGHGE), ghge.total_ghge);
         
         
         const totalProportion = (
@@ -126,7 +129,8 @@ useEffect(()=>{
           parseFloat(agricultureCropsProportion) +
           parseFloat(agricultureLivestockProportion) +
           parseFloat(residentialStationaryProportion) +
-          parseFloat(commercialStationaryProportion) 
+          parseFloat(commercialStationaryProportion) +
+          parseFloat(falu_proportion)
       ).toFixed(2);
     
     
@@ -151,7 +155,7 @@ useEffect(()=>{
           // { name: "GHG Emissions from Solid Waste Disposal - Inside LGU Geopolitical Boundaries (ICLEI)", ghge: "0.00", proportion: "0.00%" },
           { name: "GHG Emissions from Industrial Processes and Product Use", ghge: totalIndustrialGHGE, proportion: industrialProportion},
           { name: "Scope 1 Emissions (Forestry and Land Use)", ghge: "", proportion: "", isCategory: true },
-          { name: "GHG Emissions from Forestry and Land Use", ghge: "0.00", proportion: "0.00%" },
+          { name: "GHG Emissions from Forestry and Land Use", ghge: totalForestAndLandUseContainerGHGE, proportion:  falu_proportion},
           // { name: "GHG Removal from Sink", ghge:"0.00" , proportion: "0.00%" },
         ];
     
@@ -165,6 +169,7 @@ useEffect(()=>{
             agricultureLivestockProportion,
             residentialStationaryProportion,
             commercialStationaryProportion,
+            forestAndLandUseProportion : falu_proportion
           },
           totalGHGe : ghge.total_ghge,
           totalProportion : totalProportion,
