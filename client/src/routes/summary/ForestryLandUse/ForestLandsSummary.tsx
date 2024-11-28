@@ -46,7 +46,7 @@ const ForestLandsSummary = ({year} : ForestlandsSummaryProps) => {
              'Used For Agriculture (hectare)', 'Used as Grasslands (hectare)', 'Left as Barren Areas (hectare)', 'GHGe'])
         const {municipality_code, user_type, province_code} = user_info
         
-        axiosPrivate.get('', {
+        axiosPrivate.get('/summary-data/forest-land-use/falu-forestland', {
             params : {
                 municipality_code,
                 user_type,
