@@ -47,7 +47,7 @@ const WoodSummary = ({year} : WoodSummaryProps) => {
              'Fuelwood (tons)', 'Charcoal (unitless)', 'Construction (tons)', 'Novelties (tons)', 'GHGe'])
         const {municipality_code, user_type, province_code} = user_info
         
-        axiosPrivate.get('', {
+        axiosPrivate.get('/summary-data/forest-land-use/falu-wood', {
             params : {
                 municipality_code,
                 user_type,

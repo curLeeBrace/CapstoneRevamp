@@ -3,7 +3,46 @@ import FALU_EfactorSchema from "../src/db_schema/EmmisisonFactorsSchema/FALU_Efa
 import WoodSchema from "../src/db_schema/ForestryAndLandUSe/WoodSchema"
 import ForestLandSchema from "../src/db_schema/ForestryAndLandUSe/ForestLandSchema"
 
+const getForestLandUseEfactor = async(falu_type: "falu-wood" | "falu-forestland"):Promise<{}> => {
+      //SETUP EFACTOR
+      let key = falu_type === "falu-wood" ? "wood" : "forestland";
+      const db_faluEfactor = await FALU_EfactorSchema.findOne({}, {[key] :1, _id : 0}).lean();
+  
+      let efactor = {}
+      if(db_faluEfactor){
+          if(falu_type === "falu-wood") {
+              const {charcoal_co2, construction_co2, fuelwood_co2, novelties_co2} = db_faluEfactor.wood
+              efactor = {
+                  charcoal_co2, 
+                  construction_co2, 
+                  fuelwood_co2, 
+                  novelties_co2
+              }
+          } else {
+              const {laBA_co2, uaG_co2, ufA_co2} = db_faluEfactor.forestland
+              efactor = {
+                  laBA_co2,
+                  uaG_co2,
+                  ufA_co2
+              }
+          }
+  
+      } else {
+          if(falu_type === "falu-wood") {
+              efactor = DEFAULT_FALU_EFACTOR.wood
+              await FALU_EfactorSchema.create({wood :  DEFAULT_FALU_EFACTOR.wood});
+          } else {
+              efactor = DEFAULT_FALU_EFACTOR.forestland
+              await FALU_EfactorSchema.create({forestland : DEFAULT_FALU_EFACTOR.forestland});
+          }
+      }
 
+
+      return efactor
+  
+      // console.log("E_FACTOR : ", efactor)
+      ///////////////////////////////////////////////////////////////////////////////////////////
+}
 const getFALU_GHGe = async(user_type : string, query:{}, locations:any[], falu_type:"falu-wood"|"falu-forestland"):Promise<{
     loc_name : string,
     ghge : number
@@ -16,47 +55,9 @@ const getFALU_GHGe = async(user_type : string, query:{}, locations:any[], falu_t
 
     //GET FALLU survey from data
     const dbFALU_data = falu_type === "falu-wood" ? await WoodSchema.find(query).exec() : await ForestLandSchema.find(query);
-
-
-
+    const efactor = await getForestLandUseEfactor(falu_type);
+    
   
-
-
-
-    //SETUP EFACTOR
-    let key = falu_type === "falu-wood" ? "wood" : "forestland";
-    const db_faluEfactor = await FALU_EfactorSchema.findOne({}, {[key] :1, _id : 0}).lean();
-    let efactor = {}
-    if(db_faluEfactor){
-        if(falu_type === "falu-wood") {
-            const {charcoal_co2, construction_co2, fuelwood_co2, novelties_co2} = db_faluEfactor.wood
-            efactor = {
-                charcoal_co2, 
-                construction_co2, 
-                fuelwood_co2, 
-                novelties_co2
-            }
-        } else {
-            const {laBA_co2, uaG_co2, ufA_co2} = db_faluEfactor.forestland
-            efactor = {
-                laBA_co2,
-                uaG_co2,
-                ufA_co2
-            }
-        }
-
-    } else {
-        if(falu_type === "falu-wood") {
-            efactor = DEFAULT_FALU_EFACTOR.wood
-            await FALU_EfactorSchema.create({wood :  DEFAULT_FALU_EFACTOR.wood});
-        } else {
-            efactor = DEFAULT_FALU_EFACTOR.forestland
-            await FALU_EfactorSchema.create({forestland : DEFAULT_FALU_EFACTOR.forestland});
-        }
-    }
-
-    // console.log("E_FACTOR : ", efactor)
-    ///////////////////////////////////////////////////////////////////////////////////////////
 
 
     locations.map((location)=>{
@@ -139,5 +140,7 @@ const getGHGePerSurvey = (efactor : any, falu_qty : any):number => {
 
 
 export {
-    getFALU_GHGe
+    getFALU_GHGe,
+    getGHGePerSurvey,
+    getForestLandUseEfactor
 }
