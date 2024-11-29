@@ -284,12 +284,12 @@ const Chemical = () => {
           <Input
             disabled = {params.action === "view" || params.action === "finish"}
             name="ap"
-            value={chemicalData.ap}
+            value={chemicalData.ap || ""}
             onChange={(e) => handleChange({event:e, setFormStateData : setChemicalData})}
             size="lg"
             type="number"
             placeholder="0"
-            className="!border-t-blue-gray-200 focus:!border-t-gray-900"
+            className="!border-t-blue-gray-200 placeholder:opacity-100 focus:!border-t-gray-900"
             labelProps={{
               className: "before:content-none after:content-none",
             }}
@@ -301,12 +301,12 @@ const Chemical = () => {
           <Input
             disabled = {params.action === "view" || params.action === "finish"}
             name = "sap"
-            value={chemicalData.sap}
+            value={chemicalData.sap || ""}
             onChange={(e) => handleChange({event:e, setFormStateData : setChemicalData})}
             size="lg"
             type="number"
             placeholder="0"
-            className="!border-t-blue-gray-200 focus:!border-t-gray-900"
+            className="!border-t-blue-gray-200 placeholder:opacity-100 focus:!border-t-gray-900"
             labelProps={{
               className: "before:content-none after:content-none",
             }}
@@ -318,12 +318,12 @@ const Chemical = () => {
           <Input
             disabled = {params.action === "view" || params.action === "finish"}
             name="pcbp_EDVCM"
-            value={chemicalData.pcbp_EDVCM}
+            value={chemicalData.pcbp_EDVCM || ""}
             onChange={(e) => handleChange({event:e, setFormStateData : setChemicalData})}
             size="lg"
             type="number"
             placeholder="0"
-            className="!border-t-blue-gray-200 focus:!border-t-gray-900"
+            className="!border-t-blue-gray-200 placeholder:opacity-100 focus:!border-t-gray-900"
             labelProps={{
               className: "before:content-none after:content-none",
             }}
@@ -342,11 +342,11 @@ const Chemical = () => {
         <Input
           disabled = {params.action === "view" || params.action === "finish"}
           name="pcbp_M"
-          value={chemicalData.pcbp_M}
+          value={chemicalData.pcbp_M || ""}
           onChange={(e) => handleChange({event:e, setFormStateData : setChemicalData})}
           type="number"
           placeholder="0"
-          className="!border-t-blue-gray-200 focus:!border-t-gray-900 md:w-40 md:-mt-12 mt-2 w-52"
+          className="!border-t-blue-gray-200 placeholder:opacity-100 focus:!border-t-gray-900 md:w-40 md:-mt-12 mt-2 w-52"
           labelProps={{
             className: "before:content-none after:content-none",
           }}
@@ -358,11 +358,11 @@ const Chemical = () => {
         <Input
           disabled = {params.action === "view" || params.action === "finish"}
           name="pcbp_E"
-          value={chemicalData.pcbp_E}
+          value={chemicalData.pcbp_E || ""}
           onChange={(e) => handleChange({event:e, setFormStateData : setChemicalData})}
           type="number"
           placeholder="0"
-          className="!border-t-blue-gray-200 focus:!border-t-gray-900 md:w-40 md:-mt-12 mt-2 w-52"
+          className="!border-t-blue-gray-200 placeholder:opacity-100 focus:!border-t-gray-900 md:w-40 md:-mt-12 mt-2 w-52"
           labelProps={{
             className: "before:content-none after:content-none",
           }}
@@ -374,11 +374,11 @@ const Chemical = () => {
         <Input
           disabled = {params.action === "view" || params.action === "finish"}
           name="pcbp_EO"
-          value={chemicalData.pcbp_EO}
+          value={chemicalData.pcbp_EO || ""}
           onChange={(e) => handleChange({event:e, setFormStateData : setChemicalData})}
           type="number"
           placeholder="0"
-          className="!border-t-blue-gray-200 focus:!border-t-gray-900 md:w-40 md:-mt-12 mt-2 w-52"
+          className="!border-t-blue-gray-200 placeholder:opacity-100 focus:!border-t-gray-900 md:w-40 md:-mt-12 mt-2 w-52"
           labelProps={{
             className: "before:content-none after:content-none",
           }}
@@ -390,11 +390,11 @@ const Chemical = () => {
         <Input
           disabled = {params.action === "view" || params.action === "finish"}
           name="pcbp_A"
-          value={chemicalData.pcbp_A}
+          value={chemicalData.pcbp_A || ""}
           onChange={(e) => handleChange({event:e, setFormStateData : setChemicalData})}
           type="number"
           placeholder="0"
-          className="!border-t-blue-gray-200 focus:!border-t-gray-900 md:w-40 md:-mt-12 mt-2 w-52"
+          className="!border-t-blue-gray-200 placeholder:opacity-100 focus:!border-t-gray-900 md:w-40 md:-mt-12 mt-2 w-52"
           labelProps={{
             className: "before:content-none after:content-none",
           }}
@@ -406,11 +406,11 @@ const Chemical = () => {
         <Input
           disabled = {params.action === "view" || params.action === "finish"}
           name = "pcbp_CB"
-          value={chemicalData.pcbp_CB}
+          value={chemicalData.pcbp_CB || ""}
           onChange={(e) => handleChange({event:e, setFormStateData : setChemicalData})}
           type="number"
           placeholder="0"
-          className="!border-t-blue-gray-200 focus:!border-t-gray-900 md:w-40 md:-mt-10 mt-2 w-52"
+          className="!border-t-blue-gray-200 placeholder:opacity-100 focus:!border-t-gray-900 md:w-40 md:-mt-10 mt-2 w-52"
           labelProps={{
             className: "before:content-none after:content-none",
           }}

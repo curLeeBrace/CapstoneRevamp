@@ -266,12 +266,12 @@ const finishHandler = () => {
                     <Input
                       disabled = {params.action === "view" || params.action === "finish"}
                       name = "ppi"
-                      value = {othersData.ppi}
+                      value = {othersData.ppi || ""}
                       onChange={(e) => handleChange({event : e , setFormStateData : setOthersData})}
                       size="lg"
                       type="number"
                       placeholder="0"
-                      className="!border-t-blue-gray-200 focus:!border-t-gray-900"
+                      className="!border-t-blue-gray-200 placeholder:opacity-100 focus:!border-t-gray-900"
                       labelProps={{
                         className: "before:content-none after:content-none",
                       }}
@@ -282,12 +282,12 @@ const finishHandler = () => {
                     <Input
                       disabled = {params.action === "view" || params.action === "finish"}
                       name="fbi"
-                      value={othersData.fbi}
+                      value={othersData.fbi || ""}
                       onChange={(e) => handleChange({event : e , setFormStateData : setOthersData})}
                       size="lg"
                       type="number"
                       placeholder="0"
-                      className="!border-t-blue-gray-200 focus:!border-t-gray-900"
+                      className="!border-t-blue-gray-200 placeholder:opacity-100 focus:!border-t-gray-900"
                       labelProps={{
                         className: "before:content-none after:content-none",
                       }}
@@ -303,12 +303,12 @@ const finishHandler = () => {
                     <Input
                       disabled = {params.action === "view" || params.action === "finish"}
                       name="other"
-                      value={othersData.other}
+                      value={othersData.other || ""}
                       onChange={(e) => handleChange({event : e , setFormStateData : setOthersData})}
                       size="lg"
                       type="number"
                       placeholder="0"
-                      className="!border-t-blue-gray-200 focus:!border-t-gray-900"
+                      className="!border-t-blue-gray-200 placeholder:opacity-100 focus:!border-t-gray-900"
                       labelProps={{
                         className: "before:content-none after:content-none",
                       }}

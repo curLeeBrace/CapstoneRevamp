@@ -29,16 +29,16 @@ const ForestAndLandUseList = () => {
     const [searchQuery, setSearchQuery] = useState<string>(""); 
     const filteredData = useSearchFilter(tb_data, searchQuery); 
     const {state} = useLocation();
-
+    const locationLabel = user_info?.user_type === "lu_surveyor" ? "Institution" : "Brgy";
 
 
     useEffect(()=>{
         if(falu_type === "falu-wood"){
-            set_tbHead(["ID", "BRGY", "Fuel-Wood", "Charcoal", "Construction", "Novelties", "DateTime","Action"])
+            set_tbHead(["ID", locationLabel, "Staus", "Fuel-Wood", "Charcoal", "Construction", "Novelties", "DateTime","Action"])
         } else {
-            set_tbHead(["ID", "BRGY", " Used for Agriculture", " Used as Grasslands", " Left as Barren Areas", "DateTime","Action"])
+            set_tbHead(["ID", locationLabel, "Status", "Used for Agriculture", " Used as Grasslands", " Left as Barren Areas", "DateTime","Action"])
         }
-    },[])
+    },[falu_type])
     
     useEffect(()=>{
         const {user_type,municipality_code} = user_info
@@ -74,6 +74,7 @@ const ForestAndLandUseList = () => {
             tb_data = form_data.map((data: any) => {
                 const form_id = data.form_id;
                 const brgy_name = data.survey_data.brgy_name
+                const status = data.survey_data.status
                 const {
                     dsi,
                     type_ofData,
@@ -82,6 +83,29 @@ const ForestAndLandUseList = () => {
                     construction,
                     novelties,
                 } = data.survey_data
+
+                let statusText: string;
+                let statusColor: string; 
+                
+                const statusNumber = Number(status);  
+                
+                switch (statusNumber) {
+                  case 0:
+                    statusText = "Not Pending";
+                    statusColor = "text-green-500";  
+                    break;
+                  case 1:
+                    statusText = "Pending";
+                    statusColor = "text-red-500"; 
+                    break;
+                  case 2:
+                    statusText = "Checked";
+                    statusColor = "text-yellow-700";
+                    break;
+                  default:
+                    statusText = "Unknown";
+                    statusColor = "text-gray-500";
+                }
 
                 const dateTime = new Date(data.dateTime_created).toLocaleDateString() + " " + new Date(data.dateTime_created).toLocaleTimeString();
     
@@ -106,6 +130,7 @@ const ForestAndLandUseList = () => {
                   return [
                     form_id,
                     brgy_name,
+                    <span className={statusColor}>{statusText}</span>,
                     fuelwood,
                     charcoal,
                     construction,
@@ -124,6 +149,7 @@ const ForestAndLandUseList = () => {
             tb_data = form_data.map((data: any) => {
                 const form_id = data.form_id;
                 const brgy_name = data.survey_data.brgy_name
+                const status = data.survey_data.status
                 const {
                     dsi,
                     type_ofData,
@@ -133,6 +159,31 @@ const ForestAndLandUseList = () => {
             
                 } = data.survey_data
 
+                
+                let statusText: string;
+                let statusColor: string; 
+                
+                const statusNumber = Number(status);  
+                
+                switch (statusNumber) {
+                  case 0:
+                    statusText = "Not Pending";
+                    statusColor = "text-green-500";  
+                    break;
+                  case 1:
+                    statusText = "Pending";
+                    statusColor = "text-red-500"; 
+                    break;
+                  case 2:
+                    statusText = "Checked";
+                    statusColor = "text-yellow-700";
+                    break;
+                  default:
+                    statusText = "Unknown";
+                    statusColor = "text-gray-500";
+                }
+                
+                
                 const dateTime = new Date(data.dateTime_created).toLocaleDateString() + " " + new Date(data.dateTime_created).toLocaleTimeString();
     
                 const LinkComponent = (
@@ -156,6 +207,7 @@ const ForestAndLandUseList = () => {
                   return [
                     form_id,
                     brgy_name,
+                    <span className={statusColor}>{statusText}</span>,
                     ufA,
                     uaG,
                     laBA, 

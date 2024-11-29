@@ -130,12 +130,12 @@ const ForestLandsSummary = ({year} : ForestlandsSummaryProps) => {
 
 
     const handleExport = () => {
-        if (forestLandsData && tb_head) {
-          exportToExcel(forestLandsData, tb_head, `${user_info.user_type === 's-admin' ? 'Laguna' : user_info.municipality_name} Forestlands Surveyed Data`);
+        if (forestLandsData && forestLandsData.length > 0 && tb_head) {
+            exportToExcel(forestLandsData, tb_head, `${user_info.user_type === 's-admin' ? 'Laguna' : user_info.municipality_name} Forestlands Surveyed Data`);
         } else {
-          alert("No data to export.");
+            alert("No data to export.");
         }
-      };
+    };
 
     return(
         <div className="flex flex-col gap-5 border-2 mx-4 rounded-lg my-2 border-gray-300">

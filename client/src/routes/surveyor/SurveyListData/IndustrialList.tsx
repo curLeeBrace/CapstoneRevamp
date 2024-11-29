@@ -42,7 +42,7 @@ const IndustrialList = () => {
         if(indsutryType === "mineral"){
             set_tbHead(["ID",
                 locationLabel,
-                "DSI", "Type of Data", 
+                "DSI", "Type of Data", "Status",
                 "Cement Production - Portland (tons)", 
                 "Lime Production (tons)", "Cement Production - Portland (blended)", 
                 "Glass Production (tons)", "DateTime", "Action"
@@ -51,7 +51,7 @@ const IndustrialList = () => {
             set_tbHead(
                 ["ID",
                     locationLabel,
-                    "DSI", "Type of Data", 
+                    "DSI", "Type of Data", "Status",
                     "Ammonia Production (tons)", "Soda Ash Production (tons)", 
                     "Dichloride and Vinyl Chloride Monomer (tons)", "Methanol (tons)",
                     "Ethylene oxide (tons)", "Carbon black (tons)", "Ethylene (tons)", 
@@ -62,7 +62,7 @@ const IndustrialList = () => {
             set_tbHead(
                 ["ID",
                     locationLabel,
-                    "DSI", "Type of Data", 
+                    "DSI", "Type of Data", "Status",
                     "Iron and Steel Production from Integrated Facilities (tons)", 
                     "Iron and Steel Production from Non-integrated Facilities (tons)",
                     "DateTime", "Action" 
@@ -73,7 +73,7 @@ const IndustrialList = () => {
             set_tbHead(
                 ["ID",
                     locationLabel,
-                    "DSI", "Type of Data", 
+                    "DSI", "Type of Data", "Status",
                     "Integrated circuit of semiconductor (tons)", 
                     "Photovoltaics (tons)", "TFT Flat Panel Display (tons)",
                     "Heat transfer fluid (tons)",
@@ -87,7 +87,7 @@ const IndustrialList = () => {
             set_tbHead(
                 ["ID",
                     locationLabel,
-                    "DSI", "Type of Data", 
+                    "DSI", "Type of Data", "Status",
                     "Pulp and paper industry (tons)", 
                     "Other carbon in pulp (tons)", "Food and beverages industry (tons)",
                     "DateTime", "Action" 
@@ -133,14 +133,36 @@ const IndustrialList = () => {
         let tb_data: any[] = [];
 
         if(indsutryType === "mineral"){
-
             tb_data = form_data.map((data: any) => {
                 const {
-                    brgy_name, dsi, type_ofData,
+                    brgy_name, dsi, type_ofData, status,
                     cpp, lp, cpb,
                     gp,
                 } = data.survey_data;
 
+                let statusText: string;
+                let statusColor: string; 
+                
+                const statusNumber = Number(status);  
+                
+                switch (statusNumber) {
+                  case 0:
+                    statusText = "Not Pending";
+                    statusColor = "text-green-500";  
+                    break;
+                  case 1:
+                    statusText = "Pending";
+                    statusColor = "text-red-500"; 
+                    break;
+                  case 2:
+                    statusText = "Checked";
+                    statusColor = "text-yellow-700";
+                    break;
+                  default:
+                    statusText = "Unknown";
+                    statusColor = "text-gray-500";
+                }
+                
                 const dateTime = new Date(data.dateTime_created).toLocaleDateString() + " " + new Date(data.dateTime_created).toLocaleTimeString();
 
                 const LinkComponent = (
@@ -163,7 +185,8 @@ const IndustrialList = () => {
 
                   return [
                     data.form_id.slice(-3),
-                    brgy_name, dsi, type_ofData,
+                    brgy_name, dsi, type_ofData,           
+                    <span className={statusColor}>{statusText}</span>,
                     cpp, lp, cpb,
                     gp, dateTime,   LinkComponent
                 ]
@@ -173,7 +196,7 @@ const IndustrialList = () => {
 
             tb_data = form_data.map((data: any) => {
                 const {
-                    brgy_name, dsi, type_ofData,
+                    brgy_name, dsi, type_ofData, status,
                     ap,
                     sap,
                     pcbp_M,
@@ -183,6 +206,29 @@ const IndustrialList = () => {
                     pcbp_A,
                     pcbp_CB,
                 } = data.survey_data;
+
+                let statusText: string;
+                let statusColor: string; 
+                
+                const statusNumber = Number(status);  
+                
+                switch (statusNumber) {
+                  case 0:
+                    statusText = "Not Pending";
+                    statusColor = "text-green-500";  
+                    break;
+                  case 1:
+                    statusText = "Pending";
+                    statusColor = "text-red-500"; 
+                    break;
+                  case 2:
+                    statusText = "Checked";
+                    statusColor = "text-yellow-700";
+                    break;
+                  default:
+                    statusText = "Unknown";
+                    statusColor = "text-gray-500";
+                }
 
                 const dateTime = new Date(data.dateTime_created).toLocaleDateString() + " " + new Date(data.dateTime_created).toLocaleTimeString();
 
@@ -211,6 +257,7 @@ const IndustrialList = () => {
                   return [
                     data.form_id.slice(-3),
                     brgy_name, dsi, type_ofData,
+                    <span className={statusColor}>{statusText}</span>,
                     ap,
                     sap,
                     pcbp_M,
@@ -226,10 +273,33 @@ const IndustrialList = () => {
         } else if(indsutryType === "metal"){
             tb_data = form_data.map((data: any) => {
                 const {
-                    brgy_name, dsi, type_ofData,
+                    brgy_name, dsi, type_ofData, status,
                     ispif,
                     ispnif,
                 } = data.survey_data;
+                
+                let statusText: string;
+                let statusColor: string; 
+                
+                const statusNumber = Number(status);  
+                
+                switch (statusNumber) {
+                  case 0:
+                    statusText = "Not Pending";
+                    statusColor = "text-green-500";  
+                    break;
+                  case 1:
+                    statusText = "Pending";
+                    statusColor = "text-red-500"; 
+                    break;
+                  case 2:
+                    statusText = "Checked";
+                    statusColor = "text-yellow-700";
+                    break;
+                  default:
+                    statusText = "Unknown";
+                    statusColor = "text-gray-500";
+                }
 
                 const dateTime = new Date(data.dateTime_created).toLocaleDateString() + " " + new Date(data.dateTime_created).toLocaleTimeString();
 
@@ -252,6 +322,7 @@ const IndustrialList = () => {
                   return [
                     data.form_id.slice(-3),
                     brgy_name, dsi, type_ofData,
+                    <span className={statusColor}>{statusText}</span>,
                     ispif,
                     ispnif,
                     dateTime, LinkComponent
@@ -262,12 +333,35 @@ const IndustrialList = () => {
 
             tb_data = form_data.map((data: any) => {
                 const {
-                    brgy_name, dsi, type_ofData,
+                    brgy_name, dsi, type_ofData, status,
                     ics,
                     photovoltaics,
                     tft_FPD,
                     htf,
                 } = data.survey_data;
+
+                let statusText: string;
+                let statusColor: string; 
+                
+                const statusNumber = Number(status);  
+                
+                switch (statusNumber) {
+                  case 0:
+                    statusText = "Not Pending";
+                    statusColor = "text-green-500";  
+                    break;
+                  case 1:
+                    statusText = "Pending";
+                    statusColor = "text-red-500"; 
+                    break;
+                  case 2:
+                    statusText = "Checked";
+                    statusColor = "text-yellow-700";
+                    break;
+                  default:
+                    statusText = "Unknown";
+                    statusColor = "text-gray-500";
+                }
 
                 const dateTime = new Date(data.dateTime_created).toLocaleDateString() + " " + new Date(data.dateTime_created).toLocaleTimeString();
 
@@ -292,6 +386,7 @@ const IndustrialList = () => {
                   return [
                     data.form_id.slice(-3),
                     brgy_name, dsi, type_ofData,
+                    <span className={statusColor}>{statusText}</span>,
                     ics,
                     photovoltaics,
                     tft_FPD,
@@ -304,11 +399,34 @@ const IndustrialList = () => {
         } else if (indsutryType === "others"){
             tb_data = form_data.map((data: any) => {
                 const {
-                    brgy_name, dsi, type_ofData,
+                    brgy_name, dsi, type_ofData, status,
                     ppi,
                     other,
                     fbi,
                 } = data.survey_data;
+
+                let statusText: string;
+                let statusColor: string; 
+                
+                const statusNumber = Number(status);  
+                
+                switch (statusNumber) {
+                  case 0:
+                    statusText = "Not Pending";
+                    statusColor = "text-green-500";  
+                    break;
+                  case 1:
+                    statusText = "Pending";
+                    statusColor = "text-red-500"; 
+                    break;
+                  case 2:
+                    statusText = "Checked";
+                    statusColor = "text-yellow-700";
+                    break;
+                  default:
+                    statusText = "Unknown";
+                    statusColor = "text-gray-500";
+                }
 
                 const dateTime = new Date(data.dateTime_created).toLocaleDateString() + " " + new Date(data.dateTime_created).toLocaleTimeString();
 
@@ -332,6 +450,7 @@ const IndustrialList = () => {
                   return [
                     data.form_id.slice(-3),
                     brgy_name, dsi, type_ofData,
+                    <span className={statusColor}>{statusText}</span>,
                     ppi,
                     other,
                     fbi,

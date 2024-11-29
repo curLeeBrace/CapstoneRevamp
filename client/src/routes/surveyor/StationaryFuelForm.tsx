@@ -15,6 +15,7 @@ import useHandleChange from "../../custom-hooks/useHandleChange";
 import useSurveyFormActions from "../../custom-hooks/useSurveyFormActions";
 import DialogBox from "../../Components/DialogBox";
 import AlertBox from "../../Components/Forms/AlertBox";
+import useStationaryValidation from "../../Components/useStationaryValidation";
 
 
 
@@ -103,6 +104,7 @@ export function StationaryFuelForm() {
   const handleChange = useHandleChange;
   const [searchParams] = useSearchParams();
 
+  useStationaryValidation(stationaryData, setStationaryData, 999);
   const {submitForm, updateForm, acceptFormUpdate, finishForm} = useSurveyFormActions();
 
   useEffect(()=>{
@@ -434,11 +436,11 @@ const clearForm = () => {
               <Input
                 disabled={params.action === "view" || params.action === "finish"}
                 name = "cooking_charcoal"
-                value={stationaryData.cooking_charcoal}
+                value={stationaryData.cooking_charcoal || ""}
                 onChange={(e)=>handleChange({event : e, setFormStateData : setStationaryData})}
                 type="number"
                 placeholder="0"
-                className="!border-t-blue-gray-200 focus:!border-t-gray-900"
+                className="!border-t-blue-gray-200 placeholder:opacity-100 focus:!border-t-gray-900"
                 labelProps={{
                   className: "before:content-none after:content-none",
                 }}
@@ -449,11 +451,11 @@ const clearForm = () => {
               <Input
                 disabled={params.action === "view" || params.action === "finish"}
                 name = "cooking_diesel"
-                value={stationaryData.cooking_diesel}
+                value={stationaryData.cooking_diesel || ""}
                 onChange={(e)=>handleChange({event : e, setFormStateData : setStationaryData})}
                 type="number"
                 placeholder="0"
-                className="!border-t-blue-gray-200 focus:!border-t-gray-900"
+                className="!border-t-blue-gray-200 placeholder:opacity-100 focus:!border-t-gray-900"
                 labelProps={{
                   className: "before:content-none after:content-none",
                 }}
@@ -464,11 +466,11 @@ const clearForm = () => {
               <Input
                 disabled={params.action === "view" || params.action === "finish"}
                 name = "cooking_kerosene"
-                value={stationaryData.cooking_kerosene}
+                value={stationaryData.cooking_kerosene || ""}
                 onChange={(e)=>handleChange({event : e, setFormStateData : setStationaryData})}
                 type="number"
                 placeholder="0"
-                className="!border-t-blue-gray-200 focus:!border-t-gray-900"
+                className="!border-t-blue-gray-200 placeholder:opacity-100 focus:!border-t-gray-900"
                 labelProps={{
                   className: "before:content-none after:content-none",
                 }}
@@ -479,11 +481,11 @@ const clearForm = () => {
               <Input
                 disabled={params.action === "view" || params.action === "finish"}
                 name = "cooking_propane"
-                value={stationaryData.cooking_propane}
+                value={stationaryData.cooking_propane || ""}
                 onChange={(e)=>handleChange({event : e, setFormStateData : setStationaryData})}
                 type="number"
                 placeholder="0"
-                className="!border-t-blue-gray-200 focus:!border-t-gray-900"
+                className="!border-t-blue-gray-200 placeholder:opacity-100 focus:!border-t-gray-900"
                 labelProps={{
                   className: "before:content-none after:content-none",
                 }}
@@ -494,12 +496,12 @@ const clearForm = () => {
               <Input
                 disabled={params.action === "view" || params.action === "finish"}
                 name = "cooking_wood"
-                value={stationaryData.cooking_wood}
+                value={stationaryData.cooking_wood || ""}
                 onChange={(e)=>handleChange({event : e, setFormStateData : setStationaryData})}
 
                 type="number"
                 placeholder="0"
-                className="!border-t-blue-gray-200 focus:!border-t-gray-900"
+                className="!border-t-blue-gray-200 placeholder:opacity-100 focus:!border-t-gray-900"
                 labelProps={{
                   className: "before:content-none after:content-none",
                 }}
@@ -517,11 +519,11 @@ const clearForm = () => {
               <Input
                 disabled={params.action === "view" || params.action === "finish"}
                 name = "generator_motor_gasoline"
-                value={stationaryData.generator_motor_gasoline}
+                value={stationaryData.generator_motor_gasoline || ""}
                 onChange={(e)=>handleChange({event : e, setFormStateData : setStationaryData})}
                 type="number"
                 placeholder="0"
-                className="!border-t-blue-gray-200 focus:!border-t-gray-900"
+                className="!border-t-blue-gray-200 placeholder:opacity-100 focus:!border-t-gray-900"
                 labelProps={{
                   className: "before:content-none after:content-none",
                 }}
@@ -532,11 +534,11 @@ const clearForm = () => {
               <Input
                 disabled={params.action === "view" || params.action === "finish"}
                 name = "generator_diesel"
-                value={stationaryData.generator_diesel}
+                value={stationaryData.generator_diesel || ""}
                 onChange={(e)=>handleChange({event : e, setFormStateData : setStationaryData})}
                 type="number"
                 placeholder="0"
-                className="!border-t-blue-gray-200 focus:!border-t-gray-900"
+                className="!border-t-blue-gray-200 placeholder:opacity-100 focus:!border-t-gray-900"
                 labelProps={{
                   className: "before:content-none after:content-none",
                 }}
@@ -547,11 +549,11 @@ const clearForm = () => {
               <Input
                 disabled={params.action === "view" || params.action === "finish"}
                 name = "generator_kerosene"
-                value={stationaryData.generator_kerosene}
+                value={stationaryData.generator_kerosene || ""}
                 onChange={(e)=>handleChange({event : e, setFormStateData : setStationaryData})}
                 type="number"
                 placeholder="0"
-                className="!border-t-blue-gray-200 focus:!border-t-gray-900"
+                className="!border-t-blue-gray-200 placeholder:opacity-100 focus:!border-t-gray-900"
                 labelProps={{
                   className: "before:content-none after:content-none",
                 }}
@@ -562,11 +564,11 @@ const clearForm = () => {
               <Input
                 disabled={params.action === "view" || params.action === "finish"}
                 name = "generator_residual_fuelOil"
-                value={stationaryData.generator_residual_fuelOil}
+                value={stationaryData.generator_residual_fuelOil || ""}
                 onChange={(e)=>handleChange({event : e, setFormStateData : setStationaryData})}
                 type="number"
                 placeholder="0"
-                className="!border-t-blue-gray-200 focus:!border-t-gray-900"
+                className="!border-t-blue-gray-200 placeholder:opacity-100 focus:!border-t-gray-900"
                 labelProps={{
                   className: "before:content-none after:content-none",
                 }}
@@ -584,11 +586,11 @@ const clearForm = () => {
               <Input
                 disabled={params.action === "view" || params.action === "finish"}
                 name = "lighting_kerosene"
-                value={stationaryData.lighting_kerosene}
+                value={stationaryData.lighting_kerosene || ""}
                 onChange={(e)=>handleChange({event : e, setFormStateData : setStationaryData})}
                 type="number"
                 placeholder="0"
-                className="!border-t-blue-gray-200 focus:!border-t-gray-900"
+                className="!border-t-blue-gray-200 placeholder:opacity-100 focus:!border-t-gray-900"
                 labelProps={{
                   className: "before:content-none after:content-none",
                 }}

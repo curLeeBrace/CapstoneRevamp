@@ -383,7 +383,7 @@ const finishHandler = () => {
             <InformationCircleIcon className="w-8 h-8" color="white" />
           </div>
           <Typography color="white" className="self-center">
-            Lagyan ng bilang ang alinman sa mga sumusunod ang inyong ginagamit{" "}
+            Lagyan ng check ang alinman sa mga sumusunod ang inyong ginagamit{" "}
             <br /> na daluyan ng basurang tubig (waste water)
           </Typography>
         </div>
