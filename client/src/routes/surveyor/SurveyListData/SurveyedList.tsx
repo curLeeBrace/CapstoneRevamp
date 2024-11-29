@@ -67,19 +67,15 @@ const SurveyedList = () => {
         set_tbHead([ 
           "ID",
           locationLabel,
-          
+          "Status",
           "Septik Tank (Poso Negro)",
           "Dry climate, ground water table lower than latrine, small family (2-5 people)",
           "Dry climate, ground water table lower than latrine, communal",
           "Wet climate/flush water use, ground water table than latrine",
           "Regular sedimentremoval for fertilizer",
           "River Discharge/Walang pagdaloy at kulang sa oxygen na ilog (Stagnant oxygen deficient rivers and lakes)",
-          "River Discharge/ilog, lawa, at estero (Rivers, lakes, estuaries)",
-
-        
-         
+          "River Discharge/ilog, lawa, at estero (Rivers, lakes, estuaries)",       
           "Survey Type",
-          "Status",
           "DateTime",
           "Action",])
       } else {
@@ -129,16 +125,16 @@ const SurveyedList = () => {
         
         switch (statusNumber) {
           case 0:
-            statusText = "Not Pending";
-            statusColor = "text-green-500";  
+            statusText = "Okay";
+            statusColor = "text-green-500 font-bold";  
             break;
           case 1:
             statusText = "Pending";
-            statusColor = "text-red-500"; 
+            statusColor = "text-red-500 font-bold"; 
             break;
           case 2:
-            statusText = "Checked";
-            statusColor = "text-yellow-700";
+            statusText = "Okay (Update Approved)";
+            statusColor = "text-yellow-700 font-bold";
             break;
           default:
             statusText = "Unknown";
@@ -194,16 +190,16 @@ const SurveyedList = () => {
         
         switch (statusNumber) {
           case 0:
-            statusText = "Not Pending";
-            statusColor = "text-green-500";  
+            statusText = "Okay";
+            statusColor = "text-green-500 font-bold";  
             break;
           case 1:
             statusText = "Pending";
-            statusColor = "text-red-500"; 
+            statusColor = "text-red-500 font-bold"; 
             break;
           case 2:
-            statusText = "Checked";
-            statusColor = "text-yellow-700";
+            statusText = "Okay (Update Approved)";
+            statusColor = "text-yellow-700 font-bold";
             break;
           default:
             statusText = "Unknown";
@@ -235,6 +231,7 @@ const SurveyedList = () => {
         return [
           data.form_id.slice(-3),
           brgy_name,
+          <span className={statusColor}>{statusText}</span>,
           septic_tanks,
           openPits_latrines.cat1,
           openPits_latrines.cat2,
@@ -269,16 +266,16 @@ const SurveyedList = () => {
         
         switch (statusNumber) {
           case 0:
-            statusText = "Not Pending";
-            statusColor = "text-green-500";  
+            statusText = "Okay";
+            statusColor = "text-green-500 font-bold";  
             break;
           case 1:
             statusText = "Pending";
-            statusColor = "text-red-500"; 
+            statusColor = "text-red-500 font-bold"; 
             break;
           case 2:
-            statusText = "Checked";
-            statusColor = "text-yellow-700";
+            statusText = "Okay (Update Approved)";
+            statusColor = "text-yellow-700 font-bold";
             break;
           default:
             statusText = "Unknown";

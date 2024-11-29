@@ -58,7 +58,6 @@ const insertFormData = async (req: Request, res: Response) => {
 
 
         if (insert) {
-            // Create the audit log
             const { surveyor_info, survey_data } = req.body;
             const auditLog: auditLogType = {
                 name: surveyor_info.full_name,
@@ -72,16 +71,16 @@ const insertFormData = async (req: Request, res: Response) => {
                 action: `Inserted ${form_category} ${survey_data.form_type ? `data for ${survey_data.form_type}` : ""} survey (${surveyor_info.municipality_name})`,
             };
 
-            // Save the audit log
+            // AUDIT LOG
             const isSaved = await saveAuditLog(auditLog);
             if (isSaved) {
-                return res.sendStatus(201); // Created
+                return res.sendStatus(201); 
             } else {
                 console.error("Failed to save audit log");
-                return res.sendStatus(500); // Internal server error
+                return res.sendStatus(500);
             }
         } else {
-            return res.sendStatus(409); // Conflict, insertion failed
+            return res.sendStatus(409); 
         }
     } catch (error) {
         console.error("Error inserting form data:", error);
@@ -145,7 +144,27 @@ const updateData = async (req: Request, res: Response) => {
 
         if(!form_data) return res.sendStatus(204);
 
-        return res.status(200).send("Success Requesting Update!");
+        const { surveyor_info, survey_data: updatedSurveyData } = req.body;
+        const auditLog: auditLogType = {
+            name: surveyor_info.full_name,
+            lgu_municipality: {
+                municipality_name: surveyor_info.municipality_name,
+                municipality_code: surveyor_info.municipality_code,
+                province_code: surveyor_info.province_code,
+            },
+            user_type: "surveyor",
+            dateTime: new Date(),
+            action: `Request an update for ${form_category} survey form. ${updatedSurveyData.form_type ? `Data for ${updatedSurveyData.form_type}` : ""}  (${surveyor_info.municipality_name})`,
+        };
+
+        // Save the audit log
+        const isSaved = await saveAuditLog(auditLog);
+        if (isSaved) {
+            return res.status(200).send("Success Requesting Update!");
+        } else {
+            console.error("Failed to save audit log");
+            return res.sendStatus(500); // Internal server error
+        }
         
     } catch (error) {
         console.log("updateMobileCombustionData : ", error);
@@ -164,7 +183,6 @@ const acceptUpdate = async (req: Request, res: Response) => {
     } = req.body;
     const {form_category} = req.params;
 
-
     try {
         
         let form_data = undefined
@@ -172,8 +190,9 @@ const acceptUpdate = async (req: Request, res: Response) => {
         const updateQuery = {
             "survey_data.status" : "2",
             "acceptedBy.admin_name" : admin_name,
-            "acceptedBy.img_id" : img_id
+            "acceptedBy.img_id" : img_id,
         };
+
 
         if(form_category === "waste-water"){
             form_data = await WasteWaterFormShema.findByIdAndUpdate(form_id, updateQuery).exec()
@@ -205,8 +224,29 @@ const acceptUpdate = async (req: Request, res: Response) => {
 
         
         if(!form_data) return res.sendStatus(204);
+
+        // AUDIT LOG
+        const auditLog: auditLogType = {
+            name: admin_name,
+            lgu_municipality: {
+                municipality_name: form_data.surveyor_info.municipality_name,
+                municipality_code: form_data.surveyor_info.municipality_code,
+                province_code: form_data.surveyor_info.province_code,
+            },
+            user_type: "Admin",
+            dateTime: new Date(),
+            action: `Accepted ${form_category} form request update. (${form_data.surveyor_info.municipality_name})`,
+        };
+
+        const isSaved = await saveAuditLog(auditLog);
+        if (isSaved) {
+            return res.status(200).send("Request Update Accepted!!");
+        } else {
+            console.error("Failed to save audit log");
+            return res.sendStatus(500); 
+        }
     
-        return res.status(200).send("Request Update Accepted!!");
+        // return res.status(200).send("Request Update Accepted!!");
     } catch (error) {
         console.log("acceptUpdateMobileCombustionData : ", error)
         return res.sendStatus(500);
@@ -265,7 +305,7 @@ const finishFormData = async (req: Request, res: Response) => {
 
 
         return res.status(200).send("Succsess Updating Form Status!");
-
+        
 
 
     } catch(err) {

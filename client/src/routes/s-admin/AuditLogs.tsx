@@ -147,7 +147,10 @@ export default function AuditLogs() {
                 <Option onClick={() => setSelectedAction("Inserted waste-water")}>Inserted data for Waster Water </Option>
                 <Option onClick={() => setSelectedAction("Inserted industrial")}>Inserted data for Industrial </Option>
                 <Option onClick={() => setSelectedAction("Inserted agriculture")}>Inserted data for Agriculture </Option>
-
+                <Option onClick={() => setSelectedAction("Inserted falu-wood")}>Inserted data for Woods and Wood </Option>
+                <Option onClick={() => setSelectedAction("Inserted falu-forestland")}>Inserted data for Changes in use of Forestlands </Option>
+                <Option onClick={() => setSelectedAction("Accepted")}>Accepted request </Option>
+                <Option onClick={() => setSelectedAction("Request an update")}>Request update</Option>
               </Select>
             </div>
 
