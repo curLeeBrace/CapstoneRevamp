@@ -276,13 +276,13 @@ const finishHandler = () => {
           <Input
             disabled = {params.action === "view" || params.action === "finish"}
             name = "ics"
-            value={electronicsData.ics}
+            value={electronicsData.ics || ""}
             onChange={(e) => handleChange({event : e, setFormStateData : setElectronicsData})}
 
             size="lg"
             type="number"
             placeholder="0"
-            className="!border-t-blue-gray-200 focus:!border-t-gray-900 "
+            className="!border-t-blue-gray-200 placeholder:opacity-100 focus:!border-t-gray-900 "
             labelProps={{
               className: "before:content-none after:content-none",
             }}
@@ -293,12 +293,12 @@ const finishHandler = () => {
           <Input
             disabled = {params.action === "view" || params.action === "finish"}
             name = "tft_FPD"
-            value={electronicsData.tft_FPD}
+            value={electronicsData.tft_FPD || ""}
             onChange={(e) => handleChange({event : e, setFormStateData : setElectronicsData})}
             size="lg"
             type="number"
             placeholder="0"
-            className="!border-t-blue-gray-200 focus:!border-t-gray-900 "
+            className="!border-t-blue-gray-200 placeholder:opacity-100 focus:!border-t-gray-900 "
             labelProps={{
               className: "before:content-none after:content-none",
             }}
@@ -312,13 +312,13 @@ const finishHandler = () => {
           <Input
             disabled = {params.action === "view" || params.action === "finish"}
             name="photovoltaics"
-            value={electronicsData.photovoltaics}
+            value={electronicsData.photovoltaics || ""}
             onChange={(e) => handleChange({event : e, setFormStateData : setElectronicsData})}
 
             size="lg" 
             type="number"
             placeholder="0"
-            className="!border-t-blue-gray-200 focus:!border-t-gray-900 "
+            className="!border-t-blue-gray-200 placeholder:opacity-100 focus:!border-t-gray-900 "
             labelProps={{
               className: "before:content-none after:content-none",
             }}
@@ -330,12 +330,12 @@ const finishHandler = () => {
           <Input
             disabled = {params.action === "view" || params.action === "finish"}
             name="htf"
-            value={electronicsData.htf}
+            value={electronicsData.htf || ""}
             onChange={(e) => handleChange({event : e, setFormStateData : setElectronicsData})}
             size="lg"
             type="number"
             placeholder="0"
-            className="!border-t-blue-gray-200 focus:!border-t-gray-900"
+            className="!border-t-blue-gray-200 placeholder:opacity-100 focus:!border-t-gray-900"
             labelProps={{
               className: "before:content-none after:content-none",
             }}

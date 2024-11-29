@@ -258,13 +258,13 @@ const LiveStocks = () => {
           <Input
             disabled={params.action === "view" || params.action === "finish"}
             name="buffalo"
-            value={liveStock.buffalo}
+            value={liveStock.buffalo || ""}
             onChange={(e) =>
               handlechange({ event: e, setFormStateData: setLiveStock })
             }
             type="number"
             placeholder="0"
-            className="!border-t-blue-gray-200 focus:!border-t-gray-900"
+            className="!border-t-blue-gray-200 placeholder:opacity-100 focus:!border-t-gray-900"
             labelProps={{
               className: "before:content-none after:content-none",
             }}
@@ -276,13 +276,13 @@ const LiveStocks = () => {
           <Input
             disabled={params.action === "view" || params.action === "finish"}
             name="cattle"
-            value={liveStock.cattle}
+            value={liveStock.cattle || ""}
             onChange={(e) =>
               handlechange({ event: e, setFormStateData: setLiveStock })
             }
             type="number"
             placeholder="0"
-            className="!border-t-blue-gray-200 focus:!border-t-gray-900"
+            className="!border-t-blue-gray-200 placeholder:opacity-100 focus:!border-t-gray-900"
             labelProps={{
               className: "before:content-none after:content-none",
             }}
@@ -294,13 +294,13 @@ const LiveStocks = () => {
           <Input
             disabled={params.action === "view" || params.action === "finish"}
             name="goat"
-            value={liveStock.goat}
+            value={liveStock.goat || ""}
             onChange={(e) =>
               handlechange({ event: e, setFormStateData: setLiveStock })
             }
             type="number"
             placeholder="0"
-            className="!border-t-blue-gray-200 focus:!border-t-gray-900"
+            className="!border-t-blue-gray-200 placeholder:opacity-100 focus:!border-t-gray-900"
             labelProps={{
               className: "before:content-none after:content-none",
             }}
@@ -312,13 +312,13 @@ const LiveStocks = () => {
           <Input
             disabled={params.action === "view" || params.action === "finish"}
             name="horse"
-            value={liveStock.horse}
+            value={liveStock.horse || ""}
             onChange={(e) =>
               handlechange({ event: e, setFormStateData: setLiveStock })
             }
             type="number"
             placeholder="0"
-            className="!border-t-blue-gray-200 focus:!border-t-gray-900"
+            className="!border-t-blue-gray-200 placeholder:opacity-100 focus:!border-t-gray-900"
             labelProps={{
               className: "before:content-none after:content-none",
             }}
@@ -330,13 +330,13 @@ const LiveStocks = () => {
           <Input
             disabled={params.action === "view" || params.action === "finish"}
             name="non_dairyCattle"
-            value={liveStock.non_dairyCattle}
+            value={liveStock.non_dairyCattle || ""}
             onChange={(e) =>
               handlechange({ event: e, setFormStateData: setLiveStock })
             }
             type="number"
             placeholder="0"
-            className="!border-t-blue-gray-200 focus:!border-t-gray-900"
+            className="!border-t-blue-gray-200 placeholder:opacity-100 focus:!border-t-gray-900"
             labelProps={{
               className: "before:content-none after:content-none",
             }}
@@ -348,13 +348,13 @@ const LiveStocks = () => {
           <Input
             disabled={params.action === "view" || params.action === "finish"}
             name="poultry"
-            value={liveStock.poultry}
+            value={liveStock.poultry || ""}
             onChange={(e) =>
               handlechange({ event: e, setFormStateData: setLiveStock })
             }
             type="number"
             placeholder="0"
-            className="!border-t-blue-gray-200 focus:!border-t-gray-900"
+            className="!border-t-blue-gray-200 placeholder:opacity-100 focus:!border-t-gray-900"
             labelProps={{
               className: "before:content-none after:content-none",
             }}
@@ -365,13 +365,13 @@ const LiveStocks = () => {
           <Input
             disabled={params.action === "view" || params.action === "finish"}
             name="swine"
-            value={liveStock.swine}
+            value={liveStock.swine || ""}
             onChange={(e) =>
               handlechange({ event: e, setFormStateData: setLiveStock })
             }
             type="number"
             placeholder="0"
-            className="!border-t-blue-gray-200 focus:!border-t-gray-900"
+            className="!border-t-blue-gray-200 placeholder:opacity-100 focus:!border-t-gray-900"
             labelProps={{
               className: "before:content-none after:content-none",
             }}
