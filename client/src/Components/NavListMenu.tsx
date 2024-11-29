@@ -20,18 +20,20 @@ interface NavListItem {
 interface NavListMenuProps {
   navListMenuItems: NavListItem[];
   navName : string;
+  setOpenNav: React.Dispatch<React.SetStateAction<boolean>>; 
+
 }
 
 
 
 function NavListMenu(props: NavListMenuProps) {
-  const { navListMenuItems, navName} = props;
+  const { navListMenuItems, navName, setOpenNav } = props;
 
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 
   const renderItems = navListMenuItems.map(({ title, href }) => (
     <Link to={href} key={title}>
-      <MenuItem>
+      <MenuItem onClick={() => setOpenNav(false)}>
         <Typography className="mb-1 text-sm">
           {title}
         </Typography>

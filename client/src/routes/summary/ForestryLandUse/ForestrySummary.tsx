@@ -129,10 +129,9 @@ const ForestrySummary = () => {
         {/* Column/Bar Chart Container */}   
 
         <div className="w-3/5 h-[400px]">
-        {/* KAW NA BAHALA KUNG ANO GUSTO MO PALABASIN SA CHART */}
             <BarChart chart_icon={<UserIcon className="w-6 h-6"/>} 
-            chart_label={`GHG Emission ${user_info.user_type === "s-admin" || user_info.user_type === "lgu_admin" ? "per" : "in"} ${user_info.user_type === "lu_admin" ? "Laguna University" : user_info.user_type === "s-admin" ? "Municipality" : "Brgy."}`}
-            chart_meaning={`Overall ghge for ${emissionLabel}.`}
+            chart_label={`Counts of collected survey ${user_info.user_type === "s-admin" || user_info.user_type === "lgu_admin" ? "per" : "in"} ${user_info.user_type === "lu_admin" ? "Laguna University" : user_info.user_type === "s-admin" ? "Municipality in Laguna." : `Brgy. in ${user_info.municipality_name}`}`}
+            chart_meaning={`Overall survey counts for ${emissionLabel}.`}
             series={res_series} />
         </div>
 

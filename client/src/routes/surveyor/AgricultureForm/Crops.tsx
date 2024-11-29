@@ -264,13 +264,13 @@ const Crops = () => {
           <Input
             disabled={params.action === "view" || params.action === "finish"}
             name="rdsi"
-            value={crops.rdsi}
+            value={crops.rdsi || ""}
             onChange={(e) =>
               handlechange({ event: e, setFormStateData: setCrops })
             }
             type="number"
             placeholder="0"
-            className="!border-t-blue-gray-200 focus:!border-t-gray-900"
+            className="!border-t-blue-gray-200 placeholder:opacity-100 focus:!border-t-gray-900"
             labelProps={{
               className: "before:content-none after:content-none",
             }}
@@ -281,13 +281,13 @@ const Crops = () => {
           <Input
             disabled={params.action === "view" || params.action === "finish"}
             name="rdsr"
-            value={crops.rdsr}
+            value={crops.rdsr || ""}
             onChange={(e) =>
               handlechange({ event: e, setFormStateData: setCrops })
             }
             type="number"
             placeholder="0"
-            className="!border-t-blue-gray-200 focus:!border-t-gray-900"
+            className="!border-t-blue-gray-200 placeholder:opacity-100 focus:!border-t-gray-900"
             labelProps={{
               className: "before:content-none after:content-none",
             }}
@@ -297,14 +297,14 @@ const Crops = () => {
           <Typography>Wet Season, Irrigated (Has)</Typography>
           <Input
             disabled={params.action === "view" || params.action === "finish"}
-            value={crops.rwsi}
+            value={crops.rwsi || ""}
             name="rwsi"
             onChange={(e) =>
               handlechange({ event: e, setFormStateData: setCrops })
             }
             type="number"
             placeholder="0"
-            className="!border-t-blue-gray-200 focus:!border-t-gray-900"
+            className="!border-t-blue-gray-200 placeholder:opacity-100 focus:!border-t-gray-900"
             labelProps={{
               className: "before:content-none after:content-none",
             }}
@@ -315,13 +315,13 @@ const Crops = () => {
           <Input
             disabled={params.action === "view" || params.action === "finish"}
             name="rwsr"
-            value={crops.rwsr}
+            value={crops.rwsr || ""}
             onChange={(e) =>
               handlechange({ event: e, setFormStateData: setCrops })
             }
             type="number"
             placeholder="0"
-            className="!border-t-blue-gray-200 focus:!border-t-gray-900"
+            className="!border-t-blue-gray-200 placeholder:opacity-100 focus:!border-t-gray-900"
             labelProps={{
               className: "before:content-none after:content-none",
             }}
@@ -332,13 +332,13 @@ const Crops = () => {
           <Input
             disabled={params.action === "view" || params.action === "finish"}
             name="crop_residues"
-            value={crops.crop_residues}
+            value={crops.crop_residues || ""}
             onChange={(e) =>
               handlechange({ event: e, setFormStateData: setCrops })
             }
             type="number"
             placeholder="0"
-            className="!border-t-blue-gray-200 focus:!border-t-gray-900"
+            className="!border-t-blue-gray-200 placeholder:opacity-100 focus:!border-t-gray-900"
             labelProps={{
               className: "before:content-none after:content-none",
             }}
@@ -349,13 +349,13 @@ const Crops = () => {
           <Input
             disabled={params.action === "view" || params.action === "finish"}
             name="dol_limestone"
-            value={crops.dol_limestone}
+            value={crops.dol_limestone || ""}
             onChange={(e) =>
               handlechange({ event: e, setFormStateData: setCrops })
             }
             type="number"
             placeholder="0"
-            className="!border-t-blue-gray-200 focus:!border-t-gray-900"
+            className="!border-t-blue-gray-200 placeholder:opacity-100 focus:!border-t-gray-900"
             labelProps={{
               className: "before:content-none after:content-none",
             }}

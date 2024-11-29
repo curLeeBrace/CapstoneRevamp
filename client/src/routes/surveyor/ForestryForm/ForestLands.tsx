@@ -264,12 +264,12 @@ const Wood = () => {
           <Input
             disabled = {params.action === "view" || params.action === "finish"}
             name="ufA"
-            value={forestLandsData.ufA}
+            value={forestLandsData.ufA || ""}
             onChange={(e) => handleChange({event:e, setFormStateData : setforestLandsData})}
             size="lg"
             type="number"
             placeholder="0"
-            className="!border-t-blue-gray-200 focus:!border-t-gray-900"
+            className="!border-t-blue-gray-200 placeholder:opacity-100 focus:!border-t-gray-900"
             labelProps={{
               className: "before:content-none after:content-none",
             }}
@@ -281,12 +281,12 @@ const Wood = () => {
           <Input
             disabled = {params.action === "view" || params.action === "finish"}
             name = "uaG"
-            value={forestLandsData.uaG}
+            value={forestLandsData.uaG || ""}
             onChange={(e) => handleChange({event:e, setFormStateData : setforestLandsData})}
             size="lg"
             type="number"
             placeholder="0"
-            className="!border-t-blue-gray-200 focus:!border-t-gray-900"
+            className="!border-t-blue-gray-200 placeholder:opacity-100 focus:!border-t-gray-900"
             labelProps={{
               className: "before:content-none after:content-none",
             }}
@@ -298,12 +298,12 @@ const Wood = () => {
           <Input
             disabled = {params.action === "view" || params.action === "finish"}
             name="laBA"
-            value={forestLandsData.laBA}
+            value={forestLandsData.laBA || ""}
             onChange={(e) => handleChange({event:e, setFormStateData : setforestLandsData})}
             size="lg"
             type="number"
             placeholder="0"
-            className="!border-t-blue-gray-200 focus:!border-t-gray-900"
+            className="!border-t-blue-gray-200 placeholder:opacity-100 focus:!border-t-gray-900"
             labelProps={{
               className: "before:content-none after:content-none",
             }}

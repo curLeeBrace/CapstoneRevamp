@@ -271,12 +271,12 @@ const Wood = () => {
           <Input
             disabled = {params.action === "view" || params.action === "finish"}
             name="fuelwood"
-            value={woodData.fuelwood}
+            value={woodData.fuelwood || ""}
             onChange={(e) => handleChange({event:e, setFormStateData : setWoodData})}
             size="lg"
             type="number"
             placeholder="0"
-            className="!border-t-blue-gray-200 focus:!border-t-gray-900"
+            className="!border-t-blue-gray-200 placeholder:opacity-100 focus:!border-t-gray-900"
             labelProps={{
               className: "before:content-none after:content-none",
             }}
@@ -284,16 +284,16 @@ const Wood = () => {
         </div>
 
         <div className="w-full lg:w-52 my-2">
-          <Typography>Charcoal (unitless)</Typography>
+          <Typography>Charcoal (cubic meters)</Typography>
           <Input
             disabled = {params.action === "view" || params.action === "finish"}
             name = "charcoal"
-            value={woodData.charcoal}
+            value={woodData.charcoal || ""}
             onChange={(e) => handleChange({event:e, setFormStateData : setWoodData})}
             size="lg"
             type="number"
             placeholder="0"
-            className="!border-t-blue-gray-200 focus:!border-t-gray-900"
+            className="!border-t-blue-gray-200 placeholder:opacity-100 focus:!border-t-gray-900"
             labelProps={{
               className: "before:content-none after:content-none",
             }}
@@ -305,12 +305,12 @@ const Wood = () => {
           <Input
             disabled = {params.action === "view" || params.action === "finish"}
             name="construction"
-            value={woodData.construction}
+            value={woodData.construction || ""}
             onChange={(e) => handleChange({event:e, setFormStateData : setWoodData})}
             size="lg"
             type="number"
             placeholder="0"
-            className="!border-t-blue-gray-200 focus:!border-t-gray-900"
+            className="!border-t-blue-gray-200 placeholder:opacity-100 focus:!border-t-gray-900"
             labelProps={{
               className: "before:content-none after:content-none",
             }}
@@ -318,16 +318,16 @@ const Wood = () => {
         </div>
 
         <div className="w-full lg:w-52 my-2">
-          <Typography>Novelties (unitless)</Typography>
+          <Typography>Novelties (hectare)</Typography>
           <Input
             disabled = {params.action === "view" || params.action === "finish"}
             name="novelties"
-            value={woodData.novelties}
+            value={woodData.novelties || ""}
             onChange={(e) => handleChange({event:e, setFormStateData : setWoodData})}
             size="lg"
             type="number"
             placeholder="0"
-            className="!border-t-blue-gray-200 focus:!border-t-gray-900"
+            className="!border-t-blue-gray-200 placeholder:opacity-100 focus:!border-t-gray-900"
             labelProps={{
               className: "before:content-none after:content-none",
             }}

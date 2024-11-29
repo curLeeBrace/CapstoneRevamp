@@ -86,6 +86,7 @@ const SurveyedList = () => {
         set_tbHead([
           "ID",
           locationLabel,
+          "Status",
           "Charcoal - (Cooking)",
           "Diesel - (Cooking)",
           "Kerosene - (Cooking)",
@@ -120,6 +121,31 @@ const SurveyedList = () => {
           status,
           form_type,
         } = data.survey_data;
+
+        let statusText: string;
+        let statusColor: string; 
+        
+        const statusNumber = Number(status);  
+        
+        switch (statusNumber) {
+          case 0:
+            statusText = "Not Pending";
+            statusColor = "text-green-500";  
+            break;
+          case 1:
+            statusText = "Pending";
+            statusColor = "text-red-500"; 
+            break;
+          case 2:
+            statusText = "Checked";
+            statusColor = "text-yellow-700";
+            break;
+          default:
+            statusText = "Unknown";
+            statusColor = "text-gray-500";
+        }
+        
+
         const dateTime = new Date(data.dateTime_created).toLocaleDateString() + " " + new Date(data.dateTime_created).toLocaleTimeString();
         const LinkComponent = (
           <Link
@@ -145,7 +171,7 @@ const SurveyedList = () => {
           fuel_type,
           liters_consumption,
           form_type,
-          status,
+          <span className={statusColor}>{statusText}</span>,
           dateTime,
           LinkComponent,
         ];
@@ -160,6 +186,31 @@ const SurveyedList = () => {
           status,
           form_type,
         } = data.survey_data;
+
+        let statusText: string;
+        let statusColor: string; 
+        
+        const statusNumber = Number(status);  
+        
+        switch (statusNumber) {
+          case 0:
+            statusText = "Not Pending";
+            statusColor = "text-green-500";  
+            break;
+          case 1:
+            statusText = "Pending";
+            statusColor = "text-red-500"; 
+            break;
+          case 2:
+            statusText = "Checked";
+            statusColor = "text-yellow-700";
+            break;
+          default:
+            statusText = "Unknown";
+            statusColor = "text-gray-500";
+        }
+        
+        
         const dateTime = new Date(data.dateTime_created).toLocaleDateString() + " " + new Date(data.dateTime_created).toLocaleTimeString();
         const form_id = data.form_id;
         const LinkComponent = (
@@ -192,7 +243,7 @@ const SurveyedList = () => {
           riverDischarge.cat1,
           riverDischarge.cat2,
           form_type,
-          status,
+          <span className={statusColor}>{statusText}</span>,
           dateTime,
           LinkComponent,
         ];
@@ -207,8 +258,33 @@ const SurveyedList = () => {
           generator,
           lighting,
           brgy_name,
+          status,
           form_type,
         } = data.survey_data;
+
+        let statusText: string;
+        let statusColor: string; 
+        
+        const statusNumber = Number(status);  
+        
+        switch (statusNumber) {
+          case 0:
+            statusText = "Not Pending";
+            statusColor = "text-green-500";  
+            break;
+          case 1:
+            statusText = "Pending";
+            statusColor = "text-red-500"; 
+            break;
+          case 2:
+            statusText = "Checked";
+            statusColor = "text-yellow-700";
+            break;
+          default:
+            statusText = "Unknown";
+            statusColor = "text-gray-500";
+        }
+        
         const dateTime = new Date(data.dateTime_created).toLocaleDateString() + " " + new Date(data.dateTime_created).toLocaleTimeString();
         const form_id = data.form_id;
 
@@ -237,6 +313,7 @@ const SurveyedList = () => {
         return [
           data.form_id.slice(-3),
           brgy_name,
+          <span className={statusColor}>{statusText}</span>,
           cooking.charcoal,
           cooking.diesel,
           cooking.kerosene,

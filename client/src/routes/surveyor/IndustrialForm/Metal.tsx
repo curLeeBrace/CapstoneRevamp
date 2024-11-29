@@ -244,12 +244,12 @@ const finishHandler = () => {
         <Input
           disabled = {params.action === "view" || params.action === "finish"}
           name="ispif"
-          value = {metalData.ispif}
+          value = {metalData.ispif || ""}
           onChange={(e) => handleChange({event : e, setFormStateData : setMetalData})}
           size="lg"
           type="number"
           placeholder="0"
-          className="!border-t-blue-gray-200 focus:!border-t-gray-900"
+          className="!border-t-blue-gray-200 placeholder:opacity-100 focus:!border-t-gray-900"
           labelProps={{
             className: "before:content-none after:content-none",
           }}
@@ -266,12 +266,12 @@ const finishHandler = () => {
       <Input
         disabled = {params.action === "view" || params.action === "finish"}
         name="ispnif"
-        value={metalData.ispnif}
+        value={metalData.ispnif || ""}
         onChange={(e) => handleChange({event : e, setFormStateData : setMetalData})}
         size="lg"
         type="number"
         placeholder="0"
-        className="!border-t-blue-gray-200 focus:!border-t-gray-900"
+        className="!border-t-blue-gray-200 placeholder:opacity-100 focus:!border-t-gray-900"
         labelProps={{
           className: "before:content-none after:content-none",
         }}

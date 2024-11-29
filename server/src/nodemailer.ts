@@ -35,7 +35,7 @@ export const send_email = async ({email, html} : Verification_Args) => {
             `
         })
         console.log("Sending Data : ", info.response);
-        return {succsess : true, message : "verification link, sucessfully sent!"}
+        return {succsess : true, message : "verification link, successfully sent!"}
         
 
        

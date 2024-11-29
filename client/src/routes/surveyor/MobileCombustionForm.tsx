@@ -274,8 +274,10 @@ const finishHandler = () => {
 
 const submitValidation = () => {
     const {form_type, fuel_type, liters_consumption, vehicle_age, vehicle_type} = formData
-   
-    if(form_type && fuel_type &&  liters_consumption && vehicle_age && vehicle_type &&  (user_info.user_type !== 'lu_admin' ? brgy?.address_name : true))
+
+    const isVehicleAgeValid = (params.action === "view" || params.action === "finish" || vehicle_age) ? true : false;
+
+    if(form_type && fuel_type &&  liters_consumption && isVehicleAgeValid && vehicle_type &&  (user_info.user_type !== 'lu_admin' ? brgy?.address_name : true))
     {
       setOpenDialogBox(true);
     } else {
@@ -287,6 +289,7 @@ const submitValidation = () => {
 
 console.log("FormData ", formData)
 // console.log("SELECTED VTYPE : ", formData.vehicle_type)
+
 
   return (
     <div className="flex justify-center min-h-screen px-4 py-10 overflow-x-hidden bg-gray-200">
@@ -382,18 +385,23 @@ console.log("FormData ", formData)
               }
             </div>
             <div>
-              <Typography variant="h6" color="blue-gray" className="mt-2">
-                Vehicle Year Model
-              </Typography>
+            <Typography variant="h6" color="blue-gray" className="mt-2">
+              {params.action === "view" || params.action === "finish" 
+                ? "Vehicle Age" 
+                : "Vehicle Year Model"}
+            </Typography>
               <Input
               disabled = {params.action === "view" || params.action === "finish"}
                name='vehicle_age'
-               value = {formData.vehicle_age}
+               value={formData.vehicle_age}
                onChange={(event)=> handleChange({event, setFormStateData : setFormData})}
                 type="number"
                 size="lg"
                 placeholder="Example : 1990"
-                className="w-full placeholder:opacity-100 focus:!border-t-gray-900 border-t-blue-gray-200"
+                className="!border-t-blue-gray-200 placeholder:opacity-100 focus:!border-t-gray-900"
+                labelProps={{
+                  className: "before:content-none after:content-none",
+                }}
                 maxLength={4}
                 min={1500}
                 max={new Date().getFullYear()}
@@ -445,12 +453,15 @@ console.log("FormData ", formData)
               <Input
                 disabled = {params.action === "view" || params.action === "finish"}
                  name='liters_consumption'
-                 value = {formData.liters_consumption}
+                 value = {formData.liters_consumption || ""}
                  onChange={(event)=> handleChange({event, setFormStateData : setFormData})}
                   type="number"
                   size="lg"
                   placeholder="Example: 3"
-                  className="w-full placeholder:opacity-100 focus:!border-t-gray-900 border-t-blue-gray-200"
+                  className="!border-t-blue-gray-200 placeholder:opacity-100 focus:!border-t-gray-900"
+                  labelProps={{
+                    className: "before:content-none after:content-none",
+                  }}
                   min={0}
                   max={999}
                   maxLength={3}

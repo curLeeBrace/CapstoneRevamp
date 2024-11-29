@@ -32,11 +32,11 @@ const AgricultureList = () => {
         
         if(agricultureType === "crops"){
             set_tbHead(["ID", 
-                locationLabel, 
+                locationLabel, "Status",
                 "Dry Season, Irrigated (Has)", "Dry Season, Rainfed (Has)", "Wet Season, Irrigated (Has)", "Wet Season, Rainfed (Has)", "Crops Residue (Tons)", "Dolomite and/or Limestone Consumption (Kg)","DateTime","Action"])
         } else {
             set_tbHead(["ID", 
-                locationLabel,
+                locationLabel, "Status",
                 "Buffalo (Heads)", "Dairy Cattle (Heads)", "Goat (Heads)", "Horse (Heads)", "Non-Dairy Cattle (Heads)", "Poultry (Heads)", "Swine (Heads)","DateTime","Action"])
         }
 
@@ -79,6 +79,7 @@ const AgricultureList = () => {
             tb_data = form_data.map((data: any) => {
                 const form_id = data.form_id;
                 const brgy_name = data.survey_data.brgy_name
+                const status = data.survey_data.status
                 const {
                     rdsi,
                     rdsr,
@@ -87,6 +88,30 @@ const AgricultureList = () => {
                     crop_residues,
                     dol_limestone,
                 } = data.survey_data.crops
+
+                let statusText: string;
+                let statusColor: string; 
+                
+                const statusNumber = Number(status);  
+                
+                switch (statusNumber) {
+                  case 0:
+                    statusText = "Not Pending";
+                    statusColor = "text-green-500";  
+                    break;
+                  case 1:
+                    statusText = "Pending";
+                    statusColor = "text-red-500"; 
+                    break;
+                  case 2:
+                    statusText = "Checked";
+                    statusColor = "text-yellow-700";
+                    break;
+                  default:
+                    statusText = "Unknown";
+                    statusColor = "text-gray-500";
+                }                
+
                 const dateTime = new Date(data.dateTime_created).toLocaleDateString() + " " + new Date(data.dateTime_created).toLocaleTimeString();
 
                 const LinkComponent = (
@@ -110,6 +135,7 @@ const AgricultureList = () => {
                 return [
                     form_id.slice(-3), 
                     brgy_name,
+                    <span className={statusColor}>{statusText}</span>,
                     rdsi,
                     rdsr,
                     rwsi,
@@ -127,6 +153,7 @@ const AgricultureList = () => {
             tb_data = form_data.map((data: any) => {
                 const form_id = data.form_id;
                 const brgy_name = data.survey_data.brgy_name
+                const status = data.survey_data.status
                 const {
                     buffalo,
                     cattle,
@@ -136,6 +163,30 @@ const AgricultureList = () => {
                     swine,
                     non_dairyCattle,
                 } = data.survey_data.live_stock
+
+                let statusText: string;
+                let statusColor: string; 
+                
+                const statusNumber = Number(status);  
+                
+                switch (statusNumber) {
+                  case 0:
+                    statusText = "Not Pending";
+                    statusColor = "text-green-500";  
+                    break;
+                  case 1:
+                    statusText = "Pending";
+                    statusColor = "text-red-500"; 
+                    break;
+                  case 2:
+                    statusText = "Checked";
+                    statusColor = "text-yellow-700";
+                    break;
+                  default:
+                    statusText = "Unknown";
+                    statusColor = "text-gray-500";
+                }                
+                
                 const dateTime = new Date(data.dateTime_created).toLocaleDateString() + " " + new Date(data.dateTime_created).toLocaleTimeString();
 
                 const LinkComponent = (
@@ -160,6 +211,7 @@ const AgricultureList = () => {
                 return [
                     form_id.slice(-3), 
                     brgy_name,
+                    <span className={statusColor}>{statusText}</span>,
                     buffalo,
                     cattle,
                     goat,
