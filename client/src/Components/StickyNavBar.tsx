@@ -270,6 +270,7 @@ export function StickyNavbar() {
 
 
 
+
   const navList = (
     <ul className="mt-2 mb-4 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6">
     {nav.map((navItem, index) => (
@@ -285,6 +286,7 @@ export function StickyNavbar() {
               isPending ? "" : isActive ? "font-extrabold" : ""
             }
             to={navItem.url}
+            onClick={() => setOpenNav(false)}
           >
             {navItem.name}
           </NavLink>
@@ -294,22 +296,22 @@ export function StickyNavbar() {
 
     {u_type === "Surveyor" &&
       <Fragment>
-        <NavListMenu navListMenuItems={url_listOfSurveyData} navName="SurveyData" />
-        <NavListMenu navListMenuItems={url_ofSurveyorsForm} navName="Forms" />
+        <NavListMenu navListMenuItems={url_listOfSurveyData} navName="SurveyData" setOpenNav={setOpenNav} />
+        <NavListMenu navListMenuItems={url_ofSurveyorsForm} navName="Forms" setOpenNav={setOpenNav}/>
       </Fragment>
     }
 
     {u_type === "L.U. Surveyor" &&
       <Fragment>
-        <NavListMenu navListMenuItems={url_listOfSurveyData} navName="SurveyData" />
-        <NavListMenu navListMenuItems={url_ofSurveyorsForm} navName="Forms" />
+        <NavListMenu navListMenuItems={url_listOfSurveyData} navName="SurveyData" setOpenNav={setOpenNav} />
+        <NavListMenu navListMenuItems={url_ofSurveyorsForm} navName="Forms" setOpenNav={setOpenNav}/>
       </Fragment>
     }
 
     {
       u_type !== "Surveyor" && u_type !== "L.U. Surveyor" && 
       <Fragment>
-        <NavListMenu navListMenuItems={summaryURL} navName="Summary"/>
+        <NavListMenu navListMenuItems={summaryURL} navName="Summary"setOpenNav={setOpenNav}/>
       </Fragment>
     }
   </ul>
@@ -351,8 +353,8 @@ export function StickyNavbar() {
 
               <IconButton
                 variant="text"
-                className="ml-auto h-6 w-6 text-inherit hover:bg-transparent focus:bg-transparent active:bg-transparent lg:hidden"
-                ripple={false}
+                className="ml-auto h-6 w-6 text-inherit hover:bg-transparent focus:bg-transparent active:bg-transparent lg:hidden text-white"
+                ripple={true}
                 onClick={() => setOpenNav(!openNav)}
               >
                 {openNav ? (

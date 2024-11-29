@@ -271,11 +271,11 @@ const finishHandler = () => {
             disabled = {params.action === "view" || params.action === "finish"}
             name = "cpp"
             onChange={(e)=>{handleChange({event : e, setFormStateData  : setMineralData})}}
-            value={mineralData.cpp}
+            value={mineralData.cpp || ""}
             size="lg"
             type="number"
             placeholder="0"
-            className="!border-t-blue-gray-200 focus:!border-t-gray-900"
+            className="!border-t-blue-gray-200 placeholder:opacity-100 focus:!border-t-gray-900"
             labelProps={{
               className: "before:content-none after:content-none",
             }}
@@ -288,11 +288,11 @@ const finishHandler = () => {
             disabled = {params.action === "view" || params.action === "finish"}
             name="cpb"
             onChange={(e)=>{handleChange({event : e, setFormStateData  : setMineralData})}}
-            value={mineralData.cpb}
+            value={mineralData.cpb || ""}
             size="lg"
             type="number"
             placeholder="0"
-            className="!border-t-blue-gray-200 focus:!border-t-gray-900 "
+            className="!border-t-blue-gray-200 placeholder:opacity-100 focus:!border-t-gray-900 "
             labelProps={{
               className: "before:content-none after:content-none",
             }}
@@ -307,11 +307,11 @@ const finishHandler = () => {
             disabled = {params.action === "view" || params.action === "finish"}
             name="lp"
             onChange={(e)=>{handleChange({event : e, setFormStateData  : setMineralData})}}
-            value={mineralData.lp}
+            value={mineralData.lp || ""}
             size="lg"
             type="number"
             placeholder="0"
-            className="!border-t-blue-gray-200 focus:!border-t-gray-900"
+            className="!border-t-blue-gray-200 placeholder:opacity-100 focus:!border-t-gray-900"
             labelProps={{
               className: "before:content-none after:content-none",
             }}
@@ -324,11 +324,11 @@ const finishHandler = () => {
             disabled = {params.action === "view" || params.action === "finish"}
             name = "gp"
             onChange={(e)=>{handleChange({event : e, setFormStateData  : setMineralData})}}
-            value={mineralData.gp}
+            value={mineralData.gp || ""}
             size="lg"
             type="number"
             placeholder="0"
-            className="!border-t-blue-gray-200 focus:!border-t-gray-900"
+            className="!border-t-blue-gray-200 placeholder:opacity-100 focus:!border-t-gray-900"
             labelProps={{
               className: "before:content-none after:content-none",
             }}

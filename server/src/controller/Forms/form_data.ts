@@ -38,7 +38,7 @@ const formData = async (req:Request, res:Response) => {
             if (form_category === "waste-water" || form_category === "mobile-combustion" || 
                 form_category === "stationary" || form_category === "agriculture-crops" || form_category === "agriculture-livestocks" ||
                 form_category === "industrial-mineral" || form_category === "industrial-chemical" ||form_category === "industrial-metal" ||
-                form_category === "industrial-electronics" || form_category === "industrial-others" 
+                form_category === "industrial-electronics" || form_category === "industrial-others" || form_category === "falu-wood" || form_category === "falu-forestland" 
              ) {
                 if (brgy_code !== undefined) {
                     query = {
