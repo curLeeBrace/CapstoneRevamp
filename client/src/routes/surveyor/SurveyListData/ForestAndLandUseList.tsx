@@ -91,16 +91,16 @@ const ForestAndLandUseList = () => {
                 
                 switch (statusNumber) {
                   case 0:
-                    statusText = "Not Pending";
-                    statusColor = "text-green-500";  
+                    statusText = "Okay";
+                    statusColor = "text-green-500 font-bold";  
                     break;
                   case 1:
                     statusText = "Pending";
-                    statusColor = "text-red-500"; 
+                    statusColor = "text-red-500 font-bold"; 
                     break;
                   case 2:
-                    statusText = "Checked";
-                    statusColor = "text-yellow-700";
+                    statusText = "Okay (Update Approved)";
+                    statusColor = "text-yellow-700 font-bold";
                     break;
                   default:
                     statusText = "Unknown";
@@ -128,7 +128,7 @@ const ForestAndLandUseList = () => {
 
 
                   return [
-                    form_id,
+                    form_id.slice(-3),
                     brgy_name,
                     <span className={statusColor}>{statusText}</span>,
                     fuelwood,
@@ -167,16 +167,16 @@ const ForestAndLandUseList = () => {
                 
                 switch (statusNumber) {
                   case 0:
-                    statusText = "Not Pending";
-                    statusColor = "text-green-500";  
+                    statusText = "Okay";
+                    statusColor = "text-green-500 font-bold";  
                     break;
                   case 1:
                     statusText = "Pending";
-                    statusColor = "text-red-500"; 
+                    statusColor = "text-red-500 font-bold"; 
                     break;
                   case 2:
-                    statusText = "Checked";
-                    statusColor = "text-yellow-700";
+                    statusText = "Okay (Update Approved)";
+                    statusColor = "text-yellow-700 font-bold";
                     break;
                   default:
                     statusText = "Unknown";
@@ -205,7 +205,7 @@ const ForestAndLandUseList = () => {
 
 
                   return [
-                    form_id,
+                    form_id.slice(-3),
                     brgy_name,
                     <span className={statusColor}>{statusText}</span>,
                     ufA,

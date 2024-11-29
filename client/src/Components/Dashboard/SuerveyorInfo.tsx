@@ -71,7 +71,7 @@ const SurveyorInfo = () => {
   const isLuUser = userInfo.user_type === "lu_admin";
   const locationLabel = isLuUser ? "Institution" : "Municipality";
 
-  const TB_HEADER = ["Profile", "Name",  locationLabel ,"Mobile Combustion", "Waste Water", "Industrial", "Agriculture", "Stationary"]
+  const TB_HEADER = ["Profile", "Name",  locationLabel ,"Mobile Combustion", "Waste Water", "Industrial", "Agriculture", "Stationary", "Forestry"] 
 
   // console.log("Accs : ", accs);
 
@@ -119,7 +119,8 @@ const SurveyorInfo = () => {
                           <div className="text-black text-wrap overflow-hidden ml-20 ">{acc.wasteWaterSurveyCount}</div>
                           <div className="text-black text-wrap overflow-hidden ml-20">{acc.industrialSurveyCount}</div>
                           <div className="text-black text-wrap overflow-hidden ml-10">{acc.agricultureSurveyCount}</div>
-                          <div className="text-black text-wrap overflow-hidden ">{acc.stationarySurveyCount}</div>
+                          <div className="text-black text-wrap overflow-hidden ml-10 ">{acc.stationarySurveyCount}</div>
+                          <div className="text-black text-wrap overflow-hidden ml-14 ">{acc.forestrySurveyCount}</div>
 
                           
                         </div>
