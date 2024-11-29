@@ -1,5 +1,7 @@
-import { Card, Typography } from "@material-tailwind/react";
+import { Button, Card, Typography } from "@material-tailwind/react";
 import Skeleton from "./Skeleton";
+import exportGhge from "../custom-hooks/export_data/exportGHGe";
+import { ArrowRightCircleIcon } from "@heroicons/react/24/solid";
 
 interface TableRow {
   name: string;
@@ -23,8 +25,30 @@ export function TableWithFooter({
   totalProportion,
   loading,
 }: TableWithFooterProps) {
+
+  const currentYear = new Date().getFullYear();
+
+  const columns = ["name", "ghge", "proportion"];
+  const fileName = `GHG_Emissions_Report_${currentYear}`;
+
+  const handleExport = () => {
+    exportGhge(
+      tableRows,
+      columns,
+      tableHead,
+      totalGHGEmissions,
+      totalProportion,
+      fileName
+    );
+  };
+
   return (
-    <Card className="h-full w-full overflow-auto pb-4">
+    <Card className="h-full w-full overflow-auto pb-4 border-2 border-gray-200">
+      <div className="flex justify-start p-2">
+    <Button onClick={handleExport} className="bg-darkgreen items-center flex hover:bg-green-800">
+      <ArrowRightCircleIcon className="h-6 mx-2"/> Export to Excel
+    </Button>
+  </div>
       {loading ? (
         <div className="w-96 ml-52 mt-4 grid grid-cols-2">
         <div className="w-96 self-center">
