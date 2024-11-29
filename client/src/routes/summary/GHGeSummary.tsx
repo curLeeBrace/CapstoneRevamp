@@ -82,7 +82,7 @@ useEffect(()=>{
   .then((res)=>{
     const ghge = res.data;
     setisLoading(false)
-
+    
 
 
     if(ghge){
@@ -253,15 +253,15 @@ useEffect(()=>{
 
 
 
-
-
-
-
    return (
     <div className='mt-2 flex flex-col w-full p-4'>
        <Typography className='bg-darkgreen font-bold text-lg mb-4 rounded-lg py-3 -mt-3 text-center' color='white'>
       GHG Emissions Summary Table
             </Typography>
+            {/* <button onClick={handleExport} className="flex items-center">
+                <ArrowRightCircleIcon className="h-6 mx-2" />
+                Export to Excel
+            </button> */}
           <div className='lg:flex flex-row md:w-1/2 w-full md:justify-around self-center mb-4 border-green-400 border-2 rounded-lg py-3'> 
             <div className='mb-2 mx-2'>
               {
