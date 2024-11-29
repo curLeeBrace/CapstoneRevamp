@@ -10,6 +10,8 @@ import OthersSchema from "../../db_schema/Industrial/OthersSchema";
 import AgricultureCrops from "../../db_schema/Agriculture/AgricultureCrops";
 import AgricultureLiveStock from "../../db_schema/Agriculture/AgricultureLiveStock";
 import StationarySchema from "../../db_schema/StationarySchema";
+import WoodSchema from "../../db_schema/ForestryAndLandUSe/WoodSchema";
+import ForestLandSchema from "../../db_schema/ForestryAndLandUSe/ForestLandSchema";
 
 const get_surveyor_info = async (req : Request, res : Response) => {
 
@@ -83,6 +85,17 @@ const get_surveyor_info = async (req : Request, res : Response) => {
         const stationaryData = await StationarySchema.find({});
 
 
+        const [falu_woodData, falu_forestlandData] = await Promise.all([
+            WoodSchema.find({}),
+            ForestLandSchema.find({})
+
+        ])
+
+        const forestryData = {
+            falu_woodData,
+            falu_forestlandData,
+        }
+
         if(!accs) return res.sendStatus(204);
         
 
@@ -95,6 +108,8 @@ const get_surveyor_info = async (req : Request, res : Response) => {
             let industrialSurveyCount = getIndustrialSurveyCount(industrialData, acc.email);;
             let agricultureSurveyCount = getAgricultureSurveyCount(agricultureData, acc.email);;
             let stationarySurveyCount = getSurveyCount(stationaryData, acc.email);
+            let forestrySurveyCount = getForestrySurveyCount(forestryData, acc.email);
+
 
         
 
@@ -109,7 +124,8 @@ const get_surveyor_info = async (req : Request, res : Response) => {
                     wasteWaterSurveyCount,
                     industrialSurveyCount,
                     agricultureSurveyCount,
-                    stationarySurveyCount
+                    stationarySurveyCount,
+                    forestrySurveyCount
                 });
             
         });
@@ -163,4 +179,12 @@ const getAgricultureSurveyCount = (agricultureData: any, email: string): number 
     return cropsCount + liveStocksCount;
 };
 
+const getForestrySurveyCount = (forestryData: any, email: string): number => {
+    // Count surveys 
+    const woodCount = getSurveyCount(forestryData.falu_woodData, email);
+    const forestLandCount = getSurveyCount(forestryData.falu_forestlandData, email);
+
+
+    return woodCount + forestLandCount;
+};
 export { get_surveyor_info };
