@@ -50,10 +50,10 @@ const getforestLandUseEfactor = async(req : Request, res:Response) => {
         } else {
             if(falu_type === "falu-wood") {
                 response_efactors = DEFAULT_FALU_EFACTOR.wood
-                await FALU_EfactorSchema.create({wood :  DEFAULT_FALU_EFACTOR.wood});
+                await FALU_EfactorSchema.create({wood :  DEFAULT_FALU_EFACTOR.wood, year});
             } else {
                 response_efactors = DEFAULT_FALU_EFACTOR.forestland
-                await FALU_EfactorSchema.create({forestland : DEFAULT_FALU_EFACTOR.forestland});
+                await FALU_EfactorSchema.create({forestland : DEFAULT_FALU_EFACTOR.forestland, year});
             }
         }
 
