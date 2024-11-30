@@ -7,7 +7,11 @@ const AgricultureEfactorShema = new mongoose.Schema({
         co2 : {type : Number, default : 0},
         ch4 : {type : Number, default : 0},
         n2o : {type : Number, default : 0},
-    }], required : true}
+    }], required : true},
+    year : {type : String, required : true},
+
+
+    
     
 })
 

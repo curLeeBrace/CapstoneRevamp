@@ -128,7 +128,7 @@ const DEFAULT_AGRICULTURE_LIVESTOCKS_EFACTORS : EmmisionFactorTypes[] =  [
 
 
 
- const getAgricultureGHGe = async (user_type:string , query : {}, locations : any[], agricultureType : "crops" | "liveStocks") : Promise<{
+ const getAgricultureGHGe = async (user_type:string , query : {}, locations : any[], agricultureType : "crops" | "liveStocks", year:string|undefined = new Date().getFullYear().toString()) : Promise<{
     ghge : number
     loc_name : string;
  }[]> => {
@@ -215,7 +215,7 @@ const DEFAULT_AGRICULTURE_LIVESTOCKS_EFACTORS : EmmisionFactorTypes[] =  [
                     
                         
 
-                        const ghge = await agricultureTotalGHGe(agricultureQtyData, agricultureType);
+                        const ghge = await agricultureTotalGHGe(agricultureQtyData, agricultureType, year);
 
                         temp_ghge += ghge;
 
@@ -223,7 +223,7 @@ const DEFAULT_AGRICULTURE_LIVESTOCKS_EFACTORS : EmmisionFactorTypes[] =  [
                 } else {
 
                     if(data.survey_data.brgy_code === root_loc_code)  {
-                        const ghge = await agricultureTotalGHGe(agricultureQtyData, agricultureType);
+                        const ghge = await agricultureTotalGHGe(agricultureQtyData, agricultureType, year);
 
                         temp_ghge += ghge;
                     }
@@ -255,14 +255,14 @@ const DEFAULT_AGRICULTURE_LIVESTOCKS_EFACTORS : EmmisionFactorTypes[] =  [
 
 
 
- const agricultureTotalGHGe = async(surveyQtyData : CropsDataTypes | LiveStocksDataTypes, agricultureType : "crops" | "liveStocks") : Promise<number> => {
+ const agricultureTotalGHGe = async(surveyQtyData : CropsDataTypes | LiveStocksDataTypes, agricultureType : "crops" | "liveStocks", year:string|undefined = new Date().getFullYear().toString()) : Promise<number> => {
 
 
 
     let totalghge = 0;
     let emmisionFactors : EmmisionFactorTypes [] = []
     
-    const db_agricultureEfactors = await AgricultureEfactorShema.findOne({agriculture_type : agricultureType}).exec();
+    const db_agricultureEfactors = await AgricultureEfactorShema.findOne({agriculture_type : agricultureType, year}).exec();
 
 
 

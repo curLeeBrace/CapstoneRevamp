@@ -50,6 +50,7 @@ const StationaryEfactorSchema = new mongoose.Schema({
             kerosene: defaultEmissions,
         },
     },
+    year : {type : String, required : true},
 });
 
 export default mongoose.model("StationaryEfactor", StationaryEfactorSchema);

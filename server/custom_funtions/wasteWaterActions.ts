@@ -87,7 +87,7 @@ type WasteWaterEfatorType = {
 
 
 
-const getWasteWaterGHGeSum = async (user_type:string , query : {}, locations : any[]) : Promise<{
+const getWasteWaterGHGeSum = async (user_type:string , query : {}, locations : any[], year:string|undefined = new Date().getFullYear().toString()) : Promise<{
     ghge:number,
     loc_name : string
 }[]>  =>{
@@ -118,7 +118,7 @@ const getWasteWaterGHGeSum = async (user_type:string , query : {}, locations : a
                 wasteWaterFormDatas.map(async(wasteWaterFormData)=>{
                     const {septic_tanks, openPits_latrines, riverDischarge, form_type}  = wasteWaterFormData.survey_data
                     const surveyType = wasteWaterFormData.survey_data.form_type;
-                    const waste_wateEfactorData : WasteWaterEfatorType|null = await WasteWaterEfactorSchema.findOne({surveyType : form_type}).exec() as WasteWaterEfatorType|null;
+                    const waste_wateEfactorData : WasteWaterEfatorType|null = await WasteWaterEfactorSchema.findOne({surveyType : form_type, year}).exec() as WasteWaterEfatorType|null;
 
                     
                     if(user_type === "s-admin"){
@@ -151,7 +151,7 @@ const getWasteWaterGHGeSum = async (user_type:string , query : {}, locations : a
 
 
 
-export const getWasteWaterData_perSurvey = async (user_type:string , query : {}) : Promise<WasteWaterDataPerSurvey[]> => {
+export const getWasteWaterData_perSurvey = async (user_type:string , query : {}, year:string|undefined = new Date().getFullYear().toString()) : Promise<WasteWaterDataPerSurvey[]> => {
 
     let wasteWaterDataPerSurvey : WasteWaterDataPerSurvey [] = []
     const wasteWaterFormDatas = await WasteWaterFormSchema.find(query);
@@ -161,7 +161,7 @@ export const getWasteWaterData_perSurvey = async (user_type:string , query : {})
     wasteWaterDataPerSurvey = await Promise.all(wasteWaterFormDatas.map(async (dt : any) => {
 
         const {openPits_latrines, riverDischarge, septic_tanks, form_type} = dt.survey_data
-        const waste_wateEfactorData : WasteWaterEfatorType|null = await WasteWaterEfactorSchema.findOne({surveyType : form_type}).exec() as WasteWaterEfatorType|null;
+        const waste_wateEfactorData : WasteWaterEfatorType|null = await WasteWaterEfactorSchema.findOne({surveyType : form_type, year}).exec() as WasteWaterEfatorType|null;
         console.log("waste_wateEfactorData : ", waste_wateEfactorData);
 
 

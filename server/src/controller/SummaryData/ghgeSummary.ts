@@ -82,17 +82,17 @@ const ghgeSummary = async (req:Request, res:Response) => {
 
 
 
-        const mobileComstion_data =  await get_mobileComstion_GHGe(user_type, query, locations);
+        const mobileComstion_data =  await get_mobileComstion_GHGe(user_type, query, locations,year);
           
-        const wasteWaterGHGe = await getWasteWaterGHGeSum(user_type, query, locations);
-        const industrialGHGe = await getIndustrialOverallGHGe(user_type, query, locations)
-        const agriculture_cropsGHGe = await getAgricultureGHGe(user_type, query, locations, "crops")
-        const agriculture_liveStocksGHGe = await getAgricultureGHGe(user_type, query, locations, "liveStocks")
-        const stationary_resGHGe = await getStationaryGHGe(user_type, query, locations, "residential");
-        const stationary_commGHGe = await getStationaryGHGe(user_type, query, locations, "commercial");
+        const wasteWaterGHGe = await getWasteWaterGHGeSum(user_type, query, locations,year);
+        const industrialGHGe = await getIndustrialOverallGHGe(user_type, query, locations,year)
+        const agriculture_cropsGHGe = await getAgricultureGHGe(user_type, query, locations, "crops",year)
+        const agriculture_liveStocksGHGe = await getAgricultureGHGe(user_type, query, locations, "liveStocks",year)
+        const stationary_resGHGe = await getStationaryGHGe(user_type, query, locations, "residential",year);
+        const stationary_commGHGe = await getStationaryGHGe(user_type, query, locations, "commercial",year);
          //FALU...///////////////////////////////////////////////////////////////////////////////
-         let falu_wood = await getFALU_GHGe(user_type, query, locations, "falu-wood");
-         let falu_forestland = await getFALU_GHGe(user_type, query, locations, "falu-forestland");
+         let falu_wood = await getFALU_GHGe(user_type, query, locations, "falu-wood",year);
+         let falu_forestland = await getFALU_GHGe(user_type, query, locations, "falu-forestland",year);
 
          // console.log("Forest Wood : ", falu_wood),
          // console.log("ForestLand : ", falu_forestland)

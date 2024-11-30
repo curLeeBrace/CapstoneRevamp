@@ -11,24 +11,24 @@ const getIndustrialEfactor = async(req : Request, res : Response) => {
     const {industry_type} = req.params;
 
     try {
-        
-        const industrial_efactor = await IndustrialEfactorSchema.findOne({industry_type}).exec();
+        const year = new Date().getFullYear().toString()
+        const industrial_efactor = await IndustrialEfactorSchema.findOne({industry_type, year}).exec();
 
         if(!industrial_efactor) {
             if(industry_type == "mineral"){
-                await IndustrialEfactorSchema.create({industry_type, e_factor : default_mineral_eFactors});
+                await IndustrialEfactorSchema.create({industry_type, e_factor : default_mineral_eFactors, year});
                 return res.send(default_mineral_eFactors);
             } else if (industry_type == "chemical"){
-                await IndustrialEfactorSchema.create({industry_type, e_factor : default_chemical_eFactors});
+                await IndustrialEfactorSchema.create({industry_type, e_factor : default_chemical_eFactors, year});
                 return res.send(default_chemical_eFactors);
             } else if(industry_type == "metal"){
-                await IndustrialEfactorSchema.create({industry_type, e_factor : default_metal_eFactors});
+                await IndustrialEfactorSchema.create({industry_type, e_factor : default_metal_eFactors, year});
                 return res.send(default_metal_eFactors);
             } else if(industry_type == "electronics"){
-                await IndustrialEfactorSchema.create({industry_type, e_factor : default_electronicsEfactors});
+                await IndustrialEfactorSchema.create({industry_type, e_factor : default_electronicsEfactors, year});
                 return res.send(default_electronicsEfactors);
             } else {
-                await IndustrialEfactorSchema.create({industry_type, e_factor : default_othersEfactors});
+                await IndustrialEfactorSchema.create({industry_type, e_factor : default_othersEfactors, year});
                 return res.send(default_othersEfactors)
             }
 
@@ -50,9 +50,9 @@ const updateIndustrialEfactor = async(req:Request, res:Response) => {
     
     const {emissionFactors, industry_type} = req.body
 
-
+    const year = new Date().getFullYear().toString()
     try {
-        const efactor = await IndustrialEfactorSchema.findOneAndUpdate({industry_type, e_factor : emissionFactors});
+        const efactor = await IndustrialEfactorSchema.findOneAndUpdate({year},{industry_type, e_factor : emissionFactors});
 
         if(!efactor){
             return res.status(204).send("Request is succsess but failed to update emmission factor")

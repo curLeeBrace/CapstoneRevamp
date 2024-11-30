@@ -6,12 +6,13 @@ import { DEFAULT_STATIONARY_EMMISION_FACTOR } from "../../../custom_funtions/sta
 const getStationarEfactor = async(req:Request, res:Response) => {
     
     try {
+        const year = new Date().getFullYear().toString()
         const {category, fuelType} = req.query;
 
 
         const nested_keys = `${category}.${fuelType}`;
 
-        const find_efactors = await StationaryEfactorSchema.findOne({}, {
+        const find_efactors = await StationaryEfactorSchema.findOne({year}, {
             [nested_keys+".co2"] : 1, 
             [nested_keys+".ch4"] : 1,
             [nested_keys+".n2o"] : 1,
@@ -26,7 +27,7 @@ const getStationarEfactor = async(req:Request, res:Response) => {
         if(find_efactors !== null) {
             efactors = nested_keys.split(".").reduce((acc:any, key)=> acc && acc[key], find_efactors);
         } else {
-            await StationaryEfactorSchema.create({[nested_keys] : efactors})
+            await StationaryEfactorSchema.create({[nested_keys] : efactors, year})
         }
 
 
@@ -49,8 +50,8 @@ const updateStationarEfactor = async(req:Request, res:Response) => {
         
         const {category, fuelType, e_factor} = req.body
         const nested_keys = `${category}.${fuelType}`;
-
-        const update_efactor = await StationaryEfactorSchema.findOneAndUpdate({}, {[nested_keys] : e_factor}).exec();
+        const year = new Date().getFullYear().toString()
+        const update_efactor = await StationaryEfactorSchema.findOneAndUpdate({year}, {[nested_keys] : e_factor}).exec();
 
        
         if(!update_efactor) {

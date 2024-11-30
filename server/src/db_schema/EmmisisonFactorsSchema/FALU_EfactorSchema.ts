@@ -21,7 +21,8 @@ const FALU_EfactorSchema = new mongoose.Schema({
         ufA_co2 : 0,
         uaG_co2 : 0,
         laBA_co2 : 0,
-    }}
+    }},
+    year : {type : String, required : true},
 })
 
 

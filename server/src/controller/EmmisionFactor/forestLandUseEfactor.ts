@@ -22,9 +22,10 @@ const DEFAULT_FALU_EFACTOR = {
 const getforestLandUseEfactor = async(req : Request, res:Response) => {
 
     try {
+        const year = new Date().getFullYear().toString()
         const {falu_type} = req.params
         let key = falu_type === "falu-wood" ? "wood" : "forestland";
-        const db_faluEfactor = await FALU_EfactorSchema.findOne({}, {[key] :1, _id : 0}).lean();
+        const db_faluEfactor = await FALU_EfactorSchema.findOne({year}, {[key] :1, _id : 0}).lean();
         let response_efactors = {};
 
 
@@ -75,9 +76,10 @@ const updatedforestLandUseEfactor = async(req:Request, res:Response) => {
     try {
         
         const {falu_type, e_factor} = req.body
+        const year = new Date().getFullYear().toString()
         let key = falu_type === "falu-wood" ? "wood" : "forestland";
         console.log("KEY : ", key);
-        const update_efactor = await FALU_EfactorSchema.findOneAndUpdate({}, {[key] : e_factor}).exec();
+        const update_efactor = await FALU_EfactorSchema.findOneAndUpdate({year}, {[key] : e_factor}).exec();
         console.log("update_efactor : ", update_efactor)
        
         if(!update_efactor) {

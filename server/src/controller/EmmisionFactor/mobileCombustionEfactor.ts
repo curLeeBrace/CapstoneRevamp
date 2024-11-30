@@ -7,8 +7,8 @@ const getMobileCombustionEmmisionFactor = async(req : Request, res : Response) =
     const {fuel_type} = req.params
 
     try {
-        
-        const mb_efactor = await MobileCombustionEfactorSchema.findOne({fuel_type}).exec();
+        const year = new Date().getFullYear().toString()
+        const mb_efactor = await MobileCombustionEfactorSchema.findOne({fuel_type, year}).exec();
 
         if(!mb_efactor) return res.send(
             fuel_type === "diesel" ? {
@@ -43,7 +43,8 @@ const updateMobileCombustionEmmisionFactor = async(req : Request, res : Response
     const {fuel_type, co2, ch4, n2o} = req.body;
 
     try {
-        const mb_efactor =  await MobileCombustionEfactorSchema.findOneAndUpdate({fuel_type}, {
+        const year = new Date().getFullYear().toString()
+        const mb_efactor =  await MobileCombustionEfactorSchema.findOneAndUpdate({fuel_type, year}, {
             co2,
             ch4,
             n2o,
@@ -51,7 +52,7 @@ const updateMobileCombustionEmmisionFactor = async(req : Request, res : Response
 
         if(!mb_efactor) {
             await MobileCombustionEfactorSchema.create({
-                fuel_type, co2, ch4, n2o
+                fuel_type, co2, ch4, n2o, year
             })
         }
         return res.sendStatus(200);

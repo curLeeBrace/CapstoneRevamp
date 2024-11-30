@@ -13,7 +13,8 @@ const IndustrialEfactorSchema = new mongoose.Schema({
         NF3 : {type : Number, default : 0},
         SF6 : {type : Number, default : 0},
         C6F14 : {type : Number, default : 0},
-    }], required : true}
+    }], required : true},
+    year : {type : String, required : true},
 })
 
 

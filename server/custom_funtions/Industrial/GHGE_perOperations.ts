@@ -12,7 +12,7 @@ import {formulaForGettingIndstrialGHGe, IndustrialEmmisionFactor} from "./indust
 
 
 const getGHGe_perOperation = async (user_type : string, query : {}, locations : any[], industryEmissionFactors : IndustrialEmmisionFactor[], 
-    industryType : "Mineral" | "Chemical" | "Metal" | "Electronics" | "Others") : Promise<{ghge : number[],loc_name : string}[]> => {
+    industryType : "Mineral" | "Chemical" | "Metal" | "Electronics" | "Others", year:string|undefined = new Date().getFullYear().toString()) : Promise<{ghge : number[],loc_name : string}[]> => {
 
     let industryGHGe_container_perOperation : {ghge : number[],loc_name : string}[] =  []
 
