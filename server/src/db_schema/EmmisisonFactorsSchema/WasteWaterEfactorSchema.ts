@@ -25,6 +25,7 @@ const WasteWaterEfactorSchema = new mongoose.Schema({
 
     }, required : true},
     max_ch4Production : {type:Number, required : true},
+    year : {type : String, required : true},
 
 })
 

@@ -3,10 +3,10 @@ import FALU_EfactorSchema from "../src/db_schema/EmmisisonFactorsSchema/FALU_Efa
 import WoodSchema from "../src/db_schema/ForestryAndLandUSe/WoodSchema"
 import ForestLandSchema from "../src/db_schema/ForestryAndLandUSe/ForestLandSchema"
 
-const getForestLandUseEfactor = async(falu_type: "falu-wood" | "falu-forestland"):Promise<{}> => {
+const getForestLandUseEfactor = async(falu_type: "falu-wood" | "falu-forestland", year:string|undefined = new Date().getFullYear().toString()):Promise<{}> => {
       //SETUP EFACTOR
       let key = falu_type === "falu-wood" ? "wood" : "forestland";
-      const db_faluEfactor = await FALU_EfactorSchema.findOne({}, {[key] :1, _id : 0}).lean();
+      const db_faluEfactor = await FALU_EfactorSchema.findOne({year}, {[key] :1, _id : 0}).lean();
   
       let efactor = {}
       if(db_faluEfactor){
@@ -30,10 +30,10 @@ const getForestLandUseEfactor = async(falu_type: "falu-wood" | "falu-forestland"
       } else {
           if(falu_type === "falu-wood") {
               efactor = DEFAULT_FALU_EFACTOR.wood
-              await FALU_EfactorSchema.create({wood :  DEFAULT_FALU_EFACTOR.wood});
+              await FALU_EfactorSchema.create({wood :  DEFAULT_FALU_EFACTOR.wood, year});
           } else {
               efactor = DEFAULT_FALU_EFACTOR.forestland
-              await FALU_EfactorSchema.create({forestland : DEFAULT_FALU_EFACTOR.forestland});
+              await FALU_EfactorSchema.create({forestland : DEFAULT_FALU_EFACTOR.forestland, year});
           }
       }
 
@@ -43,7 +43,15 @@ const getForestLandUseEfactor = async(falu_type: "falu-wood" | "falu-forestland"
       // console.log("E_FACTOR : ", efactor)
       ///////////////////////////////////////////////////////////////////////////////////////////
 }
-const getFALU_GHGe = async(user_type : string, query:{}, locations:any[], falu_type:"falu-wood"|"falu-forestland"):Promise<{
+
+
+
+
+
+
+
+
+const getFALU_GHGe = async(user_type : string, query:{}, locations:any[], falu_type:"falu-wood"|"falu-forestland", year:string|undefined = new Date().getFullYear().toString()):Promise<{
     loc_name : string,
     ghge : number
 }[]> => {
@@ -55,7 +63,7 @@ const getFALU_GHGe = async(user_type : string, query:{}, locations:any[], falu_t
 
     //GET FALLU survey from data
     const dbFALU_data = falu_type === "falu-wood" ? await WoodSchema.find(query).exec() : await ForestLandSchema.find(query);
-    const efactor = await getForestLandUseEfactor(falu_type);
+    const efactor = await getForestLandUseEfactor(falu_type, year);
     
   
 

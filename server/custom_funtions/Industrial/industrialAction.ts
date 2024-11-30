@@ -155,7 +155,7 @@ const ghgeSumPerOperation = (ghgePerOperation : number[][]):number[]=> {
 }
 
 //final function
-const getIndustrialOverallGHGe = async (user_type : string, query : {}, locations : any[]) : Promise<{
+const getIndustrialOverallGHGe = async (user_type : string, query : {}, locations : any[], year:string|undefined = new Date().getFullYear().toString()) : Promise<{
     ghge : number,
     loc_name : string
 }[]> => {
@@ -168,11 +168,11 @@ const getIndustrialOverallGHGe = async (user_type : string, query : {}, location
     //will do fetching efactors in database......... then set the default one if no one find....
     
     //check if Efactors is already in mongodb
-    const mineral_eFactor = await get_dbEfactor("mineral");
-    const chemical_eFactor = await get_dbEfactor("chemical");
-    const metal_eFactor = await get_dbEfactor("metal");
-    const electronics_eFactor = await get_dbEfactor("electronics");
-    const others_eFactor = await get_dbEfactor("others");
+    const mineral_eFactor = await get_dbEfactor("mineral", year);
+    const chemical_eFactor = await get_dbEfactor("chemical", year);
+    const metal_eFactor = await get_dbEfactor("metal", year);
+    const electronics_eFactor = await get_dbEfactor("electronics", year);
+    const others_eFactor = await get_dbEfactor("others", year);
     //////////////////////////////////////////////
 
     //GETTING MINERAL GHGE
@@ -301,9 +301,9 @@ const formulaForGettingIndstrialGHGe = (emmisionFactor : IndustrialEmmisionFacto
 
 }
 
-const get_dbEfactor = async(industry_type:string):Promise<IndustrialEmmisionFactor[]|undefined> => {
+const get_dbEfactor = async(industry_type:string, year:string|undefined = new Date().getFullYear().toString()):Promise<IndustrialEmmisionFactor[]|undefined> => {
 
-    const db_Efactors = await IndustrialEfactorSchema.findOne({industry_type}).exec();
+    const db_Efactors = await IndustrialEfactorSchema.findOne({industry_type, year}).exec();
     
     if(!db_Efactors) return undefined
 

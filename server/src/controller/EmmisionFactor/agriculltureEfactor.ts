@@ -9,16 +9,16 @@ const getAgricultureEfactor = async (req : Request, res : Response) => {
      
 
         const {agriculture_type} = req.params;
-
-        const db_agricultureEfactors = await AgricultureEfactorSchema.findOne({agriculture_type}).exec();
+        const year = new Date().getFullYear().toString()
+        const db_agricultureEfactors = await AgricultureEfactorSchema.findOne({agriculture_type, year}).exec();
 
         if(!db_agricultureEfactors){
 
             if(agriculture_type === "crops"){
-                await AgricultureEfactorSchema.create({agriculture_type, e_factors : DEFAULT_AGRICULTURE_CROPS_EFACTORS});
+                await AgricultureEfactorSchema.create({agriculture_type, e_factors : DEFAULT_AGRICULTURE_CROPS_EFACTORS, year});
                 return res.send({agriculture_type, efactors : DEFAULT_AGRICULTURE_CROPS_EFACTORS})
             } else {
-                await AgricultureEfactorSchema.create({agriculture_type, e_factors : DEFAULT_AGRICULTURE_LIVESTOCKS_EFACTORS});
+                await AgricultureEfactorSchema.create({agriculture_type, e_factors : DEFAULT_AGRICULTURE_LIVESTOCKS_EFACTORS, year});
                 return res.send({agriculture_type, efactors : DEFAULT_AGRICULTURE_LIVESTOCKS_EFACTORS})
             }
 
@@ -40,7 +40,8 @@ const updateAgricultureEfactor = async (req : Request, res : Response) => {
 
     try {
         const {agriculture_type, e_factors} = req.body;
-        const updateEfactors = await AgricultureEfactorSchema.findOneAndUpdate({agriculture_type, e_factors : e_factors}).exec();
+        const year = new Date().getFullYear().toString()
+        const updateEfactors = await AgricultureEfactorSchema.findOneAndUpdate({agriculture_type, year}, {e_factors : e_factors}).exec();
 
         if(!updateEfactors) {
             return res.status(204).send("Request is succsess but failed to update emmission factor")

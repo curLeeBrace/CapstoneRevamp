@@ -6,6 +6,7 @@ const MobileCombustionEfactorSchema = new mongoose.Schema({
     co2 : {type : Number, required : true},
     ch4 : {type : Number, required : true},
     n2o : {type : Number, required : true},
+    year : {type : String, required : true},
     
 })
 

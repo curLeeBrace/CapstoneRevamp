@@ -92,7 +92,7 @@ type DashBoardData = {
  const overview_data = async (req : Request, res : Response) => {
 
     const {province_code, user_type, municipality_code} = req.params;
-
+    
     try {
 
             let total_ghge = 0;
@@ -231,7 +231,7 @@ type DashBoardData = {
 
  // This is mobile combustion function
 
- const get_mobileComstion_GHGe = async (user_type:string , query : {}, locations : any[]) : Promise<MobileCombustionTableData[]> => {
+ const get_mobileComstion_GHGe = async (user_type:string , query : {}, locations : any[], year:string|undefined = new Date().getFullYear().toString()) : Promise<MobileCombustionTableData[]> => {
 
     const table_data : MobileCombustionTableData[] = [];
 
@@ -262,7 +262,7 @@ type DashBoardData = {
                     //check if root_loc_code === data.surveyor_info.municipality_code
                     if(data.surveyor_info.municipality_code === root_loc_code)  {
                         //compute the municipality emmisions
-                        const single_form_emmmsion = await get_MobileCombustionEmission(data.survey_data.fuel_type as string, data.survey_data.liters_consumption);
+                        const single_form_emmmsion = await get_MobileCombustionEmission(data.survey_data.fuel_type as string, data.survey_data.liters_consumption, year );
                         const {co2e, ch4e, n2oe, ghge} = single_form_emmmsion
         
                         tb_co2e += co2e;
@@ -275,7 +275,7 @@ type DashBoardData = {
 
                     if(data.survey_data.brgy_code === root_loc_code)  {
                         //compute the municipality emmisions
-                        const single_form_emmmsion = await get_MobileCombustionEmission(data.survey_data.fuel_type as string, data.survey_data.liters_consumption);
+                        const single_form_emmmsion = await get_MobileCombustionEmission(data.survey_data.fuel_type as string, data.survey_data.liters_consumption, year );
                         const {co2e, ch4e, n2oe, ghge} = single_form_emmmsion
         
                         tb_co2e += co2e;
@@ -320,7 +320,7 @@ type DashBoardData = {
 
 
  // This is mobile combustion function
- const get_MobileCombustionEmission = async (fuel_type : string,  liters_consumption: number) : Promise<Emission>  => {
+ const get_MobileCombustionEmission = async (fuel_type : string,  liters_consumption: number, year:string|undefined = new Date().getFullYear().toString()) : Promise<Emission>  => {
 
      /*
         ==========================================
@@ -335,7 +335,7 @@ type DashBoardData = {
 
     let emission_factors = undefined;
 
-    const mb_efactor = await MobileCombustionEfactorSchema.findOne({fuel_type}).exec();
+    const mb_efactor = await MobileCombustionEfactorSchema.findOne({fuel_type, year}).exec();
 
     if(!mb_efactor){
         emission_factors = fuel_type === "diesel" ? {

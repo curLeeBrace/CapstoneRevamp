@@ -147,7 +147,8 @@ const getStationaryGHGe = async (
     user_type: string, 
     query: {}, 
     locations: any[],
-    form_type?: string
+    form_type?: string,
+    year:string|undefined = new Date().getFullYear().toString()
 ): Promise<{
     ghge : number,
     loc_name : string
@@ -193,7 +194,7 @@ const getStationaryGHGe = async (
                             lighting: {
                                 kerosene: lighting.kerosene,
                             }
-                        });
+                        }, year);
 
 
                         temp_ghge += ghge;
@@ -213,7 +214,7 @@ const getStationaryGHGe = async (
 
 
 
-const getGHGe_perSurvey = async (stationary_quantity : StationaryDataTypes) : Promise<number> => {
+const getGHGe_perSurvey = async (stationary_quantity : StationaryDataTypes, year:string|undefined = new Date().getFullYear().toString()) : Promise<number> => {
     let total_ghge = 0;
 
     const {cooking, generator, lighting} = stationary_quantity
@@ -229,7 +230,7 @@ const getGHGe_perSurvey = async (stationary_quantity : StationaryDataTypes) : Pr
         return ghge
     }
     //SETUP EMMISION FACTORS
-    const db_eFactors = await StationaryEfactorSchema.findOne({}).exec();
+    const db_eFactors = await StationaryEfactorSchema.findOne({year}).exec();
     let emmissionFactor : STATIONARY_EMMISION_FACTOR = {} as STATIONARY_EMMISION_FACTOR;
 
     if(db_eFactors !== null) {

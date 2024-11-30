@@ -23,6 +23,7 @@ type WasterWaterEfactorSchemaType = {
         }
     };
     max_ch4Production : number;
+    year : string
 }
 
 
@@ -31,6 +32,7 @@ type WasterWaterEfactorSchemaType = {
 const getWasteWaterEfactor = async(req : Request, res :Response) => {
     try {
         const {surveyType} = req.params;
+        const year = new Date().getFullYear().toString()
         //This is not totally the WasteWater Emmsion.... just only the name of variable
         //Setup Default Emmision Factor
         const defaultEmmsionFactor : WasterWaterEfactorSchemaType = {
@@ -51,14 +53,15 @@ const getWasteWaterEfactor = async(req : Request, res :Response) => {
                     riverDischarge : {
                         cat1 : 0,
                         cat2 : 0
-                    }
+                    },
                 }
-            }
+            },
+            year,
         }
         //End of Setting up
 
     
-    const wasteWaterEfactor = await WasteWaterEfactorSchema.findOne({surveyType}).exec();
+    const wasteWaterEfactor = await WasteWaterEfactorSchema.findOne({surveyType, year}).exec();
     let response : WasterWaterEfactorSchemaType = {} as WasterWaterEfactorSchemaType;
     if(!wasteWaterEfactor){
 
@@ -133,8 +136,8 @@ const updateWasteWaterEfactor = async(req:Request, res:Response)=>{
     try {
         const {emissionFactors, surveyType} = req.body;
       
-
-        const updateEfactors = await WasteWaterEfactorSchema.findOneAndUpdate({surveyType : surveyType}, emissionFactors).exec();
+        const year = new Date().getFullYear().toString()
+        const updateEfactors = await WasteWaterEfactorSchema.findOneAndUpdate({surveyType : surveyType, year,}, emissionFactors).exec();
 
         if(!updateEfactors) {
             return res.status(204).send("Request is succsess but failed to update emmission factor")
