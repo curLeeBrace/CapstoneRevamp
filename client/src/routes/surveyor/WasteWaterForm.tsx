@@ -111,6 +111,7 @@ const WasteWaterForm = () => {
       openPits_latrinesCat3: formData.openPits_latrinesCat3,
       openPits_latrinesCat4: formData.openPits_latrinesCat4,
       riverDischargeCat1: formData.riverDischargeCat1,
+      riverDischargeCat2: formData.riverDischargeCat2,
       septic_tanks: formData.septic_tanks
     }).some(value => value && value.toString().trim() !== '') && (user_info.user_type !== 'lu_admin' ? brgy?.address_code !== undefined : true);
   
