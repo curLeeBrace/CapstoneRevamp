@@ -13,7 +13,7 @@ interface TableRow {
 interface TableWithFooterProps {
   tableHead: string[];
   tableRows: TableRow[];
-  totalGHGEmissions: string;
+  totalGHGEmissions: number | string;
   totalProportion: string;
   loading: boolean;
 }

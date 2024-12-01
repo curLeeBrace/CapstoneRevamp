@@ -4,7 +4,7 @@ const exportGhge = (
   data: any[],
   columns: string[],
   tableHead: string[],
-  totalGHGEmissions: string,
+  totalGHGEmissions: string | number,
   totalProportion: string,
   fileName: string
 ) => {

@@ -280,7 +280,7 @@ useEffect(()=>{
               <TableWithFooter
                 tableHead={TABLE_HEAD}
                 tableRows={tablecontent.tb_rows}
-                totalGHGEmissions={tablecontent.totalGHGe.toFixed(2)}
+                totalGHGEmissions={Math.floor(tablecontent.totalGHGe)}  
                 totalProportion={tablecontent.totalProportion}
                 loading={isLoading}
               />
