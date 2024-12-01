@@ -240,7 +240,6 @@ const SurveyedList = () => {
           riverDischarge.cat1,
           riverDischarge.cat2,
           form_type,
-          <span className={statusColor}>{statusText}</span>,
           dateTime,
           LinkComponent,
         ];
