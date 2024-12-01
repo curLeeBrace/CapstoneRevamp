@@ -94,7 +94,7 @@ type DashBoardData = {
     const {province_code, user_type, municipality_code} = req.params;
     
     try {
-
+            const yearNow = new Date().getFullYear().toString()
             let total_ghge = 0;
 
             const accounts = user_type === "s-admin" ? await AccountSchema.find({
@@ -114,21 +114,29 @@ type DashBoardData = {
             const parent_code = user_type === "s-admin" ? province_code : municipality_code
 
 
-            const query = user_type === "s-admin" ? 
-                {
-                    'surveyor_info.province_code': province_code,
-                    $or : [{"survey_data.status" : "0"}, {"survey_data.status" : "2"}]
-                }
+            let query:any = user_type === "s-admin" ? 
+            {
+                'surveyor_info.province_code': province_code,
+                $or : [{"survey_data.status" : "0"}, {"survey_data.status" : "2"}]
+            }
             : 
             user_type === "lu_admin" ?
             {
                 'surveyor_info.municipality_name': "Laguna University",
                 $or : [{"survey_data.status" : "0"}, {"survey_data.status" : "2"}]
             } :
-                {
-                    'surveyor_info.municipality_code': municipality_code,
-                    $or : [{"survey_data.status" : "0"}, {"survey_data.status" : "2"}]
+            {
+                'surveyor_info.municipality_code': municipality_code,
+                $or : [{"survey_data.status" : "0"}, {"survey_data.status" : "2"}]
+            }
+
+
+
+           query = {...query,   dateTime_created : {
+                $gte: new Date(`${yearNow}-01-01T00:00:00.000Z`),
+                $lte: new Date(`${yearNow}-12-30T23:59:59.000Z`)
                 }
+            }
 
             
             const locations = getAvailableLocations(parent_code, user_type);
