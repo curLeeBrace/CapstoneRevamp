@@ -73,7 +73,7 @@ const WoodSummary = ({year} : WoodSummaryProps) => {
                         totalGHGe,
                     } = data;
                     return [
-                        form_id,
+                        form_id.slice(-3),
                         email,
                         ...(user_info.user_type !== "lu_admin" ? [municipality_name] : []),
                         brgy_name, 
