@@ -136,7 +136,8 @@ const getWasteWaterGHGeSum = async (user_type:string , query : {}, locations : a
                 })
             )
             wasteWaterGHGes.push({
-                ghge : wasteWaterGHGe,
+                
+                ghge : Number((Math.trunc(wasteWaterGHGe * 100) / 100).toFixed(2)),
                 loc_name
             });
 
@@ -297,7 +298,14 @@ const getCH4EmmitedTones = async (estimatedTOW : PopulationUsingTheSystems, surv
     }
     /////////////////////////////////////
     //Get the methane factor to database, then compute the tatoal emmsion factor for every category...
-    const computeEFactor = (max_ch4Production:number, methane_correction_factor :number) => {return max_ch4Production * methane_correction_factor}
+    const computeEFactor = (max_ch4Production:number, methane_correction_factor :number) => {
+        let efactor = max_ch4Production * methane_correction_factor
+
+        
+        return Math.round(efactor * 100) / 100 // round off decimal
+    
+    
+    }
     if(wasteWater_eFactor !== null){
 
         const {methane_correction_factor} = wasteWater_eFactor.uncollected;

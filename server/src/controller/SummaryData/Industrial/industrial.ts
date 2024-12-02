@@ -129,7 +129,7 @@ const getIndustrialSummary = async (req: Request, res:Response) => {
 
     // console.log("industryData : ", industryData);
 
-    if(db_data.length <= 0) return res.sendStatus(204);
+    // if(db_data.length <= 0) return res.sendStatus(204);  
 
 
 

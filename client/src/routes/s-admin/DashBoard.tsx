@@ -135,7 +135,7 @@ function DashBoard() {
                         x: "Laguna University",
                         y: dashboard_data.table_data.wasteWaterGHGe[
                           index
-                        ].ghge.toFixed(2),
+                        ],
                       }
                     : null;
                 }
