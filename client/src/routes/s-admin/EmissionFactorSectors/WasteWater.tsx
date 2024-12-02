@@ -380,7 +380,7 @@ const handleSubmit = () => {
                           variant="small"
                           className="font-bold text-base text-center"
                         >
-                          {isNaN(emissionFactors.max_ch4Production * emissionFactors.uncollected.methane_correction_factor.septic_tanks) ? 0 : (emissionFactors.max_ch4Production * emissionFactors.uncollected.methane_correction_factor.septic_tanks).toFixed(2)}
+                          {isNaN(emissionFactors.max_ch4Production * emissionFactors.uncollected.methane_correction_factor.septic_tanks) ? 0 : Math.round(((emissionFactors.max_ch4Production * emissionFactors.uncollected.methane_correction_factor.septic_tanks)) * 100) / 100}
 
                         </Typography>
                       </div>
@@ -426,7 +426,7 @@ const handleSubmit = () => {
                                           variant="small"
                                           className="font-bold text-base text-center"
                                       >
-                                          {isNaN(emissionFactors.max_ch4Production * value) ? 0 : (emissionFactors.max_ch4Production * value).toFixed(2)}
+                                          {isNaN(emissionFactors.max_ch4Production * value) ? 0 : Math.round((emissionFactors.max_ch4Production * value) * 100) / 100}
                                       </Typography>
                                   </div>
 
@@ -481,9 +481,9 @@ const handleSubmit = () => {
                                           variant="small"
                                           className="font-bold text-base text-center"
                                       >
-                                        {isNaN(emissionFactors.max_ch4Production * value) ? 0 : (emissionFactors.max_ch4Production * value).toFixed(2)}
+                                        {isNaN(emissionFactors.max_ch4Production * value) ? 0 : Math.round((emissionFactors.max_ch4Production * value) * 100) / 100}
                                       </Typography>
-                                  </div>
+                                  </div>  
 
                               </div>
                             
