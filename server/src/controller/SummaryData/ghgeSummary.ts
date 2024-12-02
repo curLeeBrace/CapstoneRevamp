@@ -115,32 +115,32 @@ const ghgeSummary = async (req:Request, res:Response) => {
         let total_ghge = 0;
 
         mobileComstion_data.length > 0 && mobileComstion_data.map((mb_data)=>{
-            total_ghge += Number(mb_data.emission.ghge.toFixed(2));
+            total_ghge += mb_data.emission.ghge
         })
 
         wasteWaterGHGe.length > 0 && wasteWaterGHGe.map((data) => {
-            total_ghge +=  Number(data.ghge.toFixed(2));
+            total_ghge +=  data.ghge
         })
         industrialGHGe.length > 0 && industrialGHGe.map((data) => {
-            total_ghge +=  Number(data.ghge.toFixed(2));
+            total_ghge +=  data.ghge
         })
 
         agriculture_cropsGHGe.length > 0 && agriculture_cropsGHGe.map((data) => {
-            total_ghge +=  Number(data.ghge.toFixed(2));
+            total_ghge +=  data.ghge
         })
         agriculture_liveStocksGHGe.length > 0 && agriculture_liveStocksGHGe.map((data) => {
-            total_ghge +=  Number(data.ghge.toFixed(2));
+            total_ghge +=  data.ghge
         })
         stationary_resGHGe.length > 0 && stationary_resGHGe.map((data) => {
-            total_ghge +=  Number(data.ghge.toFixed(2));
+            total_ghge +=  data.ghge
         })
 
         stationary_commGHGe.length > 0 && stationary_commGHGe.map((data) => {
-            total_ghge +=  Number(data.ghge.toFixed(2));
+            total_ghge +=  data.ghge
         })
 
         forestAndLandUseContainer.length > 0 && forestAndLandUseContainer.map((data) => {
-            total_ghge +=  Number(data.ghge.toFixed(2));
+            total_ghge +=  data.ghge
         })
 
 

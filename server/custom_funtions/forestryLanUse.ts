@@ -117,7 +117,7 @@ const getFALU_GHGe = async(user_type : string, query:{}, locations:any[], falu_t
 
         falu_ghgeContainer.push({
             loc_name : loc_name,
-            ghge : temp_ghge
+            ghge : Math.round(temp_ghge * 100) / 100
         })
         
 
