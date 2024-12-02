@@ -236,7 +236,7 @@ const DEFAULT_AGRICULTURE_LIVESTOCKS_EFACTORS : EmmisionFactorTypes[] =  [
 
         
         ghge_container.push({
-            ghge : temp_ghge,
+            ghge : Number(temp_ghge.toFixed(2)),
             loc_name
         })
 

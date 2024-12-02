@@ -176,16 +176,16 @@ type DashBoardData = {
 
             ////////////////////////////////////////////////////////////////////////////////////
             mobileComstion_data.forEach((mb_data, index) => {
-                total_ghge += Number(mb_data.emission.ghge.toFixed(2));
-                total_ghge += Number(wasteWaterGHGe[index].ghge.toFixed(2));
-                total_ghge += Number(industrialGHGe[index].ghge.toFixed(2));
-                total_ghge += Number(agriculture_cropsGHGe[index].ghge.toFixed(2));
-                total_ghge += Number(agriculture_liveStocksGHGe[index].ghge.toFixed(2));
-                total_ghge += Number(residentialGHGe[index].ghge.toFixed(2));
-                total_ghge += Number(commercialGHGe[index].ghge.toFixed(2));
+                total_ghge += mb_data.emission.ghge
+                total_ghge += wasteWaterGHGe[index].ghge
+                total_ghge += industrialGHGe[index].ghge
+                total_ghge += agriculture_cropsGHGe[index].ghge
+                total_ghge += agriculture_liveStocksGHGe[index].ghge
+                total_ghge += residentialGHGe[index].ghge
+                total_ghge += commercialGHGe[index].ghge
 
-                total_ghge += Number(falu_wood[index].ghge.toFixed(2));
-                total_ghge += Number(falu_forestland[index].ghge.toFixed(2));
+                total_ghge += falu_wood[index].ghge
+                total_ghge += falu_forestland[index].ghge
 
               
             })
@@ -307,7 +307,7 @@ type DashBoardData = {
                     co2e : tb_co2e,
                     ch4e : tb_ch4e,
                     n2oe : tb_n2oe,
-                    ghge : tb_ghge,
+                    ghge : Number((Math.trunc(tb_ghge * 100) / 100).toFixed(2)),
                 }
             })
 
@@ -363,10 +363,10 @@ type DashBoardData = {
     }
  
 
-
-    const  co2e = (liters_consumption * emission_factors.co2) / 1000;
-    const  ch4e =  (liters_consumption * emission_factors.ch4) / 1000;
-    const  n2oe =  (liters_consumption * emission_factors.n2o) / 1000;
+   
+    const  co2e = (liters_consumption * (emission_factors.co2)) / 1000;
+    const  ch4e =  (liters_consumption * (emission_factors.ch4)) / 1000;
+    const  n2oe =  (liters_consumption * (emission_factors.n2o)) / 1000;
 
     const emission : Emission = {   
         co2e,

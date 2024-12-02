@@ -27,7 +27,7 @@ const ForestrySummary = () => {
     const [typeOfData, setTypeOfData] = useState<DonutState>()
     
 
-    const [falu_type, setFaluType] = useState<"falu-wood" | "falu-forestland" >();
+    const [falu_type, setFaluType] = useState<"falu-wood" | "falu-forestland">();
     const [year, setYear] = useState<string>();
 
     const [emissionLabel, setEnissionLabel] = useState<string>("Forestry Land Use"); // Store the label

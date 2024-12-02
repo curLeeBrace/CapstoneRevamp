@@ -242,7 +242,7 @@ const getIndustrialOverallGHGe = async (user_type : string, query : {}, location
             
             
             industrialGHGeContainer.push({
-                ghge : totalGHGe,
+                ghge : Number(totalGHGe.toFixed(2)),
                 loc_name : loc_name
             })
   

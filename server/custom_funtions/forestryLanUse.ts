@@ -139,7 +139,7 @@ const getGHGePerSurvey = (efactor : any, falu_qty : any):number => {
         total_ghge += efactor[key] * falu_qty[key.split("_")[0]]
     })
 
-    // console.log("GHGE per survvey : ", total_ghge)
+    console.log("GHGE per survvey : ", total_ghge)
 
 
     return total_ghge
