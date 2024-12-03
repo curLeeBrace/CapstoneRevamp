@@ -40,6 +40,8 @@ import { IndustrialForm, Chemical, Electronics, Metal, Mineral, Others} from "./
 import { AgricultureForm, Crops, LiveStocks} from "./routes/surveyor/AgricultureForm/AgricultureForm";
 
 
+import SurveyScheduler from "./routes/s-admin/EmissionFactorSectors/SurveyScheduler";
+
 
 import { StationaryFuelForm } from "./routes/surveyor/StationaryFuelForm";
 import EmissionFactorForm from "./routes/s-admin/EmissionFactor";
@@ -88,6 +90,8 @@ function App() {
                   <Route path = 'sucsess' element = {<RegistrationCompleted/>}/>
               </Route> 
 
+              {/* <Route path = 'survey-schedule' element = {<FormHandler/>}/> */}
+
             </Route>
 
             {/*Route for Admin*/}
@@ -114,7 +118,7 @@ function App() {
               <Route path = "audit-log" element = {<AuditLogs/>}/>
               <Route path = "accounts" element = {<AccountsTable/>}/>
 
-
+              <Route path = 'survey-schedule' element = {<SurveyScheduler/>}/>
             </Route>
 
 
@@ -141,7 +145,7 @@ function App() {
                   <Route index element = {<Registration/>}/>
                   <Route path = 'sucsess' element = {<RegistrationCompleted/>}/>
               </Route> 
-
+              <Route path = 'survey-schedule' element = {<SurveyScheduler/>}/>
             </Route>
 
 

@@ -212,6 +212,10 @@ export function StickyNavbar() {
             name: "Accounts",
             url: `/${user_type}/accounts`,
           },
+          {
+            name: "Schedule Survey",
+            url: `/${user_type}/survey-schedule`,
+          },
         ])
 
       } else if (user_type === "lu_admin") {
@@ -240,6 +244,11 @@ export function StickyNavbar() {
           {
             name: "Accounts",
             url: `/${user_type}/accounts`,
+          },
+
+          {
+            name: "Schedule Survey",
+            url: `/${user_type}/survey-schedule`,
           },
         ])
 
