@@ -12,6 +12,8 @@ import summaryDataRoute from "./route/summaryData_route";
 import notificationRoute from "./route/notification_route";
 import efactor_route from "./route/efactor_route"
 
+import surveySchedule_route from "./route/surveySchedule_route"
+
 
 
 
@@ -38,6 +40,8 @@ app.use('/api/summary-data', summaryDataRoute);
 // app.use('/api/forecast', forecastingRoute);
 app.use('/api/notiff', notificationRoute);
 app.use('/api/efactor', efactor_route);
+
+app.use('/api/survey-schedule', surveySchedule_route)
 
 
 
