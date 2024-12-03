@@ -103,7 +103,7 @@ const exportGhge = async (
       const footerData = [
         'Total Scope 1 Emissions',
         totalGHGEmissions,
-        typeof totalProportion === 'number' ? `${totalProportion}%` : totalProportion,
+        `${totalProportion}%`,
       ];
 
       footerData.forEach((footerCell, footerColIndex) => {
