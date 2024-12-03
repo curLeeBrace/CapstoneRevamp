@@ -5,11 +5,14 @@ interface TableProps {
   tb_head: string[];
   tb_datas: any[][];
   isLoading?: boolean;
+  thbg_color? : "gray" | "green"
 }
 
-export default function Table({ tb_datas, tb_head, isLoading }: TableProps) {
+export default function Table({ tb_datas, tb_head, isLoading, thbg_color = "gray"}: TableProps) {
+
+  let css_color = thbg_color === "gray" ? "bg-blue-gray-200" : "bg-darkgreen"
   return (
-    <Card className="w-full overflow-scroll custom-scrollbar h-full max-h-96 border-2 rounded-lg border-gray-300">
+    <Card className="w-full overflow-scroll custom-scrollbar h-full border-2 rounded-lg border-gray-300">
       {isLoading ? (
         <Skeleton />
       ) : (
@@ -19,12 +22,12 @@ export default function Table({ tb_datas, tb_head, isLoading }: TableProps) {
               {tb_head.map((head, index) => (
                 <th
                   key={head + index}
-                  className="border-b border-blue-gray-100 bg-blue-gray-100 p-2 max-w-40"
+                  className={`border-b border-blue-gray-100 ${css_color}  p-2 max-w-40`}
                 >
                   <Typography
-                    variant="small"
-                    color="blue-gray"
-                    className="font-normal leading-none opacity-"
+                    variant="h6"
+                    color={thbg_color === "gray" ? "blue-gray" : "white"}
+                    className="font-semibold leading-none opacity-"
                   >
                     {head}
                   </Typography>
