@@ -200,38 +200,6 @@ useEffect(()=>{
 
 
 
-
-
-
-
-
-
-    //   const formatToTwoDecimalPlaces = (value: number) => {
-    //     return (Math.floor(value * 100) / 100).toFixed(2);
-    // };
-      
-
-
-      
-      // const formattedTotalResidential = formatToTwoDecimalPlaces(totalStationaryResidentialGHGE);
-      // const formattedTotalCommercial = formatToTwoDecimalPlaces(totalStationaryCommercialGHGE);
-
-    //  ========================================
-    //    Total Scope 1 Emissions (GHG Emission)
-    //  ========================================
-    //   const ghge?.total_ghge = (
-    //     parseFloat(totalMobileCombustionGHGE) +
-    //     parseFloat(totalWasteWaterGHGE) +
-    //     parseFloat(totalIndustrialGHGE) +
-    //     parseFloat(totalAgricultureCropsGHGE) +
-    //     parseFloat(totalAgricultureLivestockGHGE)+
-    //     (totalStationaryResidentialGHGE) +
-    //     (totalStationaryCommercialGHGE)
-        
-    // ).toFixed(2);
-    
-    // Function to calculate proportion
-
     const calculateProportion = (value: number, total_ghge: number) => {
       const proportion = total_ghge > 0 ? (value / total_ghge) * 100 : 0;
       return `${proportion.toFixed(2)}%`; // Round to two decimal places
