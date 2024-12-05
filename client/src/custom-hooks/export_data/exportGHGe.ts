@@ -26,7 +26,7 @@ const exportGhge = async (
   fileName: string
 ) => {
   try {
-    const templateUrl = '/src/assets/GhgeSummary.xlsx'; 
+    const templateUrl = '/assets/GhgeSummary.xlsx'; 
 
     const response = await fetch(templateUrl);
     if (!response.ok) {
