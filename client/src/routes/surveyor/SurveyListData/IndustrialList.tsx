@@ -145,9 +145,10 @@ const IndustrialList = () => {
                 
                 const statusNumber = Number(status);  
                 
+                 
                 switch (statusNumber) {
                   case 0:
-                    statusText = "Okay";
+                    statusText = "Updated";
                     statusColor = "text-green-500 font-bold";  
                     break;
                   case 1:
@@ -155,13 +156,13 @@ const IndustrialList = () => {
                     statusColor = "text-red-500 font-bold"; 
                     break;
                   case 2:
-                    statusText = "Okay (Update Approved)";
-                    statusColor = "text-yellow-700 font-bold";
+                    statusText = "Updated";
+                    statusColor = "text-green-500 font-bold";  
                     break;
                   default:
-                    statusText = "Unknown";
-                    statusColor = "text-gray-500";
-                }
+                    statusText = "Updated";
+                    statusColor = "text-green-500 font-bold"; 
+                }                
                 
                 const dateTime = new Date(data.dateTime_created).toLocaleDateString() + " " + new Date(data.dateTime_created).toLocaleTimeString();
 
@@ -212,9 +213,10 @@ const IndustrialList = () => {
                 
                 const statusNumber = Number(status);  
                 
+                 
                 switch (statusNumber) {
                   case 0:
-                    statusText = "Okay";
+                    statusText = "Updated";
                     statusColor = "text-green-500 font-bold";  
                     break;
                   case 1:
@@ -222,13 +224,13 @@ const IndustrialList = () => {
                     statusColor = "text-red-500 font-bold"; 
                     break;
                   case 2:
-                    statusText = "Okay (Update Approved)";
-                    statusColor = "text-yellow-700 font-bold";
+                    statusText = "Updated";
+                    statusColor = "text-green-500 font-bold";  
                     break;
                   default:
-                    statusText = "Unknown";
-                    statusColor = "text-gray-500";
-                }
+                    statusText = "Updated";
+                    statusColor = "text-green-500 font-bold"; 
+                }                
 
                 const dateTime = new Date(data.dateTime_created).toLocaleDateString() + " " + new Date(data.dateTime_created).toLocaleTimeString();
 
@@ -283,9 +285,10 @@ const IndustrialList = () => {
                 
                 const statusNumber = Number(status);  
                 
+                  
                 switch (statusNumber) {
                   case 0:
-                    statusText = "Okay";
+                    statusText = "Updated";
                     statusColor = "text-green-500 font-bold";  
                     break;
                   case 1:
@@ -293,13 +296,13 @@ const IndustrialList = () => {
                     statusColor = "text-red-500 font-bold"; 
                     break;
                   case 2:
-                    statusText = "Okay (Update Approved)";
-                    statusColor = "text-yellow-700 font-bold";
+                    statusText = "Updated";
+                    statusColor = "text-green-500 font-bold";  
                     break;
                   default:
-                    statusText = "Unknown";
-                    statusColor = "text-gray-500";
-                }
+                    statusText = "Updated";
+                    statusColor = "text-green-500 font-bold"; 
+                }                
 
                 const dateTime = new Date(data.dateTime_created).toLocaleDateString() + " " + new Date(data.dateTime_created).toLocaleTimeString();
 
@@ -345,9 +348,10 @@ const IndustrialList = () => {
                 
                 const statusNumber = Number(status);  
                 
+                 
                 switch (statusNumber) {
                   case 0:
-                    statusText = "Okay";
+                    statusText = "Updated";
                     statusColor = "text-green-500 font-bold";  
                     break;
                   case 1:
@@ -355,13 +359,13 @@ const IndustrialList = () => {
                     statusColor = "text-red-500 font-bold"; 
                     break;
                   case 2:
-                    statusText = "Okay (Update Approved) font-bold";
-                    statusColor = "text-yellow-700";
+                    statusText = "Updated";
+                    statusColor = "text-green-500 font-bold";  
                     break;
                   default:
-                    statusText = "Unknown";
-                    statusColor = "text-gray-500";
-                }
+                    statusText = "Updated";
+                    statusColor = "text-green-500 font-bold"; 
+                }                
 
                 const dateTime = new Date(data.dateTime_created).toLocaleDateString() + " " + new Date(data.dateTime_created).toLocaleTimeString();
 
@@ -410,9 +414,10 @@ const IndustrialList = () => {
                 
                 const statusNumber = Number(status);  
                 
+                  
                 switch (statusNumber) {
                   case 0:
-                    statusText = "Okay";
+                    statusText = "Updated";
                     statusColor = "text-green-500 font-bold";  
                     break;
                   case 1:
@@ -420,13 +425,13 @@ const IndustrialList = () => {
                     statusColor = "text-red-500 font-bold"; 
                     break;
                   case 2:
-                    statusText = "Okay (Update Approved)";
-                    statusColor = "text-yellow-700 font-bold";
+                    statusText = "Updated";
+                    statusColor = "text-green-500 font-bold";  
                     break;
                   default:
-                    statusText = "Unknown";
-                    statusColor = "text-gray-500";
-                }
+                    statusText = "Updated";
+                    statusColor = "text-green-500 font-bold"; 
+                }                
 
                 const dateTime = new Date(data.dateTime_created).toLocaleDateString() + " " + new Date(data.dateTime_created).toLocaleTimeString();
 
