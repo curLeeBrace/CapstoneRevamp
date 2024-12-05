@@ -45,8 +45,8 @@ export function TableWithFooter({
   return (
     <Card className="h-full w-full overflow-auto pb-4 border-2 border-gray-200">
       <div className="flex justify-start p-2">
-    <Button onClick={handleExport} className="bg-darkgreen items-center flex hover:bg-green-800">
-      <ArrowRightCircleIcon className="h-6 mx-2"/> Export to Excel
+    <Button onClick={handleExport} className="bg-darkgreen items-center flex px-2 hover:bg-green-800">
+      <ArrowRightCircleIcon className="h-5 mx-2"/> Export to Excel
     </Button>
   </div>
       {loading ? (
