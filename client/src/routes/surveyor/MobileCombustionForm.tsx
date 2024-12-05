@@ -8,6 +8,8 @@ import BrgyMenu from '../../custom-hooks/BrgyMenu';
 import useUserInfo from '../../custom-hooks/useUserType';
 import { AddressReturnDataType} from '../../custom-hooks/useFilterAddrress';
 import useSurveyFormActions from '../../custom-hooks/useSurveyFormActions';
+import useAxiosPrivate from '../../custom-hooks/auth_hooks/useAxiosPrivate';
+import SurveyInformation from '../ScheduleSurvey/SurveyInformation';
 
 type formDataTypes = {
   form_type : string,
@@ -48,11 +50,41 @@ const params = useParams()
 const {state} = useLocation();
 
 
-
-
 const {updateForm, acceptFormUpdate, submitForm, finishForm} = useSurveyFormActions();
 
+const axiosPrivate = useAxiosPrivate();
 
+
+const [formSchedule, setFormSchedule] = useState<{
+  start_date : Date,
+  deadline : Date,
+  status : string
+}>();
+
+useEffect(()=>{
+  axiosPrivate.get('/survey-schedule/schedule-identifier', {params : {
+    survey_type : "mobile-combustion",
+    municipality_name : user_info.municipality_name
+  }})
+  .then(res => {
+
+    if(res.status === 200){
+        const {
+        start_date,
+        deadline,
+        status,
+        } = res.data
+        setFormSchedule({
+          start_date,
+          deadline,
+          status,
+        });
+    } else {
+      setFormSchedule(undefined)
+    }
+  })
+  .catch((err)=>console.log(err));
+},[])
 
 
 
@@ -80,7 +112,7 @@ useEffect(() => {
   //   setFormData({ ...formData, vehicle_type: "" });
   // }
 
-}, [formData.form_type]);
+}, []);
 
 
 
@@ -294,209 +326,217 @@ console.log("FormData ", formData)
   return (
     <div className="flex justify-center min-h-screen px-4 py-10 overflow-x-hidden bg-gray-200">
 
-      <DialogBox isLoading = {isLoading} open = {openDialogBox} setOpen={setOpenDialogBox} message = 'Please double check the data before submitting' label='Confirmation' submit={
-        params.action === "submit" ? submitHandler
-        : params.action === "update" ? updateHandler
-        : params.action === "view" ? acceptUpdateHandler
-        :finishHandler
-      } />
-
-      <Card className="w-full h-full sm:w-96 md:w-3/4 lg:w-2/3 xl:w-1/2 px-6 py-6 shadow-black -mt-8 shadow-2xl rounded-xl relative">
-            
-             <AlertBox openAlert = {openAlert}  setOpenAlert={setOpenAlert}  message={aler_msg}/>
-             
-         
-        <Typography variant="h4" color="blue-gray" className="text-center text-xl text-white bg-darkgreen rounded-lg py-2">
-          Mobile Combustion Form
-        </Typography>
-       
-
-        <div className="mt-8 grid grid-cols-1 gap-6">
-          {/* Column 1 */}
-          <div className="flex flex-col gap-6">
-
-            <BrgyMenu disabled = {params.action === "view" || params.action === "finish"}
-             municipality_code= {user_info.municipality_code} 
-             setBrgys={user_info.user_type === 'lu_surveyor' 
-             ? () => setBrgy({ address_code: '043426003', address_name: 'Laguna University', parent_code: '0434' }) 
-             : setBrgy }
-             deafult_brgyName={user_info.user_type === 'lu_surveyor' ? 'Laguna University' : (state && state.brgy_name) }  user_info={user_info}/>
-            
-            <div>
-              <Typography variant="h6" color="blue-gray">
-                Form Type
-              </Typography>
-              <Checkbox
-                disabled = {params.action === "view" || params.action === "finish"}
-                name='form_type'
-                value={'residential'}
-                checked={formData.form_type === "residential"} // Checked if this is selected
-                onChange={(event) => handleChange({event, setFormStateData : setFormData})} // Handler for selection
-                label={
-                  <Typography variant="small" color="gray" className="font-normal mr-4">
-                    Residential
-                  </Typography>
-                }
-                containerProps={{ className: "-ml-2.5" }}
-
-              />
-              <Checkbox
+      {
+        !formSchedule || formSchedule.status === "inactive" && params.action === "submit" ? <SurveyInformation form_schedInfo={formSchedule}/>
+        :
+        <>
+          <DialogBox isLoading = {isLoading} open = {openDialogBox} setOpen={setOpenDialogBox} message = 'Please double check the data before submitting' label='Confirmation' submit={
+            params.action === "submit" ? submitHandler
+            : params.action === "update" ? updateHandler
+            : params.action === "view" ? acceptUpdateHandler
+            :finishHandler
+          } />
+        
+          <Card className="w-full h-full sm:w-96 md:w-3/4 lg:w-2/3 xl:w-1/2 px-6 py-6 shadow-black -mt-8 shadow-2xl rounded-xl relative">
                 
-                disabled = {params.action === "view" || params.action === "finish"}
-                name='form_type'
-                value={'commercial'}
-                checked={formData.form_type === "commercial"} // Checked if this is selected
-                onChange={(event) => handleChange({event, setFormStateData : setFormData})} // Handler for selection
-    
-                label={
-                  <Typography variant="small" color="gray" className="font-normal">
-                    Commercial
-                  </Typography>
-                }
-                containerProps={{ className: "-ml-2.5" }}
-              />
-              
-            </div>
-
-
-            <div className='h-20 flex flex-col gap-3'>
-              <Typography variant="h6" color="blue-gray">Vehicle Type</Typography>
-              {vehicleOptions && 
-                <select 
-                  className='w-full h-full rounded-md border-blue-gray-100 border-2'
-                  name = "vehicle_type"
-                  onChange={(event)=> handleChange({event, setFormStateData : setFormData})}
-                  value={formData.vehicle_type}
-                  disabled = {params.action === "view" || params.action === "finish"}
-
-                >
-                    <option value="" key = "default">Select Vehicle Type</option>
-                  {
-                    
-                      vehicleOptions.map((v_type, index) => (
-                          <option value={v_type} key={index}  selected>
-                            {v_type}
-                          </option>
-                        ))
-                      
-                  }
-                </select>
-              
-              }
-            </div>
-            <div>
-            <Typography variant="h6" color="blue-gray" className="mt-2">
-              {params.action === "view" || params.action === "finish" 
-                ? "Vehicle Age" 
-                : "Vehicle Year Model"}
+                <AlertBox openAlert = {openAlert}  setOpenAlert={setOpenAlert}  message={aler_msg}/>
+                
+            
+            <Typography variant="h4" color="blue-gray" className="text-center text-xl text-white bg-darkgreen rounded-lg py-2">
+              Mobile Combustion Form
             </Typography>
-              <Input
-              disabled = {params.action === "view" || params.action === "finish"}
-               name='vehicle_age'
-               value={formData.vehicle_age}
-               onChange={(event)=> handleChange({event, setFormStateData : setFormData})}
-                type="number"
-                size="lg"
-                placeholder="Example : 1990"
-                className="!border-t-blue-gray-200 placeholder:opacity-100 focus:!border-t-gray-900"
-                labelProps={{
-                  className: "before:content-none after:content-none",
-                }}
-                maxLength={4}
-                min={1500}
-                max={new Date().getFullYear()}
-              />
-            </div>
-            
-         
           
 
-          {/* Column 2 */}
-          
-            <div>
-              <Typography variant="h6" color="blue-gray">
-                Fuel Type
-              </Typography>
-              <Checkbox
-                disabled = {params.action === "view" || params.action === "finish"}
-                name='fuel_type'
-                value={'diesel'}
-                checked={formData?.fuel_type === "diesel"} // Checked if this is selected
-                onChange={(event) => handleChange({event, setFormStateData : setFormData})} // Handler for selection
+            <div className="mt-8 grid grid-cols-1 gap-6">
+              {/* Column 1 */}
+              <div className="flex flex-col gap-6">
+
+                <BrgyMenu disabled = {params.action === "view" || params.action === "finish"}
+                municipality_code= {user_info.municipality_code} 
+                setBrgys={user_info.user_type === 'lu_surveyor' 
+                ? () => setBrgy({ address_code: '043426003', address_name: 'Laguna University', parent_code: '0434' }) 
+                : setBrgy }
+                deafult_brgyName={user_info.user_type === 'lu_surveyor' ? 'Laguna University' : (state && state.brgy_name) }  user_info={user_info}/>
                 
-                label={
-                  <Typography variant="small" color="gray" className="mr-4">
-                    Diesel
+                <div>
+                  <Typography variant="h6" color="blue-gray">
+                    Form Type
                   </Typography>
-                }
-                containerProps={{ className: "-ml-2.5" }}
-              />
-              <Checkbox
-              disabled = {params.action === "view" || params.action === "finish"}
-              name='fuel_type'
-              value={'gasoline'}
-              checked={formData?.fuel_type === "gasoline"} // Checked if this is selected
-              onChange={(event) => handleChange({event, setFormStateData : setFormData})} // Handler for selection
-                label={
-                  <Typography variant="small" color="gray">
-                    Gasoline
-                  </Typography>
-                }
-                containerProps={{ className: "-ml-2.5" }}
-              />
-            </div>
-
-            <div>
-              <Typography variant="h6" color="blue-gray">
-                Fuel Consumption in a whole day - (liters)
-              </Typography>
-              <Input
-                disabled = {params.action === "view" || params.action === "finish"}
-                 name='liters_consumption'
-                 value = {formData.liters_consumption || ""}
-                 onChange={(event)=> handleChange({event, setFormStateData : setFormData})}
-                  type="number"
-                  size="lg"
-                  placeholder="Example: 3"
-                  className="!border-t-blue-gray-200 placeholder:opacity-100 focus:!border-t-gray-900"
-                  labelProps={{
-                    className: "before:content-none after:content-none",
-                  }}
-                  min={0}
-                  max={999}
-                  maxLength={3}
-              />
-            </div>
-
-            </div>
-
-           
-          
-
-          {/* Full-width elements */}
-          <div className="md:col-span-2">
-                  <Button 
-                  fullWidth 
-                  className="mt-6 flex justify-center"
-                  loading = {isLoading}
-                  onClick={submitValidation}
-               
-                
-                  >
-                    {
-                      params.action === "submit" ?
-                      "Submit"
-                      : params.action === "update" ?
-                      "Request Update"
-                      : params.action === "view" ?
-                        "Accept Update"
-                      : "Okay"
+                  <Checkbox
+                    disabled = {params.action === "view" || params.action === "finish"}
+                    name='form_type'
+                    value={'residential'}
+                    checked={formData.form_type === "residential"} // Checked if this is selected
+                    onChange={(event) => handleChange({event, setFormStateData : setFormData})} // Handler for selection
+                    label={
+                      <Typography variant="small" color="gray" className="font-normal mr-4">
+                        Residential
+                      </Typography>
                     }
-                  </Button>
-  
-          </div>
-        </div>
-      </Card>
+                    containerProps={{ className: "-ml-2.5" }}
+
+                  />
+                  <Checkbox
+                    
+                    disabled = {params.action === "view" || params.action === "finish"}
+                    name='form_type'
+                    value={'commercial'}
+                    checked={formData.form_type === "commercial"} // Checked if this is selected
+                    onChange={(event) => handleChange({event, setFormStateData : setFormData})} // Handler for selection
+        
+                    label={
+                      <Typography variant="small" color="gray" className="font-normal">
+                        Commercial
+                      </Typography>
+                    }
+                    containerProps={{ className: "-ml-2.5" }}
+                  />
+                  
+                </div>
+
+
+                <div className='h-20 flex flex-col gap-3'>
+                  <Typography variant="h6" color="blue-gray">Vehicle Type</Typography>
+                  {vehicleOptions && 
+                    <select 
+                      className='w-full h-full rounded-md border-blue-gray-100 border-2'
+                      name = "vehicle_type"
+                      onChange={(event)=> handleChange({event, setFormStateData : setFormData})}
+                      value={formData.vehicle_type}
+                      disabled = {params.action === "view" || params.action === "finish"}
+
+                    >
+                        <option value="" key = "default">Select Vehicle Type</option>
+                      {
+                        
+                          vehicleOptions.map((v_type, index) => (
+                              <option value={v_type} key={index}  selected>
+                                {v_type}
+                              </option>
+                            ))
+                          
+                      }
+                    </select>
+                  
+                  }
+                </div>
+                <div>
+                <Typography variant="h6" color="blue-gray" className="mt-2">
+                  {params.action === "view" || params.action === "finish" 
+                    ? "Vehicle Age" 
+                    : "Vehicle Year Model"}
+                </Typography>
+                  <Input
+                  disabled = {params.action === "view" || params.action === "finish"}
+                  name='vehicle_age'
+                  value={formData.vehicle_age}
+                  onChange={(event)=> handleChange({event, setFormStateData : setFormData})}
+                    type="number"
+                    size="lg"
+                    placeholder="Example : 1990"
+                    className="!border-t-blue-gray-200 placeholder:opacity-100 focus:!border-t-gray-900"
+                    labelProps={{
+                      className: "before:content-none after:content-none",
+                    }}
+                    maxLength={4}
+                    min={1500}
+                    max={new Date().getFullYear()}
+                  />
+                </div>
+                
+            
+              
+
+              {/* Column 2 */}
+              
+                <div>
+                  <Typography variant="h6" color="blue-gray">
+                    Fuel Type
+                  </Typography>
+                  <Checkbox
+                    disabled = {params.action === "view" || params.action === "finish"}
+                    name='fuel_type'
+                    value={'diesel'}
+                    checked={formData?.fuel_type === "diesel"} // Checked if this is selected
+                    onChange={(event) => handleChange({event, setFormStateData : setFormData})} // Handler for selection
+                    
+                    label={
+                      <Typography variant="small" color="gray" className="mr-4">
+                        Diesel
+                      </Typography>
+                    }
+                    containerProps={{ className: "-ml-2.5" }}
+                  />
+                  <Checkbox
+                  disabled = {params.action === "view" || params.action === "finish"}
+                  name='fuel_type'
+                  value={'gasoline'}
+                  checked={formData?.fuel_type === "gasoline"} // Checked if this is selected
+                  onChange={(event) => handleChange({event, setFormStateData : setFormData})} // Handler for selection
+                    label={
+                      <Typography variant="small" color="gray">
+                        Gasoline
+                      </Typography>
+                    }
+                    containerProps={{ className: "-ml-2.5" }}
+                  />
+                </div>
+
+                <div>
+                  <Typography variant="h6" color="blue-gray">
+                    Fuel Consumption in a whole day - (liters)
+                  </Typography>
+                  <Input
+                    disabled = {params.action === "view" || params.action === "finish"}
+                    name='liters_consumption'
+                    value = {formData.liters_consumption || ""}
+                    onChange={(event)=> handleChange({event, setFormStateData : setFormData})}
+                      type="number"
+                      size="lg"
+                      placeholder="Example: 3"
+                      className="!border-t-blue-gray-200 placeholder:opacity-100 focus:!border-t-gray-900"
+                      labelProps={{
+                        className: "before:content-none after:content-none",
+                      }}
+                      min={0}
+                      max={999}
+                      maxLength={3}
+                  />
+                </div>
+
+                </div>
+
+              
+              
+
+              {/* Full-width elements */}
+              <div className="md:col-span-2">
+                      <Button 
+                      fullWidth 
+                      className="mt-6 flex justify-center"
+                      loading = {isLoading}
+                      onClick={submitValidation}
+                  
+                    
+                      >
+                        {
+                          params.action === "submit" ?
+                          "Submit"
+                          : params.action === "update" ?
+                          "Request Update"
+                          : params.action === "view" ?
+                            "Accept Update"
+                          : "Okay"
+                        }
+                      </Button>
+      
+              </div>
+            </div>
+          </Card>
+        </>
+      }
+
+
     </div>
   );
 }

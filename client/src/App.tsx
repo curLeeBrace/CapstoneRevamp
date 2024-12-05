@@ -40,7 +40,7 @@ import { IndustrialForm, Chemical, Electronics, Metal, Mineral, Others} from "./
 import { AgricultureForm, Crops, LiveStocks} from "./routes/surveyor/AgricultureForm/AgricultureForm";
 
 
-import SurveyScheduler from "./routes/s-admin/EmissionFactorSectors/SurveyScheduler";
+import SurveyScheduler from "./routes/ScheduleSurvey/SurveyScheduler";
 
 
 import { StationaryFuelForm } from "./routes/surveyor/StationaryFuelForm";

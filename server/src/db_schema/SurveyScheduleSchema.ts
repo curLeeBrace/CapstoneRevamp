@@ -5,7 +5,7 @@ const SurveySchedule = new mongoose.Schema({
     survey_type : {type:String, required : true},
     start_date : {type : Date},
     deadline  : {type : Date},
-    status : {typed : String, required : true},
+    status : {type : String, required : true},
     municipality_name : {type : String, required : true},
     year : {type : String, required : true}
 
@@ -13,4 +13,4 @@ const SurveySchedule = new mongoose.Schema({
 
 
 
-export = mongoose.model('survey_schedule_collections', SurveySchedule);
+export = mongoose.model('Survey_Schedule_Collections', SurveySchedule);

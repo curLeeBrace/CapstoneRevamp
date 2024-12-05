@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+
 import {
   Input,
   Popover,
@@ -10,35 +10,39 @@ import { DayPicker } from "react-day-picker";
 import { ChevronRightIcon, ChevronLeftIcon } from "@heroicons/react/24/outline";
  
 interface DatePickerProps {
-  setState : React.SetStateAction<any>
+  setState : {
+    date : Date|undefined,
+    setDate : React.Dispatch<React.SetStateAction<Date|undefined>>
+  }
+  label : string
 }
-export default function DatePicker({setState} : DatePickerProps) {
-  const [date, setDate] = React.useState<Date>();
+export default function DatePicker({setState, label} : DatePickerProps) {
+  const {date, setDate} = setState
 
-  useEffect(()=>{
-    setState((prev : any) => {
-      return {
-        ...prev, ["date"] : date
-      }
-    })
-  }, [date])
+  // useEffect(()=>{
+  //   setState((prev : any) => {
+  //     return {
+  //       ...prev, ["date"] : date
+  //     }
+  //   })
+  // }, [date])
  
   return (
-    <div>
+    <div className="">
       <Popover placement="bottom">
         <PopoverHandler>
           <Input
-            label="Birth Date"
+            label={label}
             onChange={() => null}
-            value={date ? format(date, "PPP") : ""}
+            value={date ? format(date, "MMMM dd, yyyy") : ""}
             required
           />
         </PopoverHandler>
         <PopoverContent>
           <DayPicker
             captionLayout="dropdown"
-            fromYear={1900} 
-            toYear={2024}
+            fromYear={new Date().getFullYear()} 
+            toYear={new Date().getFullYear()}
           
             mode="single"
             selected={date}
@@ -49,6 +53,7 @@ export default function DatePicker({setState} : DatePickerProps) {
               dropdown : "h-full text-black",
               // caption: "flex justify-center py-2 mb-4 relative",
               caption_label: "hidden",
+              
 
               // nav: "flex items-center",
               // nav_button:"h-6 w-6 bg-transparent hover:bg-blue-gray-50 p-1 rounded-md transition-colors duration-300",
