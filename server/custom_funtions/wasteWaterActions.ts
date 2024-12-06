@@ -70,7 +70,7 @@ interface WasteWaterDataPerSurvey{
 
 
 
-type WasteWaterEfatorType = {
+export type WasteWaterEfatorType = {
     surveyType : string;
     uncollected : {
         percapitaBODgeneration_perday : number;
@@ -123,13 +123,13 @@ const getWasteWaterGHGeSum = async (user_type:string , query : {}, locations : a
                     
                     if(user_type === "s-admin"){
                         if(wasteWaterFormData.surveyor_info.municipality_code === root_loc_code){
-                            const temp_ghge = await prepateWasteWaterGHGe({septic_tanks, openPits_latrines, riverDischarge}, surveyType, waste_wateEfactorData)
+                            const temp_ghge = await prepareWasteWaterGHGe_perSurvey({septic_tanks, openPits_latrines, riverDischarge}, surveyType, waste_wateEfactorData)
                             wasteWaterGHGe += temp_ghge
 
                         }
                     }else {
                         if(wasteWaterFormData.survey_data.brgy_code === root_loc_code){
-                            const temp_ghge = await prepateWasteWaterGHGe({septic_tanks, openPits_latrines, riverDischarge}, surveyType, waste_wateEfactorData)
+                            const temp_ghge = await prepareWasteWaterGHGe_perSurvey({septic_tanks, openPits_latrines, riverDischarge}, surveyType, waste_wateEfactorData)
                             wasteWaterGHGe += temp_ghge
                         }   
                     }
@@ -166,7 +166,7 @@ export const getWasteWaterData_perSurvey = async (user_type:string , query : {},
         console.log("waste_wateEfactorData : ", waste_wateEfactorData);
 
 
-        const wasteWaterGHGe = await prepateWasteWaterGHGe({septic_tanks, openPits_latrines, riverDischarge}, form_type, waste_wateEfactorData)
+        const wasteWaterGHGe = await prepareWasteWaterGHGe_perSurvey({septic_tanks, openPits_latrines, riverDischarge}, form_type, waste_wateEfactorData)
         const {email, municipality_name} = dt.surveyor_info 
         return {
             form_id : dt._id,
@@ -198,7 +198,7 @@ export const getWasteWaterData_perSurvey = async (user_type:string , query : {},
 
 
 
-const prepateWasteWaterGHGe = async (populations : PopulationUsingTheSystems, surveyType : string, wasteWater_eFactor : WasteWaterEfatorType|null) : Promise<number> =>{
+export const prepareWasteWaterGHGe_perSurvey = async (populations : PopulationUsingTheSystems, surveyType : string, wasteWater_eFactor : WasteWaterEfatorType|null) : Promise<number> =>{
 
 
     
