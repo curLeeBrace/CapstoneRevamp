@@ -13,7 +13,7 @@ import useUserInfo from "../../custom-hooks/useUserType";
   
    
 
-export type BarSeriesTypes = {
+export type LineChartSeriesTypes = {
 
   name : string,
   data : {
@@ -24,13 +24,15 @@ export type BarSeriesTypes = {
 
 }
 
-  interface BarChartProps {
+  interface LineChartProps {
     chart_label : string;
     chart_meaning : string;
     chart_icon : React.ReactElement;
-    series : BarSeriesTypes[] | undefined;
+    series : LineChartSeriesTypes[] | undefined;
     isLoading? : boolean;
     stacked? : boolean
+    xAxisTitle?: string; 
+    yAxisTitle?: string; 
   }
 
 
@@ -40,7 +42,8 @@ export type BarSeriesTypes = {
   
    
    
-  export default function BarChart({chart_icon, chart_label, chart_meaning, series, isLoading = false, stacked}:BarChartProps) {
+  export default function LineGraph({ chart_icon, chart_label, chart_meaning, series, isLoading = false, stacked, xAxisTitle,
+    yAxisTitle }: LineChartProps) {
     const [fontSize, setFontSize] = useState(11); // Default font size is 12px
 
     const increaseFontSize = () => setFontSize((prev) => prev + 1);
@@ -57,36 +60,37 @@ export type BarSeriesTypes = {
             offsetX: 0,
             offsetY: 0,
             tools: {
-              // Disable some built-in icons if you don't need them
-              download: true, 
-              // Custom icon for increasing font size
+              download: true,
               customIcons: [
                 {
-                  icon: `<div style="font-size: 16px; margin-left: 15px; cursor: pointer;">A+</div>`, // HTML for the button
+                  icon: `<div style="font-size: 14px; margin-left: 15px; cursor: pointer;">A+</div>`,
                   index: 0,
                   title: 'Increase Font Size',
                   class: 'custom-icon',
-                  click: function () {
-                    increaseFontSize();
-                  },
+                  click: () => increaseFontSize(),
                 },
                 {
-                  icon: `<div style="font-size: 16px; margin-left: 10px; cursor: pointer;">A-</div>`,
+                  icon: `<div style="font-size: 14px; margin-left: 10px; cursor: pointer;">A-</div>`,
                   index: 1,
                   title: 'Decrease Font Size',
                   class: 'custom-icon',
-                  click: function () {
-                    decreaseFontSize(); 
-                  },
+                  click: () => decreaseFontSize(),
                 },
               ],
             },
           },
           foreColor: '#101010',
+          margin: {
+            top: 50,
+            left: 20,
+            right: 20,
+            bottom: 50,
+          },
         },
+        colors: ['#006400'],
         plotOptions: {
           bar: {
-            columnWidth: user_info.user_type === 'lu_admin' ? '20%' : '90%', 
+            columnWidth: user_info.user_type === 'lu_admin' ? '20%' : '90%',
             barHeight: "100%",
             dataLabels: {
               total: {
@@ -105,21 +109,35 @@ export type BarSeriesTypes = {
         xaxis: {
           labels: {
             style: {
-              fontSize: `${fontSize}px`, // Dynamically update font size for labels
+              fontSize: `${fontSize}px`,
+            },
+          },
+          title: {
+            text: xAxisTitle,
+            style: {
+              fontSize: `${fontSize}px`,
+              fontWeight: 600,
             },
           },
         },
         yaxis: {
           labels: {
             style: {
-              fontSize: `${fontSize}px`, // Dynamically update font size for labels
+              fontSize: `${fontSize}px`,
             },
           },
+          title: {
+            text: yAxisTitle,
+            style: {
+              fontSize: `${fontSize}px`,
+              fontWeight: 600,
+            },
+          },
+          
         },
       },
     };
-
-
+    
 
 
 
@@ -142,13 +160,13 @@ export type BarSeriesTypes = {
             <Typography
               variant="small"
               color="gray"
-              className="max-w-sm font-normal"
+              className="max-w-sm font-normal whitespace-nowrap"
             >
               {chart_meaning}
             </Typography>
           </div>
         </CardHeader>
-        <CardBody className="px-2 pb-4 h-full">
+        <CardBody className="px-2 pb-4 -mt-6 h-full">
           {
             series && chartConfig ? 
               !isLoading ?
@@ -157,7 +175,7 @@ export type BarSeriesTypes = {
                   series={chartConfig.series}
                   height={"100%"}
                   width={"100%"}
-                  type="bar"
+                  type="line"
                 /> : <Skeleton/>
                 :
                 <SimpleCard body={"No Available Data"} header="" icon={<ExclamationTriangleIcon className="h-full w-full"/>}/>

@@ -15,6 +15,8 @@ import getFALU_RawData from "../controller/SummaryData/ForestAndLandUse.ts/fores
 
 import ghgeSummary from "../controller/SummaryData/ghgeSummary";
 
+import { getGHGeHistoricalData } from "../controller/SummaryData/ghgeHistoryData";
+
 const router = express.Router();
 
 router.get('/mobile-combustion', authenticate_token, getMobileCombustionData);
@@ -36,4 +38,6 @@ router.get('/ghge-summary', authenticate_token, ghgeSummary);
 
 
 router.get('/dashboard/:form_category', authenticate_token,  getSurveyData);
+
+router.get('/ghge-historical-data', getGHGeHistoricalData)
 export default router
