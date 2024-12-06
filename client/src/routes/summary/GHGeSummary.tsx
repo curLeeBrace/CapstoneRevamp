@@ -163,7 +163,7 @@ const GHGeSummary = ()=>{
   name: `${user_info.user_type === "s-admin" ? "Laguna" : user_info.municipality_name} GHGe.`,
   data: historicalData.map(item => ({
     x: item.year,
-    y: parseFloat(item.ghge.toFixed(2))
+    y: Math.floor(item.ghge)
   }))
 }];
 
@@ -226,8 +226,8 @@ const GHGeSummary = ()=>{
                 chart_meaning={`GHG emissions per year in ${user_info.user_type === "s-admin" ? "Laguna" : user_info.municipality_name}.`}
                 series={historicalLineSeries}
                 isLoading={isLoading}
-                xAxisTitle="Year"                    // Set the x-axis label
-                yAxisTitle="Calculated GHG Emissions"  // Set the y-axis label
+                xAxisTitle="Year"                    
+                yAxisTitle="Calculated GHG Emissions" 
               />
             </div>
           )

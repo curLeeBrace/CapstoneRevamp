@@ -142,7 +142,9 @@ const SurveyedList = () => {
             statusColor = "text-green-500 font-bold"; 
         }                
 
-        const dateTime = new Date(data.dateTime_created).toLocaleDateString() + " " + new Date(data.dateTime_created).toLocaleTimeString();
+        const dateTime = data.dateTime_edited
+        ? new Date(data.dateTime_edited).toLocaleDateString() + " " + new Date(data.dateTime_edited).toLocaleTimeString()
+        : new Date(data.dateTime_created).toLocaleDateString() + " " + new Date(data.dateTime_created).toLocaleTimeString();        
         const LinkComponent = (
           <Link
             to={`/surveyor/forms/update/mobile-combustion?form_id=${data.form_id}`}
@@ -208,7 +210,9 @@ const SurveyedList = () => {
         }                
         
         
-        const dateTime = new Date(data.dateTime_created).toLocaleDateString() + " " + new Date(data.dateTime_created).toLocaleTimeString();
+        const dateTime = data.dateTime_edited
+        ? new Date(data.dateTime_edited).toLocaleDateString() + " " + new Date(data.dateTime_edited).toLocaleTimeString()
+        : new Date(data.dateTime_created).toLocaleDateString() + " " + new Date(data.dateTime_created).toLocaleTimeString();
         const form_id = data.form_id;
         const LinkComponent = (
           <Link
@@ -283,8 +287,10 @@ const SurveyedList = () => {
             statusColor = "text-green-500 font-bold"; 
         }                
         
-        const dateTime = new Date(data.dateTime_created).toLocaleDateString() + " " + new Date(data.dateTime_created).toLocaleTimeString();
-        const form_id = data.form_id;
+        const dateTime = data.dateTime_edited
+        ? new Date(data.dateTime_edited).toLocaleDateString() + " " + new Date(data.dateTime_edited).toLocaleTimeString()
+        : new Date(data.dateTime_created).toLocaleDateString() + " " + new Date(data.dateTime_created).toLocaleTimeString();
+            const form_id = data.form_id;
 
         const LinkComponent = (
           <Link
@@ -410,7 +416,7 @@ const SurveyedList = () => {
       </div>
 
 
-      <div className="w-4/5">
+      <div className="w-4/5 h-4/5">
         {
         tb_head && filteredData.length ? 
         <Table tb_datas={filteredData} tb_head={tb_head} /> :

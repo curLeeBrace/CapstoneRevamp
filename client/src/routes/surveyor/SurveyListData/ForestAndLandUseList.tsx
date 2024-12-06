@@ -107,8 +107,10 @@ const ForestAndLandUseList = () => {
                     statusColor = "text-green-500 font-bold"; 
                 }                
 
-                const dateTime = new Date(data.dateTime_created).toLocaleDateString() + " " + new Date(data.dateTime_created).toLocaleTimeString();
-    
+                const dateTime = data.dateTime_edited
+                ? new Date(data.dateTime_edited).toLocaleDateString() + " " + new Date(data.dateTime_edited).toLocaleTimeString()
+                : new Date(data.dateTime_created).toLocaleDateString() + " " + new Date(data.dateTime_created).toLocaleTimeString();
+                    
                 const LinkComponent = (
                     <Link
                       to={`/surveyor/forms/forestry-land-use/update/0/falu-wood?form_id=${data.form_id}`}
@@ -185,8 +187,10 @@ const ForestAndLandUseList = () => {
                 }                
                 
                 
-                const dateTime = new Date(data.dateTime_created).toLocaleDateString() + " " + new Date(data.dateTime_created).toLocaleTimeString();
-    
+                const dateTime = data.dateTime_edited
+                ? new Date(data.dateTime_edited).toLocaleDateString() + " " + new Date(data.dateTime_edited).toLocaleTimeString()
+                : new Date(data.dateTime_created).toLocaleDateString() + " " + new Date(data.dateTime_created).toLocaleTimeString();
+                    
                 const LinkComponent = (
                     <Link
                       to={`/surveyor/forms/forestry-land-use/update/1/falu-forestland?form_id=${data.form_id}`}
