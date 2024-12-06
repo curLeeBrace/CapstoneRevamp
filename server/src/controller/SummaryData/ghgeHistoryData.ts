@@ -61,7 +61,34 @@ const getGHGeHistoricalData = async(req :  Request, res : Response) => {
 
 
 
-        const query = user_type === "s-admin" ? {} : {"surveyor_info.municipality_name" : municipality_name}
+        let query = {}
+
+        if(user_type === "s-admin"){
+            if(municipality_name){
+                query = {
+                    "surveyor_info.municipality_name" : municipality_name
+                }
+                if(municipality_name === "Santa Cruz (Capital)"){
+                    query = {
+                        $or : [{"surveyor_info.municipality_name" : municipality_name}, {"surveyor_info.municipality_name": "Laguna University"}]
+                    }
+                }
+            } else {
+                query = {}
+            }
+        } else {
+            if(municipality_name === "Santa Cruz (Capital)"){
+                query = {
+                    $or : [{"surveyor_info.municipality_name" : municipality_name}, {"surveyor_info.municipality_name": "Laguna University"}]
+                }
+            } else {
+                query = {
+                    "surveyor_info.municipality_name" : municipality_name
+                }
+            }
+        }
+
+
 
         const mobile_combusitonData = await FuelFormSchema.find(query).exec();
         const waste_waterData = await WasteWaterFormShema.find(query).exec();

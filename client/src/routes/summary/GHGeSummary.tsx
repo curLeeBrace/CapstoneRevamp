@@ -146,14 +146,18 @@ const GHGeSummary = ()=>{
     setisLoading(true);
 
     axios.get('/summary-data/ghge-historical-data', {
-      params: { user_type, municipality_name }
+      params: { 
+        user_type,
+        municipality_name : user_type === "s-admin" ? loc?.address_name : municipality_name
+
+      }
     })
     .then((res) => {
       setHistoricalData(res.data);
     })
     .catch(err => console.log(err))
     .finally(() => setisLoading(false));
-  }, []);
+  }, [loc]);
 
   const historicalLineSeries = [{
   name: `${user_info.user_type === "s-admin" ? "Laguna" : user_info.municipality_name} GHGe.`,
@@ -162,6 +166,8 @@ const GHGeSummary = ()=>{
     y: parseFloat(item.ghge.toFixed(2))
   }))
 }];
+
+
 
     
 

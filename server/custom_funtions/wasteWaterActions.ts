@@ -135,9 +135,9 @@ const getWasteWaterGHGeSum = async (user_type:string , query : {}, locations : a
                     }
                 })
             )
+            //Number((Math.trunc(wasteWaterGHGe * 100) / 100).toFixed(2)),
             wasteWaterGHGes.push({
-                
-                ghge : Number((Math.trunc(wasteWaterGHGe * 100) / 100).toFixed(2)),
+                ghge : Number(wasteWaterGHGe.toFixed(2)),
                 loc_name
             });
 

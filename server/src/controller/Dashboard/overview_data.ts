@@ -307,14 +307,14 @@ type DashBoardData = {
                     co2e : tb_co2e,
                     ch4e : tb_ch4e,
                     n2oe : tb_n2oe,
-                    ghge : Number((Math.trunc(tb_ghge * 100) / 100).toFixed(2)),
+                    ghge : Number(tb_ghge.toFixed(2))
                 }
             })
 
         })
     )
 
-
+// Number((Math.trunc(tb_ghge * 100) / 100).toFixed(2)),
 
 
 
