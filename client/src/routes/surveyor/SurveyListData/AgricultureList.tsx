@@ -112,8 +112,10 @@ const AgricultureList = () => {
                     statusColor = "text-green-500 font-bold"; 
                 }                
 
-                const dateTime = new Date(data.dateTime_created).toLocaleDateString() + " " + new Date(data.dateTime_created).toLocaleTimeString();
-
+                const dateTime = data.dateTime_edited
+                ? new Date(data.dateTime_edited).toLocaleDateString() + " " + new Date(data.dateTime_edited).toLocaleTimeString()
+                : new Date(data.dateTime_created).toLocaleDateString() + " " + new Date(data.dateTime_created).toLocaleTimeString();
+                
                 const LinkComponent = (
                     <Link
                       to={`/surveyor/forms/agriculture/update/0/crops?form_id=${data.form_id}`}
@@ -188,8 +190,10 @@ const AgricultureList = () => {
                     statusColor = "text-green-500 font-bold"; 
                 }                
                 
-                const dateTime = new Date(data.dateTime_created).toLocaleDateString() + " " + new Date(data.dateTime_created).toLocaleTimeString();
-
+                const dateTime = data.dateTime_edited
+                ? new Date(data.dateTime_edited).toLocaleDateString() + " " + new Date(data.dateTime_edited).toLocaleTimeString()
+                : new Date(data.dateTime_created).toLocaleDateString() + " " + new Date(data.dateTime_created).toLocaleTimeString();
+                
                 const LinkComponent = (
                     <Link
                       to={`/surveyor/forms/agriculture/update/1/livestocks?form_id=${data.form_id}`}

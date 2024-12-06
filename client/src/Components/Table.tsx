@@ -12,11 +12,11 @@ export default function Table({ tb_datas, tb_head, isLoading, thbg_color = "gray
 
   let css_color = thbg_color === "gray" ? "bg-blue-gray-200" : "bg-darkgreen"
   return (
-    <Card className="w-full overflow-scroll custom-scrollbar h-full border-2 rounded-lg border-gray-300">
+    <Card className="w-full overflow-scroll custom-scrollbar h-96 border-2 rounded-lg border-gray-300">
       {isLoading ? (
         <Skeleton />
       ) : (
-        <table className="w-full h-full min-w-max table-auto text-left">
+        <table className="w-full min-w-max table-auto h-4/5 text-left">
           <thead className="sticky top-0">
             <tr>
               {tb_head.map((head, index) => (
