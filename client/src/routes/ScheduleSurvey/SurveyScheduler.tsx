@@ -219,9 +219,9 @@ const SurveyScheduler = () => {
                     :null
             }
             <div className="flex flex-col items-center w-full">
-                <div className="w-full font-bold bg-darkgreen text-white text-2xl rounded-lg text-center py-2">Schedule Survey For {new Date().getFullYear().toString()}</div>
+                <div className="w-full font-bold bg-darkgreen text-white text-2xl rounded-lg text-center py-2 mb-4">Schedule Survey For {new Date().getFullYear().toString()}</div>
 
-                <div className="w-full bg-black h-full">
+                <div className="w-full ">
 
                     <Table
                         tb_head={tb_head}
