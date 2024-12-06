@@ -416,7 +416,7 @@ const SurveyedList = () => {
       </div>
 
 
-      <div className="w-4/5 h-4/5">
+      <div className="w-4/5 h-96">
         {
         tb_head && filteredData.length ? 
         <Table tb_datas={filteredData} tb_head={tb_head} /> :
