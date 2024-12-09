@@ -25,7 +25,7 @@ const GHGeSummary = ()=>{
   const [overallHistory, setOverAllHistory] = useState<any>();
 
 
-  const sectors = ["mobile-combustion", "waste-water", "industrial", "agriculture", "stationary", "fores-land-use", "all-sector"]
+  const sectors = ["mobile-combustion", "waste-water", "industrial", "agriculture", "stationary", "forest-land-use", "all-sector"]
   const [sector, setSector] = useState();
 
   const [tablecontent, setTableContent] = useState({
@@ -270,18 +270,20 @@ const GHGeSummary = ()=>{
           label : 'Graph',
           value : 'line-graph',
           tabPanelChild : (
-            <div className='h-96'>
-              <Select label="Select Sector" className='w-52' onChange={(value : any) => setSector(value)} value={sector ? sector : "all-sector"}>
-                {sectors.map(sector=>(
-                  <Option key={sector} value={sector}>
-                      {sector.toUpperCase()}
-                  </Option>
-                ))}
-              
-              </Select>
+            <div className=''>
+            <Select label="Select Sector" className='w-full' onChange={(value : any) => setSector(value)} value={sector ? sector : "all-sector"}>
+            {sectors.map(sector=>(
+              <Option key={sector} value={sector} className=''>
+                  {sector.toUpperCase()}
+              </Option>
+            ))}
+          
+          </Select>
+            <div className='h-96 mt-2'>
+           
               <LineGraph
                 chart_icon={<ArrowTrendingUpIcon className="h-full w-full"/>}
-                chart_label={`Historical GHG Emissions`}
+                chart_label={`Historical GHG Emissions (${sector ? sector : 'ALL-SECTOR'})`}
                 chart_meaning={`GHG emissions per year in ${user_info.user_type === "s-admin" ? "Laguna" : user_info.municipality_name}.`}
                 series={historicalLineSeries}
                 isLoading={isLoading}
@@ -289,6 +291,8 @@ const GHGeSummary = ()=>{
                 yAxisTitle="Calculated GHG Emissions" 
               />
             </div>
+            </div>
+
           )
         }
       ]} />
