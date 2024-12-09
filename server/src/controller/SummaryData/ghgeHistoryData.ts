@@ -116,12 +116,13 @@ const getGHGeHistoricalData = async(req :  Request, res : Response) => {
             ghge : number
         }
 
-        // let mb_ghge : HistoricalGHGeTypes[] = [];
-        // let wasteWater_ghge : HistoricalGHGeTypes[] = []
-        // let stationary_ghge  : HistoricalGHGeTypes[] = []
-        // let industrial_ghge : HistoricalGHGeTypes[] = []
-        // let agriculture_ghge : HistoricalGHGeTypes[] = []
-        // let falu_ghge : HistoricalGHGeTypes[]  = []
+        let mb_ghge : HistoricalGHGeTypes[] = [];
+        let wasteWater_ghge : HistoricalGHGeTypes[] = []
+        let stationary_ghge  : HistoricalGHGeTypes[] = []
+        let industrial_ghge : HistoricalGHGeTypes[] = []
+        let agriculture_ghge : HistoricalGHGeTypes[] = []
+        let falu_ghge : HistoricalGHGeTypes[]  = []
+        // let 
 
         let total_ghge : HistoricalGHGeTypes[] = []
 
@@ -400,11 +401,12 @@ const getGHGeHistoricalData = async(req :  Request, res : Response) => {
                         year,
                     })
 
-                    // mb_ghge.push({ghge : mb_tempGHGe, year : year})// mobile combustion ghge
-                    // wasteWater_ghge.push({ghge : wasteWater_tempGHGe, year : year})//Waste Water ghge
-                    // stationary_ghge.push({ghge : stationary_tempGHGe, year:year})//Stationary GHGe
-                    // industrial_ghge.push({ghge : industrial_tempGHGe, year})//Industrial
-                    // falu_ghge.push({ghge : falu_tempGHGe, year})
+                    mb_ghge.push({ghge : mb_tempGHGe, year : year})// mobile combustion ghge
+                    wasteWater_ghge.push({ghge : wasteWater_tempGHGe, year : year})//Waste Water ghge
+                    stationary_ghge.push({ghge : stationary_tempGHGe, year:year})//Stationary GHGe
+                    industrial_ghge.push({ghge : industrial_tempGHGe, year})//Industrial
+                    falu_ghge.push({ghge : falu_tempGHGe, year})
+                    agriculture_ghge.push({ghge : agriculture_tempGHGe, year})
 
                 })
         )
@@ -414,7 +416,20 @@ const getGHGeHistoricalData = async(req :  Request, res : Response) => {
 
 
 
-    return res.send(total_ghge.sort((a:any, b:any) => a.year - b.year))
+    // return res.send()
+
+
+    return res.send({
+        mb_ghge : mb_ghge.sort((a:any, b:any) => a.year - b.year),
+        wasteWater_ghge : wasteWater_ghge.sort((a:any, b:any) => a.year - b.year),
+        stationary_ghge : stationary_ghge.sort((a:any, b:any) => a.year - b.year),
+        industrial_ghge : industrial_ghge.sort((a:any, b:any) => a.year - b.year),
+        agriculture_ghge : agriculture_ghge.sort((a:any, b:any) => a.year - b.year),
+        falu_ghge : falu_ghge.sort((a:any, b:any) => a.year - b.year),
+        total_ghge : total_ghge.sort((a:any, b:any) => a.year - b.year)
+
+
+    })
 
 
 

@@ -9,7 +9,7 @@ import Municipality from '../../custom-hooks/Municipality';
 import YearMenu from '../../Components/YearMenu';
 
 import { AddressReturnDataType } from '../../custom-hooks/useFilterAddrress';
-import { Typography } from '@material-tailwind/react';
+import { Option, Select, Typography } from '@material-tailwind/react';
 import { useLocation } from 'react-router-dom';
 import { TabsDefault } from '../../Components/Tabs';
 import LineGraph from '../../Components/Dashboard/LineGraph';
@@ -22,6 +22,11 @@ const GHGeSummary = ()=>{
   const [year, setYear] = useState<string | undefined>(new Date().getFullYear().toString());
   const [isLoading, setisLoading] = useState<boolean>(true); 
   const [historicalData, setHistoricalData] = useState<{year: string, ghge: number}[]>([]);
+  const [overallHistory, setOverAllHistory] = useState<any>();
+
+
+  const sectors = ["mobile-combustion", "waste-water", "industrial", "agriculture", "stationary", "fores-land-use", "all-sector"]
+  const [sector, setSector] = useState();
 
   const [tablecontent, setTableContent] = useState({
     tb_rows : undefined as any,
@@ -153,11 +158,55 @@ const GHGeSummary = ()=>{
       }
     })
     .then((res) => {
-      setHistoricalData(res.data);
+      console.log(res.data)
+      setOverAllHistory(res.data);
+      setHistoricalData(res.data.total_ghge)
+      // let sector = "mobile-combsution";
+
+      // if(sector === "mobile-combsution"){
+      //   setHistoricalData(res.data);
+      // } 
     })
     .catch(err => console.log(err))
     .finally(() => setisLoading(false));
   }, [loc]);
+
+
+
+  useEffect(()=>{
+    if(overallHistory){
+
+      if(sector === "mobile-combustion"){
+        setHistoricalData(overallHistory.mb_ghge)
+        
+  
+      } else if(sector === "waste-water"){
+        setHistoricalData(overallHistory.wasteWater_ghge)
+  
+      } else if(sector === "industrial"){
+        setHistoricalData(overallHistory.industrial_ghge)
+  
+      } else if(sector === "agriculture"){
+        setHistoricalData(overallHistory.agriculture_ghge)
+  
+      } else if(sector === "staionary"){
+        setHistoricalData(overallHistory.stationary_ghge)
+       
+      } else if (sector === "all-sector"){
+        setHistoricalData(overallHistory.total_ghge)
+        
+      } else{
+
+        setHistoricalData(overallHistory.falu_ghge)
+
+      }
+
+    }
+  },[sector])
+
+
+
+
 
   const historicalLineSeries = [{
   name: `${user_info.user_type === "s-admin" ? "Laguna" : user_info.municipality_name} GHGe.`,
@@ -176,6 +225,8 @@ const GHGeSummary = ()=>{
     "GHG Emissions (tonnes CO2e)",
     "Proportion of Total Emissions"
   ];
+
+  console.log("Sector : ", sector)
 
 
   return (
@@ -220,6 +271,14 @@ const GHGeSummary = ()=>{
           value : 'line-graph',
           tabPanelChild : (
             <div className='h-96'>
+              <Select label="Select Sector" className='w-52' onChange={(value : any) => setSector(value)} value={sector ? sector : "all-sector"}>
+                {sectors.map(sector=>(
+                  <Option key={sector} value={sector}>
+                      {sector.toUpperCase()}
+                  </Option>
+                ))}
+              
+              </Select>
               <LineGraph
                 chart_icon={<ArrowTrendingUpIcon className="h-full w-full"/>}
                 chart_label={`Historical GHG Emissions`}
