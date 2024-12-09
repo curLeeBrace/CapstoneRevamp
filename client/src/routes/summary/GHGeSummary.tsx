@@ -270,8 +270,9 @@ const GHGeSummary = ()=>{
           label : 'Graph',
           value : 'line-graph',
           tabPanelChild : (
-            <div className=''>
-            <Select label="Select Sector" className='w-full' onChange={(value : any) => setSector(value)} value={sector ? sector : "all-sector"}>
+            <div>
+              <div className='w-32'>
+            <Select label="Select Sector" className='w-full ' onChange={(value : any) => setSector(value)} value={sector ? sector : "all-sector"}>
             {sectors.map(sector=>(
               <Option key={sector} value={sector} className=''>
                   {sector.toUpperCase()}
@@ -279,6 +280,7 @@ const GHGeSummary = ()=>{
             ))}
           
           </Select>
+          </div>
             <div className='h-96 mt-2'>
            
               <LineGraph
