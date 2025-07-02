@@ -46,7 +46,7 @@ export const authenticate_account = async (req: Request, res: Response) => {
 
     try {
         const auth_acc = await AccountSchema.findOne({ email }).exec();
-
+        // console.log(CryptoJS.AES.decrypt("U2FsdGVkX1+4HrqTxgVTJGam0BSZtNIXApWc7jXDV4w=", process.env.SECRET_KEY as string).toString(CryptoJS.enc.Utf8))
         if (auth_acc) {
             const { email, user_type, verified, lgu_municipality, f_name, m_name, l_name, img_name, img_id, address} = auth_acc;
             const encrypted_db_pass = auth_acc.pass;
@@ -54,6 +54,8 @@ export const authenticate_account = async (req: Request, res: Response) => {
             const secret_key: string = process.env.SECRET_KEY as string;
             const decrypt_pass = CryptoJS.AES.decrypt(encrypt_pass.toString(), secret_key);
             const decrypt_db_pass = CryptoJS.AES.decrypt(encrypted_db_pass.toString(), secret_key);
+
+            
 
             if (decrypt_pass.toString(CryptoJS.enc.Utf8) === decrypt_db_pass.toString(CryptoJS.enc.Utf8)) {
                 const access_token = jwt.sign({ email }, process.env.ACCESS_TOKEN_SECRET as Secret, {expiresIn : "1d"});
